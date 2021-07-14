@@ -212,7 +212,7 @@ class UserController {
     token.full_name = user.full_name ? user.full_name : null
     token.last_name = user.last_name
     let data = {}
-    data.TRI_SESSION_INFO = token
+    data.HIGHIT_SESSION_INFO = token
     return data
   }
 
