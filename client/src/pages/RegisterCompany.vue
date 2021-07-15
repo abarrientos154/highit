@@ -61,11 +61,11 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>Dirección</div>
-          <q-input dense outlined filled v-model="form.direction" placeholder="Escriba la direccion fisica del espacio" error-message="Este campo es requerido" :error="$v.form.direction.$error" @blur="$v.form.direction.$touch()"/>
+          <q-input dense outlined filled v-model="form.direction" placeholder="Mi direccion #12123" error-message="Este campo es requerido" :error="$v.form.direction.$error" @blur="$v.form.direction.$touch()"/>
         </div>
         <div class="q-mx-md">
           <div>Código postal</div>
-          <q-input dense outlined filled v-model.number="form.postalCode" type="number" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
+          <q-input dense outlined filled v-model.number="form.postalCode" placeholder="1023400" type="number" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
         </div>
       </q-list>
     </div>

@@ -14,6 +14,9 @@ class Estado extends Model {
         }
         return rules
     }
+    ciudades () {
+        return this.hasMany("App/Models/Ciudad", "id", "estado_id")
+    }
 }
 
 module.exports = Estado
