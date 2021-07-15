@@ -71,7 +71,7 @@
     </div>
     <div>
       <div class="q-mb-md q-px-md">
-        <div class="text-h6 text-bold">Infomacion empresa</div>
+        <div class="text-h6 text-bold">Infomaciones varias</div>
         <div class="text-grey-8">Informacion oficial de la empresa</div>
       </div>
       <q-list>
@@ -83,10 +83,20 @@
           <div>Telefono de contacto</div>
           <q-input dense outlined filled v-model="form.phone" placeholder="+52 1 55 8403 5917" error-message="Este campo es requerido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
-          <div>Foto de perfil</div>
-        </div>
       </q-list>
+      <div class="q-px-md">
+        <div>Foto de perfil</div>
+        <div class="column items-center">
+          <q-avatar rounded style="height: 150px; width: 100%;" class="bg-grey q-mb-sm">
+            <q-img style="height: 100%;" :src="perfilImg">
+              <q-file  borderless v-model="img" class="button-camera" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1; width: 100%; height: 100%;">
+                <q-icon name="backup" class="absolute-center" size="70px" color="white" />
+              </q-file>
+            </q-img>
+          </q-avatar>
+          <div v-if="$v.PImg.$error" class="text-negative">La imagen es Requerida</div>
+        </div>
+      </div>
     </div>
     <div class="column items-center q-pa-lg">
       <q-btn class="q-py-sm" label="Crear empresa" color="primary" style="width: 85%;" @click="saveCompany()" no-caps/>
@@ -99,6 +109,9 @@ import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
+      img: null,
+      perfilImg: '',
+      PImg: {},
       form: {},
       paises: [],
       estados: [],
@@ -122,6 +135,7 @@ export default {
       email: { required },
       phone: { required }
     },
+    PImg: { required },
     selectPais: { required },
     selectEstado: { required },
     selectCiudad: { required }
@@ -138,7 +152,41 @@ export default {
         }
       })
     },
+    perfil_img () {
+      this.PImg = this.img
+      this.perfilImg = URL.createObjectURL(this.img)
+      this.img = null
+    },
     saveCompany () {
+      this.$v.$touch()
+      if (!this.$v.form.$error && !this.$v.selectPais.$error && !this.$v.selectEstado.$error && !this.$v.selectCiudad.$error && !this.$v.PImg.$error) {
+        this.$q.loading.show({
+          message: 'Guardando...'
+        })
+        var formData = new FormData()
+        var files = []
+        files[0] = this.PImg
+        formData.append('PFiles', files[0])
+        formData.append('dat', JSON.stringify(this.form))
+        this.$api.post('register_company', formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: 'Empresa guardada correctamente',
+              color: 'positive'
+            })
+          }
+          this.$q.loading.hide()
+        })
+      } else {
+        this.$q.notify({
+          message: 'Debe ingresar todos los datos correspondientes',
+          color: 'negative'
+        })
+      }
     }
   }
 }
