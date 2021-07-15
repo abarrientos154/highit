@@ -49,11 +49,11 @@
       <q-list>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>País</div>
-          <q-select outlined dense filled v-model="selectPais" :options="paises" @input="form.pais_id = selectPais._id, ciudades = selectPais.ciudades, selectCiudad = null" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectPais.$error" @blur="$v.selectPais.$touch()"/>
+          <q-select outlined dense filled v-model="selectPais" :options="paises" @input="form.pais_id = selectPais._id, estados = selectPais.estados" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectPais.$error" @blur="$v.selectPais.$touch()"/>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>Estado</div>
-          <q-select outlined dense filled v-model="selectEstado" :options="estados" @input="form.estado_id = selectEstado._id" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectEstado.$error" @blur="$v.selectEstado.$touch()"/>
+          <q-select outlined dense filled v-model="selectEstado" :options="estados" @input="form.estado_id = selectEstado._id, ciudades = selectEstado.ciudades" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectEstado.$error" @blur="$v.selectEstado.$touch()"/>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>Ciudad</div>
@@ -61,17 +61,17 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>Dirección</div>
-          <q-input dense outlined filled v-model="form.direction" placeholder="Escriba la direccion fisica del espacio" error-message="Este campo es requerido" :error="$v.form.direction.$error" @blur="$v.form.direction.$touch()"/>
+          <q-input dense outlined filled v-model="form.direction" placeholder="Mi direccion #12123" error-message="Este campo es requerido" :error="$v.form.direction.$error" @blur="$v.form.direction.$touch()"/>
         </div>
         <div class="q-mx-md">
           <div>Código postal</div>
-          <q-input dense outlined filled v-model.number="form.postalCode" type="number" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
+          <q-input dense outlined filled v-model.number="form.postalCode" placeholder="1023400" type="number" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
         </div>
       </q-list>
     </div>
     <div>
       <div class="q-mb-md q-px-md">
-        <div class="text-h6 text-bold">Infomacion empresa</div>
+        <div class="text-h6 text-bold">Infomaciones varias</div>
         <div class="text-grey-8">Informacion oficial de la empresa</div>
       </div>
       <q-list>
@@ -83,10 +83,20 @@
           <div>Telefono de contacto</div>
           <q-input dense outlined filled v-model="form.phone" placeholder="+52 1 55 8403 5917" error-message="Este campo es requerido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
-          <div>Foto de perfil</div>
-        </div>
       </q-list>
+      <div class="q-px-md">
+        <div>Foto de perfil</div>
+        <div class="column items-center">
+          <q-avatar rounded style="height: 150px; width: 100%;" class="bg-grey q-mb-sm">
+            <q-img style="height: 100%;" :src="perfilImg">
+              <q-file  borderless v-model="img" class="button-camera" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1; width: 100%; height: 100%;">
+                <q-icon name="backup" class="absolute-center" size="70px" color="white" />
+              </q-file>
+            </q-img>
+          </q-avatar>
+          <div v-if="$v.PImg.$error" class="text-negative">La imagen es Requerida</div>
+        </div>
+      </div>
     </div>
     <div class="column items-center q-pa-lg">
       <q-btn class="q-py-sm" label="Crear empresa" color="primary" style="width: 85%;" @click="saveCompany()" no-caps/>
@@ -95,10 +105,13 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required, email } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
+      img: null,
+      perfilImg: '',
+      PImg: {},
       form: {},
       paises: [],
       estados: [],
@@ -119,15 +132,17 @@ export default {
       dateEnd: { required },
       direction: { required },
       postalCode: { required },
-      email: { required },
+      email: { required, email },
       phone: { required }
     },
+    PImg: { required },
     selectPais: { required },
     selectEstado: { required },
     selectCiudad: { required }
   },
   mounted () {
     this.getPaises()
+    this.getContratos()
   },
   methods: {
     getPaises () {
@@ -138,7 +153,49 @@ export default {
         }
       })
     },
+    getContratos () {
+      this.$api.get('contratos').then(res => {
+        if (res) {
+          this.contratos = res
+          console.log(this.contratos)
+        }
+      })
+    },
+    perfil_img () {
+      this.PImg = this.img
+      this.perfilImg = URL.createObjectURL(this.img)
+      this.img = null
+    },
     saveCompany () {
+      this.$v.$touch()
+      if (!this.$v.form.$error && !this.$v.selectPais.$error && !this.$v.selectEstado.$error && !this.$v.selectCiudad.$error && !this.$v.PImg.$error) {
+        this.$q.loading.show({
+          message: 'Guardando...'
+        })
+        const formData = new FormData()
+        const files = []
+        files[0] = this.PImg
+        formData.append('PFiles', files[0])
+        formData.append('dat', JSON.stringify(this.form))
+        this.$api.post('register_company', formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: 'Empresa guardada correctamente',
+              color: 'positive'
+            })
+          }
+          this.$q.loading.hide()
+        })
+      } else {
+        this.$q.notify({
+          message: 'Debe ingresar todos los datos correspondientes',
+          color: 'negative'
+        })
+      }
     }
   }
 }

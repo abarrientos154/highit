@@ -1,6 +1,7 @@
 'use strict'
 
 const Helpers = use('Helpers')
+const Company = use("App/Models/Company")
 /* const mkdirp = use('mkdirp')
 const { validate } = use("Validator")
 const fs = require('fs')
@@ -17,6 +18,24 @@ var randomize = require('randomatic'); */
 class UploadController {
   async getLogo ({ request, response, auth }) {
     response.download(Helpers.appRoot('public/logo.png'))
+  }
+
+  async registerHospedador({ request, response }) {
+    var dat = request.only(['dat'])
+    dat = JSON.parse(dat.dat)
+    const company = await Company.create(dat)
+    const profilePic = request.file('PFiles', {
+      types: ['image']
+    })
+    if (Helpers.appRoot('storage/uploads/companyFiles')) {
+      await profilePic.move(Helpers.appRoot('storage/uploads/companyFiles'), {
+        name: user._id.toString(),
+        overwrite: true
+      })
+    } else {
+      mkdirp.sync(`${__dirname}/storage/Excel`)
+    }
+    response.send(company)
   }
 
   /**
