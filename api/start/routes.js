@@ -53,6 +53,7 @@ addPrefixToGroup(
     Route.post("sla", "SlaController.store")
     Route.get("slas", "SlaController.index")
     Route.delete("sla/:id", "SlaController.destroy")
+    Route.get("paises", "PaisController.index")
   })
   );
   addPrefixToGroup(
