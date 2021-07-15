@@ -15,9 +15,9 @@ var randomize = require('randomatic'); */
  * Resourceful controller for interacting with uploads
  */
 class UploadController {
-   async getLogo ({ request, response, auth }) {
+  async getLogo ({ request, response, auth }) {
     response.download(Helpers.appRoot('public/logo.png'))
-   }
+  }
 
   /**
    * Show a list of all uploads.

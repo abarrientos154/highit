@@ -57,6 +57,7 @@ addPrefixToGroup(
     Route.get("User", "UserController.index")
     Route.delete("user/:id", "UserController.destroy")
     Route.get('datauser/:id', 'UserController.userById')
+    Route.get("paises", "PaisController.index")
   })
   );
   addPrefixToGroup(
