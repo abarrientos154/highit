@@ -67,7 +67,7 @@ export default {
         {
           icon: 'person',
           label: 'Crear usuarios',
-          ruta: ''
+          ruta: '/usuarios'
         },
         {
           icon: 'location_city',

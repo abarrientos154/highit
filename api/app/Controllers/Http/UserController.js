@@ -185,6 +185,7 @@ class UserController {
     const { id } = params;
     const user = await User.find(id);
     await user.delete();
+    response.send(user)
   }
 
   async login({ auth, request }) {
@@ -214,6 +215,40 @@ class UserController {
     let data = {}
     data.HIGHIT_SESSION_INFO = token
     return data
+  }
+
+
+  async User_register({ request, response }) {
+    let requestAll = request.all()
+    var dat = request.only(['dat'])
+    dat = JSON.parse(dat.dat)
+
+    const validation = await validate(dat, User.fieldejemplo())
+    if (validation.fails()) {
+      response.unprocessableEntity(validation.messages())
+    } else if (((await User.where({email: requestAll.email}).fetch()).toJSON()).length) {
+      response.unprocessableEntity([{
+        message: 'Correo ya registrado en el sistema!'
+      }])
+    } else {
+      let body = dat
+      // const rol = body.roles
+      body.roles = [2]
+
+      const user = await User.create(body)
+      const profilePic = request.file('perfil', {
+        types: ['image']
+      })
+      if (Helpers.appRoot('storage/uploads/perfil')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/perfil'), {
+          name: user._id.toString(),
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+      response.send(user)
+    }
   }
 
 }

@@ -53,6 +53,10 @@ addPrefixToGroup(
     Route.post("sla", "SlaController.store")
     Route.get("slas", "SlaController.index")
     Route.delete("sla/:id", "SlaController.destroy")
+    Route.post("register_user", "UserController.User_register")
+    Route.get("User", "UserController.index")
+    Route.delete("user/:id", "UserController.destroy")
+    Route.get('datauser/:id', 'UserController.userById')
   })
   );
   addPrefixToGroup(
