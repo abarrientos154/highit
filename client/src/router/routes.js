@@ -8,12 +8,12 @@ const routes = [
       { path: '/contratos', component: () => import('pages/Contrato.vue') },
       { path: '/registros', component: () => import('pages/RegisterUsuario.vue') },
       { path: '/usuarios', component: () => import('pages/ListadoUsuario.vue') },
-      { path: '/User_edit/:id', component: () => import('pages/User_edit.vue') }
+      { path: '/User_edit/:id', component: () => import('pages/User_edit.vue') },
+      { path: '/registrar_empresa', component: () => import('pages/RegisterCompany.vue') }
     ]
   },
 
   { path: '/login', component: () => import('pages/Login.vue') },
-  { path: '/registrar_empresa', component: () => import('pages/RegisterCompany.vue') },
 
   {
     path: '/',

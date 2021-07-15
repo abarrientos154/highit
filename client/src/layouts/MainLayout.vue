@@ -72,7 +72,7 @@ export default {
         {
           icon: 'location_city',
           label: 'Crear empresa',
-          ruta: ''
+          ruta: 'registrar_empresa'
         },
         {
           icon: 'category',
