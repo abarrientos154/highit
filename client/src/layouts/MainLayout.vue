@@ -17,7 +17,7 @@
 
           <q-list class="q-pt-md">
             <div v-for="(item, index) in menu" :key="index">
-              <q-item dense clickable v-ripple @click="item.ruta !== '' ? $router.push(item.ruta) : ''">
+              <q-item dense clickable v-ripple @click="item.label === 'Cerrar sesión' ? cerrarSesion() : item.ruta !== '' ? $router.push(item.ruta) : ''">
                 <q-item-section avatar>
                   <q-icon color="grey-8" :name="item.icon" />
                 </q-item-section>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   name: 'MainLayout',
   data () {
@@ -104,6 +105,11 @@ export default {
   mounted () {
   },
   methods: {
+    ...mapMutations('generals', ['logout']),
+    cerrarSesion () {
+      this.logout()
+      this.$router.push('/login')
+    }
   }
 }
 </script>
