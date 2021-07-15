@@ -14,7 +14,7 @@ const User = use("App/Models/User")
 
 class PaisController {
   async index ({ request, response, view }) {
-    let datos = (await Pais.query().with('estados', 'ciudades').fetch()).toJSON()
+    let datos = (await Pais.query().with('estados').fetch()).toJSON()
     response.send(datos)
   }
   async paisById({ params, response }) {

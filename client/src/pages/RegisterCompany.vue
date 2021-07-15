@@ -49,11 +49,11 @@
       <q-list>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>País</div>
-          <q-select outlined dense filled v-model="selectPais" :options="paises" @input="form.pais_id = selectPais._id, ciudades = selectPais.ciudades, selectCiudad = null" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectPais.$error" @blur="$v.selectPais.$touch()"/>
+          <q-select outlined dense filled v-model="selectPais" :options="paises" @input="form.pais_id = selectPais._id, estados = selectPais.ciudades" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectPais.$error" @blur="$v.selectPais.$touch()"/>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>Estado</div>
-          <q-select outlined dense filled v-model="selectEstado" :options="estados" @input="form.estado_id = selectEstado._id" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectEstado.$error" @blur="$v.selectEstado.$touch()"/>
+          <q-select outlined dense filled v-model="selectEstado" :options="estados" @input="form.estado_id = selectEstado._id, ciudades = selectEstado.ciudades" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectEstado.$error" @blur="$v.selectEstado.$touch()"/>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>Ciudad</div>
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required, email } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
@@ -132,7 +132,7 @@ export default {
       dateEnd: { required },
       direction: { required },
       postalCode: { required },
-      email: { required },
+      email: { required, email },
       phone: { required }
     },
     PImg: { required },
