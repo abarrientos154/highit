@@ -16,9 +16,6 @@ class Pais extends Model {
     estados () {
         return this.hasMany("App/Models/Estado", "id", "pais_id")
     }
-    ciudades () {
-        return this.hasMany("App/Models/Ciudad", "id", "estado_id")
-    }
 }
 
 module.exports = Pais
