@@ -172,8 +172,8 @@ export default {
         this.$q.loading.show({
           message: 'Guardando...'
         })
-        var formData = new FormData()
-        var files = []
+        const formData = new FormData()
+        const files = []
         files[0] = this.PImg
         formData.append('PFiles', files[0])
         formData.append('dat', JSON.stringify(this.form))
