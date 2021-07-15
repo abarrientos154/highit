@@ -142,6 +142,7 @@ export default {
   },
   mounted () {
     this.getPaises()
+    this.getContratos()
   },
   methods: {
     getPaises () {
@@ -149,6 +150,14 @@ export default {
         if (res) {
           this.paises = res
           console.log(this.paises)
+        }
+      })
+    },
+    getContratos () {
+      this.$api.get('contratos').then(res => {
+        if (res) {
+          this.contratos = res
+          console.log(this.contratos)
         }
       })
     },
