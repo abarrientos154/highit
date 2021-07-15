@@ -58,6 +58,7 @@ addPrefixToGroup(
     Route.delete("user/:id", "UserController.destroy")
     Route.get('datauser/:id', 'UserController.userById')
     Route.get("paises", "PaisController.index")
+    Route.post('perfil_imagen/:user_id', 'UploadController.newimagen')
   })
   );
   addPrefixToGroup(

@@ -16,13 +16,13 @@
                 <div class="column justify-center items-center bg-transparent absolute-center" style="width:100%">
                     <q-avatar size="80px">
                     <div style="z-index:1">
-                        <q-file borderless v-model="perfilfile" class="button-camera" @input="changeperfilfile()" accept=".jpg, image/*"
+                        <q-file borderless v-model="perfilfile" class="button-camera" @input="perfil_img()" accept=".jpg, image/*"
                         @blur="$v.perfilfile.$touch()">
                           <q-icon name="file_upload" class="absolute-center" size="30px" color="white" />
                         </q-file>
                     </div>
                     </q-avatar>
-                    <div :class="!$v.perfilfile.$error ? 'text-black' : 'text-negative'" class="q-mt-sm text-caption"> Toca para seleccionar la foto de perfil del usuario </div>
+                    <div :class="!$v.perfilfile.$error ? 'text-white' : 'text-negative'" class="q-mt-sm text-caption"> Toca para seleccionar la foto de perfil del usuario </div>
                 </div>
             </q-img>
             <div class="q-pa-md">
@@ -32,40 +32,56 @@
               <div class="q-mt-md text-subtitle1">Apellidos</div>
               <q-input filled v-model="form.last_name" placeholder="Demo Apellido" />
 
+              <div class="q-mt-md text-subtitle1">Correo</div>
+                <q-input v-model="form.email" filled type="email" disable placeholder="micorreo@highitservice.com"
+                error-message="Requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
+
               <div class="q-mt-md text-subtitle1">Numero identificador</div>
               <q-input filled v-model="form.Dni" placeholder="j3246o235" />
 
               <div class="q-mt-md text-subtitle1">Telefono</div>
               <q-input filled v-model="form.phone" placeholder="+52 1 55 8403 5917" />
 
-              <div class="q-mt-md text-subtitle1">Correo</div>
-                <q-input v-model="form.email" filled type="email" placeholder="micorreo@highitservice.com"
-                error-message="Requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
-
-              <div class="q-mt-md text-subtitle1">Contraseña</div>
-                <q-input :type="isPwd ? 'password' : 'text'" v-model="password" filled
-                  error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.password.$error" @blur="$v.password.$touch()">
-                  <template v-slot:append>
-                  <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd = !isPwd" />
-                  </template>
-                </q-input>
-
-              <div class="q-mt-sm text-subtitle1">Repite Contraseña</div>
-                <q-input :type="isPwd2 ? 'password' : 'text'" v-model="repeatPassword" filled
-                  error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.repeatPassword.$error" @blur="$v.repeatPassword.$touch()">
-                  <template v-slot:append>
-                  <q-icon :name="isPwd2 ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd2 = !isPwd2" />
-                  </template>
-                </q-input>
-
-                <div class="q-mt-sm text-h6">Selecciona empresa</div>
+              <div class="q-mt-sm text-h6">Selecciona empresa</div>
                 <div class="q-mt-sm text-subtitle1">Listado de empresa</div>
                 <q-select filled v-model="model" :options="options" placeholder="Empresa 01" />
 
             </div>
             <div class="q-pa-md column items-center justify-center">
-              <q-btn color="primary" text-color="white" label="Crear Usuario" @click="registrar_usuario()" style="width:40%" />
+              <q-btn color="primary" text-color="white" label="Editar Usuario" @click="editar_usuario()" style="width:40%" />
             </div>
+
+            <q-separator/>
+
+              <div class="q-pa-md">
+
+                <div class="q-mt-md text-subtitle1">Contraseña Actual</div>
+                  <q-input :type="isPwd3 ? 'password' : 'text'" v-model="oldpassword" filled
+                    error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.oldpassword.$error" @blur="$v.oldpassword.$touch()">
+                    <template v-slot:append>
+                    <q-icon :name="isPwd3 ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd3 = !isPwd3" />
+                    </template>
+                  </q-input>
+
+                <div class="q-mt-md text-subtitle1">Contraseña</div>
+                  <q-input :type="isPwd ? 'password' : 'text'" v-model="password" filled
+                    error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.password.$error" @blur="$v.password.$touch()">
+                    <template v-slot:append>
+                    <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd = !isPwd" />
+                    </template>
+                  </q-input>
+
+                <div class="q-mt-sm text-subtitle1">Repite Contraseña</div>
+                  <q-input :type="isPwd2 ? 'password' : 'text'" v-model="repeatPassword" filled
+                    error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.repeatPassword.$error" @blur="$v.repeatPassword.$touch()">
+                    <template v-slot:append>
+                    <q-icon :name="isPwd2 ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd2 = !isPwd2" />
+                    </template>
+                  </q-input>
+                  <div class="q-pa-md column items-center justify-center">
+                    <q-btn color="primary" text-color="white" label="Actualizar contraseña" @click="actualizar_contraseña()" style="width:50%" />
+                  </div>
+              </div>
           </q-card>
       </div>
     </div>
@@ -79,6 +95,7 @@ export default {
     return {
       id: this.$route.params.id,
       form: {},
+      oldpassword: '',
       perfilfile: null,
       perfilImg: null,
       password: '',
@@ -87,6 +104,7 @@ export default {
       repeatPassword: '',
       isPwd: true,
       isPwd2: true,
+      isPwd3: true,
       options: [
         'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
       ]
@@ -101,6 +119,7 @@ export default {
     },
     password: { required, maxLength: maxLength(256), minLength: minLength(6) },
     repeatPassword: { sameAsPassword: sameAs('password') },
+    oldpassword: { required },
     perfilfile: { required }
 
   },
@@ -117,8 +136,63 @@ export default {
           console.log(this.form, 'datoss')
         }
       })
+    },
+
+    async perfil_img () {
+      console.log('add perfil img', this.perfilfile)
+      this.$v.perfilfile.$touch()
+      if (!this.$v.perfilfile.$error) {
+        var formData = new FormData()
+        var files = []
+        files[0] = this.perfilfile
+        formData.append('files', files[0])
+        await this.$api.post('perfil_imagen/' + this.id, formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then((res) => {
+          console.log(res, 'respuesta')
+        })
+        location.reload()
+      }
+    },
+    editar_usuario () {
+      if (!this.$v.form.$error) {
+        this.$api.put('nombre/' + this.id).then(res => {
+          if (res) {
+            this.ejemplo = res
+            console.log(this.ejemplo, 'categorias')
+          }
+        })
+      }
     }
 
   }
 }
 </script>
+<style lang="scss" scoped>
+.button-subir {
+  text-decoration: none;
+  padding: 10px;
+  font-weight: 540;
+  font-size: 0px;
+  color: white;
+  background-color: $grey;
+  border-radius: 100%;
+  height:40px;
+  width:40px;
+  cursor: pointer;
+}
+.button-camera {
+  text-decoration: none;
+  padding: 10px;
+  font-weight: 540;
+  font-size: 0px;
+  color: white;
+  background-color: $grey;
+  border-radius: 100%;
+  height:80px;
+  width:80px;
+  cursor: pointer;
+}
+</style>

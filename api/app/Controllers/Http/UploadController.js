@@ -108,6 +108,31 @@ class UploadController {
     response
   }) {}
 
+  async newimagen ({ request, response, params }) {
+    // let user = (await auth.getUser()).toJSON()
+    var profilePic = request.file('files', {
+      types: ['image'],
+      size: '25mb'
+    })
+    // console.log(user, 'asd')
+    if (profilePic) {
+      if (Helpers.appRoot('storage/uploads/perfil')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/perfil'), {
+          name: params.user_id,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      } else {
+        response.send(params.user_id)
+      }
+    }
+  }
+
   /**
    * Delete a upload with id.
    * DELETE uploads/:id

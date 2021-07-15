@@ -176,6 +176,7 @@ export default {
             })
             this.obtener_contratos()
             this.form.contrato = ''
+            this.$v.form.contrato.$reset()
           }
         })
       } else {
@@ -200,6 +201,8 @@ export default {
             this.form2 = {}
             this.selecBoton = ''
             this.color = ''
+            this.$v.form2.$reset()
+            this.$v.color.$reset()
           }
         })
       } else {

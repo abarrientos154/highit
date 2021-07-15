@@ -27,7 +27,7 @@ class UserController {
    * @param {View} ctx.view
    */
   async index({ request, response, view }) {
-    let users = await User.all();
+    let users = (await User.query().where({ roles: { $ne: [1]}  }).fetch()).toJSON()
     response.send(users);
   }
 
