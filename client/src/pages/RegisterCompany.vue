@@ -49,7 +49,7 @@
       <q-list>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>País</div>
-          <q-select outlined dense filled v-model="selectPais" :options="paises" @input="form.pais_id = selectPais._id, estados = selectPais.ciudades" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectPais.$error" @blur="$v.selectPais.$touch()"/>
+          <q-select outlined dense filled v-model="selectPais" :options="paises" @input="form.pais_id = selectPais._id, estados = selectPais.estados" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectPais.$error" @blur="$v.selectPais.$touch()"/>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>Estado</div>
