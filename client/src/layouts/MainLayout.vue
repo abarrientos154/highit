@@ -13,20 +13,19 @@
           <div class="row justify-center q-py-md">
             <img src="noimg.png" style="width: 70%; border-radius: 100%" />
           </div>
-          <div class="text-center text-grey-8 text-subtitle1 text-bold">¿Qué quieres hacer?</div>
+          <div class="text-center text-grey-8 text-subtitle1">¿Qué quieres hacer?</div>
 
-          <q-list>
-            <template v-for="(item, index) in menu">
-              <q-item :key="index" clickable :active="item.label === 'Outbox'" v-ripple>
+          <q-list class="q-pt-md">
+            <div v-for="(item, index) in menu" :key="index">
+              <q-item dense clickable v-ripple @click="item.label === 'Cerrar sesión' ? cerrarSesion() : item.ruta !== '' ? $router.push(item.ruta) : ''">
                 <q-item-section avatar>
-                  <q-icon :name="item.icon" />
+                  <q-icon color="grey-8" :name="item.icon" />
                 </q-item-section>
-                <q-item-section>
+                <q-item-section class="text-grey-8">
                   {{ item.label }}
                 </q-item-section>
               </q-item>
-              <q-separator :key="'sep' + index"  v-if="item.separator" />
-            </template>
+            </div>
           </q-list>
         </q-scroll-area>
     </q-drawer>
@@ -52,6 +51,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   name: 'MainLayout',
   data () {
@@ -60,14 +60,44 @@ export default {
       drawer2: true,
       menu: [
         {
-          icon: 'inbox',
-          label: 'Inbox',
-          separator: true
+          icon: 'home',
+          label: 'Inicio',
+          ruta: ''
         },
         {
-          icon: 'send',
-          label: 'Outbox',
-          separator: false
+          icon: 'person',
+          label: 'Crear usuarios',
+          ruta: ''
+        },
+        {
+          icon: 'location_city',
+          label: 'Crear empresa',
+          ruta: ''
+        },
+        {
+          icon: 'category',
+          label: 'Organigrama',
+          ruta: ''
+        },
+        {
+          icon: 'list_alt',
+          label: 'Contratos',
+          ruta: '/contratos'
+        },
+        {
+          icon: 'ballot',
+          label: 'Historial',
+          ruta: ''
+        },
+        {
+          icon: 'forum',
+          label: 'Salas de chat',
+          ruta: ''
+        },
+        {
+          icon: 'logout',
+          label: 'Cerrar sesión',
+          ruta: ''
         }
       ]
     }
@@ -75,6 +105,11 @@ export default {
   mounted () {
   },
   methods: {
+    ...mapMutations('generals', ['logout']),
+    cerrarSesion () {
+      this.logout()
+      this.$router.push('/login')
+    }
   }
 }
 </script>
