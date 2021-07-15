@@ -8,7 +8,7 @@ const Hash = use('Hash')
 
 class User extends Model {
   static get fillable() {
-    return ['email','password','fechaNac']
+    return ['name','last_name','phone', 'email', 'Dni', 'password']
   }
   static get fillablePerfil() {
     return ['email','password','ciudad_id', 'dni', 'name' , 'hoteleria' , 'pais_id' , 'servicios',
@@ -17,7 +17,22 @@ class User extends Model {
   static fieldValidationRules() {
     const rulesUser = {
       email: 'required|email',
-      fechaNac: 'required|date',
+      Dni: 'required',
+      name: 'required',
+      last_name: 'required',
+      phone: 'required',
+      password: 'required|string|max:256'
+    }
+    return rulesUser
+  }
+
+  static fieldejemplo() {
+    const rulesUser = {
+      email: 'required|email',
+      Dni: 'required',
+      name: 'required',
+      last_name: 'required',
+      phone: 'required',
       password: 'required|string|max:256'
     }
     return rulesUser
