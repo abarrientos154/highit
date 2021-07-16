@@ -9,90 +9,90 @@
       <q-separator vertical class="bg-grey-7"/>
     </div>
     <q-separator class="bg-grey-7 q-mb-lg"/>
-    <div class="q-mb-lg">
-      <div class="q-mb-md q-px-md">
+    <div class="q-mb-lg q-px-md">
+      <div class="q-mb-md">
         <div class="text-h6 text-bold">Infomación empresa</div>
         <div class="text-grey-8">Informacion oficial de la empresa</div>
       </div>
-      <q-list class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+      <q-list>
+        <div>
           <div>Nombre comercial</div>
           <q-input dense outlined filled v-model="form.name" placeholder="Highit Service" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+        <div>
           <div>Razón social</div>
           <q-input dense outlined filled v-model="form.businessName" placeholder="Highit Service SpA" error-message="Este campo es requerido" :error="$v.form.businessName.$error" @blur="$v.form.businessName.$touch()"/>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+        <div>
           <div>Numero identificador</div>
           <q-input dense outlined filled v-model="form.numIdet" placeholder="J30583h375" error-message="Este campo es requerido" :error="$v.form.numIdet.$error" @blur="$v.form.numIdet.$touch()"/>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+        <div>
           <div>Tipo de contrato</div>
           <q-select outlined dense filled v-model="form.typeContract" :options="contratos" option-label="contrato" option-value="_id" map-options emit-value error-message="Este campo es requerido" :error="$v.form.typeContract.$error" @blur="$v.form.typeContract.$touch()"/>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+        <div>
           <div>Fecha inicio de contrato</div>
           <q-input dense outlined filled v-model="form.dateBegin" type="date" error-message="Este campo es requerido" :error="$v.form.dateBegin.$error" @blur="$v.form.dateBegin.$touch()"/>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+        <div>
           <div>Fecha termino de contrato</div>
           <q-input dense outlined filled v-model="form.dateEnd" type="date" error-message="Este campo es requerido" :error="$v.form.dateEnd.$error" @blur="$v.form.dateEnd.$touch()"/>
         </div>
       </q-list>
     </div>
-    <div>
-      <div class="q-mb-sm q-px-md">
+    <div class="q-px-md">
+      <div class="q-mb-sm">
         <div class="text-h6 text-bold">Infomacion demografica</div>
         <div class="text-grey-8">Informacion oficial de la empresa</div>
       </div>
-      <q-list class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+      <q-list>
+        <div>
           <div>País</div>
           <q-select outlined dense filled v-model="selectPais" :options="paises" @input="form.pais_id = selectPais._id, estados = selectPais.estados" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectPais.$error" @blur="$v.selectPais.$touch()"/>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+        <div>
           <div>Estado</div>
           <q-select outlined dense filled v-model="selectEstado" :options="estados" @input="form.estado_id = selectEstado._id, ciudades = selectEstado.ciudades" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectEstado.$error" @blur="$v.selectEstado.$touch()"/>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+        <div>
           <div>Ciudad</div>
           <q-select outlined dense filled v-model="selectCiudad" :options="ciudades" @input="form.ciudad_id = selectCiudad._id" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectCiudad.$error" @blur="$v.selectCiudad.$touch()"/>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+        <div>
           <div>Dirección</div>
           <q-input dense outlined filled v-model="form.direction" placeholder="Mi direccion #12123" error-message="Este campo es requerido" :error="$v.form.direction.$error" @blur="$v.form.direction.$touch()"/>
         </div>
+        <div>
+          <div>Código postal</div>
+          <q-input dense outlined filled v-model.number="form.postalCode" placeholder="1023400" type="number" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
+        </div>
       </q-list>
-      <div class="q-mx-md">
-        <div>Código postal</div>
-        <q-input dense outlined filled v-model.number="form.postalCode" placeholder="1023400" type="number" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
-      </div>
     </div>
-    <div>
-      <div class="q-mb-md q-px-md">
+    <div class="q-px-md">
+      <div class="q-mb-md">
         <div class="text-h6 text-bold">Infomaciones varias</div>
         <div class="text-grey-8">Informacion oficial de la empresa</div>
       </div>
-      <q-list class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+      <q-list>
+        <div>
           <div>Correo de contacto</div>
           <q-input dense outlined filled v-model="form.email" placeholder="micorreo@highitservice.com" error-message="Este campo es requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
+        <div>
           <div>Telefono de contacto</div>
           <q-input dense outlined filled v-model="form.phone" placeholder="+52 1 55 8403 5917" error-message="Este campo es requerido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
         </div>
       </q-list>
-      <div class="q-px-md">
+      <div>
         <div>Foto de perfil</div>
         <div class="column items-center">
-          <q-avatar rounded style="height: 150px; width: 100%;" class="bg-grey q-mb-sm">
+          <q-avatar rounded style="height: 150px; width: 100%;" class="bg-grey-5 q-mb-sm">
             <q-img style="height: 100%;" :src="perfilImg">
               <q-file  borderless v-model="img" class="button-camera" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1; width: 100%; height: 100%;">
                 <div class="column items-center justify-center absolute-full" style="height: 150px;">
-                  <q-icon name="backup" class="" size="75px" color="grey-7" />
-                  <div class="text-center text-grey-7 text-caption">Toca para selecciona la foto de perfil de la empresa</div>
+                  <q-icon name="backup" class="" size="75px" color="grey-6" />
+                  <div class="text-center text-grey-6 text-caption">Toca para selecciona la foto de perfil de la empresa</div>
                 </div>
               </q-file>
             </q-img>
@@ -168,16 +168,12 @@ export default {
     getPaises () {
       this.$api.get('paises').then(res => {
         if (res) {
-          let pais = []
-          let estado = []
-          let ciudad = []
           this.paises = res
-          pais = this.paises.filter(v => v._id === this.form.pais_id)
-          this.selectPais = pais[0]
-          estado = this.selectPais.estados.filter(v => v._id === this.form.estado_id)
-          this.selectEstado = estado[0]
-          ciudad = this.selectEstado.ciudades.filter(v => v._id === this.form.ciudad_id)
-          this.selectCiudad = ciudad[0]
+          if (this.edit) {
+            this.selectPais = this.paises.filter(v => v._id === this.form.pais_id)[0]
+            this.selectEstado = this.selectPais.estados.filter(v => v._id === this.form.estado_id)[0]
+            this.selectCiudad = this.selectEstado.ciudades.filter(v => v._id === this.form.ciudad_id)[0]
+          }
           // console.log(this.paises)
         }
       })
