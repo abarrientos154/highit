@@ -168,16 +168,12 @@ export default {
     getPaises () {
       this.$api.get('paises').then(res => {
         if (res) {
-          let pais = []
-          let estado = []
-          let ciudad = []
           this.paises = res
-          pais = this.paises.filter(v => v._id === this.form.pais_id)
-          this.selectPais = pais[0]
-          estado = this.selectPais.estados.filter(v => v._id === this.form.estado_id)
-          this.selectEstado = estado[0]
-          ciudad = this.selectEstado.ciudades.filter(v => v._id === this.form.ciudad_id)
-          this.selectCiudad = ciudad[0]
+          if (this.edit) {
+            this.selectPais = this.paises.filter(v => v._id === this.form.pais_id)[0]
+            this.selectEstado = this.selectPais.estados.filter(v => v._id === this.form.estado_id)[0]
+            this.selectCiudad = this.selectEstado.ciudades.filter(v => v._id === this.form.ciudad_id)[0]
+          }
           // console.log(this.paises)
         }
       })
