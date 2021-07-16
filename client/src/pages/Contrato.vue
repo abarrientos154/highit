@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div class="q-pa-xl column items-center justify-center">
-      <div class="" style="width:60%">
+  <q-page>
+    <div class="q-pa-md column items-center justify-center">
+      <div class="" style="width:100%">
         <q-card class="" style="width:100%; height:200px">
           <q-card-section>
             <div class="text-h3 text-right text-bold">Contratos</div>
@@ -21,20 +21,8 @@
             </q-card>
 
             <div class="q-mt-md text-h6 text-grey">Selecciona un contrato disponible para agregar SLA´S</div>
-            <q-card style="width:100%">
-                <q-list separator>
-                  <q-item v-for="(item, index) in lista" :key="index" class="text-grey text-bold">
-                    <div class="row justify-center items-center" style="width: 100%" >
-                      <q-item-section>{{index+1}} {{item.contrato}}</q-item-section>
-                      <q-item-section>{{item.fechaCreacion}}</q-item-section>
-                    </div>
-                      <div class="justify-center items-center" style="width:100px">
-                        <q-btn flat color="grey" icon="edit" round dense @click="showModalEditar = true, id_contrato = item._id, nuevo = item.contrato " />
-                        <q-btn flat color="grey" icon="delete" round dense @click="showModalEliminar = true, id_contrato = item._id"/>
-                      </div>
-                  </q-item>
-                  <div v-if="lista.length < 1" class="row justify-center text-caption q-mt-md">No hay Contratos actualmente</div>
-                </q-list>
+            <q-card style="width:100%" v-if="tabla1">
+              <Tabla titulo="" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :btnNew="false" />
             </q-card>
           </div>
           <div class="q-mt-md text-h5 text-bold">Selecciona el contrato</div>
@@ -52,27 +40,27 @@
           error-message="Requerido" :error="$v.form2.nombre.$error" @blur="$v.form2.nombre.$touch()"
            />
           <div class="row">
-          <div class="colum">
-            <div class="q-mt-md text-subtitle1">Tiempo que tomara</div>
-            <div class="row">
-              <q-input type="number" filled v-model="form2.tiempo"
-              error-message="Requerido" :error="$v.form2.tiempo.$error" @blur="$v.form2.tiempo.$touch()" style="width: 120px"/>
-              <div class="q-mt-lg">{{"Horas"}}</div>
+            <div class="colum">
+              <div class="q-mt-md text-subtitle1">Tiempo que tomara</div>
+              <div class="row">
+                <q-input type="number" filled v-model="form2.tiempo"
+                error-message="Requerido" :error="$v.form2.tiempo.$error" @blur="$v.form2.tiempo.$touch()" style="width: 120px"/>
+                <div class="q-mt-lg">{{"Horas"}}</div>
+              </div>
             </div>
-          </div>
-          <q-space />
-          <div class="colum">
-            <div class="q-mt-md text-subtitle1">Seleccione el color</div>
-            <q-select filled v-model="color" :options="options" style="width:170px"
-            error-message="Requerido" :error="$v.color.$error" @blur="$v.color.$touch()"/>
-          </div>
+            <q-space />
+            <div class="colum">
+              <div class="q-mt-md text-subtitle1">Seleccione el color</div>
+              <q-select filled v-model="color" :options="options" style="width:170px"
+              error-message="Requerido" :error="$v.color.$error" @blur="$v.color.$touch()"/>
+            </div>
           </div>
           <div class="q-pa-md column items-center justify-center">
             <q-btn color="primary" text-color="white" label="Crear nueva SLA" @click="guardar_SLA()" style="width:40%" />
           </div>
           <div class="q-mt-md text-h5 text-bold">Listados de SLA´s</div>
-          <div class="q-mt-md text-h6 text-grey">Listados de SLAs creados</div>
           <q-card style="width:100%">
+            <Tabla titulo="Listados de SLAs creados" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :btnNew="false" />
               <q-list bordered separator>
                 <q-item v-for="(item, index) in lista2" :key="index" class="text-grey text-bold">
                   <div class="row justify-center items-center" style="width: 100%" >
@@ -84,40 +72,10 @@
                     <div :class="item.color2 === 'blue' ? 'bg-blue' : item.color2 === 'red' ? 'bg-red' : 'bg-green'" style="width:20px; height:20px;border-radius:100%"></div>
                   </div>
                 </q-item>
-                <div v-if="lista.length < 1" class="row justify-center text-caption q-mt-md">No hay Requerimientos actualmente</div>
               </q-list>
           </q-card>
       </div>
     </div>
-    <q-dialog v-model="showModalEditar">
-      <q-card>
-        <q-card-section>
-        <div class="row">
-         <div class="text-h6">Modifica el contrato</div>
-         <q-space />
-          <q-btn color="red" icon="close" flat round dense v-close-popup />
-        </div>
-          <q-input v-model="nuevo" outlined dense class="q-mt-sm" style="width: 300px" />
-        </q-card-section>
-        <q-card-actions align="center">
-          <q-btn color="blue" icon="edit" label="Modificar" push @click="modificar_contrato(id_contrato), showModalEditar = false" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-    <q-dialog v-model="showModalEliminar">
-      <q-card>
-        <q-card-section>
-          <div class="row">
-            <div class="text-h6">¿Estas seguro de eliminar el contrato?</div>
-            <q-btn color="red" icon="close" flat round dense v-close-popup />
-          </div>
-        </q-card-section>
-        <q-card-actions align="center">
-          <q-btn color="red" icon="delete" label="Eliminar" push @click="eliminar_contrato(id_contrato), showModalEliminar = false" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
 
     <q-dialog v-model="showModalEliminar2">
       <q-card>
@@ -132,24 +90,42 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-  </div>
+  </q-page>
 </template>
 <script>
 import { required } from 'vuelidate/lib/validators'
+import Tabla from '../components/TableActions'
 export default {
+  components: {
+    Tabla
+  },
   data () {
     return {
+      tabla1: true,
+      id_contrato: '',
       form: {
         contrato: ''
       },
-      form2: {},
+      form2: {
+        contrato: ''
+      },
+      column: [
+        { name: 'contrato', field: 'contrato', label: 'Nombre', align: 'left' },
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
+      ],
+      column2: [
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' },
+        { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'left' },
+        { name: 'tiempo', field: 'tiempo', label: 'Tiempo', align: 'left' },
+        { name: 'color', field: 'color', label: 'Color', align: 'left' }
+
+      ],
       lista: [],
       lista2: [],
       showModalEliminar: false,
       showModalEliminar2: false,
       selecBoton: '',
       nuevo: '',
-      showModalEditar: false,
       color: '',
       options: ['Rojo', 'Azul', 'Verde']
     }
@@ -164,6 +140,10 @@ export default {
     },
     color: { required }
   },
+  mounted () {
+    // this.obtener_Sla()
+    this.obtener_contratos()
+  },
   methods: {
     guardar_contrato () {
       this.$v.form.$touch()
@@ -174,9 +154,10 @@ export default {
               message: 'Contrato Guardado con Exito',
               color: 'positive'
             })
-            this.obtener_contratos()
             this.form.contrato = ''
             this.$v.form.contrato.$reset()
+            this.$refs.latabla.getRecord()
+            this.obtener_contratos()
           }
         })
       } else {
@@ -197,12 +178,15 @@ export default {
               message: 'SLA Guardado con Exito',
               color: 'positive'
             })
-            this.obtener_Sla()
-            this.form2 = {}
+            // this.obtener_Sla()
+            this.form2 = {
+              contrato: ''
+            }
             this.selecBoton = ''
             this.color = ''
             this.$v.form2.$reset()
             this.$v.color.$reset()
+            this.$refs.latabla2.getRecord()
           }
         })
       } else {
@@ -211,15 +195,7 @@ export default {
           color: 'negative'
         })
       }
-    },
-    obtener_contratos () {
-      this.$api.get('contratos').then(res => {
-        if (res) {
-          this.lista = res
-        }
-      })
-    },
-
+    }, /*
     obtener_Sla () {
       this.$api.get('slas').then(res => {
         if (res) {
@@ -227,18 +203,7 @@ export default {
           console.log(this.lista2, 'pendiente')
         }
       })
-    },
-    eliminar_contrato (id) {
-      this.$api.delete('contrato/' + id).then(res => {
-        if (res) {
-          this.$q.notify({
-            message: 'Se elimino el contrato',
-            color: 'positive'
-          })
-          this.obtener_contratos()
-        }
-      })
-    },
+    }, */
     eliminar_Sla (id) {
       this.$api.delete('sla/' + id).then(res => {
         if (res) {
@@ -250,16 +215,10 @@ export default {
         }
       })
     },
-    modificar_contrato (id) {
-      this.form.contrato = this.nuevo
-      this.$api.put('contrato/' + id, this.form).then(res => {
+    obtener_contratos () {
+      this.$api.get('contratos').then(res => {
         if (res) {
-          this.$q.notify({
-            message: 'Contrato Modificada con exito',
-            color: 'positive'
-          })
-          this.obtener_contratos()
-          this.form.contrato = ''
+          this.lista = res
         }
       })
     },
@@ -272,15 +231,13 @@ export default {
     },
     Botonselec (btn, text) {
       this.form2.contrato = btn._id
+      console.log(btn, 'boton')
+      console.log(this.form2.contrato, 'contrato')
       if (text === 'cat') {
         this.selecBoton = btn
       }
     }
 
-  },
-  mounted () {
-    this.obtener_contratos()
-    this.obtener_Sla()
   }
 }
 </script>

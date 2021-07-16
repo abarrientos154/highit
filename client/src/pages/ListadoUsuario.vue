@@ -1,7 +1,9 @@
 <template>
   <div>
-    <div class="q-pa-xl column items-center justify-center">
+    <Tabla titulo="Listado de Usuarios" :columns="column" route="user" :btnNew="true" />
+    <!--- <div class="q-pa-md column items-center justify-center">
       <div class="q-mt-md text-h6 text-grey">Listado de usuarios</div>
+      <q-btn color="white" text-color="black" label="Standard" @click="$router.push('/registros')"/>
         <q-card style="width:100%">
             <q-list separator>
               <q-item v-for="(item, index) in lista" :key="index" class="text-grey text-bold">
@@ -30,42 +32,23 @@
           <q-btn color="red" icon="delete" label="Eliminar" push @click="eliminar_usuario(id_user), showModalEliminar = false" />
         </q-card-actions>
       </q-card>
-    </q-dialog>
+    </q-dialog> -->
   </div>
 </template>
 <script>
+import Tabla from '../components/TableActions'
 export default {
+  components: { Tabla },
   data () {
     return {
       lista: {},
-      showModalEliminar: false
-
+      showModalEliminar: false,
+      column: [
+        { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
+        { name: 'last_name', field: 'last_name', label: 'Apellido', align: 'left' },
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
+      ]
     }
-  },
-  methods: {
-    obtener_Usuarios () {
-      this.$api.get('User').then(res => {
-        if (res) {
-          this.lista = res
-          console.log(this.lista, 'lista')
-        }
-      })
-    },
-    eliminar_usuario (id) {
-      this.$api.delete('user/' + id).then(res => {
-        if (res) {
-          this.$q.notify({
-            message: 'Se elimino el Usuario',
-            color: 'positive'
-          })
-          this.obtener_Usuarios()
-        }
-      })
-    }
-
-  },
-  mounted () {
-    this.obtener_Usuarios()
   }
 }
 </script>

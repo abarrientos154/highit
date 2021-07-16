@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="q-pa-xl column items-center justify-center">
-      <div style="width:70%">
+    <div class="q-pa-md column items-center justify-center">
+      <div style="width:100%">
         <q-card class="" style="width:100%; height:150px">
           <q-card-section>
             <div class="text-h3 text-right text-bold">Editar Usuario</div>
@@ -12,7 +12,7 @@
           <div class="text-h6">Informacion del usuario</div>
           <div class="text-h7">Informacion general del usuario</div>
           <div class="q-mt-md text-subtitle1">foto de perfil</div>
-            <q-img :src="baseu + form._id" style="height: 200px; width: 100%" >
+            <q-img :src="baseu" style="height: 200px; width: 100%" >
                 <div class="column justify-center items-center bg-transparent absolute-center" style="width:100%">
                     <q-avatar size="80px">
                     <div style="z-index:1">
@@ -44,7 +44,8 @@
 
               <div class="q-mt-sm text-h6">Selecciona empresa</div>
                 <div class="q-mt-sm text-subtitle1">Listado de empresa</div>
-                <q-select filled v-model="model" :options="options" placeholder="Empresa 01" />
+                <q-select filled v-model="form.empresa" :options="empresas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()"/>
 
             </div>
             <div class="q-pa-md column items-center justify-center">
@@ -79,7 +80,7 @@
                     </template>
                   </q-input>
                   <div class="q-pa-md column items-center justify-center">
-                    <q-btn color="primary" text-color="white" label="Actualizar contraseña" @click="actualizar_contraseña()" style="width:50%" />
+                    <q-btn color="primary" text-color="white" label="Actualizar contraseña" @click="editar_contrasena()" style="width:50%" />
                   </div>
               </div>
           </q-card>
@@ -105,6 +106,7 @@ export default {
       isPwd: true,
       isPwd2: true,
       isPwd3: true,
+      empresas: [],
       options: [
         'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
       ]
@@ -115,7 +117,8 @@ export default {
       email: { email, required },
       phone: { required },
       last_name: { required },
-      name: { required }
+      name: { required },
+      empresa: { required }
     },
     password: { required, maxLength: maxLength(256), minLength: minLength(6) },
     repeatPassword: { sameAsPassword: sameAs('password') },
@@ -125,17 +128,27 @@ export default {
   },
   mounted () {
     this.obtener_datos()
-    this.baseu = env.apiUrl + '/perfil_img/'
+    this.getEmpresas()
+    this.baseu = env.apiUrl + '/perfil_img/' + this.id
   },
   methods: {
-    obtener_datos () {
+    async obtener_datos () {
       console.log(this.id, 'id')
-      this.$api.get('datauser/' + this.id).then(v => {
-        if (v) {
-          this.form = v
-          console.log(this.form, 'datoss')
-        }
-      })
+      this.$q.loading.show()
+      const v = await this.$api.get('datauser/' + this.id)
+      this.$q.loading.hide()
+      if (v) {
+        this.form = v
+      }
+    },
+    async getEmpresas () {
+      this.$q.loading.show()
+      const res = await this.$api.get('companys')
+      this.$q.loading.hide()
+      if (res) {
+        this.empresas = res
+        console.log(res, 'miraa')
+      }
     },
 
     async perfil_img () {
@@ -156,12 +169,47 @@ export default {
         location.reload()
       }
     },
-    editar_usuario () {
+    async editar_usuario () {
+      this.$v.form.$touch()
       if (!this.$v.form.$error) {
-        this.$api.put('nombre/' + this.id).then(res => {
+        this.$q.loading.show()
+        await this.$api.put('datos_edit/' + this.id, this.form).then(res => {
+          this.$q.loading.hide()
           if (res) {
-            this.ejemplo = res
-            console.log(this.ejemplo, 'categorias')
+            console.log(res, 'asd')
+            this.$q.notify({
+              message: 'Informacion actualizada con exito.',
+              color: 'positive'
+            })
+          } else {
+            this.$q.notify({
+              message: 'Ocurrio un error al actualizar',
+              color: 'negative'
+            })
+          }
+        })
+      }
+    },
+
+    async editar_contrasena () {
+      this.$v.repeatPassword.$touch()
+      this.$v.oldpassword.$touch()
+      this.$v.password.$touch()
+      console.log(this.$v.password.$error, this.$v.oldpassword.$error, this.$v.repeatPassword.$error)
+      if (!this.$v.password.$error && !this.$v.oldpassword.$error && !this.$v.repeatPassword.$error) {
+        const send = {
+          newPassword: this.password,
+          password: this.oldpassword
+        }
+        this.$q.loading.show()
+        await this.$api.put('password_edit/' + this.id, send).then(res => {
+          this.$q.loading.hide()
+          if (res) {
+            console.log(res, 'asd')
+            this.$q.notify({
+              message: 'Informacion actualizada con exito.',
+              color: 'positive'
+            })
           }
         })
       }

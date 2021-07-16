@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="q-pa-xl column items-center justify-center">
-      <div style="width:70%">
+    <div class="q-pa-md column items-center justify-center">
+      <div style="width:100%">
         <q-card class="" style="width:100%; height:150px">
           <q-card-section>
             <div class="text-h3 text-right text-bold">Nuevo Usuario</div>
@@ -18,7 +18,7 @@
                     <div style="z-index:1">
                         <q-file borderless v-model="perfilfile" class="button-camera" @input="changeperfilfile()" accept=".jpg, image/*"
                         @blur="$v.perfilfile.$touch()">
-                          <q-icon name="file_upload" class="absolute-center" size="30px" color="white" />
+                          <q-icon name="backup" class="absolute-center" size="30px" color="white" />
                         </q-file>
                     </div>
                     </q-avatar>
@@ -60,7 +60,8 @@
 
                 <div class="q-mt-sm text-h6">Selecciona empresa</div>
                 <div class="q-mt-sm text-subtitle1">Listado de empresa</div>
-                <q-select filled v-model="model" :options="options" placeholder="Empresa 01" />
+                <q-select filled v-model="form.empresa" :options="empresas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()" />
             </div>
             <div class="q-pa-md column items-center justify-center">
               <q-btn color="primary" text-color="white" label="Crear Usuario" @click="registrar_usuario()" style="width:40%" />
@@ -83,9 +84,7 @@ export default {
       repeatPassword: '',
       isPwd: true,
       isPwd2: true,
-      options: [
-        'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-      ]
+      empresas: []
     }
   },
   validations: {
@@ -93,7 +92,8 @@ export default {
       email: { email, required },
       phone: { required },
       last_name: { required },
-      name: { required }
+      name: { required },
+      empresa: { required }
     },
     password: { required, maxLength: maxLength(256), minLength: minLength(6) },
     repeatPassword: { sameAsPassword: sameAs('password') },
@@ -123,6 +123,7 @@ export default {
             })
             this.form = {}
             this.perfilfile = null
+            this.$router.go(-1)
           }
         })
       } else {
@@ -131,12 +132,20 @@ export default {
           color: 'negative'
         })
       }
+    },
+    async getEmpresas () {
+      this.$q.loading.show()
+      const res = await this.$api.get('companys')
+      this.$q.loading.hide()
+      if (res) {
+        this.empresas = res
+        console.log(res, 'miraa')
+      }
     }
-
   },
 
   mounted () {
-
+    this.getEmpresas()
   }
 }
 </script>

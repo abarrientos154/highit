@@ -7,8 +7,12 @@ const Model = use('Model')
 const Hash = use('Hash')
 
 class User extends Model {
+
+  static get fillableEditUser() {
+    return ['name', 'last_name', 'phone', 'email', 'Dni', 'empresa']
+  }
   static get fillable() {
-    return ['name','last_name','phone', 'email', 'Dni', 'password']
+    return ['name','last_name','phone', 'email', 'Dni', 'password', 'empresa']
   }
   static get fillablePerfil() {
     return ['email','password','ciudad_id', 'dni', 'name' , 'hoteleria' , 'pais_id' , 'servicios',
@@ -33,6 +37,7 @@ class User extends Model {
       name: 'required',
       last_name: 'required',
       phone: 'required',
+      empresa: 'required',
       password: 'required|string|max:256'
     }
     return rulesUser

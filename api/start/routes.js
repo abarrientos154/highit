@@ -40,28 +40,15 @@ addPrefixToGroup(
     Route.post("update_client", "UserController.updateClient")
     Route.get("validate_email/:email", "UserController.validateEmail")
     Route.get("email_send_app/:email", "UserController.recuperacionapp")
-
     Route.post("user_by_rol", "UserController.userByRol") // metodo para obtener usuarios segun el rol
     Route.get("user_by_id/:id", "UserController.userById") // metodo para obtener informacion del usuario por id del mismo
-
-    Route.get('perfil_img/:file', 'UploadController.getFileByDirectoryPerfil')
     Route.get('company_img/:file', 'UploadController.getFileByDirectoryCompany')
     Route.get('obtener_logo', 'UploadController.getLogo')
     Route.get("companys", "CompanyController.index")
     Route.get("company/:id", "CompanyController.show")
-    Route.post("contrato", "ContratoController.store")
-    Route.get("contratos", "ContratoController.index")
-    Route.delete("contrato/:id", "ContratoController.destroy")
-    Route.put("contrato/:id", "ContratoController.update")
-    Route.post("sla", "SlaController.store")
-    Route.get("slas", "SlaController.index")
-    Route.delete("sla/:id", "SlaController.destroy")
-    Route.post("register_user", "UserController.User_register")
-    Route.get("User", "UserController.index")
-    Route.delete("user/:id", "UserController.destroy")
-    Route.get('datauser/:id', 'UserController.userById')
     Route.get("paises", "PaisController.index")
-    Route.post('perfil_imagen/:user_id', 'UploadController.newimagen')
+    Route.get('perfil_img/:file', 'UploadController.getFileByDirectoryPerfil')
+
   })
   );
   addPrefixToGroup(
@@ -72,6 +59,20 @@ addPrefixToGroup(
     Route.get("all_user", "UserController.allUser") // metodo para obtener informacion del usuario que esta logueado
     Route.post("user_by_status", "UserController.userByStatus") // metodo para obtener proveedores pendientes
     Route.put("update_status/:id", "UserController.userStatus") // metodo para bloquear o desbloquear usuarios
+    Route.post("contrato", "ContratoController.store")
+    Route.get("contratos", "ContratoController.index")
+    Route.delete("contratos/:id", "ContratoController.destroy")
+    Route.put("contrato/:id", "ContratoController.update")
+    Route.post("sla", "SlaController.store")
+    Route.get("sla", "SlaController.index")
+    Route.delete("sla/:id", "SlaController.destroy")
+    Route.post("register_user", "UserController.User_register")
+    Route.get("user", "UserController.index")
+    Route.delete("user/:id", "UserController.destroy")
+    Route.get('datauser/:id', 'UserController.userById')
+    Route.put("datos_edit/:id", "UserController.Updateuser")
+    Route.put("password_edit/:id", "UserController.changePassword")
+    Route.post('perfil_imagen/:user_id', 'UploadController.newimagen')
 
     Route.post("register_company", "CompanyController.store")
     Route.put("update_company/:id", "CompanyController.update")

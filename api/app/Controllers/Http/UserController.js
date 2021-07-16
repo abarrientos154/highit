@@ -8,6 +8,7 @@ const User = use("App/Models/User")
 const Role = use("App/Models/Role")
 const { validate } = use("Validator")
 const Email = use("App/Functions/Email")
+const Hash = use('Hash')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -26,6 +27,13 @@ class UserController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
+
+  async Updateuser ({ params, response, request }) {
+    let body = request.only(User.fillableEditUser)
+    await User.query().where({ _id: params.id }).update(body)
+    response.send(body)
+  }
+
   async index({ request, response, view }) {
     let users = (await User.query().where({ roles: { $ne: [1]}  }).fetch()).toJSON()
     response.send(users);
@@ -247,6 +255,30 @@ class UserController {
       } else {
         mkdirp.sync(`${__dirname}/storage/Excel`)
       }
+      response.send(user)
+    }
+  }
+
+  async changePassword ({ request, response, params }) {
+    // get currently authenticated user
+    const user = await User.find(params.id)
+
+    // verify if current password matches
+    const verifyPassword = await Hash.verify(
+        request.input('password'),
+        user.password
+    )
+
+    // display appropriate message
+    console.log(verifyPassword, 'verifyPass')
+    if (!verifyPassword) {
+      console.log('entro aqui')
+      response.unprocessableEntity([{
+        message: 'Contraseña actual incorrecta'
+      }])
+    } else {
+      user.password = request.input('newPassword')
+      await user.save()
       response.send(user)
     }
   }

@@ -11,7 +11,8 @@ class Sla extends Model {
     const rulesUser = {
       nombre: "string",
       tiempo: "number",
-      color: "string"
+      color: "string",
+      contrato: "string"
     }
     return rulesUser
   }
