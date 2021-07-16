@@ -3,8 +3,8 @@
     <div class="row">
       <q-separator vertical class="bg-grey-7"/>
       <div class="q-pb-xl q-px-md q-pt-md column items-end col">
-        <div class="text-h4 text-bold">NUEVA EMPRESA</div>
-        <div class="text-grey-8 text-subtitle1">Creacion de nuevas empresas</div>
+        <div class="text-h4 text-bold">{{edit ? 'ACTUALIZA EMPRESA' : 'NUEVA EMPRESA'}}</div>
+        <div class="text-grey-8 text-subtitle1">{{edit ? 'Modificar datos de la empresa' : 'Creacion de nuevas empresas'}}</div>
       </div>
       <q-separator vertical class="bg-grey-7"/>
     </div>
@@ -29,7 +29,7 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>Tipo de contrato</div>
-          <q-select outlined dense filled v-model="form.typeContract" :options="contratos" option-label="name" map-options error-message="Este campo es requerido" :error="$v.form.typeContract.$error" @blur="$v.form.typeContract.$touch()"/>
+          <q-select outlined dense filled v-model="form.typeContract" :options="contratos" option-label="contrato" option-value="_id" map-options emit-value error-message="Este campo es requerido" :error="$v.form.typeContract.$error" @blur="$v.form.typeContract.$touch()"/>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>Fecha inicio de contrato</div>
@@ -90,7 +90,10 @@
           <q-avatar rounded style="height: 150px; width: 100%;" class="bg-grey q-mb-sm">
             <q-img style="height: 100%;" :src="perfilImg">
               <q-file  borderless v-model="img" class="button-camera" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1; width: 100%; height: 100%;">
-                <q-icon name="backup" class="absolute-center" size="70px" color="white" />
+                <div class="column items-center justify-center absolute-full" style="height: 150px;">
+                  <q-icon name="backup" class="" size="75px" color="grey-7" />
+                  <div class="text-center text-grey-7 text-caption">Toca para selecciona la foto de perfil de la empresa</div>
+                </div>
               </q-file>
             </q-img>
           </q-avatar>
@@ -99,16 +102,19 @@
       </div>
     </div>
     <div class="column items-center q-pa-lg">
-      <q-btn class="q-py-sm" label="Crear empresa" color="primary" style="width: 85%;" @click="saveCompany()" no-caps/>
+      <q-btn class="q-py-sm" :label="edit ? 'Actualizar empresa' : 'Crear empresa'" color="primary" style="width: 85%;" @click="edit ? updateCompany() : saveCompany()" no-caps/>
     </div>
   </div>
 </template>
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
+import env from '../env'
 export default {
   data () {
     return {
+      id: '',
+      edit: false,
       img: null,
       perfilImg: '',
       PImg: {},
@@ -136,6 +142,7 @@ export default {
       phone: { required }
     },
     PImg: { required },
+    perfilImg: { required },
     selectPais: { required },
     selectEstado: { required },
     selectCiudad: { required }
@@ -143,13 +150,35 @@ export default {
   mounted () {
     this.getPaises()
     this.getContratos()
+    if (this.$route.params.id) {
+      this.id = this.$route.params.id
+      this.edit = true
+      this.getCompanyById()
+    }
   },
   methods: {
+    getCompanyById () {
+      this.$api.get('company/' + this.id).then(res => {
+        if (res) {
+          let pais = []
+          let estado = []
+          let ciudad = []
+          this.form = res
+          pais = this.paises.filter(v => v._id === this.form.pais_id)
+          this.selectPais = pais[0]
+          estado = this.selectPais.estados.filter(v => v._id === this.form.estado_id)
+          this.selectEstado = estado[0]
+          ciudad = this.selectEstado.ciudades.filter(v => v._id === this.form.ciudad_id)
+          this.selectCiudad = ciudad[0]
+          this.perfilImg = env.apiUrl + 'company_img/' + this.id
+        }
+      })
+    },
     getPaises () {
       this.$api.get('paises').then(res => {
         if (res) {
           this.paises = res
-          console.log(this.paises)
+          // console.log(this.paises)
         }
       })
     },
@@ -157,7 +186,7 @@ export default {
       this.$api.get('contratos').then(res => {
         if (res) {
           this.contratos = res
-          console.log(this.contratos)
+          // console.log(this.contratos)
         }
       })
     },
@@ -165,12 +194,16 @@ export default {
       this.PImg = this.img
       this.perfilImg = URL.createObjectURL(this.img)
       this.img = null
+      if (this.edit) {
+        this.form.img = true
+      }
     },
     saveCompany () {
       this.$v.$touch()
-      if (!this.$v.form.$error && !this.$v.selectPais.$error && !this.$v.selectEstado.$error && !this.$v.selectCiudad.$error && !this.$v.PImg.$error) {
+      // console.log(this.form)
+      if (!this.$v.form.$error) {
         this.$q.loading.show({
-          message: 'Guardando...'
+          message: 'Guardando empresa...'
         })
         const formData = new FormData()
         const files = []
@@ -187,6 +220,40 @@ export default {
               message: 'Empresa guardada correctamente',
               color: 'positive'
             })
+            this.$router.push('/inicio')
+          }
+          this.$q.loading.hide()
+        })
+      } else {
+        this.$q.notify({
+          message: 'Debe ingresar todos los datos correspondientes',
+          color: 'negative'
+        })
+      }
+    },
+    updateCompany () {
+      this.$v.form.$touch()
+      // console.log(this.form)
+      if (!this.$v.form.$error) {
+        this.$q.loading.show({
+          message: 'Actualizando empresa...'
+        })
+        const formData = new FormData()
+        const files = []
+        files[0] = this.PImg
+        formData.append('PFiles', files[0])
+        formData.append('dat', JSON.stringify(this.form))
+        this.$api.put('update_company/' + this.id, formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: 'La empresa se actualizo correctamente',
+              color: 'positive'
+            })
+            this.$router.push('/inicio')
           }
           this.$q.loading.hide()
         })

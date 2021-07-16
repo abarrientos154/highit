@@ -38,7 +38,6 @@ addPrefixToGroup(
     // Insertar rutas sin protección de autenticación aquí
     Route.post("login", "UserController.login");
     Route.post("update_client", "UserController.updateClient")
-    Route.post("register_company", "UploadController.registerCompany")
     Route.get("validate_email/:email", "UserController.validateEmail")
     Route.get("email_send_app/:email", "UserController.recuperacionapp")
 
@@ -46,7 +45,10 @@ addPrefixToGroup(
     Route.get("user_by_id/:id", "UserController.userById") // metodo para obtener informacion del usuario por id del mismo
 
     Route.get('perfil_img/:file', 'UploadController.getFileByDirectoryPerfil')
+    Route.get('company_img/:file', 'UploadController.getFileByDirectoryCompany')
     Route.get('obtener_logo', 'UploadController.getLogo')
+    Route.get("companys", "CompanyController.index")
+    Route.get("company/:id", "CompanyController.show")
     Route.post("contrato", "ContratoController.store")
     Route.get("contratos", "ContratoController.index")
     Route.delete("contrato/:id", "ContratoController.destroy")
@@ -70,5 +72,8 @@ addPrefixToGroup(
     Route.post("user_by_status", "UserController.userByStatus") // metodo para obtener proveedores pendientes
     Route.put("update_status/:id", "UserController.userStatus") // metodo para bloquear o desbloquear usuarios
 
+    Route.post("register_company", "CompanyController.store")
+    Route.put("update_company/:id", "CompanyController.update")
+    Route.delete("delete_company/:id", "CompanyController.destroy")
   }).middleware("auth")
 );

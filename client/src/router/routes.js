@@ -9,7 +9,8 @@ const routes = [
       { path: '/registros', component: () => import('pages/RegisterUsuario.vue') },
       { path: '/usuarios', component: () => import('pages/ListadoUsuario.vue') },
       { path: '/User_edit/:id', component: () => import('pages/User_edit.vue') },
-      { path: '/registrar_empresa', component: () => import('pages/RegisterCompany.vue') }
+      { path: '/registrar_empresa', component: () => import('pages/RegisterCompany.vue') },
+      { path: '/editar_empresa/:id', component: () => import('pages/RegisterCompany.vue') }
     ]
   },
 
