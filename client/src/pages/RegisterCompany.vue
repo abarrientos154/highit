@@ -87,12 +87,12 @@
       <div>
         <div>Foto de perfil</div>
         <div class="column items-center">
-          <q-avatar rounded style="height: 150px; width: 100%;" class="bg-grey q-mb-sm">
+          <q-avatar rounded style="height: 150px; width: 100%;" class="bg-grey-5 q-mb-sm">
             <q-img style="height: 100%;" :src="perfilImg">
               <q-file  borderless v-model="img" class="button-camera" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1; width: 100%; height: 100%;">
                 <div class="column items-center justify-center absolute-full" style="height: 150px;">
-                  <q-icon name="backup" class="" size="75px" color="grey-7" />
-                  <div class="text-center text-grey-7 text-caption">Toca para selecciona la foto de perfil de la empresa</div>
+                  <q-icon name="backup" class="" size="75px" color="grey-6" />
+                  <div class="text-center text-grey-6 text-caption">Toca para selecciona la foto de perfil de la empresa</div>
                 </div>
               </q-file>
             </q-img>
