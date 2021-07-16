@@ -148,28 +148,19 @@ export default {
     selectCiudad: { required }
   },
   mounted () {
-    this.getPaises()
-    this.getContratos()
     if (this.$route.params.id) {
       this.id = this.$route.params.id
       this.edit = true
       this.getCompanyById()
     }
+    this.getPaises()
+    this.getContratos()
   },
   methods: {
     getCompanyById () {
       this.$api.get('company/' + this.id).then(res => {
         if (res) {
-          let pais = []
-          let estado = []
-          let ciudad = []
           this.form = res
-          pais = this.paises.filter(v => v._id === this.form.pais_id)
-          this.selectPais = pais[0]
-          estado = this.selectPais.estados.filter(v => v._id === this.form.estado_id)
-          this.selectEstado = estado[0]
-          ciudad = this.selectEstado.ciudades.filter(v => v._id === this.form.ciudad_id)
-          this.selectCiudad = ciudad[0]
           this.perfilImg = env.apiUrl + 'company_img/' + this.id
         }
       })
@@ -177,7 +168,16 @@ export default {
     getPaises () {
       this.$api.get('paises').then(res => {
         if (res) {
+          let pais = []
+          let estado = []
+          let ciudad = []
           this.paises = res
+          pais = this.paises.filter(v => v._id === this.form.pais_id)
+          this.selectPais = pais[0]
+          estado = this.selectPais.estados.filter(v => v._id === this.form.estado_id)
+          this.selectEstado = estado[0]
+          ciudad = this.selectEstado.ciudades.filter(v => v._id === this.form.ciudad_id)
+          this.selectCiudad = ciudad[0]
           // console.log(this.paises)
         }
       })

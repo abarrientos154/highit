@@ -4,9 +4,13 @@
       <q-markup-table bordered>
         <thead>
           <tr>
-            <th>
-              <div class="text-subtitle1 text-bold">Acción</div>
+            <th colspan="8">
+              <div class="row no-wrap items-center">
+                <div class="text-h4 text-bold">Listado de empresas</div>
+              </div>
             </th>
+          </tr>
+          <tr>
             <th>
               <div class="text-subtitle1 text-bold">Perfil</div>
             </th>
@@ -28,16 +32,13 @@
             <th>
               <div class="text-subtitle1 text-bold">Telefono</div>
             </th>
+            <th>
+              <div class="text-subtitle1 text-bold">Acción</div>
+            </th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(company, index) in empresas" :key="index">
-            <td>
-              <div class="row justify-center no-wrap">
-                <q-btn flat color="primary" icon="delete" size="md" round dense @click="deleteCompany(company._id)"/>
-                <q-btn flat color="primary" icon="edit" size="md" round dense @click="$router.push('/editar_empresa/' + company._id)"/>
-              </div>
-            </td>
             <td>
               <q-avatar>
                 <q-img :src="baseu + company._id" class="full-height"/>
@@ -60,6 +61,12 @@
             </td>
             <td>
               <div class="text-secondary">{{company.phone}}</div>
+            </td>
+            <td>
+              <div class="row justify-center no-wrap">
+                <q-btn flat color="primary" icon="delete" size="md" round dense @click="deleteCompany(company._id)"/>
+                <q-btn flat color="primary" icon="edit" size="md" round dense @click="$router.push('/editar_empresa/' + company._id)"/>
+              </div>
             </td>
           </tr>
         </tbody>
