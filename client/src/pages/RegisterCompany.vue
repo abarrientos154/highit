@@ -220,7 +220,7 @@ export default {
               message: 'Empresa guardada correctamente',
               color: 'positive'
             })
-            this.$router.push('/inicio')
+            this.$router.push('/empresas')
           }
           this.$q.loading.hide()
         })
@@ -253,7 +253,7 @@ export default {
               message: 'La empresa se actualizo correctamente',
               color: 'positive'
             })
-            this.$router.push('/inicio')
+            this.$router.push('/empresas')
           }
           this.$q.loading.hide()
         })
