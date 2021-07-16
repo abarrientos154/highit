@@ -5,8 +5,9 @@
         <thead>
           <tr>
             <th colspan="8">
-              <div class="row no-wrap items-center">
+              <div class="column text-left">
                 <div class="text-h4 text-bold">Listado de empresas</div>
+                <div v-if="!empresas.length" class="text-secondary">No hay empresas registradas</div>
               </div>
             </th>
           </tr>
