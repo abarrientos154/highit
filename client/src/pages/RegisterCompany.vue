@@ -14,7 +14,7 @@
         <div class="text-h6 text-bold">Infomación empresa</div>
         <div class="text-grey-8">Informacion oficial de la empresa</div>
       </div>
-      <q-list>
+      <q-list class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>Nombre comercial</div>
           <q-input dense outlined filled v-model="form.name" placeholder="Highit Service" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
@@ -46,7 +46,7 @@
         <div class="text-h6 text-bold">Infomacion demografica</div>
         <div class="text-grey-8">Informacion oficial de la empresa</div>
       </div>
-      <q-list>
+      <q-list class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>País</div>
           <q-select outlined dense filled v-model="selectPais" :options="paises" @input="form.pais_id = selectPais._id, estados = selectPais.estados" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectPais.$error" @blur="$v.selectPais.$touch()"/>
@@ -63,18 +63,18 @@
           <div>Dirección</div>
           <q-input dense outlined filled v-model="form.direction" placeholder="Mi direccion #12123" error-message="Este campo es requerido" :error="$v.form.direction.$error" @blur="$v.form.direction.$touch()"/>
         </div>
-        <div class="q-mx-md">
-          <div>Código postal</div>
-          <q-input dense outlined filled v-model.number="form.postalCode" placeholder="1023400" type="number" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
-        </div>
       </q-list>
+      <div class="q-mx-md">
+        <div>Código postal</div>
+        <q-input dense outlined filled v-model.number="form.postalCode" placeholder="1023400" type="number" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
+      </div>
     </div>
     <div>
       <div class="q-mb-md q-px-md">
         <div class="text-h6 text-bold">Infomaciones varias</div>
         <div class="text-grey-8">Informacion oficial de la empresa</div>
       </div>
-      <q-list>
+      <q-list class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-md">
           <div>Correo de contacto</div>
           <q-input dense outlined filled v-model="form.email" placeholder="micorreo@highitservice.com" error-message="Este campo es requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
