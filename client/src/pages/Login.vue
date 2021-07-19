@@ -70,6 +70,8 @@ export default {
             this.login(res)
             if (this.user.roles[0] === 1) {
               this.$router.push('/inicio')
+            } else if (this.user.roles[0] === 2) {
+              this.$router.push('/inicio_user')
             }
           } else {
             console.log('error de ususario')

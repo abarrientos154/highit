@@ -11,7 +11,10 @@ const routes = [
       { path: '/usuarios/form/:id', component: () => import('pages/User_edit.vue') },
       { path: '/empresas', component: () => import('pages/Companys.vue') },
       { path: '/registrar_empresa', component: () => import('pages/RegisterCompany.vue') },
-      { path: '/editar_empresa/:id', component: () => import('pages/RegisterCompany.vue') }
+      { path: '/editar_empresa/:id', component: () => import('pages/RegisterCompany.vue') },
+      // User
+      { path: '/inicio_user', component: () => import('pages/User/Home.vue') },
+      { path: '/organigrama', component: () => import('pages/User/OrganizationChart.vue') }
     ]
   },
 

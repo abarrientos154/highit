@@ -19,8 +19,13 @@ const roleData = [
     name: 'root',
     description: 'Rol de Administrador de HIGHIT',
     permissions: [1]
+  },
+  {
+    id: 2,
+    name: 'User',
+    description: 'Rol de Usuario de HIGHIT',
+    permissions: [1]
   }
-  
 ]
 
 class RoleSeeder {
