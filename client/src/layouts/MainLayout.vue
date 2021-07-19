@@ -11,7 +11,7 @@
       >
         <q-scroll-area class="fit">
           <div class="row justify-center q-py-md">
-            <img src="noimg.png" style="width: 70%; border-radius: 100%" />
+            <img :src="rol === 2 ? baseu : 'noimg.png'" style="width: 70%; border-radius: 100%" />
           </div>
           <div class="text-center text-grey-8 text-subtitle1">¿Qué quieres hacer?</div>
 
@@ -52,13 +52,18 @@
 
 <script>
 import { mapMutations } from 'vuex'
+import env from '../env'
 export default {
   name: 'MainLayout',
   data () {
     return {
+      baseu: '',
+      rol: 0,
+      user: {},
       drawer1: true,
       drawer2: true,
-      menu: [
+      menu: [],
+      menuAdmin: [
         {
           icon: 'home',
           label: 'Inicio',
@@ -99,16 +104,53 @@ export default {
           label: 'Cerrar sesión',
           ruta: ''
         }
+      ],
+      menuUser: [
+        {
+          icon: 'home',
+          label: 'Inicio',
+          ruta: '/inicio_user02'
+        },
+        {
+          icon: 'category',
+          label: 'Organigrama',
+          ruta: '/organigrama'
+        },
+        {
+          icon: 'logout',
+          label: 'Cerrar sesión',
+          ruta: ''
+        }
       ]
     }
   },
   mounted () {
+    this.userLogueado()
   },
   methods: {
     ...mapMutations('generals', ['logout']),
     cerrarSesion () {
       this.logout()
       this.$router.push('/login')
+    },
+    userLogueado () {
+      this.$api.get('user_logueado').then(res => {
+        if (res) {
+          this.rol = res.roles[0]
+          this.user = res
+          if (this.rol === 2) {
+            this.baseu = env.apiUrl + 'perfil_img/' + this.user._id
+          }
+          this.menuRol()
+        }
+      })
+    },
+    menuRol () {
+      if (this.rol === 1) {
+        this.menu = this.menuAdmin
+      } else if (this.rol === 2) {
+        this.menu = this.menuUser
+      }
     }
   }
 }
