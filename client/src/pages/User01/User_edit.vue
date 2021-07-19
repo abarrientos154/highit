@@ -90,7 +90,7 @@
 </template>
 <script>
 import { required, email, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
-import env from '../env'
+import env from '../../env'
 export default {
   data () {
     return {

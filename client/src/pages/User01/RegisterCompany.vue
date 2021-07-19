@@ -109,7 +109,7 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
-import env from '../env'
+import env from '../../env'
 export default {
   data () {
     return {

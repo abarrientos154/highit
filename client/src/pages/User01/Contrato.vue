@@ -94,7 +94,7 @@
 </template>
 <script>
 import { required } from 'vuelidate/lib/validators'
-import Tabla from '../components/TableActions'
+import Tabla from '../../components/TableActions'
 export default {
   components: {
     Tabla

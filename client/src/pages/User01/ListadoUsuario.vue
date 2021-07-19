@@ -36,7 +36,7 @@
   </div>
 </template>
 <script>
-import Tabla from '../components/TableActions'
+import Tabla from '../../components/TableActions'
 export default {
   components: { Tabla },
   data () {

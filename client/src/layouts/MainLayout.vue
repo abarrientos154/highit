@@ -109,7 +109,7 @@ export default {
         {
           icon: 'home',
           label: 'Inicio',
-          ruta: '/inicio_user'
+          ruta: '/inicio_user02'
         },
         {
           icon: 'category',

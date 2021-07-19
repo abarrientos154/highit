@@ -69,9 +69,9 @@ export default {
             this.user = res.HIGHIT_SESSION_INFO
             this.login(res)
             if (this.user.roles[0] === 1) {
-              this.$router.push('/inicio')
+              this.$router.push('/inicio_user01')
             } else if (this.user.roles[0] === 2) {
-              this.$router.push('/inicio_user')
+              this.$router.push('/inicio_user02')
             }
           } else {
             console.log('error de ususario')
