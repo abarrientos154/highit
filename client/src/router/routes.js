@@ -11,6 +11,8 @@ const routes = [
       // User
       { path: '/inicio_user02', component: () => import('pages/User02/Home.vue') },
       { path: '/organigrama', component: () => import('pages/User02/OrganizationChart.vue') },
+      { path: '/usuarios2', component: () => import('pages/User02/ListadoUsuario2.vue') },
+      { path: '/usuarios2/form', component: () => import('pages/User02/RegisterUsuario2.vue') },
       // Generales
       { path: '/contratos', component: () => import('pages/Contrato.vue') },
       { path: '/empresas', component: () => import('pages/Companys.vue') },

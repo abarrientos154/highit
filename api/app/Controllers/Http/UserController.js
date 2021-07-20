@@ -35,7 +35,12 @@ class UserController {
   }
 
   async index({ request, response, view }) {
-    let users = (await User.query().where({ roles: { $ne: [1]}  }).fetch()).toJSON()
+    let users = (await User.query().where({ roles: 2 }).fetch()).toJSON()
+    response.send(users);
+  }
+
+  async index2({ request, response, view }) {
+    let users = (await User.query().where({$or: [{ roles: 3 }, { roles: 4 }]}).fetch()).toJSON()
     response.send(users);
   }
 
@@ -242,6 +247,40 @@ class UserController {
       let body = dat
       // const rol = body.roles
       body.roles = [2]
+
+      const user = await User.create(body)
+      const profilePic = request.file('perfil', {
+        types: ['image']
+      })
+      if (Helpers.appRoot('storage/uploads/perfil')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/perfil'), {
+          name: user._id.toString(),
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+      response.send(user)
+    }
+  }
+
+
+  async User_register2({ request, response }) {
+    let requestAll = request.all()
+    var dat = request.only(['dat'])
+    dat = JSON.parse(dat.dat)
+
+    const validation = await validate(dat, User.fieldejemplo())
+    if (validation.fails()) {
+      response.unprocessableEntity(validation.messages())
+    } else if (((await User.where({email: requestAll.email}).fetch()).toJSON()).length) {
+      response.unprocessableEntity([{
+        message: 'Correo ya registrado en el sistema!'
+      }])
+    } else {
+      let body = dat
+      const rol = body.roles
+      body.roles = [rol]
 
       const user = await User.create(body)
       const profilePic = request.file('perfil', {

@@ -21,8 +21,31 @@ const userData = [
     _id: '5e90d6e6f75366526a680091',
     email: 'root@highit.com',
     password: 'highit2021',
-    full_name: 'Administrador del Sistema',
+    name: 'Administrador del Sistema',
     roles: [1]
+  },
+  {
+    _id: '5e90d6e6f75366526a680092',
+    email: 'cliente@highit.com',
+    password: 'highit2021',
+    name: 'Usuario Cliente de Ejemplo',
+    roles: [2],
+  },
+  {
+    _id: '5e90d6e6f75366526a680093',
+    email: 'consultor@highit.com',
+    password: 'highit2021',
+    name: 'Usuario consultor de Ejemplo',
+    roles: [3],
+
+  },
+  {
+    _id: '5e90d6e6f75366526a680094',
+    email: 'clientefinal@highit.com',
+    password: 'highit2021',
+    name: 'Usuario cliente final de Ejemplo',
+    roles: [4],
+
   }
 ]
 
