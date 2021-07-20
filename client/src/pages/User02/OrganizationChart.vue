@@ -218,7 +218,14 @@ export default {
     getCargos () {
       this.$api.get('charges').then(res => {
         if (res) {
-          if (this.selecA !== '') {
+          if (this.selecD !== '') {
+            this.cargos = []
+            for (var i of this.areas) {
+              if (res.filter(v => v.area_id === i._id).length) {
+                this.cargos = res.filter(v => v.area_id === i._id)
+              }
+            }
+          } else if (this.selecA !== '') {
             this.cargos = res.filter(v => v.area_id === this.selecA)
           } else {
             this.cargos = res
