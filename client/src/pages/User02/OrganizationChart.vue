@@ -284,7 +284,6 @@ export default {
               this.formArea = {}
               this.selecD = ''
               this.$v.formArea.$reset()
-              this.$v.formArea.$reset()
               this.getAreas()
               // this.$router.go(0)
             }
