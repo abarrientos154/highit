@@ -73,6 +73,8 @@ class AreaController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+      let datos = (await Area.query().where({department_id: params.id}).fetch()).toJSON()
+      response.send(datos)
   }
 
   /**

@@ -71,8 +71,10 @@ class ChargeController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
-  }
+   async show ({ params, request, response, view }) {
+    let datos = (await Charge.query().where({area_id: params.id}).fetch()).toJSON()
+    response.send(datos)
+}
 
   /**
    * Render a form to update an existing charges.
