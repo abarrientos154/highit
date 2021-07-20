@@ -23,13 +23,6 @@ const userData = [
     password: 'highit2021',
     name: 'Administrador del Sistema',
     roles: [1]
-  },
-  {
-    _id: '5e90d6e6f75366526a680092',
-    email: 'cliente@highit.com',
-    password: 'highit2021',
-    name: 'Usuario Cliente de Ejemplo',
-    roles: [2],
   }
 ]
 
