@@ -28,7 +28,7 @@
                 <th colspan="2">
                   <div class="column text-left">
                     <div class="text-h6 text-bold">Departametos</div>
-                    <div class="text-secondary">Listado de departamentos creados</div>
+                    <div class="text-secondary text-subtitle2">Listado de departamentos creados</div>
                   </div>
                 </th>
               </tr>
@@ -76,7 +76,7 @@
                 <th colspan="2">
                   <div class="column text-left">
                     <div class="text-h6 text-bold">Areas</div>
-                    <div class="text-secondary">Listado de areas creadas</div>
+                    <div class="text-secondary text-subtitle2">Listado de areas creadas</div>
                   </div>
                 </th>
               </tr>
@@ -124,7 +124,7 @@
                 <th colspan="2">
                   <div class="column text-left">
                     <div class="text-h6 text-bold">Cargos</div>
-                    <div class="text-secondary">Listado de cargos creados</div>
+                    <div class="text-secondary text-subtitle2">Listado de cargos creados</div>
                   </div>
                 </th>
               </tr>
@@ -242,8 +242,8 @@ export default {
                 message: 'Departamento creado correctamente',
                 color: 'positive'
               })
-              // this.getDepartamentos()
-              this.$router.go(0)
+              this.getDepartamentos()
+              // this.$router.go(0)
             }
             this.$q.loading.hide()
           })
@@ -266,8 +266,8 @@ export default {
                 message: 'Area creada correctamente',
                 color: 'positive'
               })
-              // this.getDepartamentos()
-              this.$router.go(0)
+              this.getDepartamentos()
+              // this.$router.go(0)
             }
             this.$q.loading.hide()
           })
@@ -290,8 +290,8 @@ export default {
                 message: 'Cargo creado correctamente',
                 color: 'positive'
               })
-              // this.getDepartamentos()
-              this.$router.go(0)
+              this.getDepartamentos()
+              // this.$router.go(0)
             }
             this.$q.loading.hide()
           })
