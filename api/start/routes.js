@@ -42,12 +42,10 @@ addPrefixToGroup(
     Route.get("email_send_app/:email", "UserController.recuperacionapp")
     Route.post("user_by_rol", "UserController.userByRol") // metodo para obtener usuarios segun el rol
     Route.get("user_by_id/:id", "UserController.userById") // metodo para obtener informacion del usuario por id del mismo
-    Route.get('company_img/:file', 'UploadController.getFileByDirectoryCompany')
-    Route.get('obtener_logo', 'UploadController.getLogo')
-    Route.get("companys", "CompanyController.index")
-    Route.get("companys_by_company/:id", "CompanyController.companysByCompany")
-    Route.get("company/:id", "CompanyController.show")
     Route.get("paises", "PaisController.index")
+    
+    Route.get('obtener_logo', 'UploadController.getLogo')
+    Route.get('company_img/:file', 'UploadController.getFileByDirectoryCompany')
     Route.get('perfil_img/:file', 'UploadController.getFileByDirectoryPerfil')
 
   })
@@ -60,13 +58,17 @@ addPrefixToGroup(
     Route.get("all_user", "UserController.allUser") // metodo para obtener informacion del usuario que esta logueado
     Route.post("user_by_status", "UserController.userByStatus") // metodo para obtener proveedores pendientes
     Route.put("update_status/:id", "UserController.userStatus") // metodo para bloquear o desbloquear usuarios
-    Route.post("contrato", "ContratoController.store")
+
     Route.get("contratos", "ContratoController.index")
+    Route.get("contratos_by_company/:id", "ContratoController.contratosByCompany")
+    Route.post("contrato", "ContratoController.store")
     Route.delete("contratos/:id", "ContratoController.destroy")
     Route.put("contrato/:id", "ContratoController.update")
+
     Route.post("sla", "SlaController.store")
     Route.get("sla", "SlaController.index")
     Route.delete("sla/:id", "SlaController.destroy")
+
     Route.post("register_user", "UserController.User_register")
     Route.post("register_user2", "UserController.User_register2")
     Route.get("user", "UserController.index")
@@ -89,6 +91,9 @@ addPrefixToGroup(
     Route.post('register_charge', 'ChargeController.store')
     Route.delete("delete_charge/:id", "ChargeController.destroy")
 
+    Route.get("companys", "CompanyController.index")
+    Route.get("companys_by_company/:id", "CompanyController.companysByCompany")
+    Route.get("company/:id", "CompanyController.show")
     Route.post("register_company", "CompanyController.store")
     Route.put("update_company/:id", "CompanyController.update")
     Route.delete("delete_company/:id", "CompanyController.destroy")

@@ -239,6 +239,8 @@ export default {
                 message: 'Departamento creado correctamente',
                 color: 'positive'
               })
+              this.formDepartment = {}
+              this.$v.formDepartment.$reset()
               this.getDepartamentos()
               // this.$router.go(0)
             }
@@ -259,6 +261,8 @@ export default {
                 message: 'Area creada correctamente',
                 color: 'positive'
               })
+              this.formArea = {}
+              this.$v.formArea.$reset()
               this.getDepartamentos()
               // this.$router.go(0)
             }
@@ -279,6 +283,8 @@ export default {
                 message: 'Cargo creado correctamente',
                 color: 'positive'
               })
+              this.formCharge = {}
+              this.$v.formCharge.$reset()
               this.getDepartamentos()
               // this.$router.go(0)
             }
