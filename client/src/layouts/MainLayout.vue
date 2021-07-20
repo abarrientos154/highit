@@ -112,6 +112,11 @@ export default {
           ruta: '/inicio_user02'
         },
         {
+          icon: 'person',
+          label: 'Crear usuarios',
+          ruta: '/usuarios2'
+        },
+        {
           icon: 'location_city',
           label: 'Crear empresa',
           ruta: '/empresas'
