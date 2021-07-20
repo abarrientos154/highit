@@ -23,7 +23,18 @@ class ContratoController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let contratos = (await Contrato.all()).toJSON()
+    let contratos = (await Contrato.query().where({status: 1}).fetch()).toJSON()
+    let formatearFecha = contratos.map(v => {
+      return {
+        ...v,
+        fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
+      }
+    })
+    response.send(formatearFecha)
+  }
+
+  async contratosByCompany ({ params, request, response, view }) {
+    let contratos = (await Contrato.query().where({company_id: params.id}).fetch()).toJSON()
     let formatearFecha = contratos.map(v => {
       return {
         ...v,
@@ -59,7 +70,7 @@ class ContratoController {
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else {
-      let body = request.only(Contrato.fillable)
+      let body = requestAll
       const nuevo = await Contrato.create(body)
       response.send(nuevo)
     }
@@ -102,7 +113,7 @@ class ContratoController {
     const validation = await validate(requestAll, Contrato.fieldValidationRules())
     if (validation.fails()) {
     } else {
-      let body = request.only(Contrato.fillable)
+      let body = requestAll
       const contrato = await Contrato.where({_id: params.id}).update(body)
       response.send(contrato)
     }

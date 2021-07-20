@@ -206,7 +206,11 @@ export default {
     getAreas () {
       this.$api.get('areas').then(res => {
         if (res) {
-          this.areas = res
+          if (this.selecD !== '') {
+            this.areas = res.filter(v => v.department_id === this.selecD)
+          } else {
+            this.areas = res
+          }
           this.getCargos()
         }
       })
@@ -214,17 +218,26 @@ export default {
     getCargos () {
       this.$api.get('charges').then(res => {
         if (res) {
-          this.cargos = res
+          if (this.selecA !== '') {
+            this.cargos = res.filter(v => v.area_id === this.selecA)
+          } else {
+            this.cargos = res
+          }
+          // this.cargos = res
         }
       })
     },
     selecBtn (id, idx) {
       if (idx === 1) {
         this.selecD = id
+        this.selecA = ''
         this.formArea.department_id = id
+        this.getAreas()
       } else if (idx === 2) {
         this.selecA = id
+        this.selecD = ''
         this.formCharge.area_id = id
+        this.getCargos()
       }
     },
     save (idx) {
@@ -239,6 +252,8 @@ export default {
                 message: 'Departamento creado correctamente',
                 color: 'positive'
               })
+              this.formDepartment = {}
+              this.$v.formDepartment.$reset()
               this.getDepartamentos()
               // this.$router.go(0)
             }
@@ -259,7 +274,11 @@ export default {
                 message: 'Area creada correctamente',
                 color: 'positive'
               })
-              this.getDepartamentos()
+              this.formArea = {}
+              this.selecD = ''
+              this.$v.formArea.$reset()
+              this.$v.formArea.$reset()
+              this.getAreas()
               // this.$router.go(0)
             }
           })
@@ -279,7 +298,11 @@ export default {
                 message: 'Cargo creado correctamente',
                 color: 'positive'
               })
-              this.getDepartamentos()
+              this.formCharge = {}
+              this.selecD = ''
+              this.selecA = ''
+              this.$v.formCharge.$reset()
+              this.getCargos()
               // this.$router.go(0)
             }
           })
@@ -301,40 +324,16 @@ export default {
         this.$q.loading.show({
           message: 'Eliminando...'
         })
-        if (idx === 1) {
-          this.$api.delete('delete_department/' + id).then(res => {
-            if (res) {
-              this.$q.notify({
-                message: 'Departameto eliminado',
-                color: 'positive'
-              })
-              this.getDepartamentos()
-            }
-            this.$q.loading.hide()
-          })
-        } else if (idx === 2) {
-          this.$api.delete('delete_area/' + id).then(res => {
-            if (res) {
-              this.$q.notify({
-                message: 'Area eliminada',
-                color: 'positive'
-              })
-              this.getAreas()
-            }
-            this.$q.loading.hide()
-          })
-        } else if (idx === 3) {
-          this.$api.delete('delete_charge/' + id).then(res => {
-            if (res) {
-              this.$q.notify({
-                message: 'Cargo eliminado',
-                color: 'positive'
-              })
-              this.getCargos()
-            }
-            this.$q.loading.hide()
-          })
-        }
+        this.$api.delete(`${idx === 1 ? 'delete_department/' : idx === 2 ? 'delete_area/' : 'delete_charge/'}` + id).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: `${idx === 1 ? 'Departameto eliminado' : idx === 2 ? 'Area eliminada' : 'Cargo eliminado'}`,
+              color: 'positive'
+            })
+            this.getDepartamentos()
+          }
+          this.$q.loading.hide()
+        })
       }).onCancel(() => {
         // cancel
       })
