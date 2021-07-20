@@ -3,8 +3,8 @@
     <div class="row">
       <q-separator vertical class="bg-grey-7"/>
       <div class="q-pb-xl q-px-md q-pt-md column items-end col">
-        <div class="text-h4 text-bold">{{edit ? 'ACTUALIZA EMPRESA' : 'NUEVA EMPRESA'}}</div>
-        <div class="text-grey-8 text-subtitle1">{{edit ? 'Modificar datos de la empresa' : 'Creacion de nuevas empresas'}}</div>
+        <div class="text-h3 text-bold">{{edit ? 'ACTUALIZA EMPRESA' : 'NUEVA EMPRESA'}}</div>
+        <div class="text-grey-8 text-h6">{{edit ? 'Modificar datos de la empresa' : 'Creacion de nuevas empresas'}}</div>
       </div>
       <q-separator vertical class="bg-grey-7"/>
     </div>
@@ -109,7 +109,7 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
-import env from '../../env'
+import env from '../env'
 export default {
   data () {
     return {

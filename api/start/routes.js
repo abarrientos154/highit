@@ -74,6 +74,18 @@ addPrefixToGroup(
     Route.put("password_edit/:id", "UserController.changePassword")
     Route.post('perfil_imagen/:user_id', 'UploadController.newimagen')
 
+    Route.get('departments', 'DepartmentController.index')
+    Route.post('register_department', 'DepartmentController.store')
+    Route.delete("delete_department/:id", "DepartmentController.destroy")
+
+    Route.get('areas', 'AreaController.index')
+    Route.post('register_area', 'AreaController.store')
+    Route.delete("delete_area/:id", "AreaController.destroy")
+
+    Route.get('charges', 'ChargeController.index')
+    Route.post('register_charge', 'ChargeController.store')
+    Route.delete("delete_charge/:id", "ChargeController.destroy")
+
     Route.post("register_company", "CompanyController.store")
     Route.put("update_company/:id", "CompanyController.update")
     Route.delete("delete_company/:id", "CompanyController.destroy")
