@@ -1,5 +1,152 @@
 <template>
-  <div></div>
+  <div>
+    <div class="row">
+      <q-separator vertical class="bg-grey-7"/>
+      <div class="q-pb-xl q-px-md q-pt-md column items-end col">
+        <div class="text-h3 text-bold">ORGANIGRAMA</div>
+        <div class="text-grey-8 text-h6">Crea los departamentos y areas de tu empreza</div>
+      </div>
+      <q-separator vertical class="bg-grey-7"/>
+    </div>
+    <q-separator class="bg-grey-7"/>
+    <div class="q-pa-lg">
+      <div class="q-mb-md">
+        <div>
+          <div class="text-bold text-h6">Creación de departamentos</div>
+          <div>
+            <div class="text-grey-8">Agregar nuevo departamento</div>
+            <q-input dense outlined filled v-model="formDepartment.name" placeholder="Ingresa el nombre de tu departamento" error-message="Este campo es requerido" :error="$v.formDepartment.name.$error" @blur="$v.formDepartment.name.$touch()"/>
+          </div>
+          <div class="column items-center">
+            <q-btn color="primary q-py-xs" text-color="white" label="Crear nuevo departamento" style="width: 90%; border-radius: 5px;" @click="save(1)" no-caps/>
+          </div>
+        </div>
+        <div v-if="departamentos.length">
+          <q-markup-table flat>
+            <thead>
+              <tr>
+                <th colspan="2">
+                  <div class="column text-left">
+                    <div class="text-h6 text-bold">Departametos</div>
+                    <div class="text-secondary">Listado de departamentos creados</div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(departamento, index) in departamentos" :key="index">
+                <td>
+                  <div class="row items-center text-secondary no-wrap">
+                    <q-btn flat icon="delete" size="md" round dense @click="destroy(departamento._id, 1)"/>
+                    <div class="text-subtitle1">{{departamento.name}}</div>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <div class="text-subtitle1 text-secondary">Cant. Usuarios: {{departamento.cantUser}}</div>
+                </td>
+              </tr>
+            </tbody>
+          </q-markup-table>
+        </div>
+      </div>
+      <div class="q-mb-md" v-if="departamentos.length">
+        <div>
+          <div class="text-bold text-h6">Creación de areas</div>
+          <div>
+            <div class="text-grey-8">Selecciona el departamento disponible</div>
+            <q-scroll-area horizontal style="height: 50px;">
+              <div class="row no-wrap full-width">
+                <q-btn dense v-for="(btn, index) in departamentos" :key="index" class="q-px-md q-ma-xs" :label="btn.name" :text-color="selecD === btn._id ? 'grey-3' : 'grey-6'" :color="selecD === btn._id ? 'grey-5' : 'grey-4'" @click="selecBtn(btn._id, 1)" style="min-width: 150px; border-radius: 5px;" no-caps/>
+              </div>
+            </q-scroll-area>
+            <div v-if="$v.formArea.department_id.$error" class="text-center text-negative">Seleccion de departamento requerida</div>
+          </div>
+          <div>
+            <div class="text-grey-8">Agregar nueva area</div>
+            <q-input dense outlined filled v-model="formArea.name" placeholder="Ingresa el nombre de tu nueva area" error-message="Este campo es requerido" :error="$v.formArea.name.$error" @blur="$v.formArea.name.$touch()"/>
+          </div>
+          <div class="column items-center">
+            <q-btn color="primary q-py-xs" text-color="white" label="Crear nueva area" style="width: 90%; border-radius: 5px;" @click="save(2)" no-caps/>
+          </div>
+        </div>
+        <div v-if="areas.length">
+          <q-markup-table flat>
+            <thead>
+              <tr>
+                <th colspan="2">
+                  <div class="column text-left">
+                    <div class="text-h6 text-bold">Areas</div>
+                    <div class="text-secondary">Listado de areas creadas</div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(area, index) in areas" :key="index">
+                <td>
+                  <div class="row items-center text-secondary no-wrap">
+                    <q-btn flat icon="delete" size="md" round dense @click="destroy(area._id, 2)"/>
+                    <div class="text-subtitle1">{{area.name}}</div>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <div class="text-subtitle1 text-secondary">Cant. Usuarios: {{area.cantUser}}</div>
+                </td>
+              </tr>
+            </tbody>
+          </q-markup-table>
+        </div>
+      </div>
+      <div v-if="areas.length">
+        <div>
+          <div class="text-bold text-h6">Creación de cargos</div>
+          <div>
+            <div class="text-grey-8">Selecciona el area disponible</div>
+            <q-scroll-area horizontal style="height: 50px;">
+              <div class="row no-wrap full-width">
+                <q-btn dense v-for="(btn, index) in areas" :key="index" class="q-px-md q-ma-xs" :label="btn.name" :text-color="selecA === btn._id ? 'grey-3' : 'grey-6'" :color="selecA === btn._id ? 'grey-5' : 'grey-4'" @click="selecBtn(btn._id, 2)" style="min-width: 150px; border-radius: 5px;" no-caps/>
+              </div>
+            </q-scroll-area>
+            <div v-if="$v.formCharge.area_id.$error" class="text-center text-negative">Seleccion de area requerida</div>
+          </div>
+          <div>
+            <div class="text-grey-8">Agregar nuevo cargo</div>
+            <q-input dense outlined filled v-model="formCharge.name" placeholder="Ingresa el nombre del cargo" error-message="Este campo es requerido" :error="$v.formCharge.name.$error" @blur="$v.formCharge.name.$touch()"/>
+          </div>
+          <div class="column items-center">
+            <q-btn color="primary q-py-xs" text-color="white" label="Crear nuevo cargo" style="width: 90%; border-radius: 5px;" @click="save(3)" no-caps/>
+          </div>
+        </div>
+        <div v-if="cargos.length">
+          <q-markup-table flat>
+            <thead>
+              <tr>
+                <th colspan="2">
+                  <div class="column text-left">
+                    <div class="text-h6 text-bold">Cargos</div>
+                    <div class="text-secondary">Listado de cargos creados</div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(cargo, index) in cargos" :key="index">
+                <td>
+                  <div class="row items-center text-secondary no-wrap">
+                    <q-btn flat icon="delete" size="md" round dense @click="destroy(cargo._id, 3)"/>
+                    <div class="text-subtitle1">{{cargo.name}}</div>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <div class="text-subtitle1 text-secondary">Cant. Usuarios: {{cargo.cantUser}}</div>
+                </td>
+              </tr>
+            </tbody>
+          </q-markup-table>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -7,27 +154,203 @@ import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
+      user: {},
+      departamentos: [],
+      areas: [],
+      cargos: [],
+      selecD: '',
+      selecA: '',
       formDepartment: {},
       formArea: {},
-      formCharges: {}
+      formCharge: {}
     }
   },
   validations: {
     formDepartment: {
-      name: { required }
+      empresa_id: { required },
+      name: { required },
+      cantUser: { required }
     },
     formArea: {
       department_id: { required },
-      name: { required }
+      name: { required },
+      cantUser: { required }
     },
-    formCharges: {
+    formCharge: {
       area_id: { required },
-      name: { required }
+      name: { required },
+      cantUser: { required }
     }
   },
   mounted () {
+    this.userLogueado()
+    this.getDepartamentos()
   },
   methods: {
+    userLogueado () {
+      this.$api.get('user_logueado').then(res => {
+        if (res) {
+          this.user = res
+          // console.log(this.user)
+        }
+      })
+    },
+    getDepartamentos () {
+      this.$api.get('departments').then(res => {
+        if (res) {
+          this.departamentos = res
+          this.getAreas()
+        }
+      })
+    },
+    getAreas () {
+      this.$api.get('areas').then(res => {
+        if (res) {
+          this.areas = res
+          this.getCargos()
+        }
+      })
+    },
+    getCargos () {
+      this.$api.get('charges').then(res => {
+        if (res) {
+          this.cargos = res
+        }
+      })
+    },
+    selecBtn (id, idx) {
+      if (idx === 1) {
+        this.selecD = id
+        this.formArea.department_id = id
+      } else if (idx === 2) {
+        this.selecA = id
+        this.formCharge.area_id = id
+      }
+    },
+    save (idx) {
+      if (idx === 1) {
+        this.$v.formDepartment.$touch()
+        this.formDepartment.empresa_id = this.user.empresa
+        this.formDepartment.cantUser = 0
+        if (!this.$v.formDepartment.$error) {
+          this.$q.loading.show({
+            message: 'Guardando departamento...'
+          })
+          this.$api.post('register_department', this.formDepartment).then(res => {
+            if (res) {
+              this.$q.notify({
+                message: 'Departamento creado correctamente',
+                color: 'positive'
+              })
+              // this.getDepartamentos()
+              this.$router.go(0)
+            }
+            this.$q.loading.hide()
+          })
+        } else {
+          this.$q.notify({
+            message: 'Debe ingresar los datos requeridos para el registro de departamentos',
+            color: 'negative'
+          })
+        }
+      } else if (idx === 2) {
+        this.$v.formArea.$touch()
+        this.formArea.cantUser = 0
+        if (!this.$v.formArea.$error) {
+          this.$q.loading.show({
+            message: 'Guardando area...'
+          })
+          this.$api.post('register_area', this.formArea).then(res => {
+            if (res) {
+              this.$q.notify({
+                message: 'Area creada correctamente',
+                color: 'positive'
+              })
+              // this.getDepartamentos()
+              this.$router.go(0)
+            }
+            this.$q.loading.hide()
+          })
+        } else {
+          this.$q.notify({
+            message: 'Debe ingresar los datos requeridos para el registro de areas',
+            color: 'negative'
+          })
+        }
+      } else if (idx === 3) {
+        this.$v.formCharge.$touch()
+        this.formCharge.cantUser = 0
+        if (!this.$v.formCharge.$error) {
+          this.$q.loading.show({
+            message: 'Guardando cargo...'
+          })
+          this.$api.post('register_charge', this.formCharge).then(res => {
+            if (res) {
+              this.$q.notify({
+                message: 'Cargo creado correctamente',
+                color: 'positive'
+              })
+              // this.getDepartamentos()
+              this.$router.go(0)
+            }
+            this.$q.loading.hide()
+          })
+        } else {
+          this.$q.notify({
+            message: 'Debe ingresar los datos requeridos para el registro de cargos',
+            color: 'negative'
+          })
+        }
+      }
+    },
+    destroy (id, idx) {
+      this.$q.dialog({
+        title: 'Confirma',
+        message: `¿Seguro deseas eliminar ${idx === 1 ? 'este departamento' : idx === 2 ? 'esta area' : 'este cargo'}?`,
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.$q.loading.show({
+          message: 'Eliminando...'
+        })
+        if (idx === 1) {
+          this.$api.delete('delete_department/' + id).then(res => {
+            if (res) {
+              this.$q.notify({
+                message: 'Departameto eliminado',
+                color: 'positive'
+              })
+              this.getDepartamentos()
+            }
+            this.$q.loading.hide()
+          })
+        } else if (idx === 2) {
+          this.$api.delete('delete_area/' + id).then(res => {
+            if (res) {
+              this.$q.notify({
+                message: 'Area eliminada',
+                color: 'positive'
+              })
+              this.getAreas()
+            }
+            this.$q.loading.hide()
+          })
+        } else if (idx === 3) {
+          this.$api.delete('delete_charge/' + id).then(res => {
+            if (res) {
+              this.$q.notify({
+                message: 'Cargo eliminado',
+                color: 'positive'
+              })
+              this.getCargos()
+            }
+            this.$q.loading.hide()
+          })
+        }
+      }).onCancel(() => {
+        // cancel
+      })
+    }
   }
 }
 </script>

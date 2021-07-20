@@ -67,7 +67,7 @@ export default {
         {
           icon: 'home',
           label: 'Inicio',
-          ruta: ''
+          ruta: '/inicio_user01'
         },
         {
           icon: 'person',
