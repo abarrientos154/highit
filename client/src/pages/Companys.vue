@@ -84,24 +84,44 @@ import env from '../env'
 export default {
   data () {
     return {
+      rol: 0,
+      user: {},
       baseu: '',
       empresas: [],
       contratos: []
     }
   },
   mounted () {
-    this.getEmpresas()
+    this.userLogueado()
     this.getContratos()
   },
   methods: {
-    getEmpresas () {
-      this.$api.get('companys').then(res => {
+    userLogueado () {
+      this.$api.get('user_logueado').then(res => {
         if (res) {
-          this.empresas = res
-          this.baseu = env.apiUrl + 'company_img/'
-          // console.log(this.empresas)
+          this.rol = res.roles[0]
+          this.user = res
+          this.getEmpresas()
         }
       })
+    },
+    getEmpresas () {
+      this.baseu = env.apiUrl + 'company_img/'
+      if (this.rol === 1) {
+        this.$api.get('companys').then(res => {
+          if (res) {
+            this.empresas = res
+            // console.log(this.empresas)
+          }
+        })
+      } else {
+        this.$api.get('companys_by_company/' + this.user.empresa).then(res => {
+          if (res) {
+            this.empresas = res
+            // console.log(this.empresas)
+          }
+        })
+      }
     },
     getContratos () {
       this.$api.get('contratos').then(res => {
