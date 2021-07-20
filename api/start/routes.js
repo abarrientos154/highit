@@ -45,6 +45,7 @@ addPrefixToGroup(
     Route.get('company_img/:file', 'UploadController.getFileByDirectoryCompany')
     Route.get('obtener_logo', 'UploadController.getLogo')
     Route.get("companys", "CompanyController.index")
+    Route.get("companys_by_company/:id", "CompanyController.companysByCompany")
     Route.get("company/:id", "CompanyController.show")
     Route.get("paises", "PaisController.index")
     Route.get('perfil_img/:file', 'UploadController.getFileByDirectoryPerfil')

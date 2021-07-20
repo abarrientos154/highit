@@ -63,7 +63,7 @@ export default {
       drawer1: true,
       drawer2: true,
       menu: [],
-      menuAdmin: [
+      menuUser01: [
         {
           icon: 'home',
           label: 'Inicio',
@@ -105,21 +105,26 @@ export default {
           ruta: ''
         }
       ],
-      menuUser: [
+      menuUser02: [
         {
           icon: 'home',
           label: 'Inicio',
           ruta: '/inicio_user02'
         },
         {
-          icon: 'person',
-          label: 'Crear usuarios',
-          ruta: '/usuarios2'
+          icon: 'location_city',
+          label: 'Crear empresa',
+          ruta: '/empresas'
         },
         {
           icon: 'category',
           label: 'Organigrama',
           ruta: '/organigrama'
+        },
+        {
+          icon: 'list_alt',
+          label: 'Contratos',
+          ruta: '/contratos'
         },
         {
           icon: 'logout',
@@ -152,9 +157,9 @@ export default {
     },
     menuRol () {
       if (this.rol === 1) {
-        this.menu = this.menuAdmin
+        this.menu = this.menuUser01
       } else if (this.rol === 2) {
-        this.menu = this.menuUser
+        this.menu = this.menuUser02
       }
     }
   }

@@ -113,6 +113,8 @@ import env from '../env'
 export default {
   data () {
     return {
+      rol: 0,
+      user: {},
       id: '',
       edit: false,
       img: null,
@@ -153,10 +155,19 @@ export default {
       this.edit = true
       this.getCompanyById()
     }
+    this.userLogueado()
     this.getPaises()
     this.getContratos()
   },
   methods: {
+    userLogueado () {
+      this.$api.get('user_logueado').then(res => {
+        if (res) {
+          this.rol = res.roles[0]
+          this.user = res
+        }
+      })
+    },
     getCompanyById () {
       this.$api.get('company/' + this.id).then(res => {
         if (res) {
@@ -201,6 +212,10 @@ export default {
         this.$q.loading.show({
           message: 'Guardando empresa...'
         })
+        this.form.status = this.rol
+        if (this.rol === 2) {
+          this.form.company_id = this.user.empresa
+        }
         const formData = new FormData()
         const files = []
         files[0] = this.PImg
