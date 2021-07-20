@@ -201,6 +201,13 @@ class UserController {
     response.send(user)
   }
 
+  async destroy2({ params, request, response }) {
+    const { id } = params;
+    const user = await User.find(id);
+    await user.delete();
+    response.send(user)
+  }
+
   async login({ auth, request }) {
     const { email, password } = request.all();
     let token = await auth.attempt(email, password)
@@ -270,7 +277,7 @@ class UserController {
     var dat = request.only(['dat'])
     dat = JSON.parse(dat.dat)
 
-    const validation = await validate(dat, User.fieldejemplo())
+    const validation = await validate(dat, User.fieldejemplo2(dat))
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else if (((await User.where({email: requestAll.email}).fetch()).toJSON()).length) {

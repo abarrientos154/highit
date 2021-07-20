@@ -12,12 +12,9 @@ class User extends Model {
     return ['name', 'last_name', 'phone', 'email', 'Dni', 'empresa']
   }
   static get fillable() {
-    return ['name','last_name','phone', 'email', 'Dni', 'password', 'empresa']
+    return ['name','last_name','phone', 'email', 'Dni', 'password', 'empresa', 'departamento', 'area' , 'cargo']
   }
-  static get fillablePerfil() {
-    return ['email','password','ciudad_id', 'dni', 'name' , 'hoteleria' , 'pais_id' , 'servicios',
-    'ubicacion', 'place', 'cambioSoloClave', 'cambioClave' , 'cambiohotel']
-  }
+
   static fieldValidationRules() {
     const rulesUser = {
       email: 'required|email',
@@ -39,7 +36,35 @@ class User extends Model {
       phone: 'required',
       empresa: 'required',
       password: 'required|string|max:256'
+
     }
+    return rulesUser
+  }
+
+  static fieldejemplo2(datos) {
+    const rulesUser = {
+      email: 'required|email',
+      Dni: 'required',
+      name: 'required',
+      last_name: 'required',
+      phone: 'required',
+      password: 'required|string|max:256',
+      /* empresa: 'string',  rol 4
+
+      departamento: 'string', rol 3
+      area: 'string',
+      cargo: 'string' */
+    }
+    if (datos.roles === 3) {
+      console.log('rol 3')
+      rulesUser.departamento = 'required'
+      rulesUser.area = 'required'
+      rulesUser.cargo = 'required'
+    } else {
+      console.log('rol 4')
+      rulesUser.empresa = 'required'
+    }
+
     return rulesUser
   }
 

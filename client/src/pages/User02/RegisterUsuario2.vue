@@ -58,15 +58,35 @@
                   </template>
                 </q-input>
 
-                <div class="q-mt-sm text-h6">Selecciona empresa</div>
-                <div class="q-mt-sm text-subtitle1">Listado de empresa</div>
-                <q-select filled v-model="form.empresa" :options="empresas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
-                :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()" />
-
                 <div class="q-mt-sm text-h6">Tipo de cuenta</div>
                 <div class="q-mt-sm text-subtitle1">Seleccione el rol que tendra el usuario</div>
                 <q-select filled v-model="form.roles" :options="roles" map-options option-label="name" emit-value option-value="value" placeholder="Consultor High"
                 :error="$v.form.roles.$error" @blur="$v.form.roles.$touch()" />
+
+                  <div v-if="form.roles === 3">
+                    <div class="q-mt-sm text-h6">Selecciona un Departamento</div>
+                    <div class="q-mt-sm text-subtitle1">Listado de Departamentos</div>
+                    <q-select @input="areasOpt(form.departamento)" filled v-model="form.departamento" :options="departamentos" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                    :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()" />
+
+                    <div class="q-mt-sm text-h6">Selecciona un Area</div>
+                    <div class="q-mt-sm text-subtitle1">Listado de Areas</div>
+                    <q-select @input="cargosOpt(form.area)" filled v-model="form.area" :options="areas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                      :error="$v.form.area.$error" @blur="$v.form.area.$touch()" />
+
+                    <div class="q-mt-sm text-h6">Selecciona un Cargo</div>
+                    <div class="q-mt-sm text-subtitle1">Listado de Cargos</div>
+                    <q-select filled v-model="form.cargo" :options="cargos" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                      :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
+                  </div>
+
+                <div v-if="form.roles === 4">
+                  <div class="q-mt-sm text-h6">Selecciona empresa</div>
+                  <div class="q-mt-sm text-subtitle1">Listado de empresa</div>
+                  <q-select filled v-model="form.empresa" :options="empresas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                  :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()" />
+                </div>
+
             </div>
             <div class="q-pa-md column items-center justify-center">
               <q-btn color="primary" text-color="white" label="Crear Usuario" @click="registrar_usuario()" style="width:40%" />
@@ -77,11 +97,12 @@
   </div>
 </template>
 <script>
-import { required, email, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
+import { required, email, sameAs, maxLength, minLength, requiredIf } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
       form: {},
+      user: {},
       perfilfile: null,
       perfilImg: null,
       password: '',
@@ -90,6 +111,9 @@ export default {
       isPwd: true,
       isPwd2: true,
       empresas: [],
+      departamentos: [],
+      areas: [],
+      cargos: [],
       roles: [
         {
           name: 'Consultor',
@@ -108,8 +132,27 @@ export default {
       phone: { required },
       last_name: { required },
       name: { required },
-      empresa: { required },
-      roles: { required }
+      empresa: {
+        required: requiredIf(function () {
+          return this.form.roles === 4
+        })
+      },
+      roles: { required },
+      departamento: {
+        required: requiredIf(function () {
+          return this.form.roles === 3
+        })
+      },
+      cargo: {
+        required: requiredIf(function () {
+          return this.form.roles === 3
+        })
+      },
+      area: {
+        required: requiredIf(function () {
+          return this.form.roles === 3
+        })
+      }
     },
     password: { required, maxLength: maxLength(256), minLength: minLength(6) },
     repeatPassword: { sameAsPassword: sameAs('password') },
@@ -117,6 +160,14 @@ export default {
 
   },
   methods: {
+    getDepartamentos () {
+      this.$api.get('departments').then(res => {
+        if (res) {
+          this.departamentos = res
+          console.log(this.departamentos, 'depas')
+        }
+      })
+    },
     changeperfilfile () {
       if (this.perfilfile) { this.perfilImg = URL.createObjectURL(this.perfilfile) }
     },
@@ -149,19 +200,44 @@ export default {
         })
       }
     },
-    async getEmpresas () {
-      this.$q.loading.show()
-      const res = await this.$api.get('companys')
-      this.$q.loading.hide()
-      if (res) {
-        this.empresas = res
-        console.log(res, 'miraa')
-      }
+    getEmpresas () {
+      this.$api.get('companys_by_company/' + this.user.empresa).then(res => {
+        if (res) {
+          this.empresas = res
+          // console.log(this.empresas)
+        }
+      })
+    },
+    userLogueado () {
+      this.$api.get('user_logueado').then(res => {
+        if (res) {
+          this.rol = res.roles[0]
+          this.user = res
+          this.getEmpresas()
+        }
+      })
+    },
+    areasOpt (id) {
+      this.$api.get('areas/' + id).then(res => {
+        if (res) {
+          this.areas = res
+          console.log(this.areas, 'areasss')
+        }
+      })
+    },
+    cargosOpt (id) {
+      this.$api.get('cargos/' + id).then(res => {
+        if (res) {
+          this.cargos = res
+          console.log(this.cargos, 'cargos')
+        }
+      })
     }
   },
 
   mounted () {
-    this.getEmpresas()
+    this.userLogueado()
+    this.getDepartamentos()
   }
 }
 </script>
