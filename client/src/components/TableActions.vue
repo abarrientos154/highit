@@ -6,7 +6,7 @@
       </div>
     </q-card-section>
     <q-card-section class="q-pa-none">
-      <q-table :data="data" :columns="columns">
+      <q-table :data="data" no-data-label="No hay registros" rows-per-page-label="Datos por pagina" :columns="columns">
         <template v-slot:body-cell-Action="props">
           <q-td :props="props">
             <q-btn v-if="editarBtn" icon="edit" size="sm" flat dense @click="editar(props.row._id)" />

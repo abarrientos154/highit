@@ -22,7 +22,7 @@
 
             <div class="q-mt-md text-h6 text-grey">Selecciona un contrato disponible para agregar SLA´S</div>
             <q-card style="width:100%" v-if="tabla1">
-              <Tabla no-data-label="sin registros" titulo="" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :btnNew="false" />
+              <Tabla titulo="" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :btnNew="false" />
             </q-card>
           </div>
           <div class="q-mt-md text-h5 text-bold">Selecciona el contrato</div>
@@ -94,7 +94,7 @@
 </template>
 <script>
 import { required } from 'vuelidate/lib/validators'
-import Tabla from '../../components/TableActions'
+import Tabla from '../components/TableActions'
 export default {
   components: {
     Tabla
