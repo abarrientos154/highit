@@ -233,9 +233,6 @@ export default {
         this.formDepartment.empresa_id = this.user.empresa
         this.formDepartment.cantUser = 0
         if (!this.$v.formDepartment.$error) {
-          this.$q.loading.show({
-            message: 'Guardando departamento...'
-          })
           this.$api.post('register_department', this.formDepartment).then(res => {
             if (res) {
               this.$q.notify({
@@ -245,7 +242,6 @@ export default {
               this.getDepartamentos()
               // this.$router.go(0)
             }
-            this.$q.loading.hide()
           })
         } else {
           this.$q.notify({
@@ -257,9 +253,6 @@ export default {
         this.$v.formArea.$touch()
         this.formArea.cantUser = 0
         if (!this.$v.formArea.$error) {
-          this.$q.loading.show({
-            message: 'Guardando area...'
-          })
           this.$api.post('register_area', this.formArea).then(res => {
             if (res) {
               this.$q.notify({
@@ -269,7 +262,6 @@ export default {
               this.getDepartamentos()
               // this.$router.go(0)
             }
-            this.$q.loading.hide()
           })
         } else {
           this.$q.notify({
@@ -281,9 +273,6 @@ export default {
         this.$v.formCharge.$touch()
         this.formCharge.cantUser = 0
         if (!this.$v.formCharge.$error) {
-          this.$q.loading.show({
-            message: 'Guardando cargo...'
-          })
           this.$api.post('register_charge', this.formCharge).then(res => {
             if (res) {
               this.$q.notify({
@@ -293,7 +282,6 @@ export default {
               this.getDepartamentos()
               // this.$router.go(0)
             }
-            this.$q.loading.hide()
           })
         } else {
           this.$q.notify({
