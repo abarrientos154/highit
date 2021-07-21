@@ -139,7 +139,9 @@ export default {
             color: 'positive'
           })
           this.getRecord()
-          this.$emit('actualizarPadre')
+          if (this.route === 'contratos' || this.route === 'contratos_by_company/') {
+            this.$emit('actualizarPadre')
+          }
         }
       })
     },
@@ -152,7 +154,9 @@ export default {
           })
           this.iEditContrato = ''
           this.getRecord()
-          this.$emit('actualizarPadre')
+          if (this.route === 'contratos' || this.route === 'contratos_by_company/') {
+            this.$emit('actualizarPadre')
+          }
         }
       })
     }

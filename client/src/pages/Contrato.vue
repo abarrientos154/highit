@@ -60,7 +60,7 @@
           </div>
           <div class="q-mt-md text-h5 text-bold">Listados de SLA´s</div>
           <q-card style="width:100%">
-            <Tabla titulo="Listados de SLAs creados" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :btnNew="false" />
+            <!-- <Tabla titulo="Listados de SLAs creados" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :btnNew="false" /> -->
               <q-list bordered separator>
                 <q-item v-for="(item, index) in lista2" :key="index" class="text-grey text-bold">
                   <div class="row justify-center items-center" style="width: 100%" >
@@ -143,7 +143,7 @@ export default {
     color: { required }
   },
   mounted () {
-    // this.obtener_Sla()
+    this.obtener_Sla()
     this.userLogueado()
   },
   methods: {
@@ -211,15 +211,15 @@ export default {
           color: 'negative'
         })
       }
-    }, /*
+    },
     obtener_Sla () {
-      this.$api.get('slas').then(res => {
+      this.$api.get('sla').then(res => {
         if (res) {
           this.lista2 = res
           console.log(this.lista2, 'pendiente')
         }
       })
-    }, */
+    },
     eliminar_Sla (id) {
       this.$api.delete('sla/' + id).then(res => {
         if (res) {
