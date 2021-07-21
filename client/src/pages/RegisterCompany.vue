@@ -33,11 +33,35 @@
         </div>
         <div>
           <div>Fecha inicio de contrato</div>
-          <q-input dense outlined filled v-model="form.dateBegin" type="date" error-message="Este campo es requerido" :error="$v.form.dateBegin.$error" @blur="$v.form.dateBegin.$touch()"/>
+          <q-input dense outlined filled readonly v-model="form.dateBegin" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateBegin.$error" @blur="$v.form.dateBegin.$touch()" @click="$refs.qDateProxy.show()">
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                  <q-date v-model="form.dateBegin" mask="DD/MM/YYYY">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Cerrar" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
         </div>
         <div>
           <div>Fecha termino de contrato</div>
-          <q-input dense outlined filled v-model="form.dateEnd" type="date" error-message="Este campo es requerido" :error="$v.form.dateEnd.$error" @blur="$v.form.dateEnd.$touch()"/>
+          <q-input dense outlined filled readonly v-model="form.dateEnd" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateEnd.$error" @blur="$v.form.dateEnd.$touch()" @click="$refs.qDateProxy.show()">
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                    <q-date v-model="form.dateEnd" mask="DD/MM/YYYY">
+                      <div class="row items-center justify-end">
+                        <q-btn v-close-popup label="Cerrar" color="primary" flat />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+          </q-input>
         </div>
       </q-list>
     </div>

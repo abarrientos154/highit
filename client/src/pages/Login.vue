@@ -72,6 +72,11 @@ export default {
               this.$router.push('/inicio_user01')
             } else if (this.user.roles[0] === 2) {
               this.$router.push('/inicio_user02')
+            } else if (this.user.roles[0] === 3) {
+              // Ruta al home del consultor
+              console.log('Este usuario es un consultor')
+            } else if (this.user.roles[0] === 4) {
+              this.$router.push('/inicio_cliente')
             }
           } else {
             console.log('error de ususario')
