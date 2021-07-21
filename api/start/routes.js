@@ -43,7 +43,7 @@ addPrefixToGroup(
     Route.post("user_by_rol", "UserController.userByRol") // metodo para obtener usuarios segun el rol
     Route.get("user_by_id/:id", "UserController.userById") // metodo para obtener informacion del usuario por id del mismo
     Route.get("paises", "PaisController.index")
-    
+
     Route.get('obtener_logo', 'UploadController.getLogo')
     Route.get('company_img/:file', 'UploadController.getFileByDirectoryCompany')
     Route.get('perfil_img/:file', 'UploadController.getFileByDirectoryPerfil')
@@ -93,6 +93,9 @@ addPrefixToGroup(
     Route.get('charges', 'ChargeController.index')
     Route.post('register_charge', 'ChargeController.store')
     Route.delete("delete_charge/:id", "ChargeController.destroy")
+
+    Route.post("categoria", "CategoriaController.store")
+    Route.get("categorias", "CategoriaController.index")
 
     Route.get("companys", "CompanyController.index")
     Route.get("companys_by_company/:id", "CompanyController.companysByCompany")

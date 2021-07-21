@@ -122,6 +122,11 @@ export default {
           ruta: '/empresas'
         },
         {
+          icon: 'location_city',
+          label: 'Crear Categorias',
+          ruta: '/categorias'
+        },
+        {
           icon: 'category',
           label: 'Organigrama',
           ruta: '/organigrama'
