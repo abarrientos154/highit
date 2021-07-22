@@ -66,50 +66,30 @@ export default {
   },
   data () {
     return {
-      rol: 0,
-      user: {},
       data: [],
       showModalEditar: false,
       iEditContrato: '',
       id: ''
     }
   },
-  mounted () {
-    this.userLogueado()
+  async mounted () {
+    await this.getRecord()
   },
   methods: {
-    userLogueado () {
-      this.$api.get('user_logueado').then(res => {
-        if (res) {
-          this.rol = res.roles[0]
-          this.user = res
-          this.getRecord()
-          // console.log(this.user)
-        }
-      })
-    },
     editar (id) {
-      if (this.route === 'contratos' || this.route === 'contratos_by_company/') {
+      if (this.route === 'contratos') {
         this.showModalEditar = true
         this.id = id
       } else {
         this.$router.push(this.$route.path + '/form/' + id)
       }
     },
-    getRecord () {
-      if (this.rol === 1) {
-        this.$api.get('contratos').then(res => {
-          if (res) {
-            this.data = res
-          }
-        })
-      } else {
-        this.$api.get('contratos_by_company/' + this.user.empresa).then(res => {
-          if (res) {
-            this.data = res
-          }
-        })
-      }
+    async getRecord () {
+      await this.$api.get(this.route).then(res => {
+        if (res) {
+          this.data = res
+        }
+      })
     },
     eliminarConfirm (id) {
       this.$q.dialog({
@@ -132,14 +112,14 @@ export default {
       })
     },
     eliminar (id) {
-      this.$api.delete('contratos/' + id).then(res => {
+      this.$api.delete(this.route + '/' + id).then(res => {
         if (res) {
           this.$q.notify({
             message: 'Eliminado Correctamente',
             color: 'positive'
           })
           this.getRecord()
-          if (this.route === 'contratos' || this.route === 'contratos_by_company/') {
+          if (this.route === 'contratos') {
             this.$emit('actualizarPadre')
           }
         }
@@ -154,9 +134,7 @@ export default {
           })
           this.iEditContrato = ''
           this.getRecord()
-          if (this.route === 'contratos' || this.route === 'contratos_by_company/') {
-            this.$emit('actualizarPadre')
-          }
+          this.$emit('actualizarPadre')
         }
       })
     }
@@ -165,5 +143,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

@@ -22,7 +22,7 @@
 
             <div class="q-mt-md text-h6 text-grey">Selecciona un contrato disponible para agregar SLA´S</div>
             <q-card style="width:100%" v-if="tabla1">
-              <Tabla no-data-label="sin registros" titulo="" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" :route="this.rol === 1 ? 'contratos' : 'contratos_by_company/'" :btnNew="false" />
+              <Tabla no-data-label="sin registros" titulo="" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :btnNew="false" />
             </q-card>
           </div>
           <div class="q-mt-md text-h5 text-bold">Selecciona el contrato</div>
@@ -60,7 +60,7 @@
           </div>
           <div class="q-mt-md text-h5 text-bold">Listados de SLA´s</div>
           <q-card style="width:100%">
-            <!-- <Tabla titulo="Listados de SLAs creados" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :btnNew="false" /> -->
+            <Tabla titulo="Listados de SLAs creados" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :btnNew="false" />
               <q-list bordered separator>
                 <q-item v-for="(item, index) in lista2" :key="index" class="text-grey text-bold">
                   <div class="row justify-center items-center" style="width: 100%" >
@@ -101,8 +101,6 @@ export default {
   },
   data () {
     return {
-      rol: 0,
-      user: {},
       tabla1: true,
       id_contrato: '',
       form: {
@@ -120,7 +118,6 @@ export default {
         { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'left' },
         { name: 'tiempo', field: 'tiempo', label: 'Tiempo', align: 'left' },
         { name: 'color', field: 'color', label: 'Color', align: 'left' }
-
       ],
       lista: [],
       lista2: [],
@@ -143,27 +140,13 @@ export default {
     color: { required }
   },
   mounted () {
-    this.obtener_Sla()
-    this.userLogueado()
+    // this.obtener_Sla()
+    this.obtener_contratos()
   },
   methods: {
-    userLogueado () {
-      this.$api.get('user_logueado').then(res => {
-        if (res) {
-          this.rol = res.roles[0]
-          this.user = res
-          this.obtener_contratos()
-          // console.log(this.user)
-        }
-      })
-    },
     guardar_contrato () {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
-        this.form.status = this.rol
-        if (this.rol === 2) {
-          this.form.company_id = this.user.empresa
-        }
         this.$api.post('contrato', this.form).then(res => {
           if (res) {
             this.$q.notify({
@@ -198,7 +181,6 @@ export default {
             this.form2 = {
               contrato: ''
             }
-            this.obtener_Sla()
             this.selecBoton = ''
             this.color = ''
             this.$v.form2.$reset()
@@ -212,15 +194,15 @@ export default {
           color: 'negative'
         })
       }
-    },
+    }, /*
     obtener_Sla () {
-      this.$api.get('sla').then(res => {
+      this.$api.get('slas').then(res => {
         if (res) {
           this.lista2 = res
           console.log(this.lista2, 'pendiente')
         }
       })
-    },
+    }, */
     eliminar_Sla (id) {
       this.$api.delete('sla/' + id).then(res => {
         if (res) {
@@ -233,23 +215,11 @@ export default {
       })
     },
     obtener_contratos () {
-      if (this.rol === 1) {
-        this.$api.get('contratos').then(res => {
-          if (res) {
-            this.lista = res
-            this.$refs.latabla.getRecord()
-            console.log(this.lista)
-          }
-        })
-      } else {
-        this.$api.get('contratos_by_company/' + this.user.empresa).then(res => {
-          if (res) {
-            this.lista = res
-            this.$refs.latabla.getRecord()
-            console.log(this.lista)
-          }
-        })
-      }
+      this.$api.get('contratos').then(res => {
+        if (res) {
+          this.lista = res
+        }
+      })
     },
     mostrarBtn () {
       if (this.selecBoton === '') {
@@ -266,7 +236,6 @@ export default {
         this.selecBoton = btn
       }
     }
-
   }
 }
 </script>
