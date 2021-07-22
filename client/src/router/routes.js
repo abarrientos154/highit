@@ -15,8 +15,9 @@ const routes = [
       { path: '/usuarios2', component: () => import('pages/User02/ListadoUsuario2.vue') },
       { path: '/usuarios2/form', component: () => import('pages/User02/RegisterUsuario2.vue') },
       // Consultor
+      { path: '/inicio_consultor', component: () => import('pages/Consultor/Home.vue') },
       // Cliente
-      { path: '/inicio_cliente', component: () => import('pages/Home.vue') },
+      { path: '/inicio_cliente', component: () => import('pages/Cliente/Home.vue') },
       // Generales
       { path: '/contratos', component: () => import('pages/Contrato.vue') },
       { path: '/empresas', component: () => import('pages/Companys.vue') },

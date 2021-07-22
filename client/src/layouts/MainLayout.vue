@@ -11,7 +11,9 @@
       >
         <q-scroll-area class="fit">
           <div class="row justify-center q-py-md">
-            <img :src="rol !== 1 ? baseu : 'noimg.png'" style="width: 70%; border-radius: 100%" />
+            <q-avatar size="120px">
+              <q-img :src="rol !== 1 ? baseu : 'noimg.png'" style="height: 100%;"/>
+            </q-avatar>
           </div>
           <div class="text-center text-grey-8 text-subtitle1">¿Qué quieres hacer?</div>
 
@@ -135,11 +137,11 @@
                 </div>
                 <div>
                   <div class="text-caption text-grey-8">Selecciona prioridad</div>
-                  <q-select dense filled v-model="form.priority" :options="slas" map-options option-label="name" emit-value option-value="_id" :error="$v.form.priority.$error" @blur="$v.form.priority.$touch()"/>
+                  <q-select dense filled v-model="form.priority" :options="slas" map-options option-label="nombre" emit-value option-value="_id" :error="$v.form.priority.$error" @blur="$v.form.priority.$touch()"/>
                 </div>
                 <div>
                   <div class="text-caption text-grey-8">Categoria</div>
-                  <q-select dense filled v-model="form.category" :options="categorias" map-options option-label="name" emit-value option-value="_id" :error="$v.form.category.$error" @blur="$v.form.category.$touch()"/>
+                  <q-select dense filled v-model="form.category" :options="categorias" map-options option-label="nombre" emit-value option-value="_id" :error="$v.form.category.$error" @blur="$v.form.category.$touch()"/>
                 </div>
                 <div>
                   <div class="text-caption text-grey-8">Agenda la atencion</div>
@@ -147,11 +149,7 @@
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
                         <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                          <q-date v-model="form.date" mask="DD/MM/YYYY">
-                            <div class="row items-center justify-end">
-                              <q-btn v-close-popup label="Cerrar" color="primary" flat />
-                            </div>
-                          </q-date>
+                          <q-date v-model="form.date" mask="DD/MM/YYYY"/>
                         </q-popup-proxy>
                       </q-icon>
                     </template>
@@ -168,7 +166,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view ref="modulo"/>
     </q-page-container>
 
   </q-layout>
@@ -346,7 +344,7 @@ export default {
       this.$api.get('sla').then(res => {
         if (res) {
           this.slas = res
-          console.log(this.slas, 'slas')
+          // console.log(this.slas, 'slas')
         }
       })
     },
@@ -354,7 +352,7 @@ export default {
       this.$api.get('categorias').then(res => {
         if (res) {
           this.categorias = res
-          console.log(this.categorias, 'categorias')
+          // console.log(this.categorias, 'categorias')
         }
       })
     },
@@ -362,7 +360,7 @@ export default {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
         this.form.user_id = this.user._id
-        this.form.compay_id = this.user.empresa
+        this.form.company_id = this.user.empresa
         this.form.status = 0
         this.$api.post('register_solicitud', this.form).then(res => {
           if (res) {
@@ -371,7 +369,9 @@ export default {
               color: 'positive'
             })
             this.form = {}
+            this.slt = false
             this.$v.form.$reset()
+            this.$refs.modulo.userLogueado()
           }
         })
       } else {

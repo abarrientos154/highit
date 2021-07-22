@@ -35,24 +35,24 @@
       </div>
       <q-scroll-area horizontal style="height: 210px;">
         <div class="row no-wrap full-width">
-          <q-card class="q-mx-sm" v-for="(item, index) in 4" :key="index" style="width: 425px;">
+          <q-card class="q-mx-sm" v-for="(item, index) in solicitudes" :key="index" style="width: 425px;">
             <div class="column items-end">
-              <div class="text-caption text-white q-px-lg bg-red q-mr-md row items-center" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{'Nombre SLA 01'}}</div>
+              <div :class="`text-caption text-white q-px-lg bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-                <q-img :src="''" class="full-height"/>
+                <q-img :src="baseu" class="full-height"/>
               </q-avatar>
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                  <div class="text-grey" style="font-size: 10px;">{{'dd/mm/aaaa'}}</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
                 </div>
-                <div class="text-subtitle1 text-bold">{{'Nombre Empresa'}}</div>
+                <div class="text-subtitle1 text-bold">{{company.name}}</div>
                 <div>
                   <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
                   <q-scroll-area style="height: 60px;">
-                    <div class="text-grey" style="font-size: 10px;">{{'Descripcion'}}</div>
+                    <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
                   </q-scroll-area>
                 </div>
               </div>
@@ -68,24 +68,24 @@
       </div>
       <q-scroll-area horizontal style="height: 210px;">
         <div class="row no-wrap full-width">
-          <q-card class="q-mx-sm" v-for="(item, index) in 4" :key="index" style="width: 425px;">
+          <q-card class="q-mx-sm" v-for="(item, index) in sltProgress" :key="index" style="width: 425px;">
             <div class="column items-end">
-              <div class="text-caption text-white q-px-lg bg-blue-5 q-mr-md row items-center" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{'Nombre SLA 01'}}</div>
+              <div :class="`text-caption text-white q-px-lg bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-                <q-img :src="''" class="full-height"/>
+                <q-img :src="baseu" class="full-height"/>
               </q-avatar>
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                  <div class="text-grey" style="font-size: 10px;">{{'dd/mm/aaaa'}}</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
                 </div>
-                <div class="text-subtitle1 text-bold">{{'Nombre Empresa'}}</div>
+                <div class="text-subtitle1 text-bold">{{company.name}}</div>
                 <div>
                   <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
                   <q-scroll-area style="height: 60px;">
-                    <div class="text-grey" style="font-size: 10px;">{{'Descripcion'}}</div>
+                    <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
                   </q-scroll-area>
                 </div>
               </div>
@@ -108,9 +108,9 @@
             </div>
             <div class="column items-center" style="margin-top: -10px">
               <q-avatar class="bg-secondary" size="75px">
-                <q-img :src="''" class="full-height"/>
+                <q-img :src="baseu" class="full-height"/>
               </q-avatar>
-              <div class="text-center text-subtitle1 text-bold">{{'Nombre Empresa'}}</div>
+              <div class="text-center text-subtitle1 text-bold">{{company.name}}</div>
             </div>
             <div class="q-pa-md">
               <div>
@@ -154,19 +154,24 @@
         </div>
       </q-list>
     </div>
-    <div class="column items-center">
+    <div v-if="sltHistory.length > 6" class="column items-center">
       <q-btn class="text-white q-py-xs" color="primary" :label="ver ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas()" no-caps/>
     </div>
   </q-scroll-area>
 </template>
 
 <script>
+import env from '../../env'
 export default {
   data () {
     return {
+      baseu: '',
       user: {},
+      company: {},
+      solicitudes: [],
+      sltProgress: [],
       history: [],
-      historySlt: [],
+      sltHistory: [],
       ver: false
     }
   },
@@ -178,25 +183,60 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          this.getHistorySlt()
+          this.getSlAs()
+          this.getCompany()
+          this.getSltUser()
+          this.getSltHistory()
         }
       })
     },
-    getHistorySlt () {
-      this.$api.get('' + this.user.empresa).then(res => {
+    getCompany () {
+      this.$api.get('company/' + this.user.empresa).then(res => {
+        if (res) {
+          this.company = res
+          this.baseu = env.apiUrl + 'company_img/' + this.company._id
+        }
+      })
+    },
+    getSlAs () {
+      this.$api.get('sla').then(res => {
+        if (res) {
+          this.slas = res
+          // console.log(this.slas, 'slas')
+        }
+      })
+    },
+    getSltUser () {
+      for (var i = 0; i < 3; i++) {
+        this.$api.put('solicitudes_user/' + this.user._id, i === 0 ? { status: i } : i === 1 || i === 2 ? { status: i } : {}).then(res => {
+          if (res) {
+            // console.log(res, 'resresresresres')
+            if (res.length && res[0].status === 0) {
+              this.solicitudes = res
+            } else if (res.length && (res[0].status === 1 || res[0].status === 2)) {
+              this.sltProgress.push(res)
+              // console.log(this.sltProgress, 'sltProgress')
+            }
+          }
+        })
+      }
+    },
+    getSltHistory () {
+      this.$api.put('solicitudes_company/' + this.user.empresa, { status: 3 }).then(res => {
         if (res) {
           this.historySlt = res
           this.history = this.historySlt.slice(0, 6)
-          console.log(this.historySlt, 'historySlt')
+          // console.log(this.historySlt, 'historySlt')
         }
       })
     },
     verMas () {
       if (this.ver) {
-        this.history = this.historySlt
+        this.history = this.sltHistory
       } else {
-        this.history = this.historySlt.slice(0, 6)
+        this.history = this.sltHistory.slice(0, 6)
       }
+      this.ver = !this.ver
     }
   }
 }
