@@ -198,12 +198,12 @@ export default {
             this.form2 = {
               contrato: ''
             }
+            this.obtener_Sla()
             this.selecBoton = ''
             this.color = ''
             this.$v.form2.$reset()
             this.$v.color.$reset()
             this.$refs.latabla2.getRecord()
-            this.obtener_Sla()
           }
         })
       } else {
