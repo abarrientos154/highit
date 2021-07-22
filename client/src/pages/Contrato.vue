@@ -186,6 +186,10 @@ export default {
       this.$v.color.$touch()
       if (!this.$v.form2.$error && !this.$v.color.$error && this.form2.contrato !== '') {
         this.form2.color = this.color
+        this.form2.status = this.rol
+        if (this.rol === 2) {
+          this.form2.company_id = this.user.empresa
+        }
         this.$api.post('sla', this.form2).then(res => {
           if (res) {
             this.$q.notify({

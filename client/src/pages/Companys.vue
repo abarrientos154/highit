@@ -100,8 +100,8 @@ export default {
         if (res) {
           this.rol = res.roles[0]
           this.user = res
-          this.getEmpresas()
           this.getContratos()
+          this.getEmpresas()
         }
       })
     },

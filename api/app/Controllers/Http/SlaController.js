@@ -21,8 +21,14 @@ class SlaController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-   async index ({ request, response, view }) {
-    let datos = (await Sla.all()).toJSON()
+   async index ({ params, request, response, view, auth }) {
+    const user = (await auth.getUser()).toJSON()
+    let datos = []
+    if (user.roles[0] === 1) {
+      datos = (await Sla.query().where({status: 1}).fetch()).toJSON()
+    } else {
+      datos = (await Sla.query().where({company_id: user.empresa}).fetch()).toJSON()
+    }
     let formatearFecha = datos.map(v => {
       return {
         ...v,
@@ -60,7 +66,7 @@ class SlaController {
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else {
-      let body = request.only(Sla.fillable)
+      let body = requestAll
       const nuevo = await Sla.create(body)
       response.send(nuevo)
     }
