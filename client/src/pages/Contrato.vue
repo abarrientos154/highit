@@ -203,6 +203,7 @@ export default {
             this.$v.form2.$reset()
             this.$v.color.$reset()
             this.$refs.latabla2.getRecord()
+            this.obtener_Sla()
           }
         })
       } else {
