@@ -27,6 +27,18 @@ class SolicitudController {
    */
   async index ({ request, response, view }) {
   }
+  
+  async solicitudesUser ({ params, request, response, view }) {
+    let dat = request.all()
+    let solicitudes = (await Solicitud.query().where({ status: dat.status, user_id: params.id }).fetch()).toJSON()
+    response.send(solicitudes)
+  }
+  
+  async solicitudesCompany ({ params, request, response, view }) {
+    let dat = request.all()
+    let solicitudes = (await Solicitud.query().where({ status: dat.status, company_id: params.id }).fetch()).toJSON()
+    response.send(solicitudes)
+  }
 
   /**
    * Render a form to be used for creating a new Solicitud.
