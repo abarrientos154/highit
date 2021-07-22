@@ -93,7 +93,6 @@ export default {
   },
   mounted () {
     this.userLogueado()
-    this.getContratos()
   },
   methods: {
     userLogueado () {
@@ -102,6 +101,7 @@ export default {
           this.rol = res.roles[0]
           this.user = res
           this.getEmpresas()
+          this.getContratos()
         }
       })
     },
@@ -124,12 +124,19 @@ export default {
       }
     },
     getContratos () {
-      this.$api.get('contratos').then(res => {
-        if (res) {
-          this.contratos = res
-          // console.log(this.contratos)
-        }
-      })
+      if (this.rol === 1) {
+        this.$api.get('contratos').then(res => {
+          if (res) {
+            this.contratos = res
+          }
+        })
+      } else {
+        this.$api.get('contratos_by_company/' + this.user.empresa).then(res => {
+          if (res) {
+            this.contratos = res
+          }
+        })
+      }
     },
     deleteCompany (id) {
       this.$q.dialog({
