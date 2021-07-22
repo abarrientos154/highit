@@ -26,13 +26,17 @@
                   :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
 
               <div class="text-h5 text-bold">Creacion de categorias</div>
-              <div class="q-mt-md text-subtitle1">Selecciona el departamento</div>
+              <div class="q-mt-md text-subtitle1">Nombre de categoria</div>
               <q-input filled v-model="form.nombre" placeholder="Ingresa el nombre de la categoria"
                error-message="Requerido" :error="$v.form.nombre.$error" @blur="$v.form.nombre.$touch()"/>
 
                 <div class="q-pa-md column items-center justify-center">
                   <q-btn color="primary" text-color="white" label="Crear nueva categoria" @click="guardar_categoria()" style="width:40%" />
                 </div>
+            </q-card>
+            <q-card flat style="width:100%">
+              <div class="q-mt-md text-h5 text-bold">Categorias</div>
+              <Tabla titulo="Listado de Categorias" ref="latabla3" :editarBtn="false" :columns="column" route="categorias" :btnNew="false" />
             </q-card>
           </div>
       </div>
@@ -42,14 +46,21 @@
 </template>
 <script>
 import { required } from 'vuelidate/lib/validators'
+import Tabla from '../../components/TableActions'
 export default {
+  components: { Tabla },
   data () {
     return {
       form: {},
       departamentos: {},
       lista: {},
       areas: {},
-      cargos: {}
+      cargos: {},
+      column: [
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' },
+        { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'left' },
+        { name: 'departamento', field: row => row.Departamento.name, label: 'Departamento Asociado', align: 'left' }
+      ]
     }
   },
   validations: {
@@ -76,9 +87,14 @@ export default {
             })
             this.form.departamento = ''
             this.form.nombre = ''
+            this.form.area = ''
+            this.form.cargo = ''
             this.$v.form.departamento.$reset()
             this.$v.form.nombre.$reset()
+            this.$v.form.area.$reset()
+            this.$v.form.cargo.$reset()
             this.obtener_categorias()
+            this.$refs.latabla3.getRecord()
           }
         })
       } else {

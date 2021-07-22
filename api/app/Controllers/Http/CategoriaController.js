@@ -22,7 +22,7 @@ class CategoriaController {
    * @param {View} ctx.view
    */
    async index ({ request, response, view }) {
-    let datos = (await Categoria.all()).toJSON()
+    let datos = (await Categoria.query().where({}).with('Area').with('Departamento').with('Cargo').fetch()).toJSON()
     response.send(datos)
   }
 

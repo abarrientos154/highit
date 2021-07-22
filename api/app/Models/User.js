@@ -49,6 +49,7 @@ class User extends Model {
       last_name: 'required',
       phone: 'required',
       password: 'required|string|max:256',
+      empresa_creador:'string'
       /* empresa: 'string',  rol 4
 
       departamento: 'string', rol 3
