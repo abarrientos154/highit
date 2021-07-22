@@ -22,7 +22,7 @@
 
             <div class="q-mt-md text-h6 text-grey">Selecciona un contrato disponible para agregar SLA´S</div>
             <q-card style="width:100%" v-if="tabla1">
-              <Tabla no-data-label="sin registros" titulo="" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :btnNew="false" />
+              <Tabla no-data-label="sin registros" titulo="" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" :route="rol === 1 ? 'contratos' : `contratos_by_company/${this.user.empresa}`" :btnNew="false" />
             </q-card>
           </div>
           <div class="q-mt-md text-h5 text-bold">Selecciona el contrato</div>
@@ -101,6 +101,8 @@ export default {
   },
   data () {
     return {
+      rol: null,
+      user: {},
       tabla1: true,
       id_contrato: '',
       form: {
@@ -141,12 +143,25 @@ export default {
   },
   mounted () {
     // this.obtener_Sla()
-    this.obtener_contratos()
+    this.userLogueado()
   },
   methods: {
+    userLogueado () {
+      this.$api.get('user_logueado').then(res => {
+        if (res) {
+          this.rol = res.roles[0]
+          this.user = res
+          this.obtener_contratos()
+        }
+      })
+    },
     guardar_contrato () {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
+        this.form.status = this.rol
+        if (this.rol === 2) {
+          this.form.company_id = this.user.empresa
+        }
         this.$api.post('contrato', this.form).then(res => {
           if (res) {
             this.$q.notify({
@@ -215,11 +230,21 @@ export default {
       })
     },
     obtener_contratos () {
-      this.$api.get('contratos').then(res => {
-        if (res) {
-          this.lista = res
-        }
-      })
+      if (this.rol === 1) {
+        this.$api.get('contratos').then(res => {
+          if (res) {
+            this.lista = res
+            this.$refs.latabla.getRecord()
+          }
+        })
+      } else {
+        this.$api.get('contratos_by_company/' + this.user.empresa).then(res => {
+          if (res) {
+            this.lista = res
+            this.$refs.latabla.getRecord()
+          }
+        })
+      }
     },
     mostrarBtn () {
       if (this.selecBoton === '') {

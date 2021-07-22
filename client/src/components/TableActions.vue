@@ -66,6 +66,7 @@ export default {
   },
   data () {
     return {
+      user: {},
       data: [],
       showModalEditar: false,
       iEditContrato: '',
@@ -73,11 +74,20 @@ export default {
     }
   },
   async mounted () {
+    this.userLogueado()
     await this.getRecord()
   },
   methods: {
+    userLogueado () {
+      this.$api.get('user_logueado').then(res => {
+        if (res) {
+          this.user = res
+          // console.log(this.user)
+        }
+      })
+    },
     editar (id) {
-      if (this.route === 'contratos') {
+      if (this.route === 'contratos' || this.route === `contratos_by_company/${this.user.empresa}`) {
         this.showModalEditar = true
         this.id = id
       } else {
@@ -119,7 +129,7 @@ export default {
             color: 'positive'
           })
           this.getRecord()
-          if (this.route === 'contratos') {
+          if (this.route === 'contratos' || this.route === `contratos_by_company/${this.user.empresa}`) {
             this.$emit('actualizarPadre')
           }
         }
