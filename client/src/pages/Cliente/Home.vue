@@ -224,9 +224,9 @@ export default {
     getSltHistory () {
       this.$api.put('solicitudes_company/' + this.user.empresa, { status: 3 }).then(res => {
         if (res) {
-          this.historySlt = res
-          this.history = this.historySlt.slice(0, 6)
-          // console.log(this.historySlt, 'historySlt')
+          this.sltHistory = res
+          this.history = this.sltHistory.slice(0, 6)
+          // console.log(this.sltHistory, 'historySlt')
         }
       })
     },
