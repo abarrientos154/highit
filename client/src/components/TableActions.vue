@@ -62,6 +62,10 @@ export default {
     editarBtn: {
       type: Boolean,
       default: true
+    },
+    filter: {
+      type: String,
+      default: null
     }
   },
   data () {
@@ -71,6 +75,15 @@ export default {
       showModalEditar: false,
       iEditContrato: '',
       id: ''
+    }
+  },
+  watch: {
+    async filter (val) {
+      if (!this.filter) {
+        this.data = await this.$api.get(this.route)
+      } else {
+        this.data = await this.$api.get(this.filter)
+      }
     }
   },
   async mounted () {
@@ -95,11 +108,15 @@ export default {
       }
     },
     async getRecord () {
-      await this.$api.get(this.route).then(res => {
-        if (res) {
-          this.data = res
-        }
-      })
+      let res = []
+      if (!this.filter) {
+        res = await this.$api.get(this.route)
+      } else {
+        res = await this.$api.get(this.filter)
+      }
+      if (res) {
+        this.data = res
+      }
     },
     eliminarConfirm (id) {
       this.$q.dialog({

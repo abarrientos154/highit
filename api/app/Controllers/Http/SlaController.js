@@ -9,6 +9,7 @@
  */
  const Sla = use("App/Models/Sla")
  const { validate } = use("Validator")
+const Request = require('@adonisjs/framework/src/Request')
  const moment = require('moment')
 
 class SlaController {
@@ -38,6 +39,20 @@ class SlaController {
       }
     })
     response.send(formatearFecha)
+  }
+
+  async filterByContracts ({ params, request, response, view, auth }) {
+    console.log(request.get(), 'request')
+    let datos = (await Sla.query().where(request.get()).fetch()).toJSON()
+    let formatData = datos.map(v => {
+      return {
+        ...v,
+        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : 'green',
+        fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
+
+      }
+    })
+    response.send(formatData)
   }
 
   /**

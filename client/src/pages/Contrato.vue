@@ -60,7 +60,9 @@
           </div>
           <div class="q-mt-md text-h5 text-bold">Listados de SLA´s</div>
           <q-card style="width:100%">
-            <Tabla titulo="Listados de SLAs creados" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :btnNew="false" />
+            <Tabla titulo="Listados de SLAs creados" ref="latabla2" :columns="column2" route="sla" :editarBtn="false"
+              :btnNew="false" :filter="filterBy"
+            />
               <q-list bordered separator>
                 <q-item v-for="(item, index) in lista2" :key="index" class="text-grey text-bold">
                   <div class="row justify-center items-center" style="width: 100%" >
@@ -101,6 +103,7 @@ export default {
   },
   data () {
     return {
+      filterBy: null,
       rol: null,
       user: {},
       tabla1: true,
@@ -202,6 +205,7 @@ export default {
             }
             this.selecBoton = ''
             this.color = ''
+            this.filterBy = null
             this.$v.form2.$reset()
             this.$v.color.$reset()
             this.$refs.latabla2.getRecord()
@@ -259,6 +263,7 @@ export default {
     },
     Botonselec (btn, text) {
       this.form2.contrato = btn._id
+      this.filterBy = 'sla_filter?contrato=' + btn._id
       console.log(btn, 'boton')
       console.log(this.form2.contrato, 'contrato')
       if (text === 'cat') {
