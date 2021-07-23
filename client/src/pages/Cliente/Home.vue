@@ -183,10 +183,7 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          this.getSlAs()
           this.getCompany()
-          this.getSltUser()
-          this.getSltHistory()
         }
       })
     },
@@ -195,14 +192,17 @@ export default {
         if (res) {
           this.company = res
           this.baseu = env.apiUrl + 'company_img/' + this.company._id
+          this.getSlAs()
         }
       })
     },
     getSlAs () {
-      this.$api.get('sla').then(res => {
+      this.$api.get('sla_by_contrato/' + this.company.typeContract).then(res => {
         if (res) {
           this.slas = res
-          // console.log(this.slas, 'slas')
+          this.getSltUser()
+          this.getSltHistory()
+          console.log(this.slas, 'slas')
         }
       })
     },

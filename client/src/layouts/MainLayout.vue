@@ -181,8 +181,10 @@ export default {
   data () {
     return {
       baseu: '',
+      baseuCompany: '',
       rol: 0,
       user: {},
+      company: {},
       form: {},
       slas: [],
       categorias: [],
@@ -321,11 +323,22 @@ export default {
           if (this.rol !== 1) {
             this.baseu = env.apiUrl + 'perfil_img/' + this.user._id
           }
+          if (this.rol === 4 || this.rol === 3) {
+            this.getCompany()
+          }
+          this.menuRol()
+        }
+      })
+    },
+    getCompany () {
+      this.$api.get('company/' + this.user.empresa).then(res => {
+        if (res) {
+          this.company = res
+          this.baseuCompany = env.apiUrl + 'company_img/' + this.company._id
           if (this.rol === 4) {
             this.getSlAs()
             this.getCategorias()
           }
-          this.menuRol()
         }
       })
     },
@@ -341,10 +354,10 @@ export default {
       }
     },
     getSlAs () {
-      this.$api.get('sla').then(res => {
+      this.$api.get('sla_by_contrato/' + this.company.typeContract).then(res => {
         if (res) {
           this.slas = res
-          // console.log(this.slas, 'slas')
+          console.log(this.slas, 'slas')
         }
       })
     },
@@ -352,7 +365,7 @@ export default {
       this.$api.get('categorias').then(res => {
         if (res) {
           this.categorias = res
-          // console.log(this.categorias, 'categorias')
+          console.log(this.categorias, 'categorias')
         }
       })
     },

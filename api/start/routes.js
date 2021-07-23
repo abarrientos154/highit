@@ -67,6 +67,7 @@ addPrefixToGroup(
 
     Route.post("sla", "SlaController.store")
     Route.get("sla", "SlaController.index")
+    Route.get("sla_by_contrato/:id", "SlaController.show")
     Route.delete("sla/:id", "SlaController.destroy")
 
     Route.post("register_user", "UserController.User_register")
