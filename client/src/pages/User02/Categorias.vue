@@ -45,11 +45,12 @@ import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
+      user: {},
       form: {},
-      departamentos: {},
+      departamentos: [],
       lista: {},
-      areas: {},
-      cargos: {}
+      areas: [],
+      cargos: []
     }
   },
   validations: {
@@ -63,11 +64,22 @@ export default {
   },
   mounted () {
     this.getDepartamentos()
+    this.userLogueado()
   },
   methods: {
+    userLogueado () {
+      this.$api.get('user_logueado').then(res => {
+        if (res) {
+          this.user = res
+          this.obtener_categorias()
+          console.log(this.user, 'user')
+        }
+      })
+    },
     guardar_categoria () {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
+        this.form.company_id = this.user.empresa
         this.$api.post('categoria', this.form).then(res => {
           if (res) {
             this.$q.notify({
@@ -97,10 +109,10 @@ export default {
       })
     },
     obtener_categorias () {
-      this.$api.get('categorias').then(res => {
+      this.$api.get('categorias/' + this.user.empresa).then(res => {
         if (res) {
           this.lista = res
-          console.log(this.lista)
+          console.log(this.lista, 'Categorias')
         }
       })
     },

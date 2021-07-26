@@ -26,8 +26,9 @@ class AreaController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response, view }) {
-    let areas = (await Area.all()).toJSON()
+  async index({ request, response, view, auth }) {
+    const user = (await auth.getUser()).toJSON()
+    let areas = (await Area.query().where({company_id: user.empresa}).fetch()).toJSON()
     response.send(areas)
   }
 

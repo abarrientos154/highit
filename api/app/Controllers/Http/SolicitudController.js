@@ -2,6 +2,7 @@
 
 const Helpers = use('Helpers')
 const Solicitud = use("App/Models/Solicitud")
+const Category = use("App/Models/Categoria")
 // const mkdirp = use('mkdirp')
 const { validate } = use("Validator")
 // const fs = require('fs')
@@ -37,6 +38,19 @@ class SolicitudController {
   async solicitudesCompany ({ params, request, response, view }) {
     let dat = request.all()
     let solicitudes = (await Solicitud.query().where({ status: dat.status, company_id: params.id }).fetch()).toJSON()
+    response.send(solicitudes)
+  }
+
+  async solicitudesByDepartment ({ params, request, response, view }) {
+    let dat = request.all()
+    let solicitudes = []
+    let categorias = (await Category.query().where({ departamento: params.id }).fetch()).toJSON()
+    for (var i of categorias) {
+      let slts = (await Solicitud.query().where({ status: dat.status, category: i._id }).fetch()).toJSON()
+      for (var j of slts) {
+        solicitudes.push(j)
+      }
+    }
     response.send(solicitudes)
   }
 
@@ -105,6 +119,9 @@ class SolicitudController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    let dat = request.all()
+    let modificar = await Solicitud.query().where('_id', params.id).update({status: dat.status, consultor_id: dat.consultor_id})
+    response.send(modificar)
   }
 
   /**

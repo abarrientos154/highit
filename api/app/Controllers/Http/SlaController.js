@@ -40,6 +40,19 @@ class SlaController {
     response.send(formatearFecha)
   }
 
+  async slaByCompany ({ params, request, response, view }) {
+    let datos = (await Sla.query().where({company_id: params.id}).fetch()).toJSON()
+    let formatearFecha = datos.map(v => {
+      return {
+        ...v,
+        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : 'green',
+        fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
+
+      }
+    })
+    response.send(formatearFecha)
+  }
+
   /**
    * Render a form to be used for creating a new sla.
    * GET slas/create
