@@ -116,6 +116,7 @@ export default {
       }
       if (res) {
         this.data = res
+        console.log(this.data, 'datos tabla')
       }
     },
     eliminarConfirm (id) {

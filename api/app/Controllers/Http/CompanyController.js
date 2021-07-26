@@ -29,7 +29,12 @@ class CompanyController {
     let companys = (await Company.query().where({status: 1}).fetch()).toJSON()
     response.send(companys)
   }
-  
+
+  async index2 ({ request, response, view }) {
+    let companys = (await Company.query().where({status: 2}).fetch()).toJSON()
+    response.send(companys)
+  }
+
   async companysByCompany ({ params, request, response, view }) {
     let companys = (await Company.query().where({company_id: params.id}).fetch()).toJSON()
     response.send(companys)

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla titulo="Listado de Usuarios" :columns="column" route="user2" :btnNew="true" />
+    <Tabla titulo="Listado de Equipos" :columns="column" route="equipo" :btnNew="true" />
   </div>
 </template>
 <script>
@@ -13,7 +13,7 @@ export default {
       showModalEliminar: false,
       column: [
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
-        { name: 'last_name', field: 'last_name', label: 'Apellido', align: 'left' },
+        { name: 'empresa', field: row => row.Empresa.name, label: 'Empresa Asociado', align: 'left' },
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
       ]
     }

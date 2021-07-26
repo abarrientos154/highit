@@ -14,6 +14,11 @@ const routes = [
       { path: '/organigrama', component: () => import('pages/User02/OrganizationChart.vue') },
       { path: '/usuarios2', component: () => import('pages/User02/ListadoUsuario2.vue') },
       { path: '/usuarios2/form', component: () => import('pages/User02/RegisterUsuario2.vue') },
+      { path: '/usuarios2/form/:id', component: () => import('pages/User02/User_edit2.vue') },
+      { path: '/equipos', component: () => import('pages/User02/ListadoEquipo.vue') },
+      { path: '/equipos/form', component: () => import('pages/User02/RegisterEquipo.vue') },
+      { path: '/equipos/form/:id', component: () => import('pages/User02/Equipo_edit.vue') },
+
       // Consultor
       { path: '/inicio_consultor', component: () => import('pages/Consultor/Home.vue') },
       // Cliente

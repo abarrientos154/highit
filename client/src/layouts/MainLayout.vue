@@ -254,6 +254,11 @@ export default {
           ruta: '/categorias'
         },
         {
+          icon: 'location_city',
+          label: 'Crear Equipos',
+          ruta: '/equipos'
+        },
+        {
           icon: 'category',
           label: 'Organigrama',
           ruta: '/organigrama'

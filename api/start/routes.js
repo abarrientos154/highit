@@ -71,15 +71,24 @@ addPrefixToGroup(
     Route.get("sla_filter", "SlaController.filterByContracts")
 
     Route.post("register_user", "UserController.User_register")
-    Route.post("register_user2", "UserController.User_register2")
     Route.get("user", "UserController.index")
-    Route.get("user2", "UserController.index2")
     Route.delete("user/:id", "UserController.destroy")
-    Route.delete("user2/:id", "UserController.destroy2")
     Route.get('datauser/:id', 'UserController.userById')
     Route.put("datos_edit/:id", "UserController.Updateuser")
+
+    Route.post("register_user2", "UserController.User_register2")
+    Route.get("user2", "UserController.index2")
+    Route.delete("user2/:id", "UserController.destroy2")
+    Route.put("datos_edit2/:id", "UserController.Updateuser")
+
     Route.put("password_edit/:id", "UserController.changePassword")
     Route.post('perfil_imagen/:user_id', 'UploadController.newimagen')
+
+    Route.post("equipo", "EquipoController.store")
+    Route.get('equipo', 'EquipoController.index')
+    Route.delete("equipo/:id", "EquipoController.destroy")
+    Route.get('equipo/:id', 'EquipoController.show')
+    Route.put("equipo/:id", "EquipoController.update")
 
     Route.get('departments', 'DepartmentController.index')
     Route.post('register_department', 'DepartmentController.store')
@@ -99,6 +108,7 @@ addPrefixToGroup(
     Route.get("categorias", "CategoriaController.index")
 
     Route.get("companys", "CompanyController.index")
+    Route.get("empresas", "CompanyController.index2")
     Route.get("companys_by_company/:id", "CompanyController.companysByCompany")
     Route.get("company/:id", "CompanyController.show")
     Route.post("register_company", "CompanyController.store")
