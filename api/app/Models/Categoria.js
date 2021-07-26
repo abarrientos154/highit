@@ -16,6 +16,15 @@ class Categoria extends Model {
     }
     return rulesUser
   }
+  Area () {
+    return this.hasOne('App/Models/Area', 'area', '_id')
+  }
+  Departamento () {
+    return this.hasOne('App/Models/Department', 'departamento', '_id')
+  }
+  Cargo () {
+    return this.hasOne('App/Models/Charge', 'cargo', '_id')
+  }
 }
 
 module.exports = Categoria
