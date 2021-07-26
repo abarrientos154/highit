@@ -177,6 +177,7 @@ export default {
       if (!this.$v.perfilfile.$error && !this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
         this.form.empresa_creador = this.user.empresa
         this.form.password = this.password
+        this.form.company = this.user.empresa
         const formData = new FormData()
         formData.append('perfil', this.perfilfile)
         formData.append('dat', JSON.stringify(this.form))

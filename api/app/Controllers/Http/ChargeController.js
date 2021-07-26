@@ -25,8 +25,9 @@ class ChargeController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response, view }) {
-    let charges = (await Charge.all()).toJSON()
+  async index({ request, response, view, auth }) {
+    const user = (await auth.getUser()).toJSON()
+    let charges = (await Charge.query().where({company_id: user.empresa}).fetch()).toJSON()
     response.send(charges)
   }
 

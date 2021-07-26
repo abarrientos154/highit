@@ -22,7 +22,7 @@ class SlaController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-   async index ({ params, request, response, view, auth }) {
+   async index ({ request, response, view, auth }) {
     const user = (await auth.getUser()).toJSON()
     let datos = []
     if (user.roles[0] === 1) {
@@ -41,6 +41,20 @@ class SlaController {
     response.send(formatearFecha)
   }
 
+  async slaByCompany ({ params, request, response, view }) {
+    let datos = (await Sla.query().where({company_id: params.id}).fetch()).toJSON()
+    let formatearFecha = datos.map(v => {
+      return {
+        ...v,
+        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : 'green',
+        fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
+
+      }
+    })
+    response.send(formatearFecha)
+  }
+
+  
   async filterByContracts ({ params, request, response, view, auth }) {
     console.log(request.get(), 'request')
     let datos = (await Sla.query().where(request.get()).fetch()).toJSON()
@@ -97,6 +111,16 @@ class SlaController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    let datos = (await Sla.query().where({contrato: params.id}).fetch()).toJSON()
+    let formatearFecha = datos.map(v => {
+      return {
+        ...v,
+        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : 'green',
+        fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
+
+      }
+    })
+    response.send(formatearFecha)
   }
 
   /**

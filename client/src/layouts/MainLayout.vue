@@ -34,8 +34,8 @@
 
     <q-drawer side="right" v-model="drawer2" show-if-above :width="250" :breakpoint="500" bordered content-class="">
       <q-scroll-area :visible="false" class="fit">
-        <div v-if="rol === 4">
-          <div class="q-my-lg">
+        <div v-if="rol === 3 || rol === 4">
+          <div v-if="rol === 4" class="q-my-lg">
             <div class="text-center text-h6 text-bold">¿Tienes problemas?</div>
             <div class="text-caption text-center text-grey" style="font-size: 10px;">Crea una nueva solicitud</div>
             <div class="column items-center">
@@ -44,8 +44,8 @@
           </div>
           <div>
             <div class="q-px-sm">
-              <div class="text-h6 text-bold">Solicitudes diarias</div>
-              <div class="text-caption text-grey" style="font-size: 10px;">Resumen de actividades diarias</div>
+              <div class="text-h6 text-bold">{{rol === 3 ? 'Resumen mensual' : 'Solicitudes diarias'}}</div>
+              <div class="text-caption text-grey" style="font-size: 10px;">{{rol === 3 ? 'Historial de actividades mensuales' : 'Resumen de actividades diarias'}}</div>
             </div>
             <q-scroll-area horizontal style="height: 90px;">
               <div class="row no-wrap full-width">
@@ -64,11 +64,70 @@
 
           <div>
             <div class="q-px-sm">
-              <div class="text-h6 text-bold">Solicitudes activas</div>
-              <div class="text-caption text-grey" style="font-size: 10px;">listado de actividades sin terminar</div>
+              <div class="text-h6 text-bold">{{rol === 3 ? 'Sin tomar' : 'Solicitudes activas'}}</div>
+              <div class="text-caption text-grey" style="font-size: 10px;">{{rol === 3 ? 'Actividades que aun no son resueltas' : 'listado de actividades sin terminar'}}</div>
             </div>
             <q-list class="q-px-sm">
-              <q-card class="q-mb-md" v-for="(item, index) in 2" :key="index">
+              <q-card class="q-mb-md" v-for="(item, index) in 1" :key="index">
+                <div class="row justify-between">
+                  <div class="q-pa-sm" style="font-size: 10px;">Nº de solicitud {{'001'}}</div>
+                  <div class="bg-red q-mr-md" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                </div>
+                <div class="column items-center" style="margin-top: -10px">
+                  <q-avatar class="bg-secondary" size="75px">
+                    <q-img :src="''" class="full-height"/>
+                  </q-avatar>
+                  <div class="text-center text-subtitle1 text-bold">{{'Nombre Empresa'}}</div>
+                </div>
+                <div class="q-pa-md">
+                  <div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="text-bold" style="font-size: 10px;">Estado</div>
+                        <div style="font-size: 10px;">{{'En espera'}}</div>
+                      </div>
+                      <div class="col">
+                        <div class="text-bold" style="font-size: 10px;">Usuario asignado</div>
+                        <div style="font-size: 10px;">{{'Usuario'}}</div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div class="text-bold" style="font-size: 10px;">Tipo de Contrato</div>
+                        <div style="font-size: 10px;">{{'Contrato 01'}}</div>
+                      </div>
+                      <div class="col">
+                        <div class="text-bold" style="font-size: 10px;">Departamento</div>
+                        <div style="font-size: 10px;">{{'Departamento 01'}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="row">
+                      <div class="text-bold q-mr-xs" style="font-size: 10px;">Fecha solicitud:</div>
+                      <div style="font-size: 10px;">{{'dd/mm/aaaa'}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="text-bold q-mr-xs" style="font-size: 10px;">Fecha termino estimada:</div>
+                      <div style="font-size: 10px;">{{'dd/mm/aaaa'}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="text-bold q-mr-xs" style="font-size: 10px;">Tiempo estimado de termino:</div>
+                      <div style="font-size: 10px;">{{'10min'}}</div>
+                    </div>
+                  </div>
+                </div>
+              </q-card>
+            </q-list>
+          </div>
+
+          <div v-if="rol === 3">
+            <div class="q-px-sm">
+              <div class="text-h6 text-bold">Trabajo activo</div>
+              <div class="text-caption text-grey" style="font-size: 10px;">Listado de actividades sin terminar</div>
+            </div>
+            <q-list class="q-px-sm">
+              <q-card class="q-mb-md" v-for="(item, index) in 1" :key="index">
                 <div class="row justify-between">
                   <div class="q-pa-sm" style="font-size: 10px;">Nº de solicitud {{'001'}}</div>
                   <div class="bg-red q-mr-md" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
@@ -126,11 +185,11 @@
               <div class="column items-end full-width">
                 <div class="bg-red q-mr-xl" style="width: 60px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
               </div>
-              <div class="q-mb-xl q-mt-md" style="width: 80%">
-                <div class="q-mb-lg">
-                  <div class="text-center text-h6 text-bold">Nueva solicitud</div>
-                  <div class="text-center text-grey-8">Crea una nueva solicitud para tu cliente</div>
-                </div>
+              <div class="q-mb-lg q-mt-md">
+                <div class="text-center text-h6 text-bold">{{rol === 3 ? 'Tomar solicitud' : 'Nueva solicitud'}}</div>
+                <div class="text-center text-grey-8">{{rol === 3 ? 'Modifica el estado de la solicitud' : 'Crea una nueva solicitud para tu cliente'}}</div>
+              </div>
+              <div style="width: 80%" v-if="rol === 4">
                 <div>
                   <div class="text-caption text-grey-8">Descripción de la solicitud</div>
                   <q-input dense v-model="form.description" filled type="textarea" placeholder="Hasta 500 caracteres" error-message="Este campo es requerido" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
@@ -155,9 +214,10 @@
                     </template>
                   </q-input>
                 </div>
-                <div class="column items-center">
-                  <q-btn class="text-white q-py-xs" color="primary" label="Crear solicitud" style="width: 80%; border-radius: 5px;" @click="saveRequest()" no-caps/>
-                </div>
+              </div>
+              <div v-else></div>
+              <div class="full-width column items-center q-mb-xl">
+                <q-btn class="text-white q-py-xs" color="primary" :label="rol === 3 ? '' : 'Crear solicitud'" style="width: 70%; border-radius: 5px;" @click="rol === 3 ? acceptRequest() : saveRequest()" no-caps/>
               </div>
             </q-card>
           </q-dialog>
@@ -181,8 +241,10 @@ export default {
   data () {
     return {
       baseu: '',
+      baseuCompany: '',
       rol: 0,
       user: {},
+      company: {},
       form: {},
       slas: [],
       categorias: [],
@@ -326,11 +388,23 @@ export default {
           if (this.rol !== 1) {
             this.baseu = env.apiUrl + 'perfil_img/' + this.user._id
           }
+          if (this.rol === 4 || this.rol === 3) {
+            this.getCompany()
+          }
+          this.menuRol()
+        }
+      })
+    },
+    getCompany () {
+      this.$api.get('company/' + this.user.empresa).then(res => {
+        if (res) {
+          this.company = res
+          console.log(this.company)
+          this.baseuCompany = env.apiUrl + 'company_img/' + this.company._id
           if (this.rol === 4) {
             this.getSlAs()
             this.getCategorias()
           }
-          this.menuRol()
         }
       })
     },
@@ -346,18 +420,18 @@ export default {
       }
     },
     getSlAs () {
-      this.$api.get('sla').then(res => {
+      this.$api.get('sla_by_contrato/' + this.company.typeContract).then(res => {
         if (res) {
           this.slas = res
-          // console.log(this.slas, 'slas')
+          console.log(this.slas, 'slas')
         }
       })
     },
     getCategorias () {
-      this.$api.get('categorias').then(res => {
+      this.$api.get('categorias/' + this.company.company_id).then(res => {
         if (res) {
           this.categorias = res
-          // console.log(this.categorias, 'categorias')
+          console.log(this.categorias, 'categorias')
         }
       })
     },
@@ -385,6 +459,8 @@ export default {
           color: 'negative'
         })
       }
+    },
+    acceptRequest () {
     }
   }
 }

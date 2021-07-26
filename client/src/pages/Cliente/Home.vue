@@ -183,10 +183,7 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          this.getSlAs()
           this.getCompany()
-          this.getSltUser()
-          this.getSltHistory()
         }
       })
     },
@@ -195,27 +192,31 @@ export default {
         if (res) {
           this.company = res
           this.baseu = env.apiUrl + 'company_img/' + this.company._id
+          this.getSlAs()
         }
       })
     },
     getSlAs () {
-      this.$api.get('sla').then(res => {
+      this.$api.get('sla_by_contrato/' + this.company.typeContract).then(res => {
         if (res) {
           this.slas = res
-          // console.log(this.slas, 'slas')
+          this.getSltUser()
+          this.getSltHistory()
+          console.log(this.slas, 'slas')
         }
       })
     },
     getSltUser () {
-      for (var i = 0; i < 3; i++) {
-        this.$api.put('solicitudes_user/' + this.user._id, i === 0 ? { status: i } : i === 1 || i === 2 ? { status: i } : {}).then(res => {
+      this.sltProgress = []
+      for (var i = 0; i < 2; i++) {
+        this.$api.put('solicitudes_user/' + this.user._id, i === 0 ? { status: i } : { status: i }).then(res => {
           if (res) {
             // console.log(res, 'resresresresres')
             if (res.length && res[0].status === 0) {
               this.solicitudes = res
-            } else if (res.length && (res[0].status === 1 || res[0].status === 2)) {
-              this.sltProgress.push(res)
-              // console.log(this.sltProgress, 'sltProgress')
+            } else if (res.length && res[0].status === 1) {
+              this.sltProgress = res
+              console.log(this.sltProgress, 'sltProgress')
             }
           }
         })

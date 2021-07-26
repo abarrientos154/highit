@@ -167,16 +167,18 @@ export default {
   },
   validations: {
     formDepartment: {
-      empresa_id: { required },
+      company_id: { required },
       name: { required },
       cantUser: { required }
     },
     formArea: {
+      company_id: { required },
       department_id: { required },
       name: { required },
       cantUser: { required }
     },
     formCharge: {
+      company_id: { required },
       area_id: { required },
       name: { required },
       cantUser: { required }
@@ -250,7 +252,7 @@ export default {
     save (idx) {
       if (idx === 1) {
         this.$v.formDepartment.$touch()
-        this.formDepartment.empresa_id = this.user.empresa
+        this.formDepartment.company_id = this.user.empresa
         this.formDepartment.cantUser = 0
         if (!this.$v.formDepartment.$error) {
           this.$api.post('register_department', this.formDepartment).then(res => {
@@ -273,6 +275,7 @@ export default {
         }
       } else if (idx === 2) {
         this.$v.formArea.$touch()
+        this.formArea.company_id = this.user.empresa
         this.formArea.cantUser = 0
         if (!this.$v.formArea.$error) {
           this.$api.post('register_area', this.formArea).then(res => {
@@ -296,6 +299,7 @@ export default {
         }
       } else if (idx === 3) {
         this.$v.formCharge.$touch()
+        this.formCharge.company_id = this.user.empresa
         this.formCharge.cantUser = 0
         if (!this.$v.formCharge.$error) {
           this.$api.post('register_charge', this.formCharge).then(res => {

@@ -67,6 +67,8 @@ addPrefixToGroup(
 
     Route.post("sla", "SlaController.store")
     Route.get("sla", "SlaController.index")
+    Route.get("sla_by_contrato/:id", "SlaController.show")
+    Route.get("sla_by_company/:id", "SlaController.slaByCompany")
     Route.delete("sla/:id", "SlaController.destroy")
     Route.get("sla_filter", "SlaController.filterByContracts")
 
@@ -105,6 +107,7 @@ addPrefixToGroup(
     Route.delete("delete_charge/:id", "ChargeController.destroy")
 
     Route.post("categoria", "CategoriaController.store")
+    Route.get("categorias/:id", "CategoriaController.show")
     Route.get("categorias", "CategoriaController.index")
 
     Route.get("companys", "CompanyController.index")
@@ -117,6 +120,8 @@ addPrefixToGroup(
 
     Route.put("solicitudes_user/:id", "SolicitudController.solicitudesUser")
     Route.put("solicitudes_company/:id", "SolicitudController.solicitudesCompany")
+    Route.put("solicitudes_by_department/:id", "SolicitudController.solicitudesByDepartment")
+    Route.put("accept_solicitud/:id", "SolicitudController.update")
     Route.post("register_solicitud", "SolicitudController.store")
   }).middleware("auth")
 );

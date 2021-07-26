@@ -5,11 +5,11 @@ const Model = use('Model')
 
 class Department extends Model {
     static get fillable() {
-        return ['name','empresa_id']
+        return ['name','company_id']
     }
     static fieldValidationRules() {
         const rules = {
-            empresa_id: "required|string",
+            company_id: "required|string",
             name: "required|string"
         }
         return rules
