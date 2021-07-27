@@ -29,9 +29,15 @@ class SolicitudController {
   async index ({ request, response, view }) {
   }
   
-  async solicitudesUser ({ params, request, response, view }) {
+  async solicitudesCliente ({ params, request, response, view }) {
     let dat = request.all()
     let solicitudes = (await Solicitud.query().where({ status: dat.status, user_id: params.id }).fetch()).toJSON()
+    response.send(solicitudes)
+  }
+  
+  async solicitudesConsultor({ params, request, response, view }) {
+    let dat = request.all()
+    let solicitudes = (await Solicitud.query().where({ status: dat.status, consultor_id: params.id }).fetch()).toJSON()
     response.send(solicitudes)
   }
   
@@ -41,10 +47,11 @@ class SolicitudController {
     response.send(solicitudes)
   }
 
-  async solicitudesByDepartment ({ params, request, response, view }) {
+  async solicitudesByConsultor ({ request, response, view, auth }) {
+    const user = (await auth.getUser()).toJSON()
     let dat = request.all()
     let solicitudes = []
-    let categorias = (await Category.query().where({ departamento: params.id }).fetch()).toJSON()
+    let categorias = (await Category.query().where({ departamento: user.departamento, area: user.area, cargo: user.cargo }).fetch()).toJSON()
     for (var i of categorias) {
       let slts = (await Solicitud.query().where({ status: dat.status, category: i._id }).fetch()).toJSON()
       for (var j of slts) {

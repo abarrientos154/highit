@@ -49,7 +49,7 @@
             </div>
             <q-scroll-area horizontal style="height: 90px;">
               <div class="row no-wrap full-width">
-                <q-card class="q-mx-sm" v-for="(item, index) in 3" :key="index" style="min-width: 150px;">
+                <q-card class="q-mx-sm" v-for="(item, index) in resumen" :key="index" style="min-width: 150px;">
                   <div class="q-pa-sm">
                     <div class="text-subtitle1 text-bold">{{'Nombre SLA 01'}}</div>
                     <div class="text-center">
@@ -68,16 +68,16 @@
               <div class="text-caption text-grey" style="font-size: 10px;">{{rol === 3 ? 'Actividades que aun no son resueltas' : 'listado de actividades sin terminar'}}</div>
             </div>
             <q-list class="q-px-sm">
-              <q-card class="q-mb-md" v-for="(item, index) in 1" :key="index">
+              <q-card class="q-mb-md" v-for="(item, index) in solicitudes" :key="index" @click="rol === 3 ? verStl(item, index) : ''">
                 <div class="row justify-between">
-                  <div class="q-pa-sm" style="font-size: 10px;">Nº de solicitud {{'001'}}</div>
-                  <div class="bg-red q-mr-md" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                  <div class="q-pa-sm" style="font-size: 10px;">Nº de solicitud {{index + 1}}</div>
+                  <div :class="`bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md`" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 </div>
                 <div class="column items-center" style="margin-top: -10px">
                   <q-avatar class="bg-secondary" size="75px">
-                    <q-img :src="''" class="full-height"/>
+                    <q-img :src="baseuCompany + item.company_id" class="full-height"/>
                   </q-avatar>
-                  <div class="text-center text-subtitle1 text-bold">{{'Nombre Empresa'}}</div>
+                  <div class="text-center text-subtitle1 text-bold">{{rol === 3 ? empresas.filter(v => v._id === item.company_id)[0].name : company.name}}</div>
                 </div>
                 <div class="q-pa-md">
                   <div>
@@ -127,16 +127,16 @@
               <div class="text-caption text-grey" style="font-size: 10px;">Listado de actividades sin terminar</div>
             </div>
             <q-list class="q-px-sm">
-              <q-card class="q-mb-md" v-for="(item, index) in 1" :key="index">
+              <q-card class="q-mb-md" v-for="(item, index) in sltConsultor" :key="index">
                 <div class="row justify-between">
-                  <div class="q-pa-sm" style="font-size: 10px;">Nº de solicitud {{'001'}}</div>
-                  <div class="bg-red q-mr-md" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                  <div class="q-pa-sm" style="font-size: 10px;">Nº de solicitud {{index + 1}}</div>
+                  <div :class="`bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md`" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 </div>
                 <div class="column items-center" style="margin-top: -10px">
                   <q-avatar class="bg-secondary" size="75px">
-                    <q-img :src="''" class="full-height"/>
+                    <q-img :src="baseuCompany + item.company_id" class="full-height"/>
                   </q-avatar>
-                  <div class="text-center text-subtitle1 text-bold">{{'Nombre Empresa'}}</div>
+                  <div class="text-center text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
                 </div>
                 <div class="q-pa-md">
                   <div>
@@ -181,9 +181,16 @@
           </div>
 
           <q-dialog v-model="slt">
-            <q-card class="column items-center no-wrap" style="width: 500px; border-radius: 10px;">
-              <div class="column items-end full-width">
+            <q-card class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
+              <div class="column items-end full-width" v-if="rol === 4">
                 <div class="bg-red q-mr-xl" style="width: 60px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+              </div>
+              <div v-else class="row q-px-lg items-center justify-between full-width">
+                <div class="row">
+                  <div class="q-mr-xs">Nº de solicitud:</div>
+                  <div class="text-bold">{{form.num}}</div>
+                </div>
+                <div :class="`text-caption q-px-lg text-white bg-${rol === 3 && slt ? slas.filter(v => v._id === form.priority)[0].color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{rol === 3 && slt ? slas.filter(v => v._id === form.priority)[0].nombre : ''}}</div>
               </div>
               <div class="q-mb-lg q-mt-md">
                 <div class="text-center text-h6 text-bold">{{rol === 3 ? 'Tomar solicitud' : 'Nueva solicitud'}}</div>
@@ -215,9 +222,78 @@
                   </q-input>
                 </div>
               </div>
-              <div v-else></div>
-              <div class="full-width column items-center q-mb-xl">
-                <q-btn class="text-white q-py-xs" color="primary" :label="rol === 3 ? '' : 'Crear solicitud'" style="width: 70%; border-radius: 5px;" @click="rol === 3 ? acceptRequest() : saveRequest()" no-caps/>
+              <div class="q-px-sm q-mb-md full-width" v-else>
+                <div class="row">
+                  <q-avatar class="bg-secondary q-mx-sm q-my-md" size="170px">
+                    <q-img :src="baseuCompany + form.company_id" class="full-height"/>
+                  </q-avatar>
+                  <div class="q-px-sm q-py-md col column justify-between">
+                    <div>
+                      <div class="text-subtitle1 text-bold">{{rol === 3 && slt ? empresas.filter(v => v._id === form.company_id)[0].name : ''}}</div>
+                      <div>
+                        <div class="text-bold text-caption text-grey-7">Descripcion del servicio</div>
+                        <q-scroll-area style="height: 60px;">
+                          <div class="text-grey-7" style="font-size: 10px;">{{form.description}}</div>
+                        </q-scroll-area>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="text-bold q-mr-xs text-grey-7 text-caption">Fecha de solicitud:</div>
+                        <div class="text-grey-7 text-caption">{{form.date}}</div>
+                      </div>
+                      <div class="row">
+                        <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
+                        <div class="text-grey-7 text-caption">{{'20:30hrs'}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-px-sm">
+                  <div class="row">
+                    <div class="col">
+                      <div class="text-bold text-grey-7">Tipo de contrato</div>
+                      <div class="text-grey-7">{{'En espera'}}</div>
+                    </div>
+                    <div class="col">
+                      <div class="text-bold text-grey-7">Usuario asignado</div>
+                      <div class="text-grey-7">{{'Usuario'}}</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="text-bold text-grey-7">Categoria</div>
+                      <div class="text-grey-7">{{'Contrato 01'}}</div>
+                    </div>
+                    <div class="col">
+                      <div class="text-bold text-grey-7">Departamento</div>
+                      <div class="text-grey-7">{{'Departamento 01'}}</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="text-bold text-grey-7">Fecha de inicio</div>
+                      <div class="text-grey-7">{{'Contrato 01'}}</div>
+                    </div>
+                    <div class="col">
+                      <div class="text-bold text-grey-7">Hora de inicio</div>
+                      <div class="text-grey-7">{{'Departamento 01'}}</div>
+                    </div>
+                  </div>
+                  <!-- <div class="row">
+                    <div class="col">
+                      <div class="text-bold text-grey-7">Fecha estimada de termino</div>
+                      <div class="text-grey-7">{{'Contrato 01'}}</div>
+                    </div>
+                    <div class="col">
+                      <div class="text-bold text-grey-7">Hora estimada de termino</div>
+                      <div class="text-grey-7">{{'Departamento 01'}}</div>
+                    </div>
+                  </div> -->
+                </div>
+              </div>
+              <div class="full-width column items-center q-mb-lg">
+                <q-btn class="text-white q-py-xs" color="primary" :label="rol === 3 ? 'Tomar solicitud' : 'Crear solicitud'" style="width: 70%; border-radius: 5px;" @click="rol === 3 ? acceptRequest() : saveRequest()" no-caps/>
               </div>
             </q-card>
           </q-dialog>
@@ -245,9 +321,13 @@ export default {
       rol: 0,
       user: {},
       company: {},
+      empresas: [],
       form: {},
       slas: [],
       categorias: [],
+      resumen: [],
+      solicitudes: [],
+      sltConsultor: [],
       drawer1: true,
       drawer2: true,
       slt: false,
@@ -387,26 +467,34 @@ export default {
           console.log(this.user)
           if (this.rol !== 1) {
             this.baseu = env.apiUrl + 'perfil_img/' + this.user._id
-          }
-          if (this.rol === 4 || this.rol === 3) {
-            this.getCompany()
+            if (this.rol === 4 || this.rol === 3) {
+              this.getCompany()
+            }
           }
           this.menuRol()
         }
       })
     },
     getCompany () {
-      this.$api.get('company/' + this.user.empresa).then(res => {
-        if (res) {
-          this.company = res
-          console.log(this.company)
-          this.baseuCompany = env.apiUrl + 'company_img/' + this.company._id
-          if (this.rol === 4) {
+      this.baseuCompany = env.apiUrl + 'company_img/'
+      if (this.rol === 3) {
+        this.$api.get('companys_by_company/' + this.user.company).then(res => {
+          if (res) {
+            this.empresas = res
+            this.getSlAs()
+            console.log(this.empresas)
+          }
+        })
+      } else if (this.rol === 4) {
+        this.$api.get('company/' + this.user.empresa).then(res => {
+          if (res) {
+            this.company = res
+            console.log(this.company)
             this.getSlAs()
             this.getCategorias()
           }
-        }
-      })
+        })
+      }
     },
     menuRol () {
       if (this.rol === 1) {
@@ -420,12 +508,23 @@ export default {
       }
     },
     getSlAs () {
-      this.$api.get('sla_by_contrato/' + this.company.typeContract).then(res => {
-        if (res) {
-          this.slas = res
-          console.log(this.slas, 'slas')
-        }
-      })
+      if (this.rol === 3) {
+        this.$api.get('sla_by_company/' + this.user.company).then(res => {
+          if (res) {
+            this.slas = res
+            this.getSlt()
+            console.log(this.slas, 'slas')
+          }
+        })
+      } else if (this.rol === 4) {
+        this.$api.get('sla_by_contrato/' + this.company.typeContract).then(res => {
+          if (res) {
+            this.slas = res
+            this.getSlt()
+            console.log(this.slas, 'slas')
+          }
+        })
+      }
     },
     getCategorias () {
       this.$api.get('categorias/' + this.company.company_id).then(res => {
@@ -460,7 +559,45 @@ export default {
         })
       }
     },
+    getSlt () {
+      if (this.rol === 3) {
+        this.$api.post('solicitudes_by_consultor', { status: 0 }).then(res => {
+          if (res) {
+            this.solicitudes = res
+            this.$api.put('solicitudes_consultor/' + this.user._id, { status: 1 }).then(res => {
+              if (res) {
+                this.sltConsultor = res
+              }
+            })
+          }
+        })
+      } else if (this.rol === 4) {
+        this.$api.put('solicitudes_cliente/' + this.user._id, { status: 1 }).then(res => {
+          if (res) {
+            this.solicitudes = res
+            console.log(this.solicitudes, 'solicitudes')
+          }
+        })
+      }
+    },
+    verStl (itm, idx) {
+      this.slt = !this.slt
+      this.form = itm
+      this.form.num = idx + 1
+    },
     acceptRequest () {
+      this.$api.put('accept_solicitud/' + this.form._id, { status: 1, consultor_id: this.user._id }).then(res => {
+        if (res) {
+          this.$q.notify({
+            message: 'Solicitud aceptada',
+            color: 'positive'
+          })
+          this.form = {}
+          this.slt = false
+          this.$refs.modulo.userLogueado()
+          this.getSlt()
+        }
+      })
     }
   }
 }

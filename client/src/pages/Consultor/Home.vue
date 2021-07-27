@@ -182,7 +182,7 @@
                 <div class="text-grey-7">{{'Departamento 01'}}</div>
               </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col">
                 <div class="text-bold text-grey-7">Fecha estimada de termino</div>
                 <div class="text-grey-7">{{'Contrato 01'}}</div>
@@ -191,7 +191,7 @@
                 <div class="text-bold text-grey-7">Hora estimada de termino</div>
                 <div class="text-grey-7">{{'Departamento 01'}}</div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="full-width column items-center q-mb-lg">
@@ -254,7 +254,7 @@ export default {
       })
     },
     getSlt () {
-      this.$api.put('solicitudes_by_department/' + this.user.departamento, { status: 0 }).then(res => {
+      this.$api.post('solicitudes_by_consultor', { status: 0 }).then(res => {
         if (res) {
           this.sltAll = res
           this.solicitudes = this.sltAll.slice(0, 2)

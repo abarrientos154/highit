@@ -118,9 +118,10 @@ addPrefixToGroup(
     Route.put("update_company/:id", "CompanyController.update")
     Route.delete("delete_company/:id", "CompanyController.destroy")
 
-    Route.put("solicitudes_user/:id", "SolicitudController.solicitudesUser")
+    Route.put("solicitudes_cliente/:id", "SolicitudController.solicitudesCliente")
+    Route.put("solicitudes_consultor/:id", "SolicitudController.solicitudesConsultor")
     Route.put("solicitudes_company/:id", "SolicitudController.solicitudesCompany")
-    Route.put("solicitudes_by_department/:id", "SolicitudController.solicitudesByDepartment")
+    Route.post("solicitudes_by_consultor", "SolicitudController.solicitudesByConsultor")
     Route.put("accept_solicitud/:id", "SolicitudController.update")
     Route.post("register_solicitud", "SolicitudController.store")
   }).middleware("auth")

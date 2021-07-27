@@ -16,7 +16,7 @@
       </div>
       <q-scroll-area horizontal style="height: 90px;">
         <div class="row no-wrap full-width">
-          <q-card class="q-mx-sm" v-for="(item, index) in 6" :key="index" style="min-width: 150px;">
+          <q-card class="q-mx-sm" v-for="(item, index) in resumen" :key="index" style="min-width: 150px;">
             <div class="q-pa-sm">
               <div class="text-subtitle1 text-bold">{{'Nombre SLA 01'}}</div>
               <div class="text-center">
@@ -168,6 +168,7 @@ export default {
       baseu: '',
       user: {},
       company: {},
+      resumen: [],
       solicitudes: [],
       sltProgress: [],
       history: [],
@@ -209,7 +210,7 @@ export default {
     getSltUser () {
       this.sltProgress = []
       for (var i = 0; i < 2; i++) {
-        this.$api.put('solicitudes_user/' + this.user._id, i === 0 ? { status: i } : { status: i }).then(res => {
+        this.$api.put('solicitudes_cliente/' + this.user._id, i === 0 ? { status: i } : { status: i }).then(res => {
           if (res) {
             // console.log(res, 'resresresresres')
             if (res.length && res[0].status === 0) {
