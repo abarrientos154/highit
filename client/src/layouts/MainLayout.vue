@@ -435,6 +435,11 @@ export default {
           ruta: '/inicio_cliente'
         },
         {
+          icon: 'stream',
+          label: 'Equipos',
+          ruta: '/equipos_consultor'
+        },
+        {
           icon: 'logout',
           label: 'Cerrar sesión',
           ruta: ''

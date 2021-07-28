@@ -10,7 +10,8 @@
         <template v-slot:body-cell-Action="props">
           <q-td :props="props">
             <q-btn v-if="editarBtn" icon="edit" size="sm" flat dense @click="editar(props.row._id)" />
-            <q-btn icon="delete" size="sm" class="q-ml-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
+            <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-ml-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
+            <q-btn v-if="crearBtn" style="width:130px" color="primary" text-color="white" label="Crear solicitud" @click="mostrardialogo()" />
           </q-td>
         </template>
         <template v-slot:body-cell-color="props">
@@ -59,7 +60,15 @@ export default {
       type: Boolean,
       default: false
     },
+    crearBtn: {
+      type: Boolean,
+      default: false
+    },
     editarBtn: {
+      type: Boolean,
+      default: true
+    },
+    eliminarBtn: {
       type: Boolean,
       default: true
     },
@@ -165,6 +174,9 @@ export default {
           this.$emit('actualizarPadre')
         }
       })
+    },
+    mostrardialogo () {
+      this.$emit('mostrar')
     }
   }
 }
