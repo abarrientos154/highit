@@ -276,7 +276,7 @@ export default {
       this.solicitud.num = idx + 1
     },
     acceptRequest () {
-      this.$api.put('accept_solicitud/' + this.solicitud._id, { status: 1, consultor_id: this.user._id }).then(res => {
+      this.$api.put('status_solicitud/' + this.solicitud._id, { status: 1, consultor_id: this.user._id }).then(res => {
         if (res) {
           this.$q.notify({
             message: 'Solicitud aceptada',
