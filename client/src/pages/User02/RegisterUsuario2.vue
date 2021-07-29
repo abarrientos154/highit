@@ -161,7 +161,7 @@ export default {
   },
   methods: {
     getDepartamentos () {
-      this.$api.get('departments').then(res => {
+      this.$api.get('departments/' + this.user.empresa).then(res => {
         if (res) {
           this.departamentos = res
           console.log(this.departamentos, 'depas')
@@ -216,6 +216,7 @@ export default {
           this.rol = res.roles[0]
           this.user = res
           console.log(this.user, 'usuario2')
+          this.getDepartamentos()
           this.getEmpresas()
         }
       })
@@ -240,7 +241,6 @@ export default {
 
   mounted () {
     this.userLogueado()
-    this.getDepartamentos()
   }
 }
 </script>

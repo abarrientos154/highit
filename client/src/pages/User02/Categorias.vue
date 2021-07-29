@@ -74,7 +74,6 @@ export default {
     }
   },
   mounted () {
-    this.getDepartamentos()
     this.userLogueado()
   },
   methods: {
@@ -82,6 +81,7 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
+          this.getDepartamentos()
           this.obtener_categorias()
           console.log(this.user, 'user')
         }
@@ -117,7 +117,7 @@ export default {
       }
     },
     getDepartamentos () {
-      this.$api.get('departments').then(res => {
+      this.$api.get('departments/' + this.user.empresa).then(res => {
         if (res) {
           this.departamentos = res
           console.log(this.departamentos, 'depas')

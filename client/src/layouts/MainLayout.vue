@@ -84,7 +84,7 @@
                     <div class="row">
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Estado</div>
-                        <div style="font-size: 10px;">{{'En espera'}}</div>
+                        <div style="font-size: 10px;">{{item.status === 0 ? 'Sin iniciar' : item.status === 1 ? 'Iniciada' : item.status === 2 ? 'En espera' : item.status === 3 ? 'Finalizada' : '' }}</div>
                       </div>
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Usuario asignado</div>
@@ -94,18 +94,18 @@
                     <div class="row">
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Tipo de Contrato</div>
-                        <div style="font-size: 10px;">{{'Contrato 01'}}</div>
+                        <div style="font-size: 10px;">{{contratos.filter(v => v._id === empresas.filter(v => v._id === item.company_id)[0].typeContract)[0].contrato}}</div>
                       </div>
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Departamento</div>
-                        <div style="font-size: 10px;">{{'Departamento 01'}}</div>
+                        <div style="font-size: 10px;">{{departamentos.filter(v => v._id === categorias.filter(v => v._id === item.category)[0].departamento)[0].name}}</div>
                       </div>
                     </div>
                   </div>
                   <div>
                     <div class="row">
                       <div class="text-bold q-mr-xs" style="font-size: 10px;">Fecha solicitud:</div>
-                      <div style="font-size: 10px;">{{'dd/mm/aaaa'}}</div>
+                      <div style="font-size: 10px;">{{item.date}}</div>
                     </div>
                     <div class="row">
                       <div class="text-bold q-mr-xs" style="font-size: 10px;">Fecha termino estimada:</div>
@@ -113,7 +113,7 @@
                     </div>
                     <div class="row">
                       <div class="text-bold q-mr-xs" style="font-size: 10px;">Tiempo estimado de termino:</div>
-                      <div style="font-size: 10px;">{{'10min'}}</div>
+                      <div style="font-size: 10px;">{{slas.filter(v => v._id === item.priority)[0].tiempo}}hrs</div>
                     </div>
                   </div>
                 </div>
@@ -127,7 +127,7 @@
               <div class="text-caption text-grey" style="font-size: 10px;">Listado de actividades sin terminar</div>
             </div>
             <q-list class="q-px-sm">
-              <q-card class="q-mb-md" v-for="(item, index) in sltConsultor" :key="index">
+              <q-card class="q-mb-md" v-for="(item, index) in sltConsultor" :key="index" @click="verStl(item, index)">
                 <div class="row justify-between">
                   <div class="q-pa-sm" style="font-size: 10px;">Nº de solicitud {{index + 1}}</div>
                   <div :class="`bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md`" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
@@ -143,7 +143,7 @@
                     <div class="row">
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Estado</div>
-                        <div style="font-size: 10px;">{{'En espera'}}</div>
+                        <div style="font-size: 10px;">{{item.status === 0 ? 'Sin iniciar' : item.status === 1 ? 'Iniciada' : item.status === 2 ? 'En espera' : item.status === 3 ? 'Finalizada' : '' }}</div>
                       </div>
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Usuario asignado</div>
@@ -153,18 +153,18 @@
                     <div class="row">
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Tipo de Contrato</div>
-                        <div style="font-size: 10px;">{{'Contrato 01'}}</div>
+                        <div style="font-size: 10px;">{{contratos.filter(v => v._id === empresas.filter(v => v._id === item.company_id)[0].typeContract)[0].contrato}}</div>
                       </div>
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Departamento</div>
-                        <div style="font-size: 10px;">{{'Departamento 01'}}</div>
+                        <div style="font-size: 10px;">{{departamentos.filter(v => v._id === categorias.filter(v => v._id === item.category)[0].departamento)[0].name}}</div>
                       </div>
                     </div>
                   </div>
                   <div>
                     <div class="row">
                       <div class="text-bold q-mr-xs" style="font-size: 10px;">Fecha solicitud:</div>
-                      <div style="font-size: 10px;">{{'dd/mm/aaaa'}}</div>
+                      <div style="font-size: 10px;">{{item.date}}</div>
                     </div>
                     <div class="row">
                       <div class="text-bold q-mr-xs" style="font-size: 10px;">Fecha termino estimada:</div>
@@ -172,7 +172,7 @@
                     </div>
                     <div class="row">
                       <div class="text-bold q-mr-xs" style="font-size: 10px;">Tiempo estimado de termino:</div>
-                      <div style="font-size: 10px;">{{'10min'}}</div>
+                      <div style="font-size: 10px;">{{slas.filter(v => v._id === item.priority)[0].tiempo}}hrs</div>
                     </div>
                   </div>
                 </div>
@@ -190,7 +190,7 @@
                   <div class="q-mr-xs">Nº de solicitud:</div>
                   <div class="text-bold">{{form.num}}</div>
                 </div>
-                <div :class="`text-caption q-px-lg text-white bg-${rol === 3 && slt ? slas.filter(v => v._id === form.priority)[0].color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{rol === 3 && slt ? slas.filter(v => v._id === form.priority)[0].nombre : ''}}</div>
+                <div :class="`text-caption q-px-lg text-center text-white bg-${form.priorityColor} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{form.priority}}<br>{{form.status === 0 ? 'Sin iniciar' : form.status === 1 ? 'Iniciada' : form.status === 2 ? 'En espera' : form.status === 3 ? 'Finalizada' : '' }}</div>
               </div>
               <div class="q-mb-lg q-mt-md">
                 <div class="text-center text-h6 text-bold">{{rol === 3 ? 'Tomar solicitud' : 'Nueva solicitud'}}</div>
@@ -211,11 +211,11 @@
                 </div>
                 <div>
                   <div class="text-caption text-grey-8">Agenda la atencion</div>
-                  <q-input dense filled readonly v-model="form.date" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.date.$error" @blur="$v.form.date.$touch()" @click="$refs.qDateProxy.show()">
+                  <q-input dense filled readonly v-model="form.date2" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.date2.$error" @blur="$v.form.date2.$touch()" @click="$refs.qDateProxy.show()">
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
                         <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                          <q-date v-model="form.date" mask="DD/MM/YYYY"/>
+                          <q-date v-model="form.date2" mask="DD/MM/YYYY"/>
                         </q-popup-proxy>
                       </q-icon>
                     </template>
@@ -229,7 +229,7 @@
                   </q-avatar>
                   <div class="q-px-sm q-py-md col column justify-between">
                     <div>
-                      <div class="text-subtitle1 text-bold">{{rol === 3 && slt ? empresas.filter(v => v._id === form.company_id)[0].name : ''}}</div>
+                      <div class="text-subtitle1 text-bold">{{form.empresa}}</div>
                       <div>
                         <div class="text-bold text-caption text-grey-7">Descripcion del servicio</div>
                         <q-scroll-area style="height: 60px;">
@@ -240,11 +240,11 @@
                     <div>
                       <div class="row">
                         <div class="text-bold q-mr-xs text-grey-7 text-caption">Fecha de solicitud:</div>
-                        <div class="text-grey-7 text-caption">{{form.date}}</div>
+                        <div class="text-grey-7 text-caption">{{form.date2}}</div>
                       </div>
                       <div class="row">
                         <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
-                        <div class="text-grey-7 text-caption">{{'20:30hrs'}}</div>
+                        <div class="text-grey-7 text-caption">{{form.tiempo}}hrs</div>
                       </div>
                     </div>
                   </div>
@@ -253,7 +253,7 @@
                   <div class="row">
                     <div class="col">
                       <div class="text-bold text-grey-7">Tipo de contrato</div>
-                      <div class="text-grey-7">{{'En espera'}}</div>
+                      <div class="text-grey-7">{{form.contrato}}</div>
                     </div>
                     <div class="col">
                       <div class="text-bold text-grey-7">Usuario asignado</div>
@@ -263,21 +263,21 @@
                   <div class="row">
                     <div class="col">
                       <div class="text-bold text-grey-7">Categoria</div>
-                      <div class="text-grey-7">{{'Contrato 01'}}</div>
+                      <div class="text-grey-7">{{form.category}}</div>
                     </div>
                     <div class="col">
                       <div class="text-bold text-grey-7">Departamento</div>
-                      <div class="text-grey-7">{{'Departamento 01'}}</div>
+                      <div class="text-grey-7">{{form.department}}</div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col">
                       <div class="text-bold text-grey-7">Fecha de inicio</div>
-                      <div class="text-grey-7">{{'Contrato 01'}}</div>
+                      <div class="text-grey-7">{{form.date}}</div>
                     </div>
                     <div class="col">
                       <div class="text-bold text-grey-7">Hora de inicio</div>
-                      <div class="text-grey-7">{{'Departamento 01'}}</div>
+                      <div class="text-grey-7">{{form.time}}</div>
                     </div>
                   </div>
                   <!-- <div class="row">
@@ -291,9 +291,23 @@
                     </div>
                   </div> -->
                 </div>
+                <div class="q-px-sm q-mb-md" v-if="rol === 3 && form.status > 0 && form.status < 3">
+                  <div v-if="form.status < 2">
+                    <div class="text-caption text-grey-8">Cambia el estado de Solicitud</div>
+                    <q-select dense filled v-model="form2.status" :options="estados" map-options option-label="name" emit-value option-value="status" :error="$v.form2.status.$error" @blur="$v.form2.status.$touch()"/>
+                  </div>
+                  <div>
+                    <div class="text-caption text-grey-8">Nombre de hito</div>
+                    <q-input dense v-model="form2.name" filled placeholder="Nombre del hito" error-message="Este campo es requerido" :error="$v.form2.name.$error" @blur="$v.form2.name.$touch()"/>
+                  </div>
+                  <div>
+                    <div class="text-caption text-grey-8">Descripción del trabajo realizado</div>
+                    <q-input dense v-model="form2.description" filled type="textarea" placeholder="Hasta 500 caracteres" error-message="Este campo es requerido" :error="$v.form2.description.$error" @blur="$v.form2.description.$touch()"/>
+                  </div>
+                </div>
               </div>
               <div class="full-width column items-center q-mb-lg">
-                <q-btn class="text-white q-py-xs" color="primary" :label="rol === 3 ? 'Tomar solicitud' : 'Crear solicitud'" style="width: 70%; border-radius: 5px;" @click="rol === 3 ? acceptRequest() : saveRequest()" no-caps/>
+                <q-btn class="text-white q-py-xs" color="primary" :label="rol === 3 && form.status === 0 ? 'Tomar solicitud' : rol === 3 && form.status > 0 && form.status < 3 ? 'Cambiar estado' : rol === 4 && !form.status ? 'Crear solicitud' : form.status === 3 ? 'Cerrar' : ''" style="width: 70%; border-radius: 5px;" @click="rol === 3 && form.status === 0 ? statusRequest(1) : rol === 3 && form.status > 0 && form.status < 3 ? saveHito() : rol === 4 && !form.status ? saveRequest() : form.status === 3 ? 'Cerrar' : ''" no-caps/>
               </div>
             </q-card>
           </q-dialog>
@@ -323,8 +337,13 @@ export default {
       company: {},
       empresas: [],
       form: {},
+      form2: {},
+      estados: [{ name: 'En espera', status: 2 }, { name: 'Finalizado', status: 3 }],
       slas: [],
       categorias: [],
+      departamentos: [],
+      contratos: [],
+      hitos: [],
       resumen: [],
       solicitudes: [],
       sltConsultor: [],
@@ -447,7 +466,12 @@ export default {
       description: { required },
       priority: { required },
       category: { required },
-      date: { required }
+      date2: { required }
+    },
+    form2: {
+      status: { required },
+      name: { required },
+      description: { required }
     }
   },
   mounted () {
@@ -467,7 +491,7 @@ export default {
           console.log(this.user)
           if (this.rol !== 1) {
             this.baseu = env.apiUrl + 'perfil_img/' + this.user._id
-            if (this.rol === 4 || this.rol === 3) {
+            if (this.rol !== 2) {
               this.getCompany()
             }
           }
@@ -477,24 +501,20 @@ export default {
     },
     getCompany () {
       this.baseuCompany = env.apiUrl + 'company_img/'
-      if (this.rol === 3) {
-        this.$api.get('companys_by_company/' + this.user.company).then(res => {
-          if (res) {
+      this.$api.get(this.rol === 3 ? `companys_by_company/${this.user.company}` : this.rol === 4 ? `company/${this.user.empresa}` : '').then(res => {
+        if (res) {
+          if (this.rol === 3) {
             this.empresas = res
-            this.getSlAs()
-            console.log(this.empresas)
-          }
-        })
-      } else if (this.rol === 4) {
-        this.$api.get('company/' + this.user.empresa).then(res => {
-          if (res) {
+          } else if (this.rol === 4) {
             this.company = res
-            console.log(this.company)
-            this.getSlAs()
-            this.getCategorias()
           }
-        })
-      }
+          this.getSlAs()
+          this.getCategorias()
+          this.getContratos()
+          this.getHitos()
+          this.getDepartamentos()
+        }
+      })
     },
     menuRol () {
       if (this.rol === 1) {
@@ -507,36 +527,53 @@ export default {
         this.menu = this.menuCliente
       }
     },
-    getSlAs () {
-      if (this.rol === 3) {
-        this.$api.get('sla_by_company/' + this.user.company).then(res => {
-          if (res) {
-            this.slas = res
-            this.getSlt()
-            console.log(this.slas, 'slas')
-          }
-        })
-      } else if (this.rol === 4) {
-        this.$api.get('sla_by_contrato/' + this.company.typeContract).then(res => {
-          if (res) {
-            this.slas = res
-            this.getSlt()
-            console.log(this.slas, 'slas')
-          }
-        })
-      }
-    },
     getCategorias () {
-      this.$api.get('categorias/' + this.company.company_id).then(res => {
+      this.$api.get(`categorias/${this.rol === 3 ? this.user.company : this.rol === 4 ? this.company.company_id : ''}`).then(res => {
         if (res) {
           this.categorias = res
           console.log(this.categorias, 'categorias')
         }
       })
     },
+    getSlAs () {
+      this.$api.get(this.rol === 3 ? `sla_by_company/${this.user.company}` : this.rol === 4 ? `sla_by_contrato/${this.company.typeContract}` : '').then(res => {
+        if (res) {
+          this.slas = res
+          this.getSlt()
+          console.log(this.slas, 'slas')
+        }
+      })
+    },
+    getDepartamentos () {
+      this.$api.get(`departments/${this.rol === 3 ? this.user.company : this.rol === 4 ? this.company.company_id : ''}`).then(res => {
+        if (res) {
+          this.departamentos = res
+          console.log(this.departamentos, 'depas')
+        }
+      })
+    },
+    getContratos () {
+      this.$api.get(`contratos_by_company/${this.rol === 3 ? this.user.company : this.rol === 4 ? this.company.company_id : ''}`).then(res => {
+        if (res) {
+          this.contratos = res
+          console.log(this.contratos, 'contratos')
+        }
+      })
+    },
+    getHitos () {
+      this.$api.get(`hitos_by_company/${this.rol === 3 ? this.user.company : this.rol === 4 ? this.company.company_id : ''}`).then(res => {
+        if (res) {
+          this.hitos = res
+          console.log(this.hitos, 'hitos')
+        }
+      })
+    },
     saveRequest () {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
+        const hoy = new Date()
+        this.form.date = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear()
+        this.form.time = hoy.getHours() + ':' + hoy.getMinutes()
         this.form.user_id = this.user._id
         this.form.company_id = this.user.empresa
         this.form.status = 0
@@ -582,14 +619,43 @@ export default {
     },
     verStl (itm, idx) {
       this.slt = !this.slt
-      this.form = itm
+      this.form = { ...itm }
+      this.form.empresa = this.rol === 3 ? this.empresas.filter(v => v._id === itm.company_id)[0].name : this.company.name
+      this.form.priority = this.slas.filter(v => v._id === itm.priority)[0].nombre
+      this.form.priorityColor = this.slas.filter(v => v._id === itm.priority)[0].color2
+      this.form.tiempo = this.slas.filter(v => v._id === itm.priority)[0].tiempo
+      this.form.category = this.categorias.filter(v => v._id === itm.category)[0].nombre
+      this.form.department = this.departamentos.filter(v => v._id === this.categorias.filter(v => v._id === itm.category)[0].departamento)[0].name
+      this.form.contrato = this.contratos.filter(v => v._id === this.empresas.filter(v => v._id === itm.company_id)[0].typeContract)[0].contrato
       this.form.num = idx + 1
     },
-    acceptRequest () {
-      this.$api.put('accept_solicitud/' + this.form._id, { status: 1, consultor_id: this.user._id }).then(res => {
+    saveHito () {
+      this.$v.form2.$touch()
+      if (this.form.status === 2) {
+        this.form2.status = 3
+      }
+      if (!this.$v.form2.$error) {
+        this.form2.company_id = this.user.company
+        this.form2.solicitud_id = this.form._id
+        this.$api.post('register_hito', this.form2).then(res => {
+          if (res) {
+            this.statusRequest(this.form2.status)
+            this.form2 = {}
+            this.$v.form.$reset()
+          }
+        })
+      } else {
+        this.$q.notify({
+          message: 'Debe ingresar todos los datos correspondientes',
+          color: 'negative'
+        })
+      }
+    },
+    statusRequest (idx) {
+      this.$api.put('status_solicitud/' + this.form._id, { status: idx, consultor_id: this.user._id }).then(res => {
         if (res) {
           this.$q.notify({
-            message: 'Solicitud aceptada',
+            message: 'Estado de la solicitud modificado',
             color: 'positive'
           })
           this.form = {}

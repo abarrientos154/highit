@@ -203,7 +203,7 @@ export default {
           this.slas = res
           this.getSltUser()
           this.getSltHistory()
-          console.log(this.slas, 'slas')
+          // console.log(this.slas, 'slas')
         }
       })
     },

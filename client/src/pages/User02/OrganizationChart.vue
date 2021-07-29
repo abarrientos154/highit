@@ -186,19 +186,19 @@ export default {
   },
   mounted () {
     this.userLogueado()
-    this.getDepartamentos()
   },
   methods: {
     userLogueado () {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
+          this.getDepartamentos()
           // console.log(this.user)
         }
       })
     },
     getDepartamentos () {
-      this.$api.get('departments').then(res => {
+      this.$api.get('departments/' + this.user.empresa).then(res => {
         if (res) {
           this.departamentos = res
           this.getAreas()

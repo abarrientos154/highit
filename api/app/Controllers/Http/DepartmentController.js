@@ -27,9 +27,8 @@ class DepartmentController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response, view, auth }) {
-    const user = (await auth.getUser()).toJSON()
-    let departments = (await Department.query().where({company_id: user.empresa}).fetch()).toJSON()
+  async index({  params, request, response, view }) {
+    let departments = (await Department.query().where({company_id: params.id}).fetch()).toJSON()
     response.send(departments)
   }
 
