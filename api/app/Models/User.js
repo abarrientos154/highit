@@ -9,7 +9,7 @@ const Hash = use('Hash')
 class User extends Model {
 
   static get fillableEditUser() {
-    return ['name', 'last_name', 'phone', 'email', 'Dni', 'empresa']
+    return ['name', 'last_name', 'phone', 'email', 'Dni', 'empresa', 'departamento', 'area' , 'cargo']
   }
   static get fillable() {
     return ['name','last_name','phone', 'email', 'Dni', 'password', 'empresa', 'departamento', 'area' , 'cargo']

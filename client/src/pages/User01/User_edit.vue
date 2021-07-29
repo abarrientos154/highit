@@ -129,7 +129,7 @@ export default {
   mounted () {
     this.obtener_datos()
     this.getEmpresas()
-    this.baseu = env.apiUrl + '/perfil_img/' + this.id
+    this.baseu = env.apiUrl + 'perfil_img/' + this.id
   },
   methods: {
     async obtener_datos () {

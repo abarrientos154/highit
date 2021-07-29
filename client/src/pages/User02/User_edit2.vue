@@ -42,10 +42,29 @@
               <div class="q-mt-md text-subtitle1">Telefono</div>
               <q-input filled v-model="form.phone" placeholder="+52 1 55 8403 5917" />
 
+              <div v-if="form.roles[0] === 3">
+                  <div class="q-mt-sm text-h6">Selecciona un Departamento</div>
+                  <div class="q-mt-sm text-subtitle1">Listado de Departamentos</div>
+                  <q-select @input="areasOpt(form.departamento), form.area = null, form.cargo = null" filled v-model="form.departamento" :options="departamentos" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                  :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()" />
+
+                  <div class="q-mt-sm text-h6">Selecciona un Area</div>
+                  <div class="q-mt-sm text-subtitle1">Listado de Areas</div>
+                  <q-select @input="cargosOpt(form.area), form.cargo = null" filled v-model="form.area" :options="areas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                    :error="$v.form.area.$error" @blur="$v.form.area.$touch()" />
+
+                  <div class="q-mt-sm text-h6">Selecciona un Cargo</div>
+                  <div class="q-mt-sm text-subtitle1">Listado de Cargos</div>
+                  <q-select filled v-model="form.cargo" :options="cargos" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                    :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
+                </div>
+
+              <div v-if="form.roles[0] === 4">
               <div class="q-mt-sm text-h6">Selecciona empresa</div>
                 <div class="q-mt-sm text-subtitle1">Listado de empresa</div>
                 <q-select filled v-model="form.empresa" :options="empresas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
                 :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()"/>
+              </div>
 
             </div>
             <div class="q-pa-md column items-center justify-center">
@@ -89,7 +108,7 @@
   </div>
 </template>
 <script>
-import { required, email, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
+import { required, email, sameAs, maxLength, minLength, requiredIf } from 'vuelidate/lib/validators'
 import env from '../../env'
 export default {
   data () {
@@ -107,7 +126,10 @@ export default {
       isPwd2: true,
       isPwd3: true,
       empresas: [],
-      user: {}
+      user: {},
+      departamentos: [],
+      areas: [],
+      cargos: []
     }
   },
   validations: {
@@ -116,7 +138,26 @@ export default {
       phone: { required },
       last_name: { required },
       name: { required },
-      empresa: { required }
+      empresa: {
+        required: requiredIf(function () {
+          return this.form.roles[0] === 4
+        })
+      },
+      departamento: {
+        required: requiredIf(function () {
+          return this.form.roles[0] === 3
+        })
+      },
+      cargo: {
+        required: requiredIf(function () {
+          return this.form.roles[0] === 3
+        })
+      },
+      area: {
+        required: requiredIf(function () {
+          return this.form.roles[0] === 3
+        })
+      }
     },
     password: { required, maxLength: maxLength(256), minLength: minLength(6) },
     repeatPassword: { sameAsPassword: sameAs('password') },
@@ -124,10 +165,14 @@ export default {
     perfilfile: { required }
 
   },
-  mounted () {
-    this.obtener_datos()
+  async mounted () {
+    await this.obtener_datos()
     this.getEmpresas()
-    this.baseu = env.apiUrl + '/perfil_img/' + this.id
+    this.getDepartamentos()
+    this.getAreas()
+    this.getCargos()
+
+    this.baseu = env.apiUrl + 'perfil_img/' + this.id
   },
   methods: {
     async obtener_datos () {
@@ -141,10 +186,34 @@ export default {
       }
     },
     async getEmpresas () {
-      this.$api.get('empresas').then(res => {
+      await this.$api.get('empresas').then(res => {
         if (res) {
           this.empresas = res
           console.log(this.empresas, 'empresasassssssss')
+        }
+      })
+    },
+    async getDepartamentos () {
+      await this.$api.get('departments').then(res => {
+        if (res) {
+          this.departamentos = res
+          console.log(this.departamentos, 'depas')
+        }
+      })
+    },
+    async getAreas () {
+      await this.$api.get('areas/' + this.form.departamento).then(res => {
+        if (res) {
+          this.areas = res
+          console.log(this.areas, 'areas')
+        }
+      })
+    },
+    async getCargos () {
+      await this.$api.get('cargos/' + this.form.area).then(res => {
+        if (res) {
+          this.cargos = res
+          console.log(this.cargos, 'cargos')
         }
       })
     },
@@ -210,6 +279,22 @@ export default {
           }
         })
       }
+    },
+    areasOpt (id) {
+      this.$api.get('areas/' + id).then(res => {
+        if (res) {
+          this.areas = res
+          console.log(this.areas, 'areasss')
+        }
+      })
+    },
+    cargosOpt (id) {
+      this.$api.get('cargos/' + id).then(res => {
+        if (res) {
+          this.cargos = res
+          console.log(this.cargos, 'cargos')
+        }
+      })
     }
 
   }

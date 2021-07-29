@@ -18,6 +18,7 @@ const routes = [
       { path: '/equipos', component: () => import('pages/User02/ListadoEquipo.vue') },
       { path: '/equipos/form', component: () => import('pages/User02/RegisterEquipo.vue') },
       { path: '/equipos/form/:id', component: () => import('pages/User02/Equipo_edit.vue') },
+      { path: '/equipos_consultor', component: () => import('pages/Cliente/ListadoEquipo.vue') },
 
       // Consultor
       { path: '/inicio_consultor', component: () => import('pages/Consultor/Home.vue') },
