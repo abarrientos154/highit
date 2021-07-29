@@ -39,7 +39,7 @@
             <div class="text-center text-h6 text-bold">¿Tienes problemas?</div>
             <div class="text-caption text-center text-grey" style="font-size: 10px;">Crea una nueva solicitud</div>
             <div class="column items-center">
-              <q-btn class="text-white q-py-xs" color="primary" label="Nueva solicitud" style="width: 80%; border-radius: 5px;" @click="slt = !slt" no-caps/>
+              <q-btn class="text-white q-py-xs" color="primary" label="Nueva solicitud" style="width: 80%; border-radius: 5px;" @click="newRequest()" no-caps/>
             </div>
           </div>
           <div>
@@ -68,7 +68,7 @@
               <div class="text-caption text-grey" style="font-size: 10px;">{{rol === 3 ? 'Actividades que aun no son resueltas' : 'listado de actividades sin terminar'}}</div>
             </div>
             <q-list class="q-px-sm">
-              <q-card class="q-mb-md" v-for="(item, index) in solicitudes" :key="index" @click="rol === 3 ? verStl(item, index) : ''">
+              <q-card class="q-mb-md" v-for="(item, index) in solicitudes" :key="index" @click="verStl(item, index)">
                 <div class="row justify-between">
                   <div class="q-pa-sm" style="font-size: 10px;">Nº de solicitud {{index + 1}}</div>
                   <div :class="`bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md`" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
@@ -84,7 +84,7 @@
                     <div class="row">
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Estado</div>
-                        <div style="font-size: 10px;">{{item.status === 0 ? 'Sin iniciar' : item.status === 1 ? 'Iniciada' : item.status === 2 ? 'En espera' : item.status === 3 ? 'Finalizada' : '' }}</div>
+                        <div style="font-size: 10px;">{{item.status === 0 ? 'Sin iniciar' : item.status === 1 ? 'Ejecucion' : item.status === 2 ? 'En espera' : item.status === 3 ? 'Finalizada' : '' }}</div>
                       </div>
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Usuario asignado</div>
@@ -94,7 +94,7 @@
                     <div class="row">
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Tipo de Contrato</div>
-                        <div style="font-size: 10px;">{{contratos.filter(v => v._id === empresas.filter(v => v._id === item.company_id)[0].typeContract)[0].contrato}}</div>
+                        <div style="font-size: 10px;">{{contratos.filter(v => rol === 3 ? v._id === empresas.filter(v => v._id === item.company_id)[0].typeContract : v._id === company.typeContract)[0].contrato}}</div>
                       </div>
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Departamento</div>
@@ -143,7 +143,7 @@
                     <div class="row">
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Estado</div>
-                        <div style="font-size: 10px;">{{item.status === 0 ? 'Sin iniciar' : item.status === 1 ? 'Iniciada' : item.status === 2 ? 'En espera' : item.status === 3 ? 'Finalizada' : '' }}</div>
+                        <div style="font-size: 10px;">{{item.status === 0 ? 'Sin iniciar' : item.status === 1 ? 'Ejecucion' : item.status === 2 ? 'En espera' : item.status === 3 ? 'Finalizada' : '' }}</div>
                       </div>
                       <div class="col">
                         <div class="text-bold" style="font-size: 10px;">Usuario asignado</div>
@@ -190,13 +190,13 @@
                   <div class="q-mr-xs">Nº de solicitud:</div>
                   <div class="text-bold">{{form.num}}</div>
                 </div>
-                <div :class="`text-caption q-px-lg text-center text-white bg-${form.priorityColor} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{form.priority}}<br>{{form.status === 0 ? 'Sin iniciar' : form.status === 1 ? 'Iniciada' : form.status === 2 ? 'En espera' : form.status === 3 ? 'Finalizada' : '' }}</div>
+                <div :class="`text-caption q-px-lg text-center text-white bg-${form.priorityColor} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{form.priority}}<br>{{form.status === 0 ? 'Sin iniciar' : form.status === 1 ? 'Ejecucion' : form.status === 2 ? 'En espera' : form.status === 3 ? 'Finalizada' : '' }}</div>
               </div>
               <div class="q-mb-lg q-mt-md">
                 <div class="text-center text-h6 text-bold">{{rol === 3 ? 'Tomar solicitud' : 'Nueva solicitud'}}</div>
                 <div class="text-center text-grey-8">{{rol === 3 ? 'Modifica el estado de la solicitud' : 'Crea una nueva solicitud para tu cliente'}}</div>
               </div>
-              <div style="width: 80%" v-if="rol === 4">
+              <div style="width: 80%" v-if="rol === 4 && !form.status">
                 <div>
                   <div class="text-caption text-grey-8">Descripción de la solicitud</div>
                   <q-input dense v-model="form.description" filled type="textarea" placeholder="Hasta 500 caracteres" error-message="Este campo es requerido" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
@@ -307,7 +307,7 @@
                 </div>
               </div>
               <div class="full-width column items-center q-mb-lg">
-                <q-btn class="text-white q-py-xs" color="primary" :label="rol === 3 && form.status === 0 ? 'Tomar solicitud' : rol === 3 && form.status > 0 && form.status < 3 ? 'Cambiar estado' : rol === 4 && !form.status ? 'Crear solicitud' : form.status === 3 ? 'Cerrar' : ''" style="width: 70%; border-radius: 5px;" @click="rol === 3 && form.status === 0 ? statusRequest(1) : rol === 3 && form.status > 0 && form.status < 3 ? saveHito() : rol === 4 && !form.status ? saveRequest() : form.status === 3 ? 'Cerrar' : ''" no-caps/>
+                <q-btn class="text-white q-py-xs" color="primary" :label="rol === 3 && form.status === 0 ? 'Tomar solicitud' : rol === 3 && form.status > 0 && form.status < 3 ? 'Cambiar estado' : rol === 4 && newslt ? 'Crear solicitud' : 'Cerrar'" style="width: 70%; border-radius: 5px;" @click="rol === 3 && form.status === 0 ? statusRequest(1) : rol === 3 && form.status > 0 && form.status < 3 ? saveHito() : rol === 4 && newslt ? saveRequest() : slt = !slt" no-caps/>
               </div>
             </q-card>
           </q-dialog>
@@ -350,6 +350,7 @@ export default {
       drawer1: true,
       drawer2: true,
       slt: false,
+      newslt: false,
       menu: [],
       menuUser01: [
         {
@@ -493,7 +494,7 @@ export default {
         if (res) {
           this.rol = res.roles[0]
           this.user = res
-          console.log(this.user)
+          // console.log(this.user)
           if (this.rol !== 1) {
             this.baseu = env.apiUrl + 'perfil_img/' + this.user._id
             if (this.rol !== 2) {
@@ -536,7 +537,7 @@ export default {
       this.$api.get(`categorias/${this.rol === 3 ? this.user.company : this.rol === 4 ? this.company.company_id : ''}`).then(res => {
         if (res) {
           this.categorias = res
-          console.log(this.categorias, 'categorias')
+          // console.log(this.categorias, 'categorias')
         }
       })
     },
@@ -545,7 +546,7 @@ export default {
         if (res) {
           this.slas = res
           this.getSlt()
-          console.log(this.slas, 'slas')
+          // console.log(this.slas, 'slas')
         }
       })
     },
@@ -553,7 +554,7 @@ export default {
       this.$api.get(`departments/${this.rol === 3 ? this.user.company : this.rol === 4 ? this.company.company_id : ''}`).then(res => {
         if (res) {
           this.departamentos = res
-          console.log(this.departamentos, 'depas')
+          // console.log(this.departamentos, 'depas')
         }
       })
     },
@@ -561,7 +562,7 @@ export default {
       this.$api.get(`contratos_by_company/${this.rol === 3 ? this.user.company : this.rol === 4 ? this.company.company_id : ''}`).then(res => {
         if (res) {
           this.contratos = res
-          console.log(this.contratos, 'contratos')
+          // console.log(this.contratos, 'contratos')
         }
       })
     },
@@ -572,6 +573,12 @@ export default {
           console.log(this.hitos, 'hitos')
         }
       })
+    },
+    newRequest () {
+      this.form = {}
+      this.$v.form.$reset()
+      this.newslt = true
+      this.slt = !this.slt
     },
     saveRequest () {
       this.$v.form.$touch()
@@ -617,12 +624,13 @@ export default {
         this.$api.put('solicitudes_cliente/' + this.user._id, { status: 1 }).then(res => {
           if (res) {
             this.solicitudes = res
-            console.log(this.solicitudes, 'solicitudes')
+            // console.log(this.solicitudes, 'solicitudes')
           }
         })
       }
     },
     verStl (itm, idx) {
+      this.newslt = false
       this.slt = !this.slt
       this.form = { ...itm }
       this.form.empresa = this.rol === 3 ? this.empresas.filter(v => v._id === itm.company_id)[0].name : this.company.name
@@ -631,7 +639,7 @@ export default {
       this.form.tiempo = this.slas.filter(v => v._id === itm.priority)[0].tiempo
       this.form.category = this.categorias.filter(v => v._id === itm.category)[0].nombre
       this.form.department = this.departamentos.filter(v => v._id === this.categorias.filter(v => v._id === itm.category)[0].departamento)[0].name
-      this.form.contrato = this.contratos.filter(v => v._id === this.empresas.filter(v => v._id === itm.company_id)[0].typeContract)[0].contrato
+      this.form.contrato = this.contratos.filter(v => this.rol === 3 ? v._id === this.empresas.filter(v => v._id === itm.company_id)[0].typeContract : v._id === this.company.typeContract)[0].contrato
       this.form.num = idx + 1
     },
     saveHito () {
@@ -640,13 +648,15 @@ export default {
         this.form2.status = 3
       }
       if (!this.$v.form2.$error) {
+        const hoy = new Date()
+        this.form2.date = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear()
         this.form2.company_id = this.user.company
         this.form2.solicitud_id = this.form._id
         this.$api.post('register_hito', this.form2).then(res => {
           if (res) {
             this.statusRequest(this.form2.status)
             this.form2 = {}
-            this.$v.form.$reset()
+            this.$v.form2.$reset()
           }
         })
       } else {
