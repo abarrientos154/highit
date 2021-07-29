@@ -249,7 +249,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="q-px-sm">
+                <div class="q-px-sm q-mb-md">
                   <div class="row">
                     <div class="col">
                       <div class="text-bold text-grey-7">Tipo de contrato</div>
