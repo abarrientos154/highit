@@ -39,8 +39,9 @@ class UserController {
     response.send(users);
   }
 
-  async index2({ request, response, view }) {
-    let users = (await User.query().where({$or: [{ roles: 3 }, { roles: 4 }]}).fetch()).toJSON()
+  async index2({ request, response, view, auth }) {
+    let user = (await auth.getUser()).toJSON()
+    let users = (await User.query().where({ $and: [ {$or:[  { roles: [3] }, { roles: [4] }]}, { empresa_creador: user.empresa } ] }).fetch()).toJSON()
     response.send(users);
   }
 
