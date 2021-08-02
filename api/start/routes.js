@@ -110,6 +110,13 @@ addPrefixToGroup(
     Route.get("categorias/:id", "CategoriaController.show")
     Route.get("categorias", "CategoriaController.index")
 
+    Route.post('conocimientos', 'ConocimientoController.store')
+    Route.get('conocimientos', 'ConocimientoController.index')
+    Route.get("conocimientos/:id", "ConocimientoController.show")
+    Route.put("edit_conocimiento/:id", "ConocimientoController.update")
+    Route.post('edit_archivos_conocimiento/:id', 'ConocimientoController.editArchivos')
+    Route.get('conocimiento/:id', 'ConocimientoController.conocimientoById')
+
     Route.get('equipo_consultor', 'EquipoController.equipos_consultor')
 
     Route.get("companys", "CompanyController.index")
@@ -126,7 +133,7 @@ addPrefixToGroup(
     Route.post("solicitudes_by_consultor", "SolicitudController.solicitudesByConsultor")
     Route.put("status_solicitud/:id", "SolicitudController.update")
     Route.post("register_solicitud", "SolicitudController.store")
-    
+
     Route.post("register_hito", "HitoController.store")
     Route.get("hitos_by_company/:id", "HitoController.show")
   }).middleware("auth")

@@ -431,6 +431,11 @@ export default {
           ruta: '/contratos'
         },
         {
+          icon: 'lightbulb',
+          label: 'conocimiento',
+          ruta: '/vista_conocimiento'
+        },
+        {
           icon: 'logout',
           label: 'Cerrar sesión',
           ruta: ''
@@ -441,6 +446,11 @@ export default {
           icon: 'home',
           label: 'Inicio',
           ruta: ''
+        },
+        {
+          icon: 'lightbulb',
+          label: 'conocimiento',
+          ruta: '/conocimiento'
         },
         {
           icon: 'logout',
