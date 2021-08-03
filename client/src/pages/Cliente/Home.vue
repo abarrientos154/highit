@@ -33,11 +33,15 @@
         <div class="text-h6 text-bold">Solicitudes sin comenzar</div>
         <div class="text-grey-8">Estas son tus solicitudes aun no tomadas</div>
       </div>
-      <q-scroll-area horizontal style="height: 210px;">
+      <q-scroll-area horizontal style="height: 210px;" v-if="solicitudes.length">
         <div class="row no-wrap full-width">
           <q-card class="q-mx-sm" v-for="(item, index) in solicitudes" :key="index" style="width: 425px;" @click="verSlt(item, index)">
-            <div class="column items-end">
-              <div :class="`text-caption text-white q-px-lg bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+            <div class="row q-px-lg items-center justify-between">
+              <div class="row">
+                <div class="q-mr-xs">Nº de solicitud:</div>
+                <div class="text-bold">{{index + 1}}</div>
+              </div>
+              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -66,11 +70,15 @@
         <div class="text-h6 text-bold">Solicitudes pendientes</div>
         <div class="text-grey-8">Estas son tus solicitudes que no están resueltas</div>
       </div>
-      <q-scroll-area horizontal style="height: 210px;">
+      <q-scroll-area horizontal style="height: 210px;" v-if="sltBegin.length">
         <div class="row no-wrap full-width">
           <q-card class="q-mx-sm" v-for="(item, index) in sltBegin" :key="index" style="width: 425px;" @click="verSlt(item, index)">
-            <div class="column items-end">
-              <div :class="`text-caption text-white q-px-lg bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+            <div class="row q-px-lg items-center justify-between">
+              <div class="row">
+                <div class="q-mr-xs">Nº de solicitud:</div>
+                <div class="text-bold">{{index + 1}}</div>
+              </div>
+              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -99,11 +107,15 @@
         <div class="text-h6 text-bold">Solicitudes en espera</div>
         <div class="text-grey-8">Estas son tus solicitudes que no han sido finalizadas</div>
       </div>
-      <q-scroll-area horizontal style="height: 210px;">
+      <q-scroll-area horizontal style="height: 210px;" v-if="sltProgress.length">
         <div class="row no-wrap full-width">
           <q-card class="q-mx-sm" v-for="(item, index) in sltProgress" :key="index" style="width: 425px;" @click="verSlt(item, index)">
-            <div class="column items-end">
-              <div :class="`text-caption text-white q-px-lg bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+            <div class="row q-px-lg items-center justify-between">
+              <div class="row">
+                <div class="q-mr-xs">Nº de solicitud:</div>
+                <div class="text-bold">{{index + 1}}</div>
+              </div>
+              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -132,11 +144,15 @@
         <div class="text-h6 text-bold">Solicitudes en checkout</div>
         <div class="text-grey-8">Estas son tus solicitudes por verificar</div>
       </div>
-      <q-scroll-area horizontal style="height: 210px;">
+      <q-scroll-area horizontal style="height: 210px;" v-if="sltCheckout.length">
         <div class="row no-wrap full-width">
           <q-card class="q-mx-sm" v-for="(item, index) in sltCheckout" :key="index" style="width: 425px;" @click="verSlt(item, index)">
-            <div class="column items-end">
-              <div :class="`text-caption text-white q-px-lg bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+            <div class="row q-px-lg items-center justify-between">
+              <div class="row">
+                <div class="q-mr-xs">Nº de solicitud:</div>
+                <div class="text-bold">{{index + 1}}</div>
+              </div>
+              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -165,11 +181,15 @@
         <div class="text-h6 text-bold">Solicitudes por confirmar</div>
         <div class="text-grey-8">Confirma que tus solicitudes han sido finalizadas</div>
       </div>
-      <q-scroll-area horizontal style="height: 210px;">
+      <q-scroll-area horizontal style="height: 210px;" v-if="sltConfirm.length">
         <div class="row no-wrap full-width">
           <q-card class="q-mx-sm" v-for="(item, index) in sltConfirm" :key="index" style="width: 425px;" @click="verSlt(item, index)">
-            <div class="column items-end">
-              <div :class="`text-caption text-white q-px-lg bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+            <div class="row q-px-lg items-center justify-between">
+              <div class="row">
+                <div class="q-mr-xs">Nº de solicitud:</div>
+                <div class="text-bold">{{index + 1}}</div>
+              </div>
+              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -220,7 +240,7 @@
                   </div>
                   <div class="col">
                     <div class="text-bold" style="font-size: 10px;">Usuario asignado</div>
-                    <div style="font-size: 10px;">{{'Usuario'}}</div>
+                    <div style="font-size: 10px;">{{consultores.filter(v => v._id === item.consultor_id)[0].name + ' ' + consultores.filter(v => v._id === item.consultor_id)[0].last_name}}</div>
                   </div>
                 </div>
                 <div class="row">
@@ -245,7 +265,7 @@
                 </div>
                 <div class="row">
                   <div class="text-bold q-mr-xs" style="font-size: 10px;">Tiempo estimado de termino:</div>
-                  <div style="font-size: 10px;">{{'20'}}hrs</div>
+                  <div style="font-size: 10px;">{{item.horas + ':' + item.minutos}}hrs</div>
                 </div>
               </div>
             </div>
@@ -303,9 +323,9 @@
                 <div class="text-bold text-grey-7">Tipo de contrato</div>
                 <div class="text-grey-7">{{solicitud.contrato}}</div>
               </div>
-              <div class="col">
+              <div class="col" v-if="solicitud.status > 0">
                 <div class="text-bold text-grey-7">Usuario asignado</div>
-                <div class="text-grey-7">{{''}}</div>
+                <div class="text-grey-7">{{solicitud.consultor}}</div>
               </div>
             </div>
             <div class="row">
@@ -350,7 +370,7 @@
                   <div class="text-grey-8 text-bold">{{item.name}}</div>
                   <div class="row">
                     <div class="text-grey-8 q-mr-xs text-bold">Fecha</div>
-                    <div class="text-grey-8">{{item.date}}</div>
+                    <div class="text-grey-8">{{item.date + ' ' + item.time + 'hr'}}</div>
                   </div>
                 </div>
                 <div class="text-grey-8">{{item.description}}</div>
@@ -378,6 +398,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import * as moment from 'moment'
 import env from '../../env'
 export default {
   data () {
@@ -386,6 +407,7 @@ export default {
       user: {},
       form: {},
       company: {},
+      consultores: [],
       resumen: [],
       slas: [],
       categorias: [],
@@ -428,11 +450,20 @@ export default {
         if (res) {
           this.company = res
           this.baseu = env.apiUrl + 'company_img/'
+          this.getConsultores()
           this.getSlAs()
           this.getCategorias()
           this.getDepartamentos()
           this.getContratos()
           this.getHitos()
+        }
+      })
+    },
+    getConsultores () {
+      this.$api.post('user_by_rol', { rol: 3 }).then(res => {
+        if (res) {
+          this.consultores = res
+          console.log(this.consultores, 'consultores')
         }
       })
     },
@@ -494,6 +525,15 @@ export default {
             } else if (res.length && res[0].status === 4) {
               this.sltConfirm = res
             } else if (res.length && res[0].status === 5) {
+              for (var i of res) {
+                const begin = moment(i.dateBegin + ' ' + i.timeBegin)
+                const end = moment(i.dateEnd + ' ' + i.timeEnd)
+                i.horas = end.diff(begin, 'hours')
+                i.minutos = end.diff(begin, 'minutes')
+                for (var j = 0; j < i.horas; j++) {
+                  i.minutos = i.minutos - 60
+                }
+              }
               this.sltEnd = res
               this.history = this.sltEnd.slice(0, 6)
             }
@@ -512,6 +552,9 @@ export default {
       this.solicitud.department = this.departamentos.filter(v => v._id === this.categorias.filter(v => v._id === itm.category)[0].departamento)[0].name
       this.solicitud.contrato = this.contratos.filter(v => v._id === this.company.typeContract)[0].contrato
       this.solicitud.hitos = this.hitos.filter(v => v.solicitud_id === itm._id)
+      if (this.solicitud.status > 0) {
+        this.solicitud.consultor = this.consultores.filter(v => v._id === this.solicitud.consultor_id)[0].name + ' ' + this.consultores.filter(v => v._id === this.solicitud.consultor_id)[0].last_name
+      }
       this.solicitud.num = idx + 1
     },
     verMas () {
@@ -528,6 +571,7 @@ export default {
       if (!this.$v.form.$error) {
         const hoy = new Date()
         this.form.date = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear()
+        this.form.time = hoy.getHours() + ':' + hoy.getMinutes()
         this.form.company_id = this.company.company_id
         this.form.solicitud_id = this.solicitud._id
         this.$api.post('register_hito', this.form).then(res => {

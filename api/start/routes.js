@@ -57,6 +57,7 @@ addPrefixToGroup(
     Route.get("user_logueado", "UserController.userLogueado")
     Route.get("all_user", "UserController.allUser") // metodo para obtener informacion del usuario que esta logueado
     Route.post("user_by_status", "UserController.userByStatus") // metodo para obtener proveedores pendientes
+    Route.post("user_by_rol", "UserController.userByRol")
     Route.put("update_status/:id", "UserController.userStatus") // metodo para bloquear o desbloquear usuarios
 
     Route.get("contratos", "ContratoController.index")
