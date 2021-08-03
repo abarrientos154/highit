@@ -14,38 +14,37 @@
         <div class="text-h6 text-bold">Solicitudes sin iniciar</div>
         <div class="text-grey-8">Listado de actividades de tu departamento sin trabajar</div>
       </div>
-      <q-list class="q-px-md">
-        <q-card class="q-mb-md full-width" v-for="(item, index) in solicitudes" :key="index" @click="verStl(item, index)">
-          <div class="row q-px-lg items-center justify-between">
-            <div class="row">
-              <div class="q-mr-xs">Nº de solicitud:</div>
-              <div class="text-bold">{{index + 1}}</div>
-            </div>
-            <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
-          </div>
-          <div class="row">
-            <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-              <q-img :src="baseu + item.company_id" class="full-height"/>
-            </q-avatar>
-            <div class="q-px-sm q-py-md col">
+      <q-scroll-area horizontal style="height: 210px;" v-if="solicitudes.length">
+        <div class="row no-wrap full-width">
+          <q-card class="q-mx-sm" v-for="(item, index) in solicitudes" :key="index" style="width: 425px;" @click="verSlt(item, index)">
+            <div class="row q-px-lg items-center justify-between">
               <div class="row">
-                <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                <div class="q-mr-xs">Nº de solicitud:</div>
+                <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
-              <div>
-                <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
-                <q-scroll-area style="height: 60px;">
-                  <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
-                </q-scroll-area>
+              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+            </div>
+            <div class="row">
+              <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
+                <q-img :src="baseu + item.company_id" class="full-height"/>
+              </q-avatar>
+              <div class="q-px-sm q-py-md col">
+                <div class="row">
+                  <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                </div>
+                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+                <div>
+                  <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                  <q-scroll-area style="height: 60px;">
+                    <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
+                  </q-scroll-area>
+                </div>
               </div>
             </div>
-          </div>
-        </q-card>
-      </q-list>
-      <div v-if="sltAll.length > 2" class="column items-center">
-        <q-btn class="text-white q-py-xs" color="primary" :label="ver ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas(1)" no-caps/>
-      </div>
+          </q-card>
+        </div>
+      </q-scroll-area>
     </div>
     <div class="q-mb-lg">
       <div class="q-mb-sm q-px-md">
@@ -53,7 +52,7 @@
         <div class="text-grey-8">Actividad en curso</div>
       </div>
       <q-list class="q-px-md">
-        <q-card class="q-mb-md full-width" v-for="(item, index) in sltBegin" :key="index" @click="verStl(item, index)">
+        <q-card class="q-mb-md full-width" v-for="(item, index) in sltBegin" :key="index" @click="verSlt(item, index)">
           <div class="row q-px-lg items-center justify-between">
             <div class="row">
               <div class="q-mr-xs">Nº de solicitud:</div>
@@ -87,114 +86,111 @@
         <div class="text-h6 text-bold">Solicitudes en espera</div>
         <div class="text-grey-8">Listado de actividades por finalizar</div>
       </div>
-      <q-list class="q-px-md">
-        <q-card class="q-mb-md full-width" v-for="(item, index) in sltProgress" :key="index" @click="verStl(item, index)">
-          <div class="row q-px-lg items-center justify-between">
-            <div class="row">
-              <div class="q-mr-xs">Nº de solicitud:</div>
-              <div class="text-bold">{{index + 1}}</div>
-            </div>
-            <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
-          </div>
-          <div class="row">
-            <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-              <q-img :src="baseu + item.company_id" class="full-height"/>
-            </q-avatar>
-            <div class="q-px-sm q-py-md col">
+      <q-scroll-area horizontal style="height: 210px;" v-if="sltProgress.length">
+        <div class="row no-wrap full-width">
+          <q-card class="q-mx-sm" v-for="(item, index) in sltProgress" :key="index" style="width: 425px;" @click="verSlt(item, index)">
+            <div class="row q-px-lg items-center justify-between">
               <div class="row">
-                <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                <div class="q-mr-xs">Nº de solicitud:</div>
+                <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
-              <div>
-                <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
-                <q-scroll-area style="height: 60px;">
-                  <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
-                </q-scroll-area>
+              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+            </div>
+            <div class="row">
+              <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
+                <q-img :src="baseu + item.company_id" class="full-height"/>
+              </q-avatar>
+              <div class="q-px-sm q-py-md col">
+                <div class="row">
+                  <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                </div>
+                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+                <div>
+                  <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                  <q-scroll-area style="height: 60px;">
+                    <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
+                  </q-scroll-area>
+                </div>
               </div>
             </div>
-          </div>
-        </q-card>
-      </q-list>
-      <div v-if="sltProgressAll.length > 2" class="column items-center">
-        <q-btn class="text-white q-py-xs" color="primary" :label="ver2 ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas(2)" no-caps/>
-      </div>
+          </q-card>
+        </div>
+      </q-scroll-area>
     </div>
     <div class="q-mb-lg">
       <div class="q-mb-sm q-px-md">
         <div class="text-h6 text-bold">Solicitudes en checkout</div>
-        <div class="text-grey-8">Listado de actividades por finalizar</div>
+        <div class="text-grey-8">Listado de actividades por verificar</div>
       </div>
-      <q-list class="q-px-md">
-        <q-card class="q-mb-md full-width" v-for="(item, index) in sltCheckout" :key="index" @click="verStl(item, index)">
-          <div class="row q-px-lg items-center justify-between">
-            <div class="row">
-              <div class="q-mr-xs">Nº de solicitud:</div>
-              <div class="text-bold">{{index + 1}}</div>
-            </div>
-            <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
-          </div>
-          <div class="row">
-            <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-              <q-img :src="baseu + item.company_id" class="full-height"/>
-            </q-avatar>
-            <div class="q-px-sm q-py-md col">
+      <q-scroll-area horizontal style="height: 210px;" v-if="sltCheckout.length">
+        <div class="row no-wrap full-width">
+          <q-card class="q-mx-sm" v-for="(item, index) in sltCheckout" :key="index" style="width: 425px;" @click="verSlt(item, index)">
+            <div class="row q-px-lg items-center justify-between">
               <div class="row">
-                <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                <div class="q-mr-xs">Nº de solicitud:</div>
+                <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
-              <div>
-                <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
-                <q-scroll-area style="height: 60px;">
-                  <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
-                </q-scroll-area>
+              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+            </div>
+            <div class="row">
+              <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
+                <q-img :src="baseu + item.company_id" class="full-height"/>
+              </q-avatar>
+              <div class="q-px-sm q-py-md col">
+                <div class="row">
+                  <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                </div>
+                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+                <div>
+                  <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                  <q-scroll-area style="height: 60px;">
+                    <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
+                  </q-scroll-area>
+                </div>
               </div>
             </div>
-          </div>
-        </q-card>
-      </q-list>
-      <div v-if="sltCheckoutAll.length > 2" class="column items-center">
-        <q-btn class="text-white q-py-xs" color="primary" :label="ver3 ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas(3)" no-caps/>
-      </div>
+          </q-card>
+        </div>
+      </q-scroll-area>
     </div>
     <div class="q-mb-lg">
       <div class="q-mb-sm q-px-md">
         <div class="text-h6 text-bold">Solicitudes por confirmar</div>
         <div class="text-grey-8">Listado de actividades en espera de confirmacion</div>
       </div>
-      <q-list class="q-px-md">
-        <q-card class="q-mb-md full-width" v-for="(item, index) in sltConfirm" :key="index" @click="verStl(item, index)">
-          <div class="row q-px-lg items-center justify-between">
-            <div class="row">
-              <div class="q-mr-xs">Nº de solicitud:</div>
-              <div class="text-bold">{{index + 1}}</div>
-            </div>
-            <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
-          </div>
-          <div class="row">
-            <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-              <q-img :src="baseu + item.company_id" class="full-height"/>
-            </q-avatar>
-            <div class="q-px-sm q-py-md col">
+      <q-scroll-area horizontal style="height: 210px;" v-if="sltConfirm.length">
+        <div class="row no-wrap full-width">
+          <q-card class="q-mx-sm" v-for="(item, index) in sltConfirm" :key="index" style="width: 425px;" @click="verSlt(item, index)">
+            <div class="row q-px-lg items-center justify-between">
               <div class="row">
-                <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                <div class="q-mr-xs">Nº de solicitud:</div>
+                <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
-              <div>
-                <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
-                <q-scroll-area style="height: 60px;">
-                  <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
-                </q-scroll-area>
+              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+            </div>
+            <div class="row">
+              <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
+                <q-img :src="baseu + item.company_id" class="full-height"/>
+              </q-avatar>
+              <div class="q-px-sm q-py-md col">
+                <div class="row">
+                  <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                </div>
+                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+                <div>
+                  <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                  <q-scroll-area style="height: 60px;">
+                    <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
+                  </q-scroll-area>
+                </div>
               </div>
             </div>
-          </div>
-        </q-card>
-      </q-list>
-      <div v-if="sltConfirmAll.length > 2" class="column items-center">
-        <q-btn class="text-white q-py-xs" color="primary" :label="ver4 ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas(4)" no-caps/>
-      </div>
+          </q-card>
+        </div>
+      </q-scroll-area>
     </div>
     <div>
       <div class="q-mb-sm q-px-md">
@@ -202,10 +198,10 @@
         <div class="text-grey-8">Conose algunas de las solicitudes realizadas</div>
       </div>
       <q-list class="row q-px-sm">
-        <div class="col-xs-12 col-sm-6 col-md-6 q-mb-md q-px-sm" v-for="(item, index) in history" :key="index" @click="verStl(item, index)">
+        <div class="col-xs-12 col-sm-6 col-md-6 q-mb-md q-px-sm" v-for="(item, index) in history" :key="index" @click="verSlt(item, index)">
           <q-card>
             <div class="row justify-between">
-              <div class="q-pa-sm" style="font-size: 10px;">Nº de solicitud {{'001'}}</div>
+              <div class="q-pa-sm" style="font-size: 10px;">Nº de solicitud {{index + 1}}</div>
               <div :class="`bg-${slas.filter(v => v._id === item.priority)[0].color2} q-mr-md`" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
             </div>
             <div class="column items-center" style="margin-top: -10px">
@@ -219,11 +215,11 @@
                 <div class="row">
                   <div class="col">
                     <div class="text-bold" style="font-size: 10px;">Estado</div>
-                    <div style="font-size: 10px;">{{item.status === 0 ? 'Sin iniciar' : item.status === 1 ? 'Ejecucion' : item.status === 2 ? 'En espera' : item.status === 3 ? 'Finalizado' : '' }}</div>
+                    <div style="font-size: 10px;">{{item.status === 0 ? 'Sin iniciar' : item.status === 1 ? 'Ejecución' : item.status === 2 ? 'En espera' : item.status === 3 ? 'Checkout' : item.status === 4 ? 'Confirmar' : item.status === 5 ? 'Finalizado' : ''}}</div>
                   </div>
                   <div class="col">
                     <div class="text-bold" style="font-size: 10px;">Usuario asignado</div>
-                    <div style="font-size: 10px;">{{'Usuario'}}</div>
+                    <div style="font-size: 10px;">{{user.name + ' ' + user.last_name}}</div>
                   </div>
                 </div>
                 <div class="row">
@@ -248,7 +244,7 @@
                 </div>
                 <div class="row">
                   <div class="text-bold q-mr-xs" style="font-size: 10px;">Tiempo estimado de termino:</div>
-                  <div style="font-size: 10px;">{{''}}</div>
+                  <div style="font-size: 10px;">{{item.horas + ':' + item.minutos}}</div>
                 </div>
               </div>
             </div>
@@ -256,7 +252,7 @@
         </div>
       </q-list>
       <div v-if="sltEnd.length > 6" class="column items-center">
-        <q-btn class="text-white q-py-xs" color="primary" :label="ver5 ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas(5)" no-caps/>
+        <q-btn class="text-white q-py-xs" color="primary" :label="ver ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas()" no-caps/>
       </div>
     </div>
 
@@ -267,10 +263,10 @@
             <div class="q-mr-xs">Nº de solicitud:</div>
             <div class="text-bold">{{solicitud.num}}</div>
           </div>
-          <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.priorityColor} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.priority}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En espera' : solicitud.status === 3 ? 'Checkout' : solicitud.status === 4 ? 'Confirmar' : solicitud.status === 5 ? 'Finalizado' : '' }}</div>
+          <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.priorityColor} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.priority}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En espera' : solicitud.status === 3 ? 'Checkout' : solicitud.status === 4 ? 'Confirmar' : solicitud.status === 5 ? 'Finalizado' : ''}}</div>
         </div>
         <div class="q-mb-lg q-mt-md">
-          <div class="text-center text-h6 text-bold">{{solicitud.status === 0 && !sltBegin.length ? 'Tomar solicitud' : solicitud.status === 1 ? 'Cambiar estado' : 'Datos solicitud'}}</div>
+          <div class="text-center text-h6 text-bold">{{solicitud.status === 0 && !sltBegin.length ? 'Tomar solicitud' : solicitud.status === 1 || solicitud.status === 2 || solicitud.status === 3 || solicitud.status === 4 ? 'Cambiar estado' : 'Datos solicitud'}}</div>
           <div class="text-center text-grey-8">Modifica el estado de la solicitud</div>
         </div>
         <div class="q-px-sm q-mb-md full-width">
@@ -308,7 +304,7 @@
               </div>
               <div class="col" v-if="solicitud.status > 0">
                 <div class="text-bold text-grey-7">Usuario asignado</div>
-                <div class="text-grey-7">{{'Usuario'}}</div>
+                <div class="text-grey-7">{{user.name + ' ' + user.last_name}}</div>
               </div>
             </div>
             <div class="row">
@@ -353,15 +349,15 @@
                   <div class="text-grey-8 text-bold">{{item.name}}</div>
                   <div class="row">
                     <div class="text-grey-8 q-mr-xs text-bold">Fecha</div>
-                    <div class="text-grey-8">{{item.date}}</div>
+                    <div class="text-grey-8">{{item.date + ' ' + item.time + 'hr'}}</div>
                   </div>
                 </div>
                 <div class="text-grey-8">{{item.description}}</div>
               </div>
             </q-list>
           </div>
-          <div class="q-px-sm q-mb-md" v-if="solicitud.status > 0 && solicitud.status < 5">
-            <div v-if="solicitud.status !== 4">
+          <div class="q-px-sm q-mb-md" v-if="solicitud.status > 0 && solicitud.status < 4">
+            <div>
               <div class="text-caption text-grey-8">Cambia el estado de Solicitud</div>
               <q-select dense filled v-model="form.status" :options="solicitud.estados" map-options option-label="name" emit-value option-value="status" :error="$v.form.status.$error" @blur="$v.form.status.$touch()"/>
             </div>
@@ -376,7 +372,7 @@
           </div>
         </div>
         <div class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 0 && !sltBegin.length ? 'Tomar solicitud' : solicitud.status > 0 && solicitud.status < 5 ? 'Cambiar estado' : 'Cerrar'" style="width: 70%; border-radius: 5px;" @click="solicitud.status === 0 && !sltBegin.length ? statusRequest(1) : solicitud.status > 0 && solicitud.status < 5 ? saveHito() : slt = !slt" no-caps/>
+          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 0 && !sltBegin.length ? 'Tomar solicitud' : solicitud.status > 0 && solicitud.status < 4 ? 'Cambiar estado' : 'Cerrar'" style="width: 70%; border-radius: 5px;" @click="solicitud.status === 0 && !sltBegin.length ? statusRequest(1) : solicitud.status > 0 && solicitud.status < 4 ? saveHito() : slt = !slt" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -401,24 +397,16 @@ export default {
       contratos: [],
       hitos: [],
       solicitudes: [],
-      sltAll: [],
       sltBegin: [],
       sltProgress: [],
-      sltProgressAll: [],
       sltCheckout: [],
-      sltCheckoutAll: [],
       sltConfirm: [],
-      sltConfirmAll: [],
       history: [],
       sltEnd: [],
       estados: [{ name: 'Iniciada', status: 1 }, { name: 'En espera', status: 2 }, { name: 'Checkout', status: 3 }, { name: 'Finalizado', status: 4 }],
       slt: false,
       estado: false,
-      ver: false,
-      ver2: false,
-      ver3: false,
-      ver4: false,
-      ver5: false
+      ver: false
     }
   },
   validations: {
@@ -437,6 +425,7 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
+          console.log(this.user)
           this.getEmpresas()
         }
       })
@@ -458,7 +447,7 @@ export default {
       this.$api.get('sla_by_company/' + this.user.company).then(res => {
         if (res) {
           this.slas = res
-          console.log(this.slas, 'slas')
+          // console.log(this.slas, 'slas')
         }
       })
     },
@@ -491,7 +480,7 @@ export default {
         if (res) {
           this.hitos = res
           this.getSlt()
-          console.log(this.hitos, 'hitos')
+          // console.log(this.hitos, 'hitos')
         }
       })
     },
@@ -500,28 +489,25 @@ export default {
         this.$api.post('solicitudes_by_consultor', i === 0 ? { status: i } : i === 1 ? { status: i } : i === 2 ? { status: i } : i === 3 ? { status: i } : i === 4 ? { status: i } : i === 5 ? { status: i } : {}).then(res => {
           if (res) {
             if (res.length && res[0].status === 0) {
-              this.sltAll = res
-              this.solicitudes = this.sltAll.slice(0, 2)
+              this.solicitudes = res
             } else if (res.length && res[0].status === 1) {
               this.sltBegin = res
             } else if (res.length && res[0].status === 2) {
-              this.sltProgressAll = res
-              this.sltProgress = this.sltProgressAll.slice(0, 2)
+              this.sltProgress = res
             } else if (res.length && res[0].status === 3) {
-              this.sltCheckoutAll = res
-              this.sltCheckout = this.sltCheckoutAll.slice(0, 2)
-              console.log(this.sltCheckout, 'sltCheckout')
+              this.sltCheckout = res
             } else if (res.length && res[0].status === 4) {
-              this.sltConfirmAll = res
-              this.sltConfirm = this.sltConfirmAll.slice(0, 2)
+              this.sltConfirm = res
             } else if (res.length && res[0].status === 5) {
               for (var i of res) {
-                const begin = moment(i.dateBegin)
-                const end = moment(i.dateEnd)
-                i.duration = end.diff(begin, 'minutes')
-                console.log(i, 'duration')
+                const begin = moment(i.dateBegin + ' ' + i.timeBegin)
+                const end = moment(i.dateEnd + ' ' + i.timeEnd)
+                i.horas = end.diff(begin, 'hours')
+                i.minutos = end.diff(begin, 'minutes')
+                for (var j = 0; j < i.horas; j++) {
+                  i.minutos = i.minutos - 60
+                }
               }
-              console.log(res, 'resresres')
               this.sltEnd = res
               this.history = this.sltEnd.slice(0, 6)
             }
@@ -529,7 +515,7 @@ export default {
         })
       }
     },
-    verStl (itm, idx) {
+    verSlt (itm, idx) {
       this.slt = !this.slt
       this.solicitud = { ...itm }
       this.solicitud.empresa = this.empresas.filter(v => v._id === itm.company_id)[0].name
@@ -542,6 +528,8 @@ export default {
       this.solicitud.hitos = this.hitos.filter(v => v.solicitud_id === itm._id)
       this.solicitud.estados = this.estados.filter(v => v.status !== itm.status)
       this.solicitud.num = idx + 1
+      this.form = {}
+      this.$v.form.$reset()
     },
     saveHito () {
       this.$v.form.$touch()
@@ -557,6 +545,7 @@ export default {
       if (!this.$v.form.$error && this.estado) {
         const hoy = new Date()
         this.form.date = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear()
+        this.form.time = hoy.getHours() + ':' + hoy.getMinutes()
         this.form.company_id = this.user.company
         this.form.solicitud_id = this.solicitud._id
         this.$api.post('register_hito', this.form).then(res => {
@@ -587,15 +576,10 @@ export default {
             color: 'positive'
           })
           this.solicitud = { hitos: [] }
-          this.sltAll = []
           this.solicitudes = []
-          this.sltBeginAll = []
           this.sltBegin = []
-          this.sltProgressAll = []
           this.sltProgress = []
-          this.sltCheckoutAll = []
           this.sltCheckout = []
-          this.sltConfirmAll = []
           this.sltConfirm = []
           this.sltEnd = []
           this.history = []
@@ -604,42 +588,12 @@ export default {
         }
       })
     },
-    verMas (idx) {
-      if (idx === 1) {
-        this.ver = !this.ver
-        if (this.ver) {
-          this.solicitudes = this.sltAll
-        } else {
-          this.solicitudes = this.sltAll.slice(0, 2)
-        }
-      } else if (idx === 2) {
-        this.ver2 = !this.ver2
-        if (this.ver2) {
-          this.sltProgress = this.sltProgressAll
-        } else {
-          this.sltProgress = this.sltProgressAll.slice(0, 6)
-        }
-      } else if (idx === 3) {
-        this.ver3 = !this.ver3
-        if (this.ver3) {
-          this.sltCheckout = this.sltCheckoutAll
-        } else {
-          this.sltCheckout = this.sltCheckoutAll.slice(0, 6)
-        }
-      } else if (idx === 4) {
-        this.ver4 = !this.ver4
-        if (this.ver4) {
-          this.sltConfirm = this.sltConfirmAll
-        } else {
-          this.sltConfirm = this.sltConfirmAll.slice(0, 6)
-        }
-      } else if (idx === 5) {
-        this.ver5 = !this.ver5
-        if (this.ver5) {
-          this.history = this.sltEnd
-        } else {
-          this.history = this.sltEnd.slice(0, 6)
-        }
+    verMas () {
+      this.ver = !this.ver
+      if (this.ver) {
+        this.solicitudes = this.sltAll
+      } else {
+        this.solicitudes = this.sltAll.slice(0, 2)
       }
     }
   }
