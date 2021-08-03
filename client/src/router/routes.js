@@ -19,9 +19,13 @@ const routes = [
       { path: '/equipos/form', component: () => import('pages/User02/RegisterEquipo.vue') },
       { path: '/equipos/form/:id', component: () => import('pages/User02/Equipo_edit.vue') },
       { path: '/equipos_consultor', component: () => import('pages/Cliente/ListadoEquipo.vue') },
+      { path: '/vista_conocimiento', component: () => import('pages/User02/ListadoConocimiento.vue') },
 
       // Consultor
       { path: '/inicio_consultor', component: () => import('pages/Consultor/Home.vue') },
+      { path: '/conocimiento', component: () => import('pages/Consultor/ListadoConocimiento.vue') },
+      { path: '/conocimiento/form', component: () => import('pages/Consultor/RegisterConocimiento.vue') },
+      { path: '/conocimiento/form/:id', component: () => import('pages/Consultor/Conocimiento_edit.vue') },
       // Cliente
       { path: '/inicio_cliente', component: () => import('pages/Cliente/Home.vue') },
       // Generales
