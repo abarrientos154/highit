@@ -92,6 +92,7 @@ addPrefixToGroup(
     Route.get('equipo/:id', 'EquipoController.show')
     Route.put("equipo/:id", "EquipoController.update")
 
+    Route.get('departments', 'DepartmentController.index2')
     Route.get('departments/:id', 'DepartmentController.index')
     Route.post('register_department', 'DepartmentController.store')
     Route.delete("delete_department/:id", "DepartmentController.destroy")

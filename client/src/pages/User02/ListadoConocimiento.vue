@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla titulo="Listado de Conocimientos" @mostrar="datos_vista" :columns="column" route="conocimientos" :btnNew="true" :eliminarBtn="false" :verBtn="true" />
+    <Tabla titulo="Listado de Conocimientos" @mostrar="datos_vista" :columns="column" route="conocimientos" :btnNew="false" :eliminarBtn="false" :verBtn="true" />
     <q-dialog v-model="dialogo">
       <q-card class="" style="width:450px">
       <div class="q-pa-xl">

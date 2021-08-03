@@ -32,6 +32,12 @@ class DepartmentController {
     response.send(departments)
   }
 
+  async index2({  params, request, response, view, auth }) {
+    let user = (await auth.getUser()).toJSON()
+    let departments = (await Department.query().where({company_id: user.empresa}).fetch()).toJSON()
+    response.send(departments)
+  }
+
   /**
    * Render a form to be used for creating a new Department.
    * GET Department/create

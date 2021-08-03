@@ -14,6 +14,7 @@ export default {
       column: [
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
         { name: 'last_name', field: 'last_name', label: 'Apellido', align: 'left' },
+        { name: 'tipo_usuario', field: 'tipo_usuario', label: 'Tipo de usuario', align: 'left' },
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
       ]
     }

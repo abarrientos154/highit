@@ -167,6 +167,7 @@ export default {
   },
   async mounted () {
     await this.obtener_datos()
+    this.userLogueado()
     this.getEmpresas()
     this.getDepartamentos()
     this.getAreas()
@@ -198,6 +199,14 @@ export default {
         if (res) {
           this.departamentos = res
           console.log(this.departamentos, 'depas')
+        }
+      })
+    },
+    userLogueado () {
+      this.$api.get('user_logueado').then(res => {
+        if (res) {
+          this.user = res
+          console.log(this.user, 'usuario2')
         }
       })
     },
