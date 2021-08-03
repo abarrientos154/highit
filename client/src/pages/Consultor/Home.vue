@@ -49,6 +49,41 @@
     </div>
     <div class="q-mb-lg">
       <div class="q-mb-sm q-px-md">
+        <div class="text-h6 text-bold">Solicitud activa</div>
+        <div class="text-grey-8">Actividad en curso</div>
+      </div>
+      <q-list class="q-px-md">
+        <q-card class="q-mb-md full-width" v-for="(item, index) in sltBegin" :key="index" @click="verStl(item, index)">
+          <div class="row q-px-lg items-center justify-between">
+            <div class="row">
+              <div class="q-mr-xs">Nº de solicitud:</div>
+              <div class="text-bold">{{index + 1}}</div>
+            </div>
+            <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+          </div>
+          <div class="row">
+            <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
+              <q-img :src="baseu + item.company_id" class="full-height"/>
+            </q-avatar>
+            <div class="q-px-sm q-py-md col">
+              <div class="row">
+                <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+              </div>
+              <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+              <div>
+                <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                <q-scroll-area style="height: 60px;">
+                  <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
+                </q-scroll-area>
+              </div>
+            </div>
+          </div>
+        </q-card>
+      </q-list>
+    </div>
+    <div class="q-mb-lg">
+      <div class="q-mb-sm q-px-md">
         <div class="text-h6 text-bold">Solicitudes en espera</div>
         <div class="text-grey-8">Listado de actividades por finalizar</div>
       </div>
@@ -83,6 +118,82 @@
       </q-list>
       <div v-if="sltProgressAll.length > 2" class="column items-center">
         <q-btn class="text-white q-py-xs" color="primary" :label="ver2 ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas(2)" no-caps/>
+      </div>
+    </div>
+    <div class="q-mb-lg">
+      <div class="q-mb-sm q-px-md">
+        <div class="text-h6 text-bold">Solicitudes en checkout</div>
+        <div class="text-grey-8">Listado de actividades por finalizar</div>
+      </div>
+      <q-list class="q-px-md">
+        <q-card class="q-mb-md full-width" v-for="(item, index) in sltCheckout" :key="index" @click="verStl(item, index)">
+          <div class="row q-px-lg items-center justify-between">
+            <div class="row">
+              <div class="q-mr-xs">Nº de solicitud:</div>
+              <div class="text-bold">{{index + 1}}</div>
+            </div>
+            <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+          </div>
+          <div class="row">
+            <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
+              <q-img :src="baseu + item.company_id" class="full-height"/>
+            </q-avatar>
+            <div class="q-px-sm q-py-md col">
+              <div class="row">
+                <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+              </div>
+              <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+              <div>
+                <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                <q-scroll-area style="height: 60px;">
+                  <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
+                </q-scroll-area>
+              </div>
+            </div>
+          </div>
+        </q-card>
+      </q-list>
+      <div v-if="sltCheckoutAll.length > 2" class="column items-center">
+        <q-btn class="text-white q-py-xs" color="primary" :label="ver3 ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas(3)" no-caps/>
+      </div>
+    </div>
+    <div class="q-mb-lg">
+      <div class="q-mb-sm q-px-md">
+        <div class="text-h6 text-bold">Solicitudes por confirmar</div>
+        <div class="text-grey-8">Listado de actividades en espera de confirmacion</div>
+      </div>
+      <q-list class="q-px-md">
+        <q-card class="q-mb-md full-width" v-for="(item, index) in sltConfirm" :key="index" @click="verStl(item, index)">
+          <div class="row q-px-lg items-center justify-between">
+            <div class="row">
+              <div class="q-mr-xs">Nº de solicitud:</div>
+              <div class="text-bold">{{index + 1}}</div>
+            </div>
+            <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+          </div>
+          <div class="row">
+            <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
+              <q-img :src="baseu + item.company_id" class="full-height"/>
+            </q-avatar>
+            <div class="q-px-sm q-py-md col">
+              <div class="row">
+                <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+              </div>
+              <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+              <div>
+                <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                <q-scroll-area style="height: 60px;">
+                  <div class="text-grey" style="font-size: 10px;">{{item.description}}</div>
+                </q-scroll-area>
+              </div>
+            </div>
+          </div>
+        </q-card>
+      </q-list>
+      <div v-if="sltConfirmAll.length > 2" class="column items-center">
+        <q-btn class="text-white q-py-xs" color="primary" :label="ver4 ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas(4)" no-caps/>
       </div>
     </div>
     <div>
@@ -129,15 +240,15 @@
               <div>
                 <div class="row">
                   <div class="text-bold q-mr-xs" style="font-size: 10px;">Fecha solicitud:</div>
-                  <div style="font-size: 10px;">{{item.date}}</div>
+                  <div style="font-size: 10px;">{{item.dateBegin}}</div>
                 </div>
                 <div class="row">
                   <div class="text-bold q-mr-xs" style="font-size: 10px;">Fecha termino estimada:</div>
-                  <div style="font-size: 10px;">{{'dd/mm/aaaa'}}</div>
+                  <div style="font-size: 10px;">{{item.dateEnd}}</div>
                 </div>
                 <div class="row">
                   <div class="text-bold q-mr-xs" style="font-size: 10px;">Tiempo estimado de termino:</div>
-                  <div style="font-size: 10px;">{{slas.filter(v => v._id === item.priority)[0].tiempo}}hrs</div>
+                  <div style="font-size: 10px;">{{''}}</div>
                 </div>
               </div>
             </div>
@@ -145,7 +256,7 @@
         </div>
       </q-list>
       <div v-if="sltEnd.length > 6" class="column items-center">
-        <q-btn class="text-white q-py-xs" color="primary" :label="ver3 ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas(3)" no-caps/>
+        <q-btn class="text-white q-py-xs" color="primary" :label="ver5 ? 'Ver Menos' : 'Ver Mas'" style="width: 80%; border-radius: 5px;" @click="verMas(5)" no-caps/>
       </div>
     </div>
 
@@ -156,10 +267,10 @@
             <div class="q-mr-xs">Nº de solicitud:</div>
             <div class="text-bold">{{solicitud.num}}</div>
           </div>
-          <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.priorityColor} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.priority}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En espera' : solicitud.status === 3 ? 'Finalizado' : '' }}</div>
+          <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.priorityColor} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.priority}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En espera' : solicitud.status === 3 ? 'Checkout' : solicitud.status === 4 ? 'Confirmar' : solicitud.status === 5 ? 'Finalizado' : '' }}</div>
         </div>
         <div class="q-mb-lg q-mt-md">
-          <div class="text-center text-h6 text-bold">Tomar solicitud</div>
+          <div class="text-center text-h6 text-bold">{{solicitud.status === 0 && !sltBegin.length ? 'Tomar solicitud' : solicitud.status === 1 ? 'Cambiar estado' : 'Datos solicitud'}}</div>
           <div class="text-center text-grey-8">Modifica el estado de la solicitud</div>
         </div>
         <div class="q-px-sm q-mb-md full-width">
@@ -180,11 +291,11 @@
               <div>
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey-7 text-caption">Fecha de solicitud:</div>
-                  <div class="text-grey-7 text-caption">{{solicitud.date2}}</div>
+                  <div class="text-grey-7 text-caption">{{solicitud.date}}</div>
                 </div>
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
-                  <div class="text-grey-7 text-caption">{{solicitud.time2}}hrs</div>
+                  <div class="text-grey-7 text-caption">{{solicitud.time}}hrs</div>
                 </div>
               </div>
             </div>
@@ -195,7 +306,7 @@
                 <div class="text-bold text-grey-7">Tipo de contrato</div>
                 <div class="text-grey-7">{{solicitud.contrato}}</div>
               </div>
-              <div class="col">
+              <div class="col" v-if="solicitud.status > 0">
                 <div class="text-bold text-grey-7">Usuario asignado</div>
                 <div class="text-grey-7">{{'Usuario'}}</div>
               </div>
@@ -210,31 +321,31 @@
                 <div class="text-grey-7">{{solicitud.department}}</div>
               </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="solicitud.status > 0">
               <div class="col">
                 <div class="text-bold text-grey-7">Fecha de inicio</div>
-                <div class="text-grey-7">{{solicitud.date}}</div>
+                <div class="text-grey-7">{{solicitud.dateBegin}}</div>
               </div>
               <div class="col">
                 <div class="text-bold text-grey-7">Hora de inicio</div>
-                <div class="text-grey-7">{{solicitud.time}}hr</div>
+                <div class="text-grey-7">{{solicitud.timeBegin}}hr</div>
               </div>
             </div>
-            <!-- <div class="row">
+            <div class="row" v-if="solicitud.status === 5">
               <div class="col">
                 <div class="text-bold text-grey-7">Fecha estimada de termino</div>
-                <div class="text-grey-7">{{'Contrato 01'}}</div>
+                <div class="text-grey-7">{{solicitud.dateEnd}}</div>
               </div>
               <div class="col">
                 <div class="text-bold text-grey-7">Hora estimada de termino</div>
-                <div class="text-grey-7">{{'Departamento 01'}}</div>
+                <div class="text-grey-7">{{solicitud.timeEnd}}</div>
               </div>
-            </div> -->
+            </div>
           </div>
           <div v-if="solicitud.hitos.length" class="full-width q-px-sm q-mb-md">
             <div class="q-mb-sm">
               <div class="text-subtitle1 text-bold">Historial de hitos</div>
-              <div class="text-grey-8">Descripcion de los comentarios realisados</div>
+              <div class="text-grey-8">Descripcion de los comentarios realizados</div>
             </div>
             <q-list>
               <div v-for="(item, index) in solicitud.hitos" :key="index">
@@ -249,7 +360,11 @@
               </div>
             </q-list>
           </div>
-          <div class="q-px-sm q-mb-md" v-if="solicitud.status === 2">
+          <div class="q-px-sm q-mb-md" v-if="solicitud.status > 0 && solicitud.status < 5">
+            <div v-if="solicitud.status !== 4">
+              <div class="text-caption text-grey-8">Cambia el estado de Solicitud</div>
+              <q-select dense filled v-model="form.status" :options="solicitud.estados" map-options option-label="name" emit-value option-value="status" :error="$v.form.status.$error" @blur="$v.form.status.$touch()"/>
+            </div>
             <div>
               <div class="text-caption text-grey-8">Nombre de hito</div>
               <q-input dense v-model="form.name" filled placeholder="Nombre del hito" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
@@ -261,7 +376,7 @@
           </div>
         </div>
         <div class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 0 ? 'Tomar solicitud' : solicitud.status === 2 ? 'Cambiar estado' : 'Cerrar'" style="width: 70%; border-radius: 5px;" @click="solicitud.status === 0 ? statusRequest(1) : solicitud.status === 2 ? saveHito() : slt = !slt" no-caps/>
+          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 0 && !sltBegin.length ? 'Tomar solicitud' : solicitud.status > 0 && solicitud.status < 5 ? 'Cambiar estado' : 'Cerrar'" style="width: 70%; border-radius: 5px;" @click="solicitud.status === 0 && !sltBegin.length ? statusRequest(1) : solicitud.status > 0 && solicitud.status < 5 ? saveHito() : slt = !slt" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -270,6 +385,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import * as moment from 'moment'
 import env from '../../env'
 export default {
   data () {
@@ -286,14 +402,23 @@ export default {
       hitos: [],
       solicitudes: [],
       sltAll: [],
+      sltBegin: [],
       sltProgress: [],
       sltProgressAll: [],
+      sltCheckout: [],
+      sltCheckoutAll: [],
+      sltConfirm: [],
+      sltConfirmAll: [],
       history: [],
       sltEnd: [],
+      estados: [{ name: 'Iniciada', status: 1 }, { name: 'En espera', status: 2 }, { name: 'Checkout', status: 3 }, { name: 'Finalizado', status: 4 }],
       slt: false,
+      estado: false,
       ver: false,
       ver2: false,
-      ver3: false
+      ver3: false,
+      ver4: false,
+      ver5: false
     }
   },
   validations: {
@@ -371,16 +496,32 @@ export default {
       })
     },
     getSlt () {
-      for (var i = 0; i < 3; i++) {
-        this.$api.post('solicitudes_by_consultor', i === 0 ? { status: i } : i === 1 ? { status: i + 1 } : i === 2 ? { status: i + 1 } : {}).then(res => {
+      for (var i = 0; i < 6; i++) {
+        this.$api.post('solicitudes_by_consultor', i === 0 ? { status: i } : i === 1 ? { status: i } : i === 2 ? { status: i } : i === 3 ? { status: i } : i === 4 ? { status: i } : i === 5 ? { status: i } : {}).then(res => {
           if (res) {
             if (res.length && res[0].status === 0) {
               this.sltAll = res
               this.solicitudes = this.sltAll.slice(0, 2)
+            } else if (res.length && res[0].status === 1) {
+              this.sltBegin = res
             } else if (res.length && res[0].status === 2) {
               this.sltProgressAll = res
               this.sltProgress = this.sltProgressAll.slice(0, 2)
             } else if (res.length && res[0].status === 3) {
+              this.sltCheckoutAll = res
+              this.sltCheckout = this.sltCheckoutAll.slice(0, 2)
+              console.log(this.sltCheckout, 'sltCheckout')
+            } else if (res.length && res[0].status === 4) {
+              this.sltConfirmAll = res
+              this.sltConfirm = this.sltConfirmAll.slice(0, 2)
+            } else if (res.length && res[0].status === 5) {
+              for (var i of res) {
+                const begin = moment(i.dateBegin)
+                const end = moment(i.dateEnd)
+                i.duration = end.diff(begin, 'minutes')
+                console.log(i, 'duration')
+              }
+              console.log(res, 'resresres')
               this.sltEnd = res
               this.history = this.sltEnd.slice(0, 6)
             }
@@ -399,12 +540,21 @@ export default {
       this.solicitud.department = this.departamentos.filter(v => v._id === this.categorias.filter(v => v._id === itm.category)[0].departamento)[0].name
       this.solicitud.contrato = this.contratos.filter(v => v._id === this.empresas.filter(v => v._id === itm.company_id)[0].typeContract)[0].contrato
       this.solicitud.hitos = this.hitos.filter(v => v.solicitud_id === itm._id)
+      this.solicitud.estados = this.estados.filter(v => v.status !== itm.status)
       this.solicitud.num = idx + 1
     },
     saveHito () {
       this.$v.form.$touch()
-      this.form.status = 3
-      if (!this.$v.form.$error) {
+      if (this.form.status === 1) {
+        if (!this.sltBegin.length) {
+          this.estado = true
+        } else {
+          this.estado = false
+        }
+      } else {
+        this.estado = true
+      }
+      if (!this.$v.form.$error && this.estado) {
         const hoy = new Date()
         this.form.date = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear()
         this.form.company_id = this.user.company
@@ -418,13 +568,19 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Debe ingresar todos los datos correspondientes',
+          message: this.$v.form.$error ? 'Debe ingresar todos los datos correspondientes' : 'Estado invalido ya tiene una solicitud en curso',
           color: 'negative'
         })
       }
     },
     statusRequest (idx) {
-      this.$api.put('status_solicitud/' + this.solicitud._id, { status: idx, consultor_id: this.user._id }).then(res => {
+      const hoy = new Date()
+      var status = { status: idx, consultor_id: this.user._id }
+      if (this.solicitud.status === 0) {
+        status.dateBegin = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear()
+        status.timeBegin = hoy.getHours() + ':' + hoy.getMinutes()
+      }
+      this.$api.put('status_solicitud/' + this.solicitud._id, status).then(res => {
         if (res) {
           this.$q.notify({
             message: 'Solicitud aceptada',
@@ -433,12 +589,18 @@ export default {
           this.solicitud = { hitos: [] }
           this.sltAll = []
           this.solicitudes = []
+          this.sltBeginAll = []
+          this.sltBegin = []
           this.sltProgressAll = []
           this.sltProgress = []
+          this.sltCheckoutAll = []
+          this.sltCheckout = []
+          this.sltConfirmAll = []
+          this.sltConfirm = []
           this.sltEnd = []
           this.history = []
           this.slt = false
-          this.getSlt()
+          this.getEmpresas()
         }
       })
     },
@@ -457,9 +619,23 @@ export default {
         } else {
           this.sltProgress = this.sltProgressAll.slice(0, 6)
         }
-      } else {
+      } else if (idx === 3) {
         this.ver3 = !this.ver3
         if (this.ver3) {
+          this.sltCheckout = this.sltCheckoutAll
+        } else {
+          this.sltCheckout = this.sltCheckoutAll.slice(0, 6)
+        }
+      } else if (idx === 4) {
+        this.ver4 = !this.ver4
+        if (this.ver4) {
+          this.sltConfirm = this.sltConfirmAll
+        } else {
+          this.sltConfirm = this.sltConfirmAll.slice(0, 6)
+        }
+      } else if (idx === 5) {
+        this.ver5 = !this.ver5
+        if (this.ver5) {
           this.history = this.sltEnd
         } else {
           this.history = this.sltEnd.slice(0, 6)

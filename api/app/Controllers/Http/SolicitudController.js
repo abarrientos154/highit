@@ -127,7 +127,7 @@ class SolicitudController {
    */
   async update ({ params, request, response }) {
     let dat = request.all()
-    let modificar = await Solicitud.query().where('_id', params.id).update({status: dat.status, consultor_id: dat.consultor_id})
+    let modificar = await Solicitud.query().where('_id', params.id).update(dat)
     response.send(modificar)
   }
 
