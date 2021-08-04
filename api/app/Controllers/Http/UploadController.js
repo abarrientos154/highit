@@ -23,7 +23,6 @@ class UploadController {
 
   async getarchivo ({ request, response, params }) {
     let conocimiento = (await Conocimiento.find(params.id)).toJSON()
-    console.log(conocimiento.archivos[parseInt(params.file)], 'asd')
     response.attachment(
       Helpers.appRoot('storage/uploads/ConocimientoFiles/' + conocimiento.archivos[parseInt(params.file)])
     )
