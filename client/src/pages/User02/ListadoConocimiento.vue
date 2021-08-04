@@ -11,6 +11,11 @@
           <q-input filled v-model="form.name" disable/>
           <div class="q-mt-md text-subtitle1">Descripcion</div>
           <q-input v-model="form.descripcion" disable filled type="textarea"/>
+          <div class="row justify-center items-center">
+            <q-btn class="q-mx-md q-mt-md" :label="'Archivo ' + (index + 1)" color="primary" v-for="(item, index) in form.archivos" :key="index" push>
+              <a :href="baseApi + form._id + '/' + index" style="position:absolute;width:100%; height:100%" ></a>
+            </q-btn>
+          </div>
         </div>
       </q-card>
     </q-dialog>
@@ -18,6 +23,7 @@
 </template>
 <script>
 import Tabla from '../../components/Tablasecundaria'
+import env from '../../env'
 export default {
   components: { Tabla },
   data () {
@@ -27,8 +33,12 @@ export default {
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
       ],
       dialogo: false,
-      form: {}
+      form: {},
+      baseApi: null
     }
+  },
+  mounted () {
+    this.baseApi = env.apiUrl + 'archivo/'
   },
   methods: {
     datos_vista (id) {

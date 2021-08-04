@@ -1,6 +1,8 @@
 'use strict'
 
 const Helpers = use('Helpers')
+const Conocimiento = use("App/Models/Conocimiento")
+
 /* const mkdirp = use('mkdirp')
 const { validate } = use("Validator")
 const fs = require('fs')
@@ -17,6 +19,14 @@ var randomize = require('randomatic'); */
 class UploadController {
   async getLogo ({ request, response, auth }) {
     response.download(Helpers.appRoot('public/logo.png'))
+  }
+
+  async getarchivo ({ request, response, params }) {
+    let conocimiento = (await Conocimiento.find(params.id)).toJSON()
+    console.log(conocimiento.archivos[parseInt(params.file)], 'asd')
+    response.attachment(
+      Helpers.appRoot('storage/uploads/ConocimientoFiles/' + conocimiento.archivos[parseInt(params.file)])
+    )
   }
 
   /**

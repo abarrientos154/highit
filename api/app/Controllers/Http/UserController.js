@@ -246,14 +246,14 @@ class UserController {
 
 
   async User_register({ request, response }) {
-    let requestAll = request.all()
-    var dat = request.only(['dat'])
+    let dat = request.only(['dat'])
     dat = JSON.parse(dat.dat)
+    console.log(dat, 'dataaaaaaaaaa')
 
     const validation = await validate(dat, User.fieldejemplo())
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
-    } else if (((await User.where({email: requestAll.email}).fetch()).toJSON()).length) {
+    } else if (((await User.where({email: dat.email}).fetch()).toJSON()).length) {
       response.unprocessableEntity([{
         message: 'Correo ya registrado en el sistema!'
       }])
@@ -280,14 +280,12 @@ class UserController {
 
 
   async User_register2({ request, response }) {
-    let requestAll = request.all()
-    var dat = request.only(['dat'])
+    let dat = request.only(['dat'])
     dat = JSON.parse(dat.dat)
-
     const validation = await validate(dat, User.fieldejemplo2(dat))
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
-    } else if (((await User.where({email: requestAll.email}).fetch()).toJSON()).length) {
+    } else if (((await User.where({email: dat.email}).fetch()).toJSON()).length) {
       response.unprocessableEntity([{
         message: 'Correo ya registrado en el sistema!'
       }])

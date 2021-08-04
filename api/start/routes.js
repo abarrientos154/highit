@@ -47,6 +47,7 @@ addPrefixToGroup(
     Route.get('obtener_logo', 'UploadController.getLogo')
     Route.get('company_img/:file', 'UploadController.getFileByDirectoryCompany')
     Route.get('perfil_img/:file', 'UploadController.getFileByDirectoryPerfil')
+    Route.get('archivo/:id/:file', 'UploadController.getarchivo')
 
   })
   );
@@ -86,6 +87,7 @@ addPrefixToGroup(
 
     Route.put("password_edit/:id", "UserController.changePassword")
     Route.post('perfil_imagen/:user_id', 'UploadController.newimagen')
+
 
     Route.post("equipo", "EquipoController.store")
     Route.get('equipo', 'EquipoController.index')
