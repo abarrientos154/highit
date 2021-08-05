@@ -41,7 +41,10 @@
                 <div class="q-mr-xs">Nº de solicitud:</div>
                 <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              <div class="row">
+                <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -50,7 +53,7 @@
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
                 <div class="text-subtitle1 text-bold">{{company.name}}</div>
                 <div>
@@ -78,7 +81,10 @@
                 <div class="q-mr-xs">Nº de solicitud:</div>
                 <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              <div class="row">
+                <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -87,7 +93,7 @@
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
                 <div class="text-subtitle1 text-bold">{{company.name}}</div>
                 <div>
@@ -115,7 +121,10 @@
                 <div class="q-mr-xs">Nº de solicitud:</div>
                 <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              <div class="row">
+                <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -124,7 +133,7 @@
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
                 <div class="text-subtitle1 text-bold">{{company.name}}</div>
                 <div>
@@ -152,7 +161,10 @@
                 <div class="q-mr-xs">Nº de solicitud:</div>
                 <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              <div class="row">
+                <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -161,7 +173,7 @@
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
                 <div class="text-subtitle1 text-bold">{{company.name}}</div>
                 <div>
@@ -189,7 +201,10 @@
                 <div class="q-mr-xs">Nº de solicitud:</div>
                 <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              <div class="row">
+                <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -198,7 +213,7 @@
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
                 <div class="text-subtitle1 text-bold">{{company.name}}</div>
                 <div>
@@ -265,7 +280,7 @@
                 </div>
                 <div class="row">
                   <div class="text-bold q-mr-xs" style="font-size: 10px;">Tiempo estimado de termino:</div>
-                  <div style="font-size: 10px;">{{item.horas + ':' + item.minutos}}hrs</div>
+                  <div style="font-size: 10px;">{{item.duration}}hrs</div>
                 </div>
               </div>
             </div>
@@ -308,7 +323,7 @@
               <div>
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey-7 text-caption">Fecha de solicitud:</div>
-                  <div class="text-grey-7 text-caption">{{solicitud.date2}}</div>
+                  <div class="text-grey-7 text-caption">{{solicitud.date}}</div>
                 </div>
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
@@ -318,6 +333,10 @@
             </div>
           </div>
           <div class="q-px-sm">
+            <div class="row justify-center" v-if="solicitud.equipment">
+              <div class="text-subtitle1 text-bold text-grey-7 q-mr-xs">Equipo:</div>
+              <div class="text-subtitle1 text-grey-7">{{solicitud.equipment}}</div>
+            </div>
             <div class="row">
               <div class="col">
                 <div class="text-bold text-grey-7">Tipo de contrato</div>
@@ -370,7 +389,7 @@
                   <div class="text-grey-8 text-bold">{{item.name}}</div>
                   <div class="row">
                     <div class="text-grey-8 q-mr-xs text-bold">Fecha</div>
-                    <div class="text-grey-8">{{item.date + ' ' + item.time + 'hr'}}</div>
+                    <div class="text-grey-8">{{item.date + ' ' + item.time}}hr</div>
                   </div>
                 </div>
                 <div class="text-grey-8">{{item.description}}</div>
@@ -414,6 +433,7 @@ export default {
       departamentos: [],
       contratos: [],
       hitos: [],
+      equipos: [],
       solicitudes: [],
       sltBegin: [],
       sltProgress: [],
@@ -456,6 +476,7 @@ export default {
           this.getDepartamentos()
           this.getContratos()
           this.getHitos()
+          this.getEquipos()
         }
       })
     },
@@ -503,8 +524,16 @@ export default {
       this.$api.get(`hitos_by_company/${this.company.company_id}`).then(res => {
         if (res) {
           this.hitos = res
-          this.getSltUser()
           // console.log(this.hitos, 'hitos')
+        }
+      })
+    },
+    getEquipos () {
+      this.$api.get('equipo_consultor').then(res => {
+        if (res) {
+          this.equipos = res
+          this.getSltUser()
+          // console.log(this.equipos, 'equipos')
         }
       })
     },
@@ -512,7 +541,6 @@ export default {
       for (var i = 0; i < 6; i++) {
         this.$api.put('solicitudes_cliente/' + this.user._id, i === 0 ? { status: i } : i === 1 ? { status: i } : i === 2 ? { status: i } : i === 3 ? { status: i } : i === 4 ? { status: i } : i === 5 ? { status: i } : {}).then(res => {
           if (res) {
-            // console.log(res, 'resresresresres')
             if (res.length && res[0].status === 0) {
               this.solicitudes = res
             } else if (res.length && res[0].status === 1) {
@@ -521,19 +549,9 @@ export default {
               this.sltProgress = res
             } else if (res.length && res[0].status === 3) {
               this.sltCheckout = res
-              console.log(this.sltCheckout, 'sltCheckout')
             } else if (res.length && res[0].status === 4) {
               this.sltConfirm = res
             } else if (res.length && res[0].status === 5) {
-              for (var i of res) {
-                const begin = moment(i.dateBegin + ' ' + i.timeBegin)
-                const end = moment(i.dateEnd + ' ' + i.timeEnd)
-                i.horas = end.diff(begin, 'hours')
-                i.minutos = end.diff(begin, 'minutes')
-                for (var j = 0; j < i.horas; j++) {
-                  i.minutos = i.minutos - 60
-                }
-              }
               this.sltEnd = res
               this.history = this.sltEnd.slice(0, 6)
             }
@@ -543,7 +561,6 @@ export default {
     },
     verSlt (itm, idx) {
       this.slt = !this.slt
-      console.log(itm)
       this.solicitud = { ...itm }
       this.solicitud.empresa = this.company.name
       this.solicitud.priority = this.slas.filter(v => v._id === itm.priority)[0].nombre
@@ -554,6 +571,9 @@ export default {
       this.solicitud.hitos = this.hitos.filter(v => v.solicitud_id === itm._id)
       if (this.solicitud.status > 0) {
         this.solicitud.consultor = this.consultores.filter(v => v._id === this.solicitud.consultor_id)[0].name + ' ' + this.consultores.filter(v => v._id === this.solicitud.consultor_id)[0].last_name
+      }
+      if (this.solicitud.equipment) {
+        this.solicitud.equipment = this.equipos.filter(v => v._id === this.solicitud.equipment)[0].name
       }
       this.solicitud.num = idx + 1
     },
@@ -576,7 +596,20 @@ export default {
         this.form.solicitud_id = this.solicitud._id
         this.$api.post('register_hito', this.form).then(res => {
           if (res) {
-            this.$api.put('status_solicitud/' + this.solicitud._id, { status: this.form.status, dateEnd: this.form.date, timeEnd: hoy.getHours() + ':' + hoy.getMinutes() }).then(res => {
+            const begin = moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin)
+            const end = moment(this.form.date + ' ' + hoy.getHours() + ':' + hoy.getMinutes())
+            var horas = end.diff(begin, 'hours')
+            var minutos = end.diff(begin, 'minutes')
+            for (var j = 0; j < horas; j++) {
+              minutos = minutos - 60
+            }
+            var fin = {
+              status: this.form.status,
+              dateEnd: this.form.date,
+              timeEnd: hoy.getHours() + ':' + hoy.getMinutes(),
+              duration: horas + ':' + minutos
+            }
+            this.$api.put('status_solicitud/' + this.solicitud._id, fin).then(res => {
               if (res) {
                 this.$q.notify({
                   message: 'Solicitud finalizada',

@@ -22,7 +22,10 @@
                 <div class="q-mr-xs">Nº de solicitud:</div>
                 <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              <div class="row">
+                <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -31,7 +34,7 @@
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
                 <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
                 <div>
@@ -58,7 +61,10 @@
               <div class="q-mr-xs">Nº de solicitud:</div>
               <div class="text-bold">{{index + 1}}</div>
             </div>
-            <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              <div class="row">
+                <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              </div>
           </div>
           <div class="row">
             <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -67,7 +73,7 @@
             <div class="q-px-sm q-py-md col">
               <div class="row">
                 <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
               </div>
               <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
               <div>
@@ -94,7 +100,10 @@
                 <div class="q-mr-xs">Nº de solicitud:</div>
                 <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              <div class="row">
+                <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -103,7 +112,7 @@
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
                 <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
                 <div>
@@ -131,7 +140,10 @@
                 <div class="q-mr-xs">Nº de solicitud:</div>
                 <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              <div class="row">
+                <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -140,7 +152,7 @@
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
                 <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
                 <div>
@@ -168,7 +180,10 @@
                 <div class="q-mr-xs">Nº de solicitud:</div>
                 <div class="text-bold">{{index + 1}}</div>
               </div>
-              <div :class="`text-caption q-px-lg text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              <div class="row">
+                <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
+              </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
@@ -177,7 +192,7 @@
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                  <div class="text-grey" style="font-size: 10px;">{{item.date}}</div>
+                  <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
                 <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
                 <div>
@@ -244,7 +259,7 @@
                 </div>
                 <div class="row">
                   <div class="text-bold q-mr-xs" style="font-size: 10px;">Tiempo estimado de termino:</div>
-                  <div style="font-size: 10px;">{{item.horas + ':' + item.minutos}}</div>
+                  <div style="font-size: 10px;">{{item.duration}}hrs</div>
                 </div>
               </div>
             </div>
@@ -297,6 +312,10 @@
             </div>
           </div>
           <div class="q-px-sm">
+            <div class="row justify-center" v-if="solicitud.equipment">
+              <div class="text-subtitle1 text-bold text-grey-7 q-mr-xs">Equipo:</div>
+              <div class="text-subtitle1 text-grey-7">{{solicitud.equipment}}</div>
+            </div>
             <div class="row">
               <div class="col">
                 <div class="text-bold text-grey-7">Tipo de contrato</div>
@@ -381,7 +400,6 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
-import * as moment from 'moment'
 import env from '../../env'
 export default {
   data () {
@@ -396,6 +414,7 @@ export default {
       departamentos: [],
       contratos: [],
       hitos: [],
+      equipos: [],
       solicitudes: [],
       sltBegin: [],
       sltProgress: [],
@@ -436,9 +455,10 @@ export default {
           this.empresas = res
           this.getSlAs()
           this.getCategorias()
+          this.getDepartamentos()
           this.getContratos()
           this.getHitos()
-          this.getDepartamentos()
+          this.getEquipos()
           // console.log(this.empresas)
         }
       })
@@ -479,8 +499,16 @@ export default {
       this.$api.get(`hitos_by_company/${this.user.company}`).then(res => {
         if (res) {
           this.hitos = res
-          this.getSlt()
           // console.log(this.hitos, 'hitos')
+        }
+      })
+    },
+    getEquipos () {
+      this.$api.get('equipo').then(res => {
+        if (res) {
+          this.equipos = res
+          this.getSlt()
+          // console.log(this.equipos, 'equipos')
         }
       })
     },
@@ -499,15 +527,6 @@ export default {
             } else if (res.length && res[0].status === 4) {
               this.sltConfirm = res
             } else if (res.length && res[0].status === 5) {
-              for (var i of res) {
-                const begin = moment(i.dateBegin + ' ' + i.timeBegin)
-                const end = moment(i.dateEnd + ' ' + i.timeEnd)
-                i.horas = end.diff(begin, 'hours')
-                i.minutos = end.diff(begin, 'minutes')
-                for (var j = 0; j < i.horas; j++) {
-                  i.minutos = i.minutos - 60
-                }
-              }
               this.sltEnd = res
               this.history = this.sltEnd.slice(0, 6)
             }
@@ -527,6 +546,9 @@ export default {
       this.solicitud.contrato = this.contratos.filter(v => v._id === this.empresas.filter(v => v._id === itm.company_id)[0].typeContract)[0].contrato
       this.solicitud.hitos = this.hitos.filter(v => v.solicitud_id === itm._id)
       this.solicitud.estados = this.estados.filter(v => v.status !== itm.status)
+      if (this.solicitud.equipment) {
+        this.solicitud.equipment = this.equipos.filter(v => v._id === this.solicitud.equipment)[0].name
+      }
       this.solicitud.num = idx + 1
       this.form = {}
       this.$v.form.$reset()
