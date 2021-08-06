@@ -86,11 +86,11 @@
                 </div>
                 <div>
                   <div class="text-caption text-grey-8">Agenda la atencion</div>
-                  <q-input dense filled readonly v-model="form.date2" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.date2.$error" @blur="$v.form.date2.$touch()" @click="$refs.qDateProxy.show()">
+                  <q-input dense filled readonly v-model="form.dateSlt" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateSlt.$error" @blur="$v.form.dateSlt.$touch()" @click="$refs.qDateProxy.show()">
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
                         <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                          <q-date v-model="form.date2" mask="DD/MM/YYYY"/>
+                          <q-date v-model="form.dateSlt" mask="DD/MM/YYYY"/>
                         </q-popup-proxy>
                       </q-icon>
                     </template>
@@ -263,7 +263,7 @@ export default {
       description: { required },
       priority: { required },
       category: { required },
-      date2: { required }
+      dateSlt: { required }
     }
   },
   mounted () {

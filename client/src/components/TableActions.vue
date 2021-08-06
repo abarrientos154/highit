@@ -11,7 +11,7 @@
           <q-td :props="props">
             <q-btn v-if="editarBtn" icon="edit" size="sm" flat dense @click="editar(props.row._id)" />
             <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-ml-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
-            <q-btn v-if="crearBtn" style="width:130px" color="primary" text-color="white" label="Crear solicitud" @click="mostrardialogo()" />
+            <q-btn v-if="crearBtn" style="width:130px" color="primary" text-color="white" label="Crear solicitud" @click="mostrardialogo(props.row._id)" />
           </q-td>
         </template>
         <template v-slot:body-cell-color="props">
@@ -175,8 +175,8 @@ export default {
         }
       })
     },
-    mostrardialogo () {
-      this.$emit('mostrar')
+    mostrardialogo (id) {
+      this.$emit('mostrar', id)
     }
   }
 }
