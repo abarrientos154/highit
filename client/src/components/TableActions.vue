@@ -4,6 +4,7 @@
       <div class="text-h6 text-bold" style="font-size:30px">
         {{titulo}}
       </div>
+      <q-select v-if="selectBtn" filled v-model="select" :options="options" label="Empresas" option-label="name" style="width:20%" @filter="filterEmpresa"/>
     </q-card-section>
     <q-card-section class="q-pa-none">
       <q-table :data="data" no-data-label="No hay registros" rows-per-page-label="Datos por pagina" :columns="columns">
@@ -64,6 +65,10 @@ export default {
       type: Boolean,
       default: false
     },
+    selectBtn: {
+      type: Boolean,
+      default: false
+    },
     editarBtn: {
       type: Boolean,
       default: true
@@ -83,6 +88,9 @@ export default {
       data: [],
       showModalEditar: false,
       iEditContrato: '',
+      select: '',
+      options: [],
+      filterEmpresas: this.options,
       id: ''
     }
   },
@@ -104,7 +112,8 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          // console.log(this.user)
+          this.getEmpresas()
+          console.log(this.user, 'userrr')
         }
       })
     },
@@ -177,6 +186,37 @@ export default {
     },
     mostrardialogo (id) {
       this.$emit('mostrar', id)
+    },
+
+    filterEmpresa (val, update) {
+      if (val === '') {
+        update(() => {
+          this.filterEmpresas = this.options
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        this.filterEmpresas = this.data.filter(v => v.company.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    getEmpresas () {
+      if (this.user.roles[0] === 1) {
+        this.$api.get('companys').then(res => {
+          if (res) {
+            this.options = res
+            console.log(this.options, 'opciones')
+          }
+        })
+      } else {
+        this.$api.get('empresas_user').then(res => {
+          if (res) {
+            this.options = res
+            console.log(this.options, 'opciones')
+          }
+        })
+      }
     }
   }
 }

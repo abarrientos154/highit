@@ -125,6 +125,7 @@ addPrefixToGroup(
 
     Route.get("companys", "CompanyController.index")
     Route.get("empresas", "CompanyController.index2")
+    Route.get("empresas_user", "CompanyController.indexuser")
     Route.get("companys_by_company/:id", "CompanyController.companysByCompany")
     Route.get("company/:id", "CompanyController.show")
     Route.post("register_company", "CompanyController.store")

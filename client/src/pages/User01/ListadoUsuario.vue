@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Tabla titulo="Listado de Usuarios" :columns="column" route="user" :btnNew="true" />
+    <Tabla titulo="Listado de Usuarios" :columns="column" route="user" :btnNew="true" :selectBtn="true" />
+    <q-card :class="!$q.dark.isActive?'my-lg q-pa-md q-ma-sm bg-grey-2':'my-lg q-pa-md q-ma-sm bg-grey-8'">
+      <q-card-section>
+        <q-grid :data="data" :columns="column" :columns_filter="true"></q-grid>
+      </q-card-section>
+  </q-card>
     <!--- <div class="q-pa-md column items-center justify-center">
       <div class="q-mt-md text-h6 text-grey">Listado de usuarios</div>
       <q-btn color="white" text-color="black" label="Standard" @click="$router.push('/registros')"/>
@@ -37,8 +42,16 @@
 </template>
 <script>
 import Tabla from '../../components/TableActions'
+// import CodeTabs from '../../components/CodeTabs'
 export default {
   components: { Tabla },
+  props: {
+    tagParts: {
+      type: Object,
+      default: () => {
+      }
+    }
+  },
   data () {
     return {
       lista: {},
@@ -46,6 +59,7 @@ export default {
       column: [
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
         { name: 'last_name', field: 'last_name', label: 'Apellido', align: 'left' },
+        { name: 'email', field: 'email', label: 'Correo', align: 'center' },
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
       ]
     }

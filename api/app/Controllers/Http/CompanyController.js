@@ -35,6 +35,12 @@ class CompanyController {
     response.send(companys)
   }
 
+  async indexuser ({ request, response, view, auth }) {
+    let user = (await auth.getUser()).toJSON()
+    let companys = (await Company.query().where({company_id: user.empresa}).fetch()).toJSON()
+    response.send(companys)
+  }
+
   async companysByCompany ({ params, request, response, view }) {
     let companys = (await Company.query().where({company_id: params.id}).fetch()).toJSON()
     response.send(companys)
