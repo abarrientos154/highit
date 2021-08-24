@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla titulo="Listado de Usuarios" :columns="column" route="user" :btnNew="true" />
+    <Tabla titulo="Listado de Usuarios" :columns="column" route="user" :btnNew="true" :selectBtn="true" />
     <!--- <div class="q-pa-md column items-center justify-center">
       <div class="q-mt-md text-h6 text-grey">Listado de usuarios</div>
       <q-btn color="white" text-color="black" label="Standard" @click="$router.push('/registros')"/>

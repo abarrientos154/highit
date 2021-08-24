@@ -4,10 +4,10 @@
       <div class="text-h6 text-bold" style="font-size:30px">
         {{titulo}}
       </div>
-      <q-select v-if="selectBtn" filled v-model="select" :options="options" label="Empresas" option-label="name" style="width:20%" @filter="filterEmpresa"/>
+      <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" :options="options" label="Empresas" map-options emit-value option-label="name" option-value="_id"/>
     </q-card-section>
     <q-card-section class="q-pa-none">
-      <q-grid :data="data" :columns="columns" :columns_filter="true">
+      <q-grid :data="filterData" :columns="columns" :columns_filter="true">
         <template v-slot:body="props">
 
           <q-tr :props="props">
@@ -108,7 +108,7 @@ export default {
       data: [],
       showModalEditar: false,
       iEditContrato: '',
-      select: '',
+      select: null,
       options: [],
       filterEmpresas: this.options,
       id: ''
@@ -120,6 +120,16 @@ export default {
         this.data = await this.$api.get(this.route)
       } else {
         this.data = await this.$api.get(this.filter)
+      }
+    }
+  },
+  computed: {
+    filterData () {
+      if (this.select) {
+        console.log(this.select, 'selec')
+        return this.data.filter(v => v.empresa === this.select)
+      } else {
+        return this.data
       }
     }
   },
@@ -207,20 +217,6 @@ export default {
     mostrardialogo (id) {
       this.$emit('mostrar', id)
     },
-
-    filterEmpresa (val, update) {
-      if (val === '') {
-        update(() => {
-          this.filterEmpresas = this.options
-        })
-        return
-      }
-
-      update(() => {
-        const needle = val.toLowerCase()
-        this.filterEmpresas = this.data.filter(v => v.company.toLowerCase().indexOf(needle) > -1)
-      })
-    },
     getEmpresas () {
       if (this.user.roles[0] === 1) {
         this.$api.get('companys').then(res => {
@@ -233,7 +229,7 @@ export default {
         this.$api.get('empresas_user').then(res => {
           if (res) {
             this.options = res
-            console.log(this.options, 'opciones')
+            console.log(this.options, 'opciones2')
           }
         })
       }
