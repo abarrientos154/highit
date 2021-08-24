@@ -150,24 +150,9 @@ export default {
           ruta: '/empresas'
         },
         {
-          icon: 'category',
-          label: 'Organigrama',
-          ruta: ''
-        },
-        {
           icon: 'list_alt',
           label: 'Contratos',
           ruta: '/contratos'
-        },
-        {
-          icon: 'ballot',
-          label: 'Historial',
-          ruta: ''
-        },
-        {
-          icon: 'forum',
-          label: 'Salas de chat',
-          ruta: ''
         },
         {
           icon: 'logout',
