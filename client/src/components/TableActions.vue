@@ -7,7 +7,27 @@
       <q-select v-if="selectBtn" filled v-model="select" :options="options" label="Empresas" option-label="name" style="width:20%" @filter="filterEmpresa"/>
     </q-card-section>
     <q-card-section class="q-pa-none">
-      <q-table :data="data" no-data-label="No hay registros" rows-per-page-label="Datos por pagina" :columns="columns">
+      <q-grid :data="data" :columns="columns" :columns_filter="true">
+        <template v-slot:body="props">
+
+          <q-tr :props="props">
+            <template v-for="item in columns">
+              <q-td v-if="item.name !== 'color'" :key="item.name">
+                <div v-if="item.name === 'Action'" class="row justify-center">
+                  <q-btn v-if="editarBtn" icon="edit" size="sm" flat dense @click="editar(props.row._id)" />
+                  <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-ml-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
+                  <q-btn v-if="crearBtn" style="width:130px" color="primary" text-color="white" label="Crear solicitud" @click="mostrardialogo(props.row._id)" />
+                </div>
+                <div v-else> {{ props.row[item.name] }} </div>
+              </q-td>
+              <q-td v-else :key="item.name">
+                <div :class="props.row.color2 === 'blue' ? 'bg-blue' : props.row.color2 === 'red' ? 'bg-red' : 'bg-green'" style="width:20px; height:20px;border-radius:100%"></div>
+              </q-td>
+            </template>
+          </q-tr>
+        </template>
+      </q-grid>
+      <!--<q-table :data="data" no-data-label="No hay registros" rows-per-page-label="Datos por pagina" :columns="columns">
         <template v-slot:body-cell-Action="props">
           <q-td :props="props">
             <q-btn v-if="editarBtn" icon="edit" size="sm" flat dense @click="editar(props.row._id)" />
@@ -20,7 +40,7 @@
               <div :class="props.row.color2 === 'blue' ? 'bg-blue' : props.row.color2 === 'red' ? 'bg-red' : 'bg-green'" style="width:20px; height:20px;border-radius:100%"></div>
           </q-td>
         </template>
-      </q-table>
+      </q-table> -->
     </q-card-section>
     <q-page-sticky v-if="btnNew" position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="add" color="primary" @click="$router.push($route.path + '/form')" />

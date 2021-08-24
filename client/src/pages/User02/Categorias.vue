@@ -55,12 +55,12 @@ export default {
       form: {},
       departamentos: [],
       lista: {},
-      areas: {},
-      cargos: {},
+      areas: [],
+      cargos: [],
       column: [
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' },
         { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'left' },
-        { name: 'departamento', field: row => row.Departamento.name, label: 'Departamento Asociado', align: 'left' }
+        { name: 'departamentoName', field: 'departamentoName', label: 'Departamento Asociado', align: 'left' }
       ]
     }
   },

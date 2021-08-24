@@ -13,7 +13,7 @@ export default {
       showModalEliminar: false,
       column: [
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
-        { name: 'empresa', field: row => row.Empresa.name, label: 'Empresa Asociado', align: 'left' },
+        { name: 'empresaName', field: 'empresaName', label: 'Empresa Asociado', align: 'left' },
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
       ]
     }

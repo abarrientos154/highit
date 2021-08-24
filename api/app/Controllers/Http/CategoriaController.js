@@ -24,7 +24,13 @@ class CategoriaController {
    async index ({ request, response, view, auth }) {
     let user = (await auth.getUser()).toJSON()
     let datos = (await Categoria.query().where({company_id: user.empresa}).with('Area').with('Departamento').with('Cargo').fetch()).toJSON()
-    response.send(datos)
+    let formatData = datos.map(v => {
+      return {
+        ...v,
+        departamentoName: v.Departamento.name
+      }
+    })
+    response.send(formatData)
   }
 
   /**
