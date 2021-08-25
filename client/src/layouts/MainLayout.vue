@@ -96,6 +96,29 @@
                     </template>
                   </q-input>
                 </div>
+                <div class="column items-center justify-center q-mb-md">
+                  <q-checkbox v-model="fchHr" size="xs" label="Personalizar fecha y hora de solicitud"/>
+                </div>
+                <div v-if="fchHr" class="q-mb-md">
+                  <q-input dense filled readonly v-model="form.date" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.date.$error" @blur="$v.form.date.$touch()" @click="$refs.qDateProxy2.show()">
+                    <template v-slot:append>
+                      <q-icon name="event" class="cursor-pointer">
+                        <q-popup-proxy ref="qDateProxy2" transition-show="scale" transition-hide="scale">
+                          <q-date v-model="form.date" mask="DD/MM/YYYY"/>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                  <q-input dense filled readonly v-model="form.time" placeholder="--:--" error-message="Este campo es requerido" :error="$v.form.time.$error" @blur="$v.form.time.$touch()" @click="$refs.qTimeProxy.show()">
+                    <template v-slot:append>
+                      <q-icon name="access_time" class="cursor-pointer">
+                        <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
+                          <q-time v-model="form.time"/>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
               </div>
               <div class="full-width column items-center q-mb-lg">
                 <q-btn class="text-white q-py-xs" color="primary" :label="'Crear solicitud'" style="width: 70%; border-radius: 5px;" @click="saveRequest()" no-caps/>
@@ -132,6 +155,7 @@ export default {
       drawer1: true,
       drawer2: true,
       slt: false,
+      fchHr: false,
       menu: [],
       menuUser01: [
         {
@@ -248,7 +272,9 @@ export default {
       description: { required },
       priority: { required },
       category: { required },
-      dateSlt: { required }
+      dateSlt: { required },
+      date: { required },
+      time: { required }
     }
   },
   mounted () {
@@ -318,10 +344,12 @@ export default {
     },
     saveRequest () {
       this.$v.form.$touch()
-      if (!this.$v.form.$error) {
-        const hoy = new Date()
+      const hoy = new Date()
+      if (!this.fchHr) {
         this.form.date = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear()
         this.form.time = hoy.getHours() + ':' + hoy.getMinutes()
+      }
+      if (!this.$v.form.$error) {
         this.form.user_id = this.user._id
         this.form.company_id = this.user.empresa
         this.form.status = 0
@@ -335,6 +363,7 @@ export default {
             this.$v.form.$reset()
             this.$refs.modulo.userLogueado()
             this.slt = false
+            this.fchHr = false
           }
         })
       } else {
