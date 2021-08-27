@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class="q-pa-sm">
-      <q-markup-table bordered>
+    <div>
+      <Tabla titulo="Listado de empresas" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : ''"/>
+      <!-- <q-markup-table bordered>
         <thead>
           <tr>
             <th colspan="8">
@@ -71,24 +72,30 @@
             </td>
           </tr>
         </tbody>
-      </q-markup-table>
+      </q-markup-table> -->
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn round color="primary" icon="add" size="20px" no-caps @click="$router.push('/registrar_empresa')"/>
+      <q-btn round color="primary" icon="add" size="20px" no-caps @click="$router.push('/registrar_companys')"/>
     </q-page-sticky>
   </div>
 </template>
 
 <script>
-import env from '../env'
+import Tabla from '../components/TableActions'
 export default {
+  components: { Tabla },
   data () {
     return {
       rol: 0,
       user: {},
-      baseu: '',
       empresas: [],
-      contratos: []
+      column: [
+        { name: 'Profile', label: 'Perfil', field: 'Profile', align: 'center' },
+        { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
+        { name: 'email', field: 'email', label: 'Correo', align: 'left' },
+        { name: 'phone', field: 'phone', label: 'Telefono', align: 'left' },
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
+      ]
     }
   },
   mounted () {
@@ -100,11 +107,10 @@ export default {
         if (res) {
           this.rol = res.roles[0]
           this.user = res
-          this.getContratos()
-          this.getEmpresas()
+          // this.getEmpresas()
         }
       })
-    },
+    }/* ,
     getEmpresas () {
       this.baseu = env.apiUrl + 'company_img/'
       if (this.rol === 1) {
@@ -119,21 +125,6 @@ export default {
           if (res) {
             this.empresas = res
             // console.log(this.empresas)
-          }
-        })
-      }
-    },
-    getContratos () {
-      if (this.rol === 1) {
-        this.$api.get('contratos').then(res => {
-          if (res) {
-            this.contratos = res
-          }
-        })
-      } else {
-        this.$api.get('contratos_by_company/' + this.user.empresa).then(res => {
-          if (res) {
-            this.contratos = res
           }
         })
       }
@@ -161,7 +152,7 @@ export default {
       }).onCancel(() => {
         // cancel
       })
-    }
+    } */
   }
 }
 </script>

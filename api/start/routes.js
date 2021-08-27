@@ -98,17 +98,17 @@ addPrefixToGroup(
     Route.get('departments', 'DepartmentController.index2')
     Route.get('departments/:id', 'DepartmentController.index')
     Route.post('register_department', 'DepartmentController.store')
-    Route.delete("delete_department/:id", "DepartmentController.destroy")
+    Route.delete("departments/:id", "DepartmentController.destroy")
 
     Route.get('areas', 'AreaController.index')
     Route.post('register_area', 'AreaController.store')
-    Route.delete("delete_area/:id", "AreaController.destroy")
+    Route.delete("areas/:id", "AreaController.destroy")
     Route.get("areas/:id", "AreaController.show")
     Route.get("cargos/:id", "ChargeController.show")
 
     Route.get('charges', 'ChargeController.index')
     Route.post('register_charge', 'ChargeController.store')
-    Route.delete("delete_charge/:id", "ChargeController.destroy")
+    Route.delete("charges/:id", "ChargeController.destroy")
 
     Route.post("categoria", "CategoriaController.store")
     Route.get("categorias/:id", "CategoriaController.show")
@@ -127,10 +127,11 @@ addPrefixToGroup(
     Route.get("empresas", "CompanyController.index2")
     Route.get("empresas_user", "CompanyController.indexuser")
     Route.get("companys_by_company/:id", "CompanyController.companysByCompany")
+    Route.get("companys/:id", "CompanyController.companysByCompany")
     Route.get("company/:id", "CompanyController.show")
     Route.post("register_company", "CompanyController.store")
     Route.put("update_company/:id", "CompanyController.update")
-    Route.delete("delete_company/:id", "CompanyController.destroy")
+    Route.delete("companys/:id", "CompanyController.destroy")
 
     Route.put("solicitudes_cliente/:id", "SolicitudController.solicitudesCliente")
     Route.put("solicitudes_consultor/:id", "SolicitudController.solicitudesConsultor")

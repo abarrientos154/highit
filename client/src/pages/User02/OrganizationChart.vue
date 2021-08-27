@@ -11,7 +11,7 @@
     <q-separator class="bg-grey-7"/>
     <div class="q-pa-lg">
       <div class="q-mb-md">
-        <div>
+        <div class="q-mb-md">
           <div class="text-bold text-h6">Creación de departamentos</div>
           <div>
             <div class="text-grey-8">Agregar nuevo departamento</div>
@@ -22,7 +22,8 @@
           </div>
         </div>
         <div v-if="departamentos.length">
-          <q-markup-table flat>
+          <Tabla titulo="Departamentos" @actualizarPadre="getDepartamentos()" :columns="column" route="departments" :editarBtn="false"/>
+          <!-- <q-markup-table flat>
             <thead>
               <tr>
                 <th colspan="2">
@@ -46,11 +47,11 @@
                 </td>
               </tr>
             </tbody>
-          </q-markup-table>
+          </q-markup-table> -->
         </div>
       </div>
       <div class="q-mb-md" v-if="departamentos.length">
-        <div>
+        <div class="q-mb-md">
           <div class="text-bold text-h6">Creación de areas</div>
           <div>
             <div class="text-grey-8">Selecciona el departamento disponible</div>
@@ -59,7 +60,7 @@
                 <q-btn dense v-for="(btn, index) in departamentos" :key="index" class="q-px-md q-ma-xs" :label="btn.name" :text-color="selecD === btn._id ? 'grey-3' : 'grey-6'" :color="selecD === btn._id ? 'grey-5' : 'grey-4'" @click="selecBtn(btn._id, 1)" style="min-width: 150px; border-radius: 5px;" no-caps/>
               </div>
             </q-scroll-area>
-            <div v-if="$v.formArea.department_id.$error" class="text-center text-negative">Seleccion de departamento requerida</div>
+            <div v-if="$v.selecD.$error" class="text-center text-negative">Seleccion de departamento requerida</div>
           </div>
           <div>
             <div class="text-grey-8">Agregar nueva area</div>
@@ -70,7 +71,8 @@
           </div>
         </div>
         <div v-if="areas.length">
-          <q-markup-table flat>
+          <Tabla titulo="Areas" @actualizarPadre="getAreas()" :columns="column" route="areas" :editarBtn="false"/>
+          <!-- <q-markup-table flat>
             <thead>
               <tr>
                 <th colspan="2">
@@ -94,11 +96,11 @@
                 </td>
               </tr>
             </tbody>
-          </q-markup-table>
+          </q-markup-table> -->
         </div>
       </div>
       <div v-if="areas.length">
-        <div>
+        <div class="q-mb-md">
           <div class="text-bold text-h6">Creación de cargos</div>
           <div>
             <div class="text-grey-8">Selecciona el area disponible</div>
@@ -107,7 +109,7 @@
                 <q-btn dense v-for="(btn, index) in areas" :key="index" class="q-px-md q-ma-xs" :label="btn.name" :text-color="selecA === btn._id ? 'grey-3' : 'grey-6'" :color="selecA === btn._id ? 'grey-5' : 'grey-4'" @click="selecBtn(btn._id, 2)" style="min-width: 150px; border-radius: 5px;" no-caps/>
               </div>
             </q-scroll-area>
-            <div v-if="$v.formCharge.area_id.$error" class="text-center text-negative">Seleccion de area requerida</div>
+            <div v-if="$v.selecA.$error" class="text-center text-negative">Seleccion de area requerida</div>
           </div>
           <div>
             <div class="text-grey-8">Agregar nuevo cargo</div>
@@ -118,7 +120,8 @@
           </div>
         </div>
         <div v-if="cargos.length">
-          <q-markup-table flat>
+          <Tabla titulo="Cargos" @actualizarPadre="getCargos()" :columns="column" route="charges" :editarBtn="false"/>
+          <!-- <q-markup-table flat>
             <thead>
               <tr>
                 <th colspan="2">
@@ -142,7 +145,7 @@
                 </td>
               </tr>
             </tbody>
-          </q-markup-table>
+          </q-markup-table> -->
         </div>
       </div>
     </div>
@@ -150,19 +153,26 @@
 </template>
 
 <script>
+import Tabla from '../../components/TableActions'
 import { required } from 'vuelidate/lib/validators'
 export default {
+  components: { Tabla },
   data () {
     return {
       user: {},
       departamentos: [],
       areas: [],
       cargos: [],
-      selecD: '',
-      selecA: '',
+      selecD: null,
+      selecA: null,
       formDepartment: {},
       formArea: {},
-      formCharge: {}
+      formCharge: {},
+      column: [
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' },
+        { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
+        { name: 'cantUser', field: 'cantUser', label: 'Cantidad de Usuarios', align: 'right', text: 'end' }
+      ]
     }
   },
   validations: {
@@ -173,16 +183,16 @@ export default {
     },
     formArea: {
       company_id: { required },
-      department_id: { required },
       name: { required },
       cantUser: { required }
     },
     formCharge: {
       company_id: { required },
-      area_id: { required },
       name: { required },
       cantUser: { required }
-    }
+    },
+    selecD: { required },
+    selecA: { required }
   },
   mounted () {
     this.userLogueado()
@@ -198,7 +208,7 @@ export default {
       })
     },
     getDepartamentos () {
-      this.$api.get('departments/' + this.user.empresa).then(res => {
+      this.$api.get('departments').then(res => {
         if (res) {
           this.departamentos = res
           this.getAreas()
@@ -208,7 +218,7 @@ export default {
     getAreas () {
       this.$api.get('areas').then(res => {
         if (res) {
-          if (this.selecD !== '') {
+          if (this.selecD !== null) {
             this.areas = res.filter(v => v.department_id === this.selecD)
           } else {
             this.areas = res
@@ -220,14 +230,14 @@ export default {
     getCargos () {
       this.$api.get('charges').then(res => {
         if (res) {
-          if (this.selecD !== '') {
+          if (this.selecD !== null) {
             this.cargos = []
             for (var i of this.areas) {
               if (res.filter(v => v.area_id === i._id).length) {
                 this.cargos = res.filter(v => v.area_id === i._id)
               }
             }
-          } else if (this.selecA !== '') {
+          } else if (this.selecA !== null) {
             this.cargos = res.filter(v => v.area_id === this.selecA)
           } else {
             this.cargos = res
@@ -239,21 +249,19 @@ export default {
     selecBtn (id, idx) {
       if (idx === 1) {
         this.selecD = id
-        this.selecA = ''
-        this.formArea.department_id = id
+        this.selecA = null
         this.getAreas()
       } else if (idx === 2) {
         this.selecA = id
-        this.selecD = ''
-        this.formCharge.area_id = id
+        this.selecD = null
         this.getCargos()
       }
     },
     save (idx) {
       if (idx === 1) {
-        this.$v.formDepartment.$touch()
         this.formDepartment.company_id = this.user.empresa
         this.formDepartment.cantUser = 0
+        this.$v.formDepartment.$touch()
         if (!this.$v.formDepartment.$error) {
           this.$api.post('register_department', this.formDepartment).then(res => {
             if (res) {
@@ -274,10 +282,12 @@ export default {
           })
         }
       } else if (idx === 2) {
-        this.$v.formArea.$touch()
         this.formArea.company_id = this.user.empresa
         this.formArea.cantUser = 0
-        if (!this.$v.formArea.$error) {
+        this.$v.formArea.$touch()
+        this.$v.selecD.$touch()
+        if (!this.$v.formArea.$error && !this.$v.selecD.$error) {
+          this.formArea.department_id = this.selecD
           this.$api.post('register_area', this.formArea).then(res => {
             if (res) {
               this.$q.notify({
@@ -285,8 +295,9 @@ export default {
                 color: 'positive'
               })
               this.formArea = {}
-              this.selecD = ''
+              this.selecD = null
               this.$v.formArea.$reset()
+              this.$v.selecD.$reset()
               this.getAreas()
               // this.$router.go(0)
             }
@@ -298,10 +309,12 @@ export default {
           })
         }
       } else if (idx === 3) {
-        this.$v.formCharge.$touch()
         this.formCharge.company_id = this.user.empresa
         this.formCharge.cantUser = 0
-        if (!this.$v.formCharge.$error) {
+        this.$v.formCharge.$touch()
+        this.$v.selecA.$touch()
+        if (!this.$v.formCharge.$error && !this.$v.selecA.$error) {
+          this.formCharge.area_id = this.selecA
           this.$api.post('register_charge', this.formCharge).then(res => {
             if (res) {
               this.$q.notify({
@@ -309,9 +322,10 @@ export default {
                 color: 'positive'
               })
               this.formCharge = {}
-              this.selecD = ''
-              this.selecA = ''
+              this.selecD = null
+              this.selecA = null
               this.$v.formCharge.$reset()
+              this.$v.selecA.$reset()
               this.getCargos()
               // this.$router.go(0)
             }
@@ -323,7 +337,7 @@ export default {
           })
         }
       }
-    },
+    }/* ,
     destroy (id, idx) {
       this.$q.dialog({
         title: 'Confirma',
@@ -347,7 +361,7 @@ export default {
       }).onCancel(() => {
         // cancel
       })
-    }
+    } */
   }
 }
 </script>
