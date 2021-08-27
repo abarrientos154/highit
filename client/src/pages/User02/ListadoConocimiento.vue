@@ -30,7 +30,7 @@ export default {
     return {
       column: [
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
       ],
       dialogo: false,
       form: {},
