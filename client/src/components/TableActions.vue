@@ -125,9 +125,13 @@ export default {
   },
   computed: {
     filterData () {
+      console.log(this.select, 'computed select')
       if (this.select) {
-        console.log(this.select, 'selec')
-        return this.data.filter(v => v.empresa === this.select)
+        if (this.select === 'todos') {
+          return this.data
+        } else {
+          return this.data.filter(v => v.empresa === this.select)
+        }
       } else {
         return this.data
       }
@@ -217,22 +221,24 @@ export default {
     mostrardialogo (id) {
       this.$emit('mostrar', id)
     },
-    getEmpresas () {
+    async getEmpresas () {
       if (this.user.roles[0] === 1) {
-        this.$api.get('companys').then(res => {
+        await this.$api.get('companys').then(res => {
           if (res) {
             this.options = res
             console.log(this.options, 'opciones')
           }
         })
       } else {
-        this.$api.get('empresas_user').then(res => {
+        await this.$api.get('empresas_user').then(res => {
           if (res) {
             this.options = res
             console.log(this.options, 'opciones2')
           }
         })
       }
+      const todos = this.options.unshift({ name: 'Todos', _id: 'todos' })
+      console.log(todos, 'opciones agregando todos')
     }
   }
 }
