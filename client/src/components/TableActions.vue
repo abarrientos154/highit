@@ -18,7 +18,12 @@
                   <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-ml-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
                   <q-btn v-if="crearBtn" style="width:130px" color="primary" text-color="white" label="Crear solicitud" @click="mostrardialogo(props.row._id)" />
                 </div>
-                <div v-else> {{ props.row[item.name] }} </div>
+                <div v-else-if="item.name === 'Profile'" class="row justify-center">
+                  <q-avatar>
+                    <q-img :src="baseu + props.row._id" class="full-height"/>
+                  </q-avatar>
+                </div>
+                <div v-else :class="item.text ? `row justify-${item.text}` : ''"> {{ props.row[item.name] }} </div>
               </q-td>
               <q-td v-else :key="item.name">
                 <div :class="props.row.color2 === 'blue' ? 'bg-blue' : props.row.color2 === 'red' ? 'bg-red' : 'bg-green'" style="width:20px; height:20px;border-radius:100%"></div>
@@ -64,6 +69,7 @@
 </template>
 
 <script>
+import env from '../env'
 export default {
   props: {
     titulo: {
@@ -76,6 +82,10 @@ export default {
     route: {
       type: String,
       default: ''
+    },
+    route_id: {
+      type: String,
+      default: null
     },
     btnNew: {
       type: Boolean,
@@ -104,6 +114,7 @@ export default {
   },
   data () {
     return {
+      baseu: '',
       user: {},
       data: [],
       showModalEditar: false,
@@ -117,7 +128,7 @@ export default {
   watch: {
     async filter (val) {
       if (!this.filter) {
-        this.data = await this.$api.get(this.route)
+        this.data = await this.$api.get(this.route_id !== null ? this.route + '/' + this.route_id : this.route)
       } else {
         this.data = await this.$api.get(this.filter)
       }
@@ -143,6 +154,8 @@ export default {
         if (res) {
           this.user = res
           this.getEmpresas()
+          this.baseu = env.apiUrl + 'company_img/'
+          console.log(this.route_id, 'route_id')
           console.log(this.user, 'userrr')
         }
       })
@@ -158,7 +171,7 @@ export default {
     async getRecord () {
       let res = []
       if (!this.filter) {
-        res = await this.$api.get(this.route)
+        res = await this.$api.get(this.route_id !== null ? this.route + '/' + this.route_id : this.route)
       } else {
         res = await this.$api.get(this.filter)
       }
@@ -195,9 +208,7 @@ export default {
             color: 'positive'
           })
           this.getRecord()
-          if (this.route === 'contratos' || this.route === `contratos_by_company/${this.user.empresa}`) {
-            this.$emit('actualizarPadre')
-          }
+          this.$emit('actualizarPadre')
         }
       })
     },

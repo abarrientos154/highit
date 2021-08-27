@@ -31,8 +31,8 @@ const routes = [
       // Generales
       { path: '/contratos', component: () => import('pages/Contrato.vue') },
       { path: '/empresas', component: () => import('pages/Companys.vue') },
-      { path: '/registrar_empresa', component: () => import('pages/RegisterCompany.vue') },
-      { path: '/editar_empresa/:id', component: () => import('pages/RegisterCompany.vue') },
+      { path: '/registrar_companys', component: () => import('pages/RegisterCompany.vue') },
+      { path: '/companys/form/:id', component: () => import('pages/RegisterCompany.vue') },
       { path: '/categorias', component: () => import('pages/User02/Categorias.vue') }
     ]
   },
