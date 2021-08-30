@@ -58,7 +58,7 @@ export default {
       areas: [],
       cargos: [],
       column: [
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' },
+        { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' },
         { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'left' },
         { name: 'departamentoName', field: 'departamentoName', label: 'Departamento Asociado', align: 'left' }
       ]

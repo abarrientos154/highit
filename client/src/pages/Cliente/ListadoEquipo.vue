@@ -65,7 +65,7 @@ export default {
       showModalEliminar: false,
       column: [
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
+        { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' }
       ],
       options: [
         'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'

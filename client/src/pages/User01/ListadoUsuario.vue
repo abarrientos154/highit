@@ -48,7 +48,7 @@ export default {
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
         { name: 'last_name', field: 'last_name', label: 'Apellido', align: 'left' },
         { name: 'email', field: 'email', label: 'Correo', align: 'left' },
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
       ]
     }
   }

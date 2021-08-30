@@ -116,10 +116,10 @@ export default {
       },
       column: [
         { name: 'contrato', field: 'contrato', label: 'Nombre', align: 'left' },
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
+        { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' }
       ],
       column2: [
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' },
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' },
         { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'left' },
         { name: 'tiempo', field: 'tiempo', label: 'Tiempo', align: 'left' },
         { name: 'color', field: 'color', label: 'Color', align: 'left' }
