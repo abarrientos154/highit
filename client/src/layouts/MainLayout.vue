@@ -84,7 +84,7 @@
                   <div class="text-caption text-grey-8">Categoria</div>
                   <q-select dense filled v-model="form.category" :options="categorias" map-options option-label="nombre" emit-value option-value="_id" :error="$v.form.category.$error" @blur="$v.form.category.$touch()"/>
                 </div>
-                <div>
+                <!-- <div>
                   <div class="text-caption text-grey-8">Agenda la atencion</div>
                   <q-input dense filled readonly v-model="form.dateSlt" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateSlt.$error" @blur="$v.form.dateSlt.$touch()" @click="$refs.qDateProxy.show()">
                     <template v-slot:append>
@@ -95,25 +95,25 @@
                       </q-icon>
                     </template>
                   </q-input>
-                </div>
+                </div> -->
                 <div class="column items-center justify-center q-mb-md">
                   <q-checkbox v-model="fchHr" size="xs" label="Personalizar fecha y hora de solicitud"/>
                 </div>
                 <div v-if="fchHr" class="q-mb-md">
-                  <q-input dense filled readonly v-model="form.date" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.date.$error" @blur="$v.form.date.$touch()" @click="$refs.qDateProxy2.show()">
+                  <q-input dense filled readonly v-model="form.dateSlt" placeholder="aaaa-mm-dd" error-message="Este campo es requerido" :error="$v.form.dateSlt.$error" @blur="$v.form.dateSlt.$touch()" @click="$refs.qDateProxy.show()">
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
-                        <q-popup-proxy ref="qDateProxy2" transition-show="scale" transition-hide="scale">
-                          <q-date v-model="form.date" mask="DD/MM/YYYY"/>
+                        <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                          <q-date v-model="form.dateSlt" mask="YYYY-MM-DD" @input="validarSlt()"/>
                         </q-popup-proxy>
                       </q-icon>
                     </template>
                   </q-input>
-                  <q-input dense filled readonly v-model="form.time" placeholder="--:--" error-message="Este campo es requerido" :error="$v.form.time.$error" @blur="$v.form.time.$touch()" @click="$refs.qTimeProxy.show()">
+                  <q-input dense filled readonly v-model="form.timeSlt" placeholder="--:--" error-message="Este campo es requerido" :error="$v.form.timeSlt.$error" @blur="$v.form.timeSlt.$touch()" @click="$refs.qTimeProxy.show()">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
-                          <q-time v-model="form.time"/>
+                          <q-time v-model="form.timeSlt" @input="validarSlt()"/>
                         </q-popup-proxy>
                       </q-icon>
                     </template>
@@ -139,6 +139,7 @@
 <script>
 import { required } from 'vuelidate/lib/validators'
 import { mapMutations } from 'vuex'
+import * as moment from 'moment'
 import env from '../env'
 export default {
   name: 'MainLayout',
@@ -156,6 +157,7 @@ export default {
       drawer2: true,
       slt: false,
       fchHr: false,
+      val: false,
       menu: [],
       menuUser01: [
         {
@@ -273,8 +275,7 @@ export default {
       priority: { required },
       category: { required },
       dateSlt: { required },
-      date: { required },
-      time: { required }
+      timeSlt: { required }
     }
   },
   mounted () {
@@ -340,19 +341,33 @@ export default {
       })
     },
     newRequest () {
+      this.form = {}
+      this.$v.form.$reset()
+      this.fchHr = false
       this.slt = !this.slt
+    },
+    validarSlt () {
+      this.val = moment(moment().format(`${this.form.dateSlt ? 'YYYY-MM-DD' : ''} ${this.form.timeSlt ? 'HH:mm' : ''}`)).isSameOrBefore(`${this.form.dateSlt ? this.form.dateSlt : ''} ${this.form.timeSlt ? this.form.timeSlt : ''}`)
+      // console.log(moment().format('YYYY-MM-DD'), moment().format('HH:mm'))
+      if (!this.val) {
+        this.$q.notify({
+          message: 'Debe ingresar fecha y hora valida',
+          color: 'negative'
+        })
+      }
     },
     saveRequest () {
       this.$v.form.$touch()
-      const hoy = new Date()
       if (!this.fchHr) {
-        this.form.date = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear()
-        this.form.time = hoy.getHours() + ':' + hoy.getMinutes()
+        this.form.dateSlt = moment().format('YYYY-MM-DD')
+        this.form.timeSlt = moment().format('HH:mm')
       }
-      if (!this.$v.form.$error) {
+      if (!this.$v.form.$error && this.val) {
         this.form.user_id = this.user._id
         this.form.company_id = this.user.empresa
         this.form.status = 0
+        this.form.date = moment().format('DD/MM/YYYY')
+        this.form.time = moment().format('HH:mm')
         this.$api.post('register_solicitud', this.form).then(res => {
           if (res) {
             this.$q.notify({
@@ -368,7 +383,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Debe ingresar todos los datos correspondientes',
+          message: `${!this.val ? 'Debe ingresar fecha y hora valida' : 'Debe ingresar todos los datos correspondientes'}`,
           color: 'negative'
         })
       }

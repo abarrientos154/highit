@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <Tabla titulo="Listado de empresas" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : ''"/>
+      <Tabla v-if="listado" titulo="Listado de empresas" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : null" :btnNew="true"/>
       <!-- <q-markup-table bordered>
         <thead>
           <tr>
@@ -74,9 +74,9 @@
         </tbody>
       </q-markup-table> -->
     </div>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn round color="primary" icon="add" size="20px" no-caps @click="$router.push('/registrar_companys')"/>
-    </q-page-sticky>
+    <!-- <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-btn round color="primary" icon="add" size="20px" no-caps @click="$router.push('/companys/form')"/>
+    </q-page-sticky> -->
   </div>
 </template>
 
@@ -86,15 +86,16 @@ export default {
   components: { Tabla },
   data () {
     return {
-      rol: 0,
+      rol: null,
       user: {},
       empresas: [],
+      listado: false,
       column: [
-        { name: 'Profile', label: 'Perfil', field: 'Profile', align: 'center' },
+        { name: 'Profile', label: 'Perfil', field: 'Profile', filter_type: 'false', align: 'center' },
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
         { name: 'email', field: 'email', label: 'Correo', align: 'left' },
         { name: 'phone', field: 'phone', label: 'Telefono', align: 'left' },
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' }
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
       ]
     }
   },
@@ -105,8 +106,10 @@ export default {
     userLogueado () {
       this.$api.get('user_logueado').then(res => {
         if (res) {
-          this.rol = res.roles[0]
           this.user = res
+          this.rol = res.roles[0]
+          this.listado = true
+          console.log(this.rol)
           // this.getEmpresas()
         }
       })

@@ -169,9 +169,9 @@ export default {
       formArea: {},
       formCharge: {},
       column: [
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, align: 'center' },
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' },
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
-        { name: 'cantUser', field: 'cantUser', label: 'Cantidad de Usuarios', align: 'right', text: 'end' }
+        { name: 'cantUser', field: 'cantUser', label: 'Cantidad de Usuarios', filter_type: 'false', align: 'right', text: 'end' }
       ]
     }
   },
