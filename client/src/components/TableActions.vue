@@ -23,6 +23,7 @@
                     <q-img :src="baseu + props.row._id" class="full-height"/>
                   </q-avatar>
                 </div>
+                <div v-else-if="item.name === 'departamento' || item.name === 'consultor_id'" :class="item.text ? `row justify-${item.text}` : ''">{{info.length ? info.filter(v => v._id ===  props.row[item.name])[0].name : ''}}</div>
                 <div v-else :class="item.text ? `row justify-${item.text}` : ''"> {{ props.row[item.name] }} </div>
               </q-td>
               <q-td v-else :key="item.name">
@@ -117,6 +118,7 @@ export default {
       baseu: '',
       user: {},
       data: [],
+      info: [],
       showModalEditar: false,
       iEditContrato: '',
       select: null,
@@ -128,7 +130,7 @@ export default {
   watch: {
     async filter (val) {
       if (!this.filter) {
-        this.data = await this.$api.get(this.route_id !== null ? this.route + '/' + this.route_id : this.route)
+        this.data = await this.$api.get(this.route)
       } else {
         this.data = await this.$api.get(this.filter)
       }
@@ -180,7 +182,13 @@ export default {
         res = await this.$api.get(this.filter)
       }
       if (res) {
-        this.data = res
+        if (this.route === 'solicitudes_company') {
+          this.data = res.filter(v => v.status >= 1)
+          await this.getConsultores()
+        } else {
+          this.data = res
+        }
+        await this.getDepartments()
         console.log(this.data, 'datos tabla')
       }
     },
@@ -250,6 +258,24 @@ export default {
       }
       const todos = this.options.unshift({ name: 'Todos', _id: 'todos' })
       console.log(todos, 'opciones agregando todos')
+    },
+    async getDepartments () {
+      if (this.user.roles[0] === 5) {
+        await this.$api.get('departments/' + this.user.empresa).then(res => {
+          if (res) {
+            this.info = res
+            console.log(this.info, 'info')
+          }
+        })
+      }
+    },
+    async getConsultores () {
+      await this.$api.get('user_consultor/' + this.user.empresa).then(res => {
+        if (res) {
+          this.info = res
+          console.log(this.info, 'info')
+        }
+      })
     }
   }
 }

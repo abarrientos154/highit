@@ -60,6 +60,7 @@ addPrefixToGroup(
     Route.post("user_by_status", "UserController.userByStatus") // metodo para obtener proveedores pendientes
     Route.post("user_by_rol", "UserController.userByRol")
     Route.put("update_status/:id", "UserController.userStatus") // metodo para bloquear o desbloquear usuarios
+    Route.get("user_consultor/:id", "UserController.userConsultor")
 
     Route.get("contratos", "ContratoController.index")
     Route.get("contratos_by_company/:id", "ContratoController.contratosByCompany")
@@ -74,7 +75,7 @@ addPrefixToGroup(
     Route.delete("sla/:id", "SlaController.destroy")
     Route.get("sla_filter", "SlaController.filterByContracts")
 
-    Route.post("register_user", "UserController.User_register")
+    Route.post("register_user", "UsercompanyController.User_register")
     Route.get("user", "UserController.index")
     Route.delete("user/:id", "UserController.destroy")
     Route.get('datauser/:id', 'UserController.userById')
@@ -135,9 +136,10 @@ addPrefixToGroup(
 
     Route.put("solicitudes_cliente/:id", "SolicitudController.solicitudesCliente")
     Route.put("solicitudes_consultor/:id", "SolicitudController.solicitudesConsultor")
-    Route.put("solicitudes_company/:id", "SolicitudController.solicitudesCompany")
+    Route.get("solicitudes_company/:id", "SolicitudController.solicitudesCompany")
     Route.post("solicitudes_by_consultor", "SolicitudController.solicitudesByConsultor")
     Route.put("status_solicitud/:id", "SolicitudController.update")
+    Route.put("expire_solicitud/:id", "SolicitudController.expireSlt")
     Route.post("register_solicitud", "SolicitudController.store")
 
     Route.post("register_hito", "HitoController.store")

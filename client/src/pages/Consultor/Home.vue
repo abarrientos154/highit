@@ -23,20 +23,21 @@
                 <div class="text-bold">{{index + 1}}</div>
               </div>
               <div class="row">
+                <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
               </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-                <q-img :src="baseu + item.company_id" class="full-height"/>
+                <q-img :src="baseu + item.empresa_id" class="full-height"/>
               </q-avatar>
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
                   <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
-                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.empresa_id)[0].name}}</div>
                 <div>
                   <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
                   <q-scroll-area style="height: 60px;">
@@ -62,20 +63,21 @@
               <div class="text-bold">{{index + 1}}</div>
             </div>
               <div class="row">
+                <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
               </div>
           </div>
           <div class="row">
             <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-              <q-img :src="baseu + item.company_id" class="full-height"/>
+              <q-img :src="baseu + item.empresa_id" class="full-height"/>
             </q-avatar>
             <div class="q-px-sm q-py-md col">
               <div class="row">
                 <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
                 <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
               </div>
-              <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+              <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.empresa_id)[0].name}}</div>
               <div>
                 <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
                 <q-scroll-area style="height: 60px;">
@@ -101,20 +103,21 @@
                 <div class="text-bold">{{index + 1}}</div>
               </div>
               <div class="row">
+                <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
               </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-                <q-img :src="baseu + item.company_id" class="full-height"/>
+                <q-img :src="baseu + item.empresa_id" class="full-height"/>
               </q-avatar>
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
                   <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
-                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.empresa_id)[0].name}}</div>
                 <div>
                   <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
                   <q-scroll-area style="height: 60px;">
@@ -141,20 +144,21 @@
                 <div class="text-bold">{{index + 1}}</div>
               </div>
               <div class="row">
+                <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
               </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-                <q-img :src="baseu + item.company_id" class="full-height"/>
+                <q-img :src="baseu + item.empresa_id" class="full-height"/>
               </q-avatar>
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
                   <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
-                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.empresa_id)[0].name}}</div>
                 <div>
                   <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
                   <q-scroll-area style="height: 60px;">
@@ -181,20 +185,21 @@
                 <div class="text-bold">{{index + 1}}</div>
               </div>
               <div class="row">
+                <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
               </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-                <q-img :src="baseu + item.company_id" class="full-height"/>
+                <q-img :src="baseu + item.empresa_id" class="full-height"/>
               </q-avatar>
               <div class="q-px-sm q-py-md col">
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
                   <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                 </div>
-                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+                <div class="text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.empresa_id)[0].name}}</div>
                 <div>
                   <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
                   <q-scroll-area style="height: 60px;">
@@ -221,9 +226,9 @@
             </div>
             <div class="column items-center" style="margin-top: -10px">
               <q-avatar class="bg-secondary" size="75px">
-                <q-img :src="baseu + item.company_id" class="full-height"/>
+                <q-img :src="baseu + item.empresa_id" class="full-height"/>
               </q-avatar>
-              <div class="text-center text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.company_id)[0].name}}</div>
+              <div class="text-center text-subtitle1 text-bold">{{empresas.filter(v => v._id === item.empresa_id)[0].name}}</div>
             </div>
             <div class="q-pa-md">
               <div>
@@ -240,7 +245,7 @@
                 <div class="row">
                   <div class="col">
                     <div class="text-bold" style="font-size: 10px;">Tipo de Contrato</div>
-                    <div style="font-size: 10px;">{{contratos.filter(v => v._id === empresas.filter(v => v._id === item.company_id)[0].typeContract)[0].contrato}}</div>
+                    <div style="font-size: 10px;">{{contratos.filter(v => v._id === empresas.filter(v => v._id === item.empresa_id)[0].typeContract)[0].contrato}}</div>
                   </div>
                   <div class="col">
                     <div class="text-bold" style="font-size: 10px;">Departamento</div>
@@ -287,11 +292,11 @@
         <div class="q-px-sm q-mb-md full-width">
           <div class="row">
             <q-avatar class="bg-secondary q-mx-sm q-my-md" size="170px">
-              <q-img :src="baseu + solicitud.company_id" class="full-height"/>
+              <q-img :src="baseu + solicitud.empresa_id" class="full-height"/>
             </q-avatar>
             <div class="q-px-sm q-py-md col column justify-between">
               <div>
-                <div class="text-subtitle1 text-bold">{{slt ? empresas.filter(v => v._id === solicitud.company_id)[0].name : ''}}</div>
+                <div class="text-subtitle1 text-bold">{{slt ? empresas.filter(v => v._id === solicitud.empresa_id)[0].name : ''}}</div>
                 <div>
                   <div class="text-bold text-caption text-grey-7">Descripcion del servicio</div>
                   <q-scroll-area style="height: 60px;">
@@ -400,6 +405,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import * as moment from 'moment'
 import env from '../../env'
 export default {
   data () {
@@ -459,7 +465,7 @@ export default {
           this.getContratos()
           this.getHitos()
           this.getEquipos()
-          // console.log(this.empresas)
+          console.log(this.empresas, 'empresas')
         }
       })
     },
@@ -516,6 +522,19 @@ export default {
       for (var i = 0; i < 6; i++) {
         this.$api.post('solicitudes_by_consultor', i === 0 ? { status: i } : i === 1 ? { status: i } : i === 2 ? { status: i } : i === 3 ? { status: i } : i === 4 ? { status: i } : i === 5 ? { status: i } : {}).then(res => {
           if (res) {
+            for (const j of res) {
+              if (!j.expiration && j.status < 4) {
+                const fecha = moment(j.dateSlt + ' ' + j.timeSlt)
+                const horas = moment().diff(fecha, 'hours')
+                if (horas > this.slas.filter(v => v._id === j.priority)[0].tiempo) {
+                  this.$api.put('expire_solicitud/' + j._id).then(res => {
+                    if (res) {
+                      j.expiration = true
+                    }
+                  })
+                }
+              }
+            }
             if (res.length && res[0].status === 0) {
               this.solicitudes = res
             } else if (res.length && res[0].status === 1) {
@@ -537,13 +556,13 @@ export default {
     verSlt (itm, idx) {
       this.slt = !this.slt
       this.solicitud = { ...itm }
-      this.solicitud.empresa = this.empresas.filter(v => v._id === itm.company_id)[0].name
+      this.solicitud.empresa = this.empresas.filter(v => v._id === itm.empresa_id)[0].name
       this.solicitud.priority = this.slas.filter(v => v._id === itm.priority)[0].nombre
       this.solicitud.priorityColor = this.slas.filter(v => v._id === itm.priority)[0].color2
       this.solicitud.time2 = this.slas.filter(v => v._id === itm.priority)[0].tiempo
       this.solicitud.category = this.categorias.filter(v => v._id === itm.category)[0].nombre
       this.solicitud.department = this.departamentos.filter(v => v._id === this.categorias.filter(v => v._id === itm.category)[0].departamento)[0].name
-      this.solicitud.contrato = this.contratos.filter(v => v._id === this.empresas.filter(v => v._id === itm.company_id)[0].typeContract)[0].contrato
+      this.solicitud.contrato = this.contratos.filter(v => v._id === this.empresas.filter(v => v._id === itm.empresa_id)[0].typeContract)[0].contrato
       this.solicitud.hitos = this.hitos.filter(v => v.solicitud_id === itm._id)
       this.solicitud.estados = this.estados.filter(v => v.status !== itm.status)
       if (this.solicitud.equipment) {

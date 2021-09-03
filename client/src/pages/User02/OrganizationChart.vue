@@ -22,7 +22,7 @@
           </div>
         </div>
         <div v-if="departamentos.length">
-          <Tabla titulo="Departamentos" @actualizarPadre="getDepartamentos()" :columns="column" route="departments" :editarBtn="false"/>
+          <Tabla titulo="Departamentos" @actualizarPadre="getDepartamentos()" ref="departamentos" :columns="column" route="departments" :editarBtn="false"/>
           <!-- <q-markup-table flat>
             <thead>
               <tr>
@@ -71,7 +71,7 @@
           </div>
         </div>
         <div v-if="areas.length">
-          <Tabla titulo="Areas" @actualizarPadre="getAreas()" :columns="column" route="areas" :editarBtn="false"/>
+          <Tabla titulo="Areas" @actualizarPadre="getAreas()" ref="areas" :columns="column" route="areas" :editarBtn="false"/>
           <!-- <q-markup-table flat>
             <thead>
               <tr>
@@ -120,7 +120,7 @@
           </div>
         </div>
         <div v-if="cargos.length">
-          <Tabla titulo="Cargos" @actualizarPadre="getCargos()" :columns="column" route="charges" :editarBtn="false"/>
+          <Tabla titulo="Cargos" @actualizarPadre="getCargos()" ref="cargos" :columns="column" route="charges" :editarBtn="false"/>
           <!-- <q-markup-table flat>
             <thead>
               <tr>
@@ -271,6 +271,7 @@ export default {
               })
               this.formDepartment = {}
               this.$v.formDepartment.$reset()
+              this.$refs.departamentos.getRecord()
               this.getDepartamentos()
               // this.$router.go(0)
             }
@@ -298,6 +299,7 @@ export default {
               this.selecD = null
               this.$v.formArea.$reset()
               this.$v.selecD.$reset()
+              this.$refs.areas.getRecord()
               this.getAreas()
               // this.$router.go(0)
             }
@@ -326,6 +328,7 @@ export default {
               this.selecA = null
               this.$v.formCharge.$reset()
               this.$v.selecA.$reset()
+              this.$refs.cargos.getRecord()
               this.getCargos()
               // this.$router.go(0)
             }

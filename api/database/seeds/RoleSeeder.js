@@ -37,6 +37,12 @@ const roleData = [
     name: 'Userend',
     description: 'Rol de Cliente final de HIGHIT',
     permissions: [1]
+  },
+  {
+    id: 5,
+    name: 'consultor administrador',
+    description: 'Rol de Usuario consultor administrador de HIGHIT',
+    permissions: [1]
   }
 ]
 

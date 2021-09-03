@@ -122,6 +122,10 @@ export default {
         {
           name: 'Cliente Final',
           value: 4
+        },
+        {
+          name: 'Consultor Administrador',
+          value: 5
         }
       ]
     }
@@ -174,10 +178,14 @@ export default {
     async registrar_usuario () {
       this.$v.form.$touch()
       this.$v.perfilfile.$touch()
-      if (!this.$v.perfilfile.$error && !this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
+      if (this.form.roles !== 5) {
         this.form.empresa_creador = this.user.empresa
-        this.form.password = this.password
         this.form.company = this.user.empresa
+      } else {
+        this.form.empresa = this.user.empresa
+      }
+      if (!this.$v.perfilfile.$error && !this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
+        this.form.password = this.password
         const formData = new FormData()
         formData.append('perfil', this.perfilfile)
         formData.append('dat', JSON.stringify(this.form))

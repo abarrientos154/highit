@@ -42,13 +42,14 @@
                 <div class="text-bold">{{index + 1}}</div>
               </div>
               <div class="row">
+                <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
               </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-                <q-img :src="baseu + item.company_id" class="full-height"/>
+                <q-img :src="baseu + item.empresa_id" class="full-height"/>
               </q-avatar>
               <div class="q-px-sm q-py-md col">
                 <div class="row">
@@ -82,13 +83,14 @@
                 <div class="text-bold">{{index + 1}}</div>
               </div>
               <div class="row">
+                <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
               </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-                <q-img :src="baseu + item.company_id" class="full-height"/>
+                <q-img :src="baseu + item.empresa_id" class="full-height"/>
               </q-avatar>
               <div class="q-px-sm q-py-md col">
                 <div class="row">
@@ -122,13 +124,14 @@
                 <div class="text-bold">{{index + 1}}</div>
               </div>
               <div class="row">
+                <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
               </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-                <q-img :src="baseu + item.company_id" class="full-height"/>
+                <q-img :src="baseu + item.empresa_id" class="full-height"/>
               </q-avatar>
               <div class="q-px-sm q-py-md col">
                 <div class="row">
@@ -162,13 +165,14 @@
                 <div class="text-bold">{{index + 1}}</div>
               </div>
               <div class="row">
+                <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
               </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-                <q-img :src="baseu + item.company_id" class="full-height"/>
+                <q-img :src="baseu + item.empresa_id" class="full-height"/>
               </q-avatar>
               <div class="q-px-sm q-py-md col">
                 <div class="row">
@@ -202,13 +206,14 @@
                 <div class="text-bold">{{index + 1}}</div>
               </div>
               <div class="row">
+                <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
                 <div :class="`text-caption text-white bg-${slas.filter(v => v._id === item.priority)[0].color2} q-px-lg row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{slas.filter(v => v._id === item.priority)[0].nombre}}</div>
               </div>
             </div>
             <div class="row">
               <q-avatar class="bg-secondary q-mx-sm q-my-md" size="120px">
-                <q-img :src="baseu + item.company_id" class="full-height"/>
+                <q-img :src="baseu + item.empresa_id" class="full-height"/>
               </q-avatar>
               <div class="q-px-sm q-py-md col">
                 <div class="row">
@@ -242,7 +247,7 @@
             </div>
             <div class="column items-center" style="margin-top: -10px">
               <q-avatar class="bg-secondary" size="75px">
-                <q-img :src="baseu + item.company_id" class="full-height"/>
+                <q-img :src="baseu + item.empresa_id" class="full-height"/>
               </q-avatar>
               <div class="text-center text-subtitle1 text-bold">{{company.name}}</div>
             </div>
@@ -308,7 +313,7 @@
         <div class="q-px-sm q-mb-md full-width">
           <div class="row">
             <q-avatar class="bg-secondary q-mx-sm q-my-md" size="170px">
-              <q-img :src="baseu + solicitud.company_id" class="full-height"/>
+              <q-img :src="baseu + solicitud.empresa_id" class="full-height"/>
             </q-avatar>
             <div class="q-px-sm q-py-md col column justify-between">
               <div>
@@ -323,11 +328,11 @@
               <div>
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey-7 text-caption">Fecha de solicitud:</div>
-                  <div class="text-grey-7 text-caption">{{solicitud.date}}</div>
+                  <div class="text-grey-7 text-caption">{{solicitud.dateSlt}}</div>
                 </div>
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
-                  <div class="text-grey-7 text-caption">{{solicitud.time}}hrs</div>
+                  <div class="text-grey-7 text-caption">{{solicitud.timeSlt}}hrs</div>
                 </div>
               </div>
             </div>
@@ -484,7 +489,7 @@ export default {
       this.$api.post('user_by_rol', { rol: 3 }).then(res => {
         if (res) {
           this.consultores = res
-          console.log(this.consultores, 'consultores')
+          // console.log(this.consultores, 'consultores')
         }
       })
     },
@@ -541,6 +546,19 @@ export default {
       for (var i = 0; i < 6; i++) {
         this.$api.put('solicitudes_cliente/' + this.user._id, i === 0 ? { status: i } : i === 1 ? { status: i } : i === 2 ? { status: i } : i === 3 ? { status: i } : i === 4 ? { status: i } : i === 5 ? { status: i } : {}).then(res => {
           if (res) {
+            for (const j of res) {
+              if (!j.expiration && j.status < 4) {
+                const fecha = moment(j.dateSlt + ' ' + j.timeSlt)
+                const horas = moment().diff(fecha, 'hours')
+                if (horas > this.slas.filter(v => v._id === j.priority)[0].tiempo) {
+                  this.$api.put('expire_solicitud/' + j._id).then(res => {
+                    if (res) {
+                      j.expiration = true
+                    }
+                  })
+                }
+              }
+            }
             if (res.length && res[0].status === 0) {
               this.solicitudes = res
             } else if (res.length && res[0].status === 1) {

@@ -42,8 +42,7 @@ class SolicitudController {
   }
   
   async solicitudesCompany ({ params, request, response, view }) {
-    let dat = request.all()
-    let solicitudes = (await Solicitud.query().where({ status: dat.status, company_id: params.id }).fetch()).toJSON()
+    let solicitudes = (await Solicitud.query().where('company_id', params.id).fetch()).toJSON()
     response.send(solicitudes)
   }
 
@@ -128,6 +127,11 @@ class SolicitudController {
   async update ({ params, request, response }) {
     let dat = request.all()
     let modificar = await Solicitud.query().where('_id', params.id).update(dat)
+    response.send(modificar)
+  }
+
+  async expireSlt ({ params, request, response }) {
+    let modificar = await Solicitud.query().where('_id', params.id).update({ expiration: true })
     response.send(modificar)
   }
 

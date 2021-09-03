@@ -20,7 +20,10 @@ const routes = [
       { path: '/equipos/form/:id', component: () => import('pages/User02/Equipo_edit.vue') },
       { path: '/equipos_consultor', component: () => import('pages/Cliente/ListadoEquipo.vue') },
       { path: '/vista_conocimiento', component: () => import('pages/User02/ListadoConocimiento.vue') },
-
+      // Consultor Administrador
+      { path: '/inicio_consultor_admin', component: () => import('pages/ConsultorAdmin/Home.vue') },
+      { path: '/consultores', component: () => import('pages/ConsultorAdmin/ListadoConsultores.vue') },
+      { path: '/atividades_consultor', component: () => import('pages/ConsultorAdmin/ListadoActividades.vue') },
       // Consultor
       { path: '/inicio_consultor', component: () => import('pages/Consultor/Home.vue') },
       { path: '/conocimiento', component: () => import('pages/Consultor/ListadoConocimiento.vue') },

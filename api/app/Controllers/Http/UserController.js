@@ -197,6 +197,15 @@ class UserController {
     response.send(modificar)
   }
 
+  async userConsultor({ request, params, response }) {
+    try {
+      const user = (await User.query().where({roles: 3, company: params.id}).fetch()).toJSON()
+      response.send(user)
+    } catch (error) {
+      console.error('user by rol: ' + error.name + ':' + error.message)
+    }
+  }
+
   async update({ request, response, params }) {
 
   }

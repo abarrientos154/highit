@@ -78,24 +78,24 @@
                 </div>
                 <div>
                   <div class="text-caption text-grey-8">Selecciona prioridad</div>
-                  <q-select dense filled v-model="form.priority" :options="slas" map-options option-label="nombre" emit-value option-value="_id" :error="$v.form.priority.$error" @blur="$v.form.priority.$touch()"/>
+                  <q-select dense filled v-model="form.priority" :options="slas" map-options option-label="nombre" emit-value option-value="_id" :error="$v.form.priority.$error" @blur="$v.form.priority.$touch()">
+                    <template v-slot:option="scope">
+                      <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                        <q-item-section avatar>
+                          <q-avatar size="30px" :color="scope.opt.color2"/>
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label v-html="scope.opt.nombre"/>
+                          <q-item-label class="text-grey-7">{{scope.opt.tiempo}}Hrs</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </q-select>
                 </div>
                 <div>
                   <div class="text-caption text-grey-8">Categoria</div>
                   <q-select dense filled v-model="form.category" :options="categorias" map-options option-label="nombre" emit-value option-value="_id" :error="$v.form.category.$error" @blur="$v.form.category.$touch()"/>
                 </div>
-                <!-- <div>
-                  <div class="text-caption text-grey-8">Agenda la atencion</div>
-                  <q-input dense filled readonly v-model="form.dateSlt" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateSlt.$error" @blur="$v.form.dateSlt.$touch()" @click="$refs.qDateProxy.show()">
-                    <template v-slot:append>
-                      <q-icon name="event" class="cursor-pointer">
-                        <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                          <q-date v-model="form.dateSlt" mask="DD/MM/YYYY"/>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
-                </div> -->
                 <div class="column items-center justify-center q-mb-md">
                   <q-checkbox v-model="fchHr" size="xs" label="Personalizar fecha y hora de solicitud"/>
                 </div>
@@ -266,6 +266,28 @@ export default {
           label: 'Cerrar sesión',
           ruta: ''
         }
+      ],
+      menuConsultorAdmin: [
+        {
+          icon: 'home',
+          label: 'Inicio',
+          ruta: '/inicio_consultor_admin'
+        },
+        {
+          icon: 'stream',
+          label: 'Consultores',
+          ruta: '/consultores'
+        },
+        {
+          icon: 'stream',
+          label: 'Actividades',
+          ruta: '/atividades_consultor'
+        },
+        {
+          icon: 'logout',
+          label: 'Cerrar sesión',
+          ruta: ''
+        }
       ]
     }
   },
@@ -292,7 +314,7 @@ export default {
         if (res) {
           this.rol = res.roles[0]
           this.user = res
-          // console.log(this.user)
+          console.log(this.user)
           if (this.rol !== 1) {
             this.baseu = env.apiUrl + 'perfil_img/' + this.user._id
           }
@@ -322,6 +344,8 @@ export default {
         this.menu = this.menuConsultor
       } else if (this.rol === 4) {
         this.menu = this.menuCliente
+      } else if (this.rol === 5) {
+        this.menu = this.menuConsultorAdmin
       }
     },
     getSlAs () {
@@ -361,10 +385,13 @@ export default {
       if (!this.fchHr) {
         this.form.dateSlt = moment().format('YYYY-MM-DD')
         this.form.timeSlt = moment().format('HH:mm')
+        this.validarSlt()
       }
       if (!this.$v.form.$error && this.val) {
         this.form.user_id = this.user._id
-        this.form.company_id = this.user.empresa
+        this.form.empresa_id = this.user.empresa
+        this.form.company_id = this.user.company
+        this.form.expiration = false
         this.form.status = 0
         this.form.date = moment().format('DD/MM/YYYY')
         this.form.time = moment().format('HH:mm')
@@ -379,11 +406,12 @@ export default {
             this.$refs.modulo.userLogueado()
             this.slt = false
             this.fchHr = false
+            this.val = false
           }
         })
       } else {
         this.$q.notify({
-          message: `${!this.val ? 'Debe ingresar fecha y hora valida' : 'Debe ingresar todos los datos correspondientes'}`,
+          message: 'Debe ingresar todos los datos correspondientes',
           color: 'negative'
         })
       }
