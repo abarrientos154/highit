@@ -522,20 +522,20 @@ export default {
       for (var i = 0; i < 6; i++) {
         this.$api.post('solicitudes_by_consultor', i === 0 ? { status: i } : i === 1 ? { status: i } : i === 2 ? { status: i } : i === 3 ? { status: i } : i === 4 ? { status: i } : i === 5 ? { status: i } : {}).then(res => {
           if (res) {
-            for (const j of res) {
-              if (!j.expiration && j.status < 4) {
-                const fecha = moment(j.dateSlt + ' ' + j.timeSlt)
-                const horas = moment().diff(fecha, 'hours')
-                if (horas > this.slas.filter(v => v._id === j.priority)[0].tiempo) {
-                  this.$api.put('expire_solicitud/' + j._id).then(res => {
-                    if (res) {
-                      j.expiration = true
-                    }
-                  })
+            if (res.length && res[0].status === 0) {
+              for (const j of res) {
+                if (!j.expiration) {
+                  const fecha = moment(j.dateSlt + ' ' + j.timeSlt)
+                  const horas = moment().diff(fecha, 'hours')
+                  if (horas > this.slas.filter(v => v._id === j.priority)[0].tiempo) {
+                    this.$api.put('expire_solicitud/' + j._id).then(res => {
+                      if (res) {
+                        j.expiration = true
+                      }
+                    })
+                  }
                 }
               }
-            }
-            if (res.length && res[0].status === 0) {
               this.solicitudes = res
             } else if (res.length && res[0].status === 1) {
               this.sltBegin = res
