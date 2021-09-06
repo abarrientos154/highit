@@ -61,6 +61,7 @@ addPrefixToGroup(
     Route.post("user_by_rol", "UserController.userByRol")
     Route.put("update_status/:id", "UserController.userStatus") // metodo para bloquear o desbloquear usuarios
     Route.get("user_consultor/:id", "UserController.userConsultor")
+    Route.get("user_cliente/:id", "UserController.userCliente")
 
     Route.get("contratos", "ContratoController.index")
     Route.get("contratos_by_company/:id", "ContratoController.contratosByCompany")
@@ -94,7 +95,9 @@ addPrefixToGroup(
     Route.get('equipo', 'EquipoController.index')
     Route.delete("equipo/:id", "EquipoController.destroy")
     Route.get('equipo/:id', 'EquipoController.show')
+    Route.get('equipo_cliente', 'EquipoController.equipos_cliente')
     Route.put("equipo/:id", "EquipoController.update")
+    Route.put("asignar_equipo/:id", "EquipoController.asignarEquipo")
 
     Route.get('departments', 'DepartmentController.index2')
     Route.get('departments/:id', 'DepartmentController.index')

@@ -34,7 +34,7 @@
 
     <q-drawer side="right" v-model="drawer2" show-if-above :width="250" :breakpoint="500" bordered content-class="">
       <q-scroll-area :visible="false" class="fit">
-        <div v-if="rol === 4">
+        <div v-if="rol === 4 || rol === 6">
           <div class="q-my-lg">
             <div class="text-center text-h6 text-bold">¿Tienes problemas?</div>
             <div class="text-caption text-center text-grey" style="font-size: 10px;">Crea una nueva solicitud</div>
@@ -64,7 +64,7 @@
 
           <q-dialog v-model="slt">
             <q-card class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
-              <div class="column items-end full-width" v-if="rol === 4">
+              <div class="column items-end full-width">
                 <div class="bg-red q-mr-xl" style="width: 60px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
               </div>
               <div class="q-mb-lg q-mt-md">
@@ -288,6 +288,23 @@ export default {
           label: 'Cerrar sesión',
           ruta: ''
         }
+      ],
+      menuClienteAdmin: [
+        {
+          icon: 'home',
+          label: 'Inicio',
+          ruta: '/inicio_cliente_admin'
+        },
+        {
+          icon: 'stream',
+          label: 'Equipos',
+          ruta: '/equipos_cliente'
+        },
+        {
+          icon: 'logout',
+          label: 'Cerrar sesión',
+          ruta: ''
+        }
       ]
     }
   },
@@ -318,7 +335,7 @@ export default {
           if (this.rol !== 1) {
             this.baseu = env.apiUrl + 'perfil_img/' + this.user._id
           }
-          if (this.rol === 4) {
+          if (this.rol === 4 || this.rol === 6) {
             this.getCompany()
           }
           this.menuRol()
@@ -346,6 +363,8 @@ export default {
         this.menu = this.menuCliente
       } else if (this.rol === 5) {
         this.menu = this.menuConsultorAdmin
+      } else if (this.rol === 6) {
+        this.menu = this.menuClienteAdmin
       }
     },
     getSlAs () {
@@ -368,6 +387,7 @@ export default {
       this.form = {}
       this.$v.form.$reset()
       this.fchHr = false
+      this.val = false
       this.slt = !this.slt
     },
     validarSlt () {

@@ -32,6 +32,12 @@ class EquipoController {
     response.send(datos)
   }
 
+  async equipos_cliente ({ request, response, view, auth }) {
+    let user = (await auth.getUser()).toJSON()
+    let datos = (await Equipo.query().where({cliente: user._id}).with('Empresa').fetch()).toJSON()
+    response.send(datos)
+  }
+
   /**
    * Render a form to be used for creating a new equipo.
    * GET equipos/create
@@ -104,6 +110,13 @@ class EquipoController {
     await Equipo.query().where({ _id: params.id }).update(body)
     response.send(body)
   }
+
+  async asignarEquipo ({ params, response, request }) {
+    let body = request.all()
+    const datos = await Equipo.query().where({ _id: params.id }).update(body)
+    response.send(datos)
+  }
+
   /**
    * Delete a equipo with id.
    * DELETE equipos/:id

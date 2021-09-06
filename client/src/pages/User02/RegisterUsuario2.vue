@@ -80,7 +80,7 @@
                       :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
                   </div>
 
-                <div v-if="form.roles === 4">
+                <div v-if="form.roles === 4 || form.roles === 6">
                   <div class="q-mt-sm text-h6">Selecciona empresa</div>
                   <div class="q-mt-sm text-subtitle1">Listado de empresa</div>
                   <q-select filled v-model="form.empresa" :options="empresas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
@@ -116,16 +116,20 @@ export default {
       cargos: [],
       roles: [
         {
+          name: 'Consultor Administrador',
+          value: 5
+        },
+        {
+          name: 'Cliente Administrador',
+          value: 6
+        },
+        {
           name: 'Consultor',
           value: 3
         },
         {
           name: 'Cliente Final',
           value: 4
-        },
-        {
-          name: 'Consultor Administrador',
-          value: 5
         }
       ]
     }

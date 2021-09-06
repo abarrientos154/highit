@@ -206,6 +206,15 @@ class UserController {
     }
   }
 
+  async userCliente({ request, params, response }) {
+    try {
+      const user = (await User.query().where({roles: 4, empresa: params.id}).fetch()).toJSON()
+      response.send(user)
+    } catch (error) {
+      console.error('user by rol: ' + error.name + ':' + error.message)
+    }
+  }
+
   async update({ request, response, params }) {
 
   }

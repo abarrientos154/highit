@@ -77,6 +77,8 @@ export default {
               this.$router.push('/inicio_cliente')
             } else if (this.user.roles[0] === 5) {
               this.$router.push('/inicio_consultor_admin')
+            } else if (this.user.roles[0] === 6) {
+              this.$router.push('/inicio_cliente_admin')
             }
           } else {
             console.log('error de ususario')

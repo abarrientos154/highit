@@ -1,17 +1,17 @@
 <template>
   <div>
-    <Tabla titulo="Listado de Equipos" @formSlt="newRequest($event)" :columns="column" route="equipo_cliente" :eliminarBtn="false" :editarBtn="false" :crearBtn="true" />
+    <Tabla titulo="Listado de Equipos" @formSlt="newRequest($event)" @asignarEquipo="asignarEquipo($event)" :columns="column" route="equipo_consultor" :eliminarBtn="false" :editarBtn="false" :crearBtn="true" :asignarBtn="true"/>
 
     <q-dialog v-model="dialogo">
       <q-card class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
-        <div class="column items-end full-width" v-if="rol === 4">
+        <div class="column items-end full-width" v-if="accion === 1">
           <div class="bg-red q-mr-xl" style="width: 60px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
         </div>
-        <div class="q-mb-lg q-mt-md">
+        <div class="q-mb-lg q-mt-md" v-if="accion === 1">
           <div class="text-center text-h6 text-bold">{{'Nueva solicitud'}}</div>
           <div class="text-center text-grey-8">{{'Crea una nueva solicitud para tu cliente'}}</div>
         </div>
-        <div style="width: 80%">
+        <div style="width: 80%" v-if="accion === 1">
           <div>
             <div class="text-caption text-grey-8">Descripción de la solicitud</div>
             <q-input dense v-model="form.description" filled type="textarea" placeholder="Hasta 500 caracteres" error-message="Este campo es requerido" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
@@ -60,8 +60,28 @@
             </q-input>
           </div>
         </div>
+        <div style="width: 80%" v-if="accion === 2">
+          <div class="q-my-md">
+            <div class="text-bold">Selecciona un cliente</div>
+            <q-select dense filled v-model="form2.cliente" :options="clientes" map-options option-label="name" emit-value option-value="_id" :error="$v.form2.cliente.$error" @blur="$v.form2.cliente.$touch()">
+              <template v-slot:option="scope">
+                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                  <q-item-section avatar>
+                    <q-avatar size="35px">
+                      <q-img :src="baseu + scope.opt._id" class="full-height"/>
+                    </q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label v-html="scope.opt.name"/>
+                    <q-item-label class="text-grey-7">{{scope.opt.email}}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </div>
+        </div>
         <div class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" :label="'Crear solicitud'" style="width: 70%; border-radius: 5px;" @click="saveRequest()" no-caps/>
+          <q-btn class="text-white q-py-xs" color="primary" :label="accion === 1 ? 'Crear solicitud' : 'Asignar'" style="width: 70%; border-radius: 5px;" @click="accion === 1 ? saveRequest() : asignar()" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -71,16 +91,21 @@
 import { required } from 'vuelidate/lib/validators'
 import Tabla from '../../components/TableActions'
 import * as moment from 'moment'
+import env from '../../env'
 export default {
   components: { Tabla },
   data () {
     return {
       rol: 0,
+      accion: 0,
+      baseu: '',
       user: {},
+      clientes: [],
       company: {},
       slas: [],
       categorias: [],
       form: {},
+      form2: {},
       lista: {},
       model: '',
       date: '',
@@ -105,6 +130,9 @@ export default {
       category: { required },
       dateSlt: { required },
       timeSlt: { required }
+    },
+    form2: {
+      cliente: { required }
     }
   },
   mounted () {
@@ -116,8 +144,18 @@ export default {
         if (res) {
           this.rol = res.roles[0]
           this.user = res
+          this.getClientes()
           this.getCompany()
           // console.log(this.user)
+        }
+      })
+    },
+    getClientes () {
+      this.$api.get('user_Cliente/' + this.user.empresa).then(res => {
+        if (res) {
+          this.baseu = env.apiUrl + 'perfil_img/'
+          this.clientes = res
+          console.log(this.clientes, 'clientes')
         }
       })
     },
@@ -152,6 +190,14 @@ export default {
       this.fchHr = false
       this.val = false
       this.form.equipment = id
+      this.accion = 1
+      this.dialogo = !this.dialogo
+    },
+    asignarEquipo (id) {
+      this.form2 = {}
+      this.$v.form2.$reset()
+      this.form2.equipment = id
+      this.accion = 2
       this.dialogo = !this.dialogo
     },
     validarSlt () {
@@ -189,6 +235,27 @@ export default {
             this.$v.form.$reset()
             this.fchHr = false
             this.val = false
+            this.dialogo = false
+          }
+        })
+      } else {
+        this.$q.notify({
+          message: 'Debe ingresar todos los datos correspondientes',
+          color: 'negative'
+        })
+      }
+    },
+    asignar () {
+      this.$v.form2.$touch()
+      if (!this.$v.form2.$error) {
+        this.$api.put('asignar_equipo/' + this.form2.equipment, { cliente: this.form2.cliente }).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: 'Asignacion realizada correctamente',
+              color: 'positive'
+            })
+            this.form2 = {}
+            this.$v.form2.$reset()
             this.dialogo = false
           }
         })

@@ -18,7 +18,6 @@ const routes = [
       { path: '/equipos', component: () => import('pages/User02/ListadoEquipo.vue') },
       { path: '/equipos/form', component: () => import('pages/User02/RegisterEquipo.vue') },
       { path: '/equipos/form/:id', component: () => import('pages/User02/Equipo_edit.vue') },
-      { path: '/equipos_consultor', component: () => import('pages/Cliente/ListadoEquipo.vue') },
       { path: '/vista_conocimiento', component: () => import('pages/User02/ListadoConocimiento.vue') },
       // Consultor Administrador
       { path: '/inicio_consultor_admin', component: () => import('pages/ConsultorAdmin/Home.vue') },
@@ -29,8 +28,12 @@ const routes = [
       { path: '/conocimiento', component: () => import('pages/Consultor/ListadoConocimiento.vue') },
       { path: '/conocimiento/form', component: () => import('pages/Consultor/RegisterConocimiento.vue') },
       { path: '/conocimiento/form/:id', component: () => import('pages/Consultor/Conocimiento_edit.vue') },
+      // Cliente Administrador
+      { path: '/inicio_cliente_admin', component: () => import('pages/ClienteAdmin/Home.vue') },
+      { path: '/equipos_cliente', component: () => import('pages/ClienteAdmin/ListadoEquipo.vue') },
       // Cliente
       { path: '/inicio_cliente', component: () => import('pages/Cliente/Home.vue') },
+      { path: '/equipos_consultor', component: () => import('pages/Cliente/ListadoEquipo.vue') },
       // Generales
       { path: '/contratos', component: () => import('pages/Contrato.vue') },
       { path: '/empresas', component: () => import('pages/Companys.vue') },

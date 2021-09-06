@@ -16,7 +16,8 @@
                 <div v-if="item.name === 'Action'" class="row justify-center">
                   <q-btn v-if="editarBtn" icon="edit" size="sm" flat dense @click="editar(props.row._id)" />
                   <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-ml-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
-                  <q-btn v-if="crearBtn" style="width:130px" color="primary" text-color="white" label="Crear solicitud" @click="mostrardialogo(props.row._id)" />
+                  <q-btn v-if="crearBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" label="Crear solicitud" @click="mostrardialogo(props.row._id, 1)" no-caps/>
+                  <q-btn v-if="asignarBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" label="Asignar equipo" @click="mostrardialogo(props.row._id, 2)" no-caps/>
                 </div>
                 <div v-else-if="item.name === 'Profile'" class="row justify-center">
                   <q-avatar>
@@ -93,6 +94,10 @@ export default {
       default: false
     },
     crearBtn: {
+      type: Boolean,
+      default: false
+    },
+    asignarBtn: {
       type: Boolean,
       default: false
     },
@@ -237,8 +242,12 @@ export default {
         }
       })
     },
-    mostrardialogo (id) {
-      this.$emit('mostrar', id)
+    mostrardialogo (id, idx) {
+      if (idx === 1) {
+        this.$emit('formSlt', id)
+      } else {
+        this.$emit('asignarEquipo', id)
+      }
     },
     async getEmpresas () {
       if (this.user.roles[0] === 1) {
