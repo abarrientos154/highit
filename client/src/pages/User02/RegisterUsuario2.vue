@@ -60,33 +60,49 @@
 
                 <div class="q-mt-sm text-h6">Tipo de cuenta</div>
                 <div class="q-mt-sm text-subtitle1">Seleccione el rol que tendra el usuario</div>
-                <q-select filled v-model="form.roles" :options="roles" map-options option-label="name" emit-value option-value="value" placeholder="Consultor High"
+                <q-select filled v-model="form.roles" :options="roles" map-options option-label="name" emit-value option-value="value"
                 :error="$v.form.roles.$error" @blur="$v.form.roles.$touch()" />
 
                   <div v-if="form.roles === 3">
                     <div class="q-mt-sm text-h6">Selecciona un Departamento</div>
                     <div class="q-mt-sm text-subtitle1">Listado de Departamentos</div>
-                    <q-select @input="areasOpt(form.departamento)" filled v-model="form.departamento" :options="departamentos" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                    <q-select @input="areasOpt(form.departamento)" filled v-model="form.departamento" :options="departamentos" map-options option-label="name" emit-value option-value="_id"
                     :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()" />
 
                     <div class="q-mt-sm text-h6">Selecciona un Area</div>
                     <div class="q-mt-sm text-subtitle1">Listado de Areas</div>
-                    <q-select @input="cargosOpt(form.area)" filled v-model="form.area" :options="areas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                    <q-select @input="cargosOpt(form.area)" filled v-model="form.area" :options="areas" map-options option-label="name" emit-value option-value="_id"
                       :error="$v.form.area.$error" @blur="$v.form.area.$touch()" />
 
                     <div class="q-mt-sm text-h6">Selecciona un Cargo</div>
                     <div class="q-mt-sm text-subtitle1">Listado de Cargos</div>
-                    <q-select filled v-model="form.cargo" :options="cargos" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                    <q-select filled v-model="form.cargo" :options="cargos" map-options option-label="name" emit-value option-value="_id"
                       :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
                   </div>
 
                 <div v-if="form.roles === 4 || form.roles === 6">
                   <div class="q-mt-sm text-h6">Selecciona empresa</div>
                   <div class="q-mt-sm text-subtitle1">Listado de empresa</div>
-                  <q-select filled v-model="form.empresa" :options="empresas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                  <q-select filled v-model="form.empresa" :options="empresas" map-options option-label="name" emit-value option-value="_id"
                   :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()" />
                 </div>
 
+              <div v-if="form.roles === 7">
+                <div class="q-mt-sm text-h6">Selecciona gestion</div>
+                <div class="q-mt-sm text-subtitle1">Listado de indicadores a gestionar</div>
+                <q-select filled v-model="form.manage" :options="gestion" multiple map-options option-label="name" emit-value option-value="_id" :error="$v.form.manage.$error" @blur="$v.form.manage.$touch()">
+                  <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
+                    <q-item v-bind="itemProps" v-on="itemEvents">
+                      <q-item-section>
+                        <q-item-label v-html="opt.name" ></q-item-label>
+                      </q-item-section>
+                      <q-item-section side>
+                        <q-checkbox :value="selected" @input="toggleOption(opt)" />
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </div>
             </div>
             <div class="q-pa-md column items-center justify-center">
               <q-btn color="primary" text-color="white" label="Crear Usuario" @click="registrar_usuario()" style="width:40%" />
@@ -111,10 +127,15 @@ export default {
       isPwd: true,
       isPwd2: true,
       empresas: [],
+      gestion: [],
       departamentos: [],
       areas: [],
       cargos: [],
       roles: [
+        {
+          name: 'Gerente',
+          value: 7
+        },
         {
           name: 'Consultor Administrador',
           value: 5
@@ -160,6 +181,11 @@ export default {
         required: requiredIf(function () {
           return this.form.roles === 3
         })
+      },
+      manage: {
+        required: requiredIf(function () {
+          return this.form.roles === 7
+        })
       }
     },
     password: { required, maxLength: maxLength(256), minLength: minLength(6) },
@@ -168,6 +194,14 @@ export default {
 
   },
   methods: {
+    getGestion () {
+      this.$api.get('gestion').then(res => {
+        if (res) {
+          this.gestion = res
+          console.log(this.gestion, 'gestion')
+        }
+      })
+    },
     getDepartamentos () {
       this.$api.get('departments/' + this.user.empresa).then(res => {
         if (res) {
@@ -182,7 +216,7 @@ export default {
     async registrar_usuario () {
       this.$v.form.$touch()
       this.$v.perfilfile.$touch()
-      if (this.form.roles !== 5) {
+      if (this.form.roles !== 5 && this.form.roles !== 7) {
         this.form.empresa_creador = this.user.empresa
         this.form.company = this.user.empresa
       } else {
@@ -228,6 +262,7 @@ export default {
           this.rol = res.roles[0]
           this.user = res
           console.log(this.user, 'usuario2')
+          this.getGestion()
           this.getDepartamentos()
           this.getEmpresas()
         }

@@ -19,6 +19,8 @@ const routes = [
       { path: '/equipos/form', component: () => import('pages/User02/RegisterEquipo.vue') },
       { path: '/equipos/form/:id', component: () => import('pages/User02/Equipo_edit.vue') },
       { path: '/vista_conocimiento', component: () => import('pages/User02/ListadoConocimiento.vue') },
+      // Gerente
+      { path: '/inicio_gerente', component: () => import('pages/Gerente/Home.vue') },
       // Consultor Administrador
       { path: '/inicio_consultor_admin', component: () => import('pages/ConsultorAdmin/Home.vue') },
       { path: '/consultores', component: () => import('pages/ConsultorAdmin/ListadoConsultores.vue') },

@@ -305,6 +305,18 @@ export default {
           label: 'Cerrar sesión',
           ruta: ''
         }
+      ],
+      menuGerente: [
+        {
+          icon: 'home',
+          label: 'Inicio',
+          ruta: '/inicio_gerente'
+        },
+        {
+          icon: 'logout',
+          label: 'Cerrar sesión',
+          ruta: ''
+        }
       ]
     }
   },
@@ -365,6 +377,8 @@ export default {
         this.menu = this.menuConsultorAdmin
       } else if (this.rol === 6) {
         this.menu = this.menuClienteAdmin
+      } else if (this.rol === 7) {
+        this.menu = this.menuGerente
       }
     },
     getSlAs () {
