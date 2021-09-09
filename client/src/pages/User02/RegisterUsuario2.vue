@@ -216,10 +216,9 @@ export default {
     async registrar_usuario () {
       this.$v.form.$touch()
       this.$v.perfilfile.$touch()
-      if (this.form.roles !== 5 && this.form.roles !== 7) {
-        this.form.empresa_creador = this.user.empresa
-        this.form.company = this.user.empresa
-      } else {
+      this.form.empresa_creador = this.user.empresa
+      this.form.company = this.user.empresa
+      if (this.form.roles === 5 || this.form.roles === 7) {
         this.form.empresa = this.user.empresa
       }
       if (!this.$v.perfilfile.$error && !this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {

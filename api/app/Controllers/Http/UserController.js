@@ -41,11 +41,11 @@ class UserController {
 
   async index2({ request, response, view, auth }) {
     let user = (await auth.getUser()).toJSON()
-    let users = (await User.query().where({ $and: [ {$or:[  { roles: [3] }, { roles: [4] }]}, { empresa_creador: user.empresa } ] }).fetch()).toJSON()
+    let users = (await User.query().where({ $and: [ {$or:[  { roles: [3] }, { roles: [4] }, { roles: [5] }, { roles: [6] }, { roles: [7] }]}, { empresa_creador: user.empresa } ] }).fetch()).toJSON()
     let formatearDatos = users.map(v => {
       return {
         ...v,
-        tipo_usuario: v.roles[0] === 3 ? 'consultor' : 'cliente final'
+        tipo_usuario: v.roles[0] === 3 ? 'consultor' : v.roles[0] === 4 ? 'cliente final' : v.roles[0] === 5 ? 'consultor administrador' : v.roles[0] === 6 ? 'cliente administrador' : 'gerente'
       }
     })
     response.send(formatearDatos);
