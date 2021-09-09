@@ -76,7 +76,7 @@ addPrefixToGroup(
     Route.delete("sla/:id", "SlaController.destroy")
     Route.get("sla_filter", "SlaController.filterByContracts")
 
-    Route.post("register_user", "UsercompanyController.User_register")
+    Route.post("register_user", "UserController.User_register")
     Route.get("user", "UserController.index")
     Route.delete("user/:id", "UserController.destroy")
     Route.get('datauser/:id', 'UserController.userById')
