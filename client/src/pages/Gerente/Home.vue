@@ -11,28 +11,26 @@
     <q-separator class="bg-grey-7 q-mb-lg"/>
     <div class="q-mb-lg" v-if="info">
       <div class="q-mb-sm q-px-md">
-        <div class="text-h6 text-bold">Gestion de actividades</div>
-        <div class="text-grey-8">Indicadores asignados</div>
+        <div class="text-h5 text-bold">Gestion de actividades</div>
+        <div class="text-subtitle1 text-grey-8">Indicadores asignados</div>
       </div>
-      <q-scroll-area horizontal style="height: 150px;">
-        <div class="row no-wrap full-width">
-          <q-card class="q-mx-sm" v-for="(item, index) in gestion" :key="index" style="min-width: 300px; border-radius: 20px;">
-            <q-item>
-              <q-item-section avatar>
-                <q-avatar :icon="item.icon" font-size="95px" size="100px"/>
-              </q-item-section>
-              <q-item-section>
-                <div class="row items-center justify-between no-wrap">
-                  <q-item-label class="text-bold text-h6 text-no-wrap">{{item.name}}</q-item-label>
-                  <q-btn dense flat round icon="pending" @click="gestionar(item)"/>
-                </div>
-                <q-item-label class="text-subtitle1">Actividades realizadas:</q-item-label>
-                <q-item-label class="text-h3 text-grey-7">{{item.cantidad}}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-card>
-        </div>
-      </q-scroll-area>
+      <q-list class="q-px-lg">
+        <q-card class="q-mb-md" v-for="(item, index) in gestion" :key="index" style="width: 100%; border-radius: 20px;">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar :icon="item.icon" font-size="95px" size="100px"/>
+            </q-item-section>
+            <q-item-section>
+              <div class="row items-center justify-between no-wrap">
+                <q-item-label class="text-bold text-h6 text-no-wrap">{{item.name}}</q-item-label>
+                <q-btn dense flat round icon="pending" @click="gestionar(item)"/>
+              </div>
+              <q-item-label class="text-subtitle1">Actividades realizadas:</q-item-label>
+              <q-item-label class="text-h3 text-grey-7">{{item.cantidad}}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-card>
+      </q-list>
     </div>
 
     <q-dialog v-model="gtn">
@@ -165,6 +163,7 @@ export default {
       this.datos.cantidad = this.datos.actividades.length
     },
     validarFecha () {
+      this.$refs.qDateProxy.hide()
       if (this.type === 1) {
         this.val = moment(moment().format('YYYY-MM-DD')).isSameOrAfter(this.fecha)
       } else if (this.type === 2) {
