@@ -543,7 +543,7 @@ export default {
               for (const j of res) {
                 if (!j.expiration) {
                   const fecha = moment(j.dateSlt + ' ' + j.timeSlt)
-                  const horas = moment().diff(fecha, 'hours')
+                  const horas = moment().diff(fecha, 'minutes')
                   if (horas > this.slas.filter(v => v._id === j.priority)[0].tiempo) {
                     this.$api.put('expire_solicitud/' + j._id).then(res => {
                       if (res) {

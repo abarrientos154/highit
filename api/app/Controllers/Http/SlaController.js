@@ -33,7 +33,7 @@ class SlaController {
     let formatearFecha = datos.map(v => {
       return {
         ...v,
-        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : 'green',
+        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : v.color === 'Verde' ? 'green' : v.color === 'Amarillo' ? 'yellow' : v.color === 'Rosado' ? 'pink' : v.color === 'Gris' ? 'grey' : v.color === 'Negro' ? 'black' : v.color === 'Celeste' ? 'blue-3' : v.color === 'Anaranjado' ? 'orange' : v.color === 'Morado' ? 'purple' : 'brown',
         fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
 
       }
@@ -46,7 +46,7 @@ class SlaController {
     let formatearFecha = datos.map(v => {
       return {
         ...v,
-        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : 'green',
+        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : v.color === 'Verde' ? 'green' : v.color === 'Amarillo' ? 'yellow' : v.color === 'Rosado' ? 'pink' : v.color === 'Gris' ? 'grey' : v.color === 'Negro' ? 'black' : v.color === 'Celeste' ? 'blue-3' : v.color === 'Anaranjado' ? 'orange' : v.color === 'Morado' ? 'purple' : 'brown',
         fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
 
       }
@@ -60,7 +60,7 @@ class SlaController {
     let formatData = datos.map(v => {
       return {
         ...v,
-        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : 'green',
+        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : v.color === 'Verde' ? 'green' : v.color === 'Amarillo' ? 'yellow' : v.color === 'Rosado' ? 'pink' : v.color === 'Gris' ? 'grey' : v.color === 'Negro' ? 'black' : v.color === 'Celeste' ? 'blue-3' : v.color === 'Anaranjado' ? 'orange' : v.color === 'Morado' ? 'purple' : 'brown',
         fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
 
       }
@@ -114,7 +114,7 @@ class SlaController {
     let formatearFecha = datos.map(v => {
       return {
         ...v,
-        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : 'green',
+        color2: v.color === 'Azul' ? 'blue' : v.color === 'Rojo' ? 'red' : v.color === 'Verde' ? 'green' : v.color === 'Amarillo' ? 'yellow' : v.color === 'Rosado' ? 'pink' : v.color === 'Gris' ? 'grey' : v.color === 'Negro' ? 'black' : v.color === 'Celeste' ? 'blue-3' : v.color === 'Anaranjado' ? 'orange' : v.color === 'Morado' ? 'purple' : 'brown',
         fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
 
       }

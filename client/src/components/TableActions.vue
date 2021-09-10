@@ -28,7 +28,7 @@
                 <div v-else :class="item.text ? `row justify-${item.text}` : ''"> {{ props.row[item.name] }} </div>
               </q-td>
               <q-td v-else :key="item.name">
-                <div :class="props.row.color2 === 'blue' ? 'bg-blue' : props.row.color2 === 'red' ? 'bg-red' : 'bg-green'" style="width:20px; height:20px;border-radius:100%"></div>
+                <q-avatar :color="props.row.color2" size="30px"/>
               </q-td>
             </template>
           </q-tr>
@@ -191,6 +191,7 @@ export default {
           this.data = res
         }
         await this.getDepartments()
+        console.log(this.data)
       }
     },
     eliminarConfirm (id) {

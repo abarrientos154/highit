@@ -20,9 +20,9 @@
                 </div>
             </q-card>
 
-            <div class="q-mt-md text-h6 text-grey">Selecciona un contrato disponible para agregar SLA´S</div>
+            <div class="q-mt-md text-h6 text-grey">Selecciona un contrato disponible para agregar prioridades</div>
             <q-card style="width:100%" v-if="tabla1">
-              <Tabla no-data-label="sin registros" titulo="" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" :route="rol === 1 ? 'contratos' : `contratos_by_company/${this.user.empresa}`" :btnNew="false" />
+              <Tabla no-data-label="sin registros" titulo="Listado de contratos" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" :route="rol === 1 ? 'contratos' : `contratos_by_company/${this.user.empresa}`" :btnNew="false" />
             </q-card>
           </div>
           <div class="q-mt-md text-h5 text-bold">Selecciona el contrato</div>
@@ -36,31 +36,29 @@
             </div>
          </div>
          <div class="q-mt-md text-subtitle1">Nombre requerimiento</div>
-          <q-input filled v-model="form2.nombre" label="Nombre de SLA"
+          <q-input filled v-model="form2.nombre" label="Nombre de la prioridad"
           error-message="Requerido" :error="$v.form2.nombre.$error" @blur="$v.form2.nombre.$touch()"
            />
           <div class="row">
             <div class="colum">
               <div class="q-mt-md text-subtitle1">Tiempo que tomara</div>
               <div class="row">
-                <q-input type="number" filled v-model="form2.tiempo"
-                error-message="Requerido" :error="$v.form2.tiempo.$error" @blur="$v.form2.tiempo.$touch()" style="width: 120px"/>
-                <div class="q-mt-lg">{{"Horas"}}</div>
+                <q-input type="number" filled v-model.number="form2.tiempo" min="1" :rules="[ v => v >= 1 ]" error-message="Requerido" :error="$v.form2.tiempo.$error" @blur="$v.form2.tiempo.$touch()" style="width: 120px"/>
+                <div class="q-mt-lg">{{"Minutos"}}</div>
               </div>
             </div>
             <q-space />
             <div class="colum">
               <div class="q-mt-md text-subtitle1">Seleccione el color</div>
-              <q-select filled v-model="color" :options="options" style="width:170px"
-              error-message="Requerido" :error="$v.color.$error" @blur="$v.color.$touch()"/>
+              <q-select filled v-model="color" :options="options" style="width:170px" error-message="Requerido" :error="$v.color.$error" @blur="$v.color.$touch()"/>
             </div>
           </div>
           <div class="q-pa-md column items-center justify-center">
-            <q-btn color="primary" text-color="white" label="Crear nueva SLA" @click="guardar_SLA()" style="width:40%" />
+            <q-btn color="primary" text-color="white" label="Crear nueva prioridad" @click="guardar_SLA()" style="width:40%" />
           </div>
-          <div class="q-mt-md text-h5 text-bold">Listados de SLA´s</div>
+          <!-- <div class="q-mt-md text-h5 text-bold">Listados de SLA´s</div> -->
           <q-card style="width:100%">
-            <Tabla titulo="Listados de SLAs creados" ref="latabla2" :columns="column2" route="sla" :editarBtn="false"
+            <Tabla titulo="Listado de prioridades creadas" ref="latabla2" :columns="column2" route="sla" :editarBtn="false"
               :btnNew="false" :filter="filterBy"
             />
               <q-list bordered separator>
@@ -120,9 +118,9 @@ export default {
       ],
       column2: [
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' },
-        { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'left' },
-        { name: 'tiempo', field: 'tiempo', label: 'Tiempo', align: 'left' },
-        { name: 'color', field: 'color', label: 'Color', align: 'left' }
+        { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'center', text: 'center' },
+        { name: 'color', field: 'color', label: 'Color', align: 'left' },
+        { name: 'tiempo', field: 'tiempo', label: 'Tiempo', align: 'right', text: 'end' }
       ],
       lista: [],
       lista2: [],
@@ -131,7 +129,7 @@ export default {
       selecBoton: '',
       nuevo: '',
       color: '',
-      options: ['Rojo', 'Azul', 'Verde']
+      options: ['Rojo', 'Azul', 'Verde', 'Amarillo', 'Rosado', 'Gris', 'Negro', 'Celeste', 'Anaranjado', 'Morado', 'Cafe']
     }
   },
   validations: {
@@ -160,7 +158,8 @@ export default {
     },
     guardar_contrato () {
       this.$v.form.$touch()
-      if (!this.$v.form.$error) {
+      var val = this.lista.filter(v => v.contrato === this.form.contrato)
+      if (!this.$v.form.$error && !val.length) {
         this.form.status = this.rol
         if (this.rol === 2) {
           this.form.company_id = this.user.empresa
@@ -179,7 +178,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Faltan campos por llenar',
+          message: `${val.length ? 'El nombre de este contrato ya esta registrado' : 'Faltan campos por llenar'}`,
           color: 'negative'
         })
       }
@@ -196,7 +195,7 @@ export default {
         this.$api.post('sla', this.form2).then(res => {
           if (res) {
             this.$q.notify({
-              message: 'SLA Guardado con Exito',
+              message: 'Prioridad guardada con Exito',
               color: 'positive'
             })
             // this.obtener_Sla()
