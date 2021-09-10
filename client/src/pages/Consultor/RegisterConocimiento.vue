@@ -80,15 +80,12 @@ export default {
   methods: {
     async registrar_conocimiento () {
       this.$v.form.$touch()
-
-      console.log(this.form, 'llegae')
       if (this.Files.length >= 1 && !this.$v.form.$error && !this.$v.Files.$error) {
         this.form.departamento = this.user.departamento
         this.form.area = this.user.area
         this.form.cantidadArchivos = this.Files.length
         const formData = new FormData()
         for (let i = 0; i < this.form.cantidadArchivos; i++) {
-          console.log(this.Files[i], 'archivo ', i)
           formData.append('archivos' + i, this.Files[i])
         }
         formData.append('dat', JSON.stringify(this.form))
@@ -117,7 +114,6 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          console.log(this.user, 'user')
         }
       })
     },

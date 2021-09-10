@@ -92,7 +92,6 @@ export default {
         }
         const formData = new FormData()
         for (let i = 0; i < form.cantidadArchivos; i++) {
-          console.log(this.Files[i], 'archivo ', i)
           formData.append('archivos' + i, this.Files[i])
         }
         formData.append('dat', JSON.stringify(form))
@@ -144,7 +143,6 @@ export default {
         await this.$api.put('edit_conocimiento/' + this.id, this.form).then(res => {
           this.$q.loading.hide()
           if (res) {
-            console.log(res, 'asd')
             this.$q.notify({
               message: 'Informacion actualizada con exito.',
               color: 'positive'
@@ -162,18 +160,15 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          console.log(this.user, 'user')
         }
       })
     },
     async obtener_datos () {
-      console.log(this.id, 'id')
       this.$q.loading.show()
       const v = await this.$api.get('conocimientos/' + this.id)
       this.$q.loading.hide()
       if (v) {
         this.form = v
-        console.log(this.form, 'mira')
       }
     },
     archivo () {

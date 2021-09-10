@@ -222,7 +222,6 @@ export default {
       this.$api.get('slas').then(res => {
         if (res) {
           this.lista2 = res
-          console.log(this.lista2, 'pendiente')
         }
       })
     }, */
@@ -264,8 +263,6 @@ export default {
     Botonselec (btn, text) {
       this.form2.contrato = btn._id
       this.filterBy = 'sla_filter?contrato=' + btn._id
-      console.log(btn, 'boton')
-      console.log(this.form2.contrato, 'contrato')
       if (text === 'cat') {
         this.selecBoton = btn
       }

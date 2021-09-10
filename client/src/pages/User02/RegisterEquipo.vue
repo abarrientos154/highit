@@ -84,7 +84,6 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          console.log(this.user, 'usuario2')
           this.getEmpresas()
         }
       })

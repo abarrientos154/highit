@@ -53,7 +53,6 @@ export default {
   },
   methods: {
     async obtener_datos () {
-      console.log(this.id, 'id')
       this.$q.loading.show()
       const v = await this.$api.get('equipo/' + this.id)
       this.$q.loading.hide()
@@ -69,7 +68,6 @@ export default {
         await this.$api.put('equipo/' + this.id, this.form).then(res => {
           this.$q.loading.hide()
           if (res) {
-            console.log(res, 'asd')
             this.$q.notify({
               message: 'Informacion actualizada con exito.',
               color: 'positive'
@@ -96,7 +94,6 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          console.log(this.user, 'usuario2')
           this.getEmpresas()
         }
       })

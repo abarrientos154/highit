@@ -109,7 +109,6 @@ export default {
           this.user = res
           this.rol = res.roles[0]
           this.listado = true
-          console.log(this.rol)
           // this.getEmpresas()
         }
       })
@@ -120,14 +119,12 @@ export default {
         this.$api.get('companys').then(res => {
           if (res) {
             this.empresas = res
-            // console.log(this.empresas)
           }
         })
       } else {
         this.$api.get('companys_by_company/' + this.user.empresa).then(res => {
           if (res) {
             this.empresas = res
-            // console.log(this.empresas)
           }
         })
       }

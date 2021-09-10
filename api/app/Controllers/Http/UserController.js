@@ -266,7 +266,6 @@ class UserController {
   async User_register({ request, response }) {
     let dat = request.only(['dat'])
     dat = JSON.parse(dat.dat)
-    console.log(dat, 'dataaaaaaaaaa')
 
     const validation = await validate(dat, User.fieldejemplo())
     if (validation.fails()) {
@@ -339,9 +338,7 @@ class UserController {
     )
 
     // display appropriate message
-    console.log(verifyPassword, 'verifyPass')
     if (!verifyPassword) {
-      console.log('entro aqui')
       response.unprocessableEntity([{
         message: 'Contraseña actual incorrecta'
       }])

@@ -117,7 +117,6 @@ export default {
           this.rol = res.roles[0]
           this.user = res
           this.getCompany()
-          // console.log(this.user)
         }
       })
     },
@@ -134,7 +133,6 @@ export default {
       this.$api.get(`sla_by_contrato/${this.company.typeContract}`).then(res => {
         if (res) {
           this.slas = res
-          // console.log(this.slas, 'slas')
         }
       })
     },
@@ -142,7 +140,6 @@ export default {
       this.$api.get(`categorias/${this.company.company_id}`).then(res => {
         if (res) {
           this.categorias = res
-          // console.log(this.categorias, 'categorias')
         }
       })
     },
@@ -156,7 +153,6 @@ export default {
     },
     validarSlt () {
       this.val = moment(moment().format(`${this.form.dateSlt ? 'YYYY-MM-DD' : ''} ${this.form.timeSlt ? 'HH:mm' : ''}`)).isSameOrBefore(`${this.form.dateSlt ? this.form.dateSlt : ''} ${this.form.timeSlt ? this.form.timeSlt : ''}`)
-      // console.log(moment().format('YYYY-MM-DD'), moment().format('HH:mm'))
       if (!this.val) {
         this.$q.notify({
           message: 'Debe ingresar fecha y hora valida',

@@ -139,7 +139,6 @@ export default {
       this.$q.loading.hide()
       if (res) {
         this.empresas = res
-        console.log(res, 'miraa')
       }
     }
   },

@@ -49,7 +49,6 @@ async function getDistance(from, to) {
       return response.json.rows[0];
     })
     .catch((err) => {
-      console.log(err);
   }); */
 }
 async function getDistanceBetween(data) {

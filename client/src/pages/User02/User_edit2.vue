@@ -177,20 +177,17 @@ export default {
   },
   methods: {
     async obtener_datos () {
-      console.log(this.id, 'id')
       this.$q.loading.show()
       const v = await this.$api.get('datauser/' + this.id)
       this.$q.loading.hide()
       if (v) {
         this.form = v
-        console.log(this.form, 'userdata')
       }
     },
     async getEmpresas () {
       await this.$api.get('empresas').then(res => {
         if (res) {
           this.empresas = res
-          console.log(this.empresas, 'empresasassssssss')
         }
       })
     },
@@ -198,7 +195,6 @@ export default {
       await this.$api.get('departments').then(res => {
         if (res) {
           this.departamentos = res
-          console.log(this.departamentos, 'depas')
         }
       })
     },
@@ -206,7 +202,6 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          console.log(this.user, 'usuario2')
         }
       })
     },
@@ -214,7 +209,6 @@ export default {
       await this.$api.get('areas/' + this.form.departamento).then(res => {
         if (res) {
           this.areas = res
-          console.log(this.areas, 'areas')
         }
       })
     },
@@ -222,12 +216,10 @@ export default {
       await this.$api.get('cargos/' + this.form.area).then(res => {
         if (res) {
           this.cargos = res
-          console.log(this.cargos, 'cargos')
         }
       })
     },
     async perfil_img () {
-      console.log('add perfil img', this.perfilfile)
       this.$v.perfilfile.$touch()
       if (!this.$v.perfilfile.$error) {
         var formData = new FormData()
@@ -251,7 +243,6 @@ export default {
         await this.$api.put('datos_edit/' + this.id, this.form).then(res => {
           this.$q.loading.hide()
           if (res) {
-            console.log(res, 'asd')
             this.$q.notify({
               message: 'Informacion actualizada con exito.',
               color: 'positive'
@@ -270,7 +261,6 @@ export default {
       this.$v.repeatPassword.$touch()
       this.$v.oldpassword.$touch()
       this.$v.password.$touch()
-      console.log(this.$v.password.$error, this.$v.oldpassword.$error, this.$v.repeatPassword.$error)
       if (!this.$v.password.$error && !this.$v.oldpassword.$error && !this.$v.repeatPassword.$error) {
         const send = {
           newPassword: this.password,
@@ -280,7 +270,6 @@ export default {
         await this.$api.put('password_edit/' + this.id, send).then(res => {
           this.$q.loading.hide()
           if (res) {
-            console.log(res, 'asd')
             this.$q.notify({
               message: 'Informacion actualizada con exito.',
               color: 'positive'
@@ -293,7 +282,6 @@ export default {
       this.$api.get('areas/' + id).then(res => {
         if (res) {
           this.areas = res
-          console.log(this.areas, 'areasss')
         }
       })
     },
@@ -301,7 +289,6 @@ export default {
       this.$api.get('cargos/' + id).then(res => {
         if (res) {
           this.cargos = res
-          console.log(this.cargos, 'cargos')
         }
       })
     }

@@ -43,7 +43,6 @@ class UserSeeder {
         await user.save()
       }
     }
-    console.log('Finished User')
   }
 }
 

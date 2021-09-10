@@ -123,7 +123,6 @@ class UploadController {
       types: ['image'],
       size: '25mb'
     })
-    // console.log(user, 'asd')
     if (profilePic) {
       if (Helpers.appRoot('storage/uploads/perfil')) {
         await profilePic.move(Helpers.appRoot('storage/uploads/perfil'), {

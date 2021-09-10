@@ -72,7 +72,6 @@ class RoleSeeder {
         await role.save()
       }
     }
-    console.log('Finished Role')
   }
 }
 

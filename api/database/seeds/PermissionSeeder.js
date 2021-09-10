@@ -34,7 +34,6 @@ class PermissionSeeder {
         await permission.save()
       }
     }
-    console.log('Finished Permission')
   }
 }
 

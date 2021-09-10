@@ -27,7 +27,6 @@ class EquipoController {
 
   async equipos_consultor ({ request, response, view, auth }) {
     let user = (await auth.getUser()).toJSON()
-    console.log(user, 'wacha')
     let datos = (await Equipo.query().where({empresa: user.empresa}).with('Empresa').fetch()).toJSON()
     response.send(datos)
   }

@@ -56,7 +56,6 @@ class SlaController {
 
   
   async filterByContracts ({ params, request, response, view, auth }) {
-    console.log(request.get(), 'request')
     let datos = (await Sla.query().where(request.get()).fetch()).toJSON()
     let formatData = datos.map(v => {
       return {

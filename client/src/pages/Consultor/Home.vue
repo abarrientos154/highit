@@ -450,7 +450,6 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          console.log(this.user)
           this.getEmpresas()
         }
       })
@@ -465,7 +464,6 @@ export default {
           this.getContratos()
           this.getHitos()
           this.getEquipos()
-          console.log(this.empresas, 'empresas')
         }
       })
     },
@@ -473,7 +471,6 @@ export default {
       this.$api.get('sla_by_company/' + this.user.company).then(res => {
         if (res) {
           this.slas = res
-          // console.log(this.slas, 'slas')
         }
       })
     },
@@ -481,7 +478,6 @@ export default {
       this.$api.get(`categorias/${this.user.company}`).then(res => {
         if (res) {
           this.categorias = res
-          // console.log(this.categorias, 'categorias')
         }
       })
     },
@@ -489,7 +485,6 @@ export default {
       this.$api.get(`departments/${this.user.company}`).then(res => {
         if (res) {
           this.departamentos = res
-          // console.log(this.departamentos, 'depas')
         }
       })
     },
@@ -497,7 +492,6 @@ export default {
       this.$api.get(`contratos_by_company/${this.user.company}`).then(res => {
         if (res) {
           this.contratos = res
-          // console.log(this.contratos, 'contratos')
         }
       })
     },
@@ -505,7 +499,6 @@ export default {
       this.$api.get(`hitos_by_company/${this.user.company}`).then(res => {
         if (res) {
           this.hitos = res
-          // console.log(this.hitos, 'hitos')
         }
       })
     },
@@ -514,7 +507,6 @@ export default {
         if (res) {
           this.equipos = res
           this.getSlt()
-          // console.log(this.equipos, 'equipos')
         }
       })
     },

@@ -489,7 +489,6 @@ export default {
       this.$api.post('user_by_rol', { rol: 3 }).then(res => {
         if (res) {
           this.consultores = res
-          // console.log(this.consultores, 'consultores')
         }
       })
     },
@@ -497,7 +496,6 @@ export default {
       this.$api.get('sla_by_contrato/' + this.company.typeContract).then(res => {
         if (res) {
           this.slas = res
-          // console.log(this.slas, 'slas')
         }
       })
     },
@@ -505,7 +503,6 @@ export default {
       this.$api.get(`categorias/${this.company.company_id}`).then(res => {
         if (res) {
           this.categorias = res
-          // console.log(this.categorias, 'categorias')
         }
       })
     },
@@ -513,7 +510,6 @@ export default {
       this.$api.get(`departments/${this.company.company_id}`).then(res => {
         if (res) {
           this.departamentos = res
-          // console.log(this.departamentos, 'depas')
         }
       })
     },
@@ -521,7 +517,6 @@ export default {
       this.$api.get(`contratos_by_company/${this.company.company_id}`).then(res => {
         if (res) {
           this.contratos = res
-          // console.log(this.contratos, 'contratos')
         }
       })
     },
@@ -529,7 +524,6 @@ export default {
       this.$api.get(`hitos_by_company/${this.company.company_id}`).then(res => {
         if (res) {
           this.hitos = res
-          // console.log(this.hitos, 'hitos')
         }
       })
     },
@@ -538,7 +532,6 @@ export default {
         if (res) {
           this.equipos = res
           this.getSltUser()
-          // console.log(this.equipos, 'equipos')
         }
       })
     },

@@ -93,6 +93,9 @@
                 <q-select filled v-model="form.manage" :options="gestion" multiple map-options option-label="name" emit-value option-value="_id" :error="$v.form.manage.$error" @blur="$v.form.manage.$touch()">
                   <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
                     <q-item v-bind="itemProps" v-on="itemEvents">
+                      <q-item-section avatar>
+                        <q-icon :name="opt.icon" size="40px"/>
+                      </q-item-section>
                       <q-item-section>
                         <q-item-label v-html="opt.name" ></q-item-label>
                       </q-item-section>
@@ -198,7 +201,6 @@ export default {
       this.$api.get('gestion').then(res => {
         if (res) {
           this.gestion = res
-          console.log(this.gestion, 'gestion')
         }
       })
     },
@@ -206,7 +208,6 @@ export default {
       this.$api.get('departments/' + this.user.empresa).then(res => {
         if (res) {
           this.departamentos = res
-          console.log(this.departamentos, 'depas')
         }
       })
     },
@@ -251,7 +252,6 @@ export default {
       this.$api.get('companys_by_company/' + this.user.empresa).then(res => {
         if (res) {
           this.empresas = res
-          // console.log(this.empresas)
         }
       })
     },
@@ -260,7 +260,6 @@ export default {
         if (res) {
           this.rol = res.roles[0]
           this.user = res
-          console.log(this.user, 'usuario2')
           this.getGestion()
           this.getDepartamentos()
           this.getEmpresas()
@@ -271,7 +270,6 @@ export default {
       this.$api.get('areas/' + id).then(res => {
         if (res) {
           this.areas = res
-          console.log(this.areas, 'areasss')
         }
       })
     },
@@ -279,7 +277,6 @@ export default {
       this.$api.get('cargos/' + id).then(res => {
         if (res) {
           this.cargos = res
-          console.log(this.cargos, 'cargos')
         }
       })
     }

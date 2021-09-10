@@ -143,7 +143,6 @@ export default {
   },
   computed: {
     filterData () {
-      console.log(this.select, 'computed select')
       if (this.select) {
         if (this.select === 'todos') {
           return this.data
@@ -166,8 +165,6 @@ export default {
           this.user = res
           this.getEmpresas()
           this.baseu = env.apiUrl + 'company_img/'
-          console.log(this.route_id, 'route_id')
-          console.log(this.user, 'userrr')
         }
       })
     },
@@ -194,7 +191,6 @@ export default {
           this.data = res
         }
         await this.getDepartments()
-        console.log(this.data, 'datos tabla')
       }
     },
     eliminarConfirm (id) {
@@ -212,7 +208,7 @@ export default {
       }).onOk(() => {
         this.eliminar(id)
       }).onCancel(() => {
-        console.log('>>>> Cancel')
+        // console.log('>>>> Cancel')
       }).onDismiss(() => {
         // console.log('I am triggered on both OK and Cancel')
       })
@@ -254,26 +250,22 @@ export default {
         await this.$api.get('companys').then(res => {
           if (res) {
             this.options = res
-            console.log(this.options, 'opciones')
           }
         })
       } else {
         await this.$api.get('empresas_user').then(res => {
           if (res) {
             this.options = res
-            console.log(this.options, 'opciones2')
           }
         })
       }
-      const todos = this.options.unshift({ name: 'Todos', _id: 'todos' })
-      console.log(todos, 'opciones agregando todos')
+      // const todos = this.options.unshift({ name: 'Todos', _id: 'todos' })
     },
     async getDepartments () {
       if (this.user.roles[0] === 5) {
         await this.$api.get('departments/' + this.user.empresa).then(res => {
           if (res) {
             this.info = res
-            console.log(this.info, 'info')
           }
         })
       }
@@ -282,7 +274,6 @@ export default {
       await this.$api.get('user_consultor/' + this.user.empresa).then(res => {
         if (res) {
           this.info = res
-          console.log(this.info, 'info')
         }
       })
     }

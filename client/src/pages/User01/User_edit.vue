@@ -133,7 +133,6 @@ export default {
   },
   methods: {
     async obtener_datos () {
-      console.log(this.id, 'id')
       this.$q.loading.show()
       const v = await this.$api.get('datauser/' + this.id)
       this.$q.loading.hide()
@@ -147,12 +146,10 @@ export default {
       this.$q.loading.hide()
       if (res) {
         this.empresas = res
-        console.log(res, 'miraa')
       }
     },
 
     async perfil_img () {
-      console.log('add perfil img', this.perfilfile)
       this.$v.perfilfile.$touch()
       if (!this.$v.perfilfile.$error) {
         var formData = new FormData()
@@ -164,7 +161,6 @@ export default {
             'Content-Type': undefined
           }
         }).then((res) => {
-          console.log(res, 'respuesta')
         })
         location.reload()
       }
@@ -176,7 +172,6 @@ export default {
         await this.$api.put('datos_edit/' + this.id, this.form).then(res => {
           this.$q.loading.hide()
           if (res) {
-            console.log(res, 'asd')
             this.$q.notify({
               message: 'Informacion actualizada con exito.',
               color: 'positive'
@@ -195,7 +190,6 @@ export default {
       this.$v.repeatPassword.$touch()
       this.$v.oldpassword.$touch()
       this.$v.password.$touch()
-      console.log(this.$v.password.$error, this.$v.oldpassword.$error, this.$v.repeatPassword.$error)
       if (!this.$v.password.$error && !this.$v.oldpassword.$error && !this.$v.repeatPassword.$error) {
         const send = {
           newPassword: this.password,
@@ -205,7 +199,6 @@ export default {
         await this.$api.put('password_edit/' + this.id, send).then(res => {
           this.$q.loading.hide()
           if (res) {
-            console.log(res, 'asd')
             this.$q.notify({
               message: 'Informacion actualizada con exito.',
               color: 'positive'

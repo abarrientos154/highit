@@ -57,12 +57,10 @@ class User extends Model {
       cargo: 'string' */
     }
     if (datos.roles === 3) {
-      console.log('rol 3')
       rulesUser.departamento = 'required'
       rulesUser.area = 'required'
       rulesUser.cargo = 'required'
     } else {
-      console.log('rol 4')
       rulesUser.empresa = 'required'
     }
 

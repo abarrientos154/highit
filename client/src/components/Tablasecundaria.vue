@@ -133,7 +133,6 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          // console.log(this.user)
         }
       })
     },
@@ -154,7 +153,6 @@ export default {
       }
       if (res) {
         this.data = res
-        console.log(this.data, 'datos tabla')
       }
     },
     eliminarConfirm (id) {
@@ -172,7 +170,7 @@ export default {
       }).onOk(() => {
         this.eliminar(id)
       }).onCancel(() => {
-        console.log('>>>> Cancel')
+        // console.log('>>>> Cancel')
       }).onDismiss(() => {
         // console.log('I am triggered on both OK and Cancel')
       })

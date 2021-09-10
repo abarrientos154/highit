@@ -83,7 +83,6 @@ export default {
           this.user = res
           this.getDepartamentos()
           this.obtener_categorias()
-          console.log(this.user, 'user')
         }
       })
     },
@@ -120,7 +119,6 @@ export default {
       this.$api.get('departments/' + this.user.empresa).then(res => {
         if (res) {
           this.departamentos = res
-          console.log(this.departamentos, 'depas')
         }
       })
     },
@@ -128,7 +126,6 @@ export default {
       this.$api.get('categorias/' + this.user.empresa).then(res => {
         if (res) {
           this.lista = res
-          console.log(this.lista, 'Categorias')
         }
       })
     },
@@ -136,7 +133,6 @@ export default {
       this.$api.get('areas/' + id).then(res => {
         if (res) {
           this.areas = res
-          console.log(this.areas, 'areasss')
         }
       })
     },
@@ -144,7 +140,6 @@ export default {
       this.$api.get('cargos/' + id).then(res => {
         if (res) {
           this.cargos = res
-          console.log(this.cargos, 'cargos')
         }
       })
     }

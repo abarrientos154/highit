@@ -34,7 +34,6 @@ class PaisSeeder {
         await pais.save()
       }
     }
-    console.log('Finished Pais')
   }
 }
 

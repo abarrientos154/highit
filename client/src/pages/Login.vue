@@ -83,7 +83,6 @@ export default {
               this.$router.push('/inicio_gerente')
             }
           } else {
-            console.log('error de ususario')
             this.loading = false
             this.$q.loading.hide()
           }

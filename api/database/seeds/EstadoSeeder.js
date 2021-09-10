@@ -53,7 +53,6 @@ class EstadoSeeder {
         await estado.save()
       }
     }
-    console.log('Finished Estado')
   }
 }
 

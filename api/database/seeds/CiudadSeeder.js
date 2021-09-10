@@ -88,7 +88,6 @@ class CiudadSeeder {
         await ciudad.save()
       }
     }
-    console.log('Finished Ciudad')
   }
 }
 

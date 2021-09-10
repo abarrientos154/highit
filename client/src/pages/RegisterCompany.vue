@@ -201,7 +201,6 @@ export default {
             this.selectEstado = this.selectPais.estados.filter(v => v._id === this.form.estado_id)[0]
             this.selectCiudad = this.selectEstado.ciudades.filter(v => v._id === this.form.ciudad_id)[0]
           }
-          // console.log(this.paises)
         }
       })
     },
@@ -230,7 +229,6 @@ export default {
     },
     saveCompany () {
       this.$v.$touch()
-      // console.log(this.form)
       if (!this.$v.form.$error) {
         this.$q.loading.show({
           message: 'Guardando empresa...'
@@ -267,7 +265,6 @@ export default {
     },
     updateCompany () {
       this.$v.form.$touch()
-      // console.log(this.form)
       if (!this.$v.form.$error) {
         this.$q.loading.show({
           message: 'Actualizando empresa...'

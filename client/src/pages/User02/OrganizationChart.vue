@@ -203,7 +203,6 @@ export default {
         if (res) {
           this.user = res
           this.getDepartamentos()
-          // console.log(this.user)
         }
       })
     },

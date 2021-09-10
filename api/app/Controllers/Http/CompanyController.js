@@ -162,7 +162,6 @@ class CompanyController {
   async destroy ({ params, request, response }) {
     fs.unlink(`storage/uploads/companyFiles/${params.id}`, (err) => {
       if (err) throw err
-      // console.log(`${params.id} Eliminado por el Administrador`);
     })
     let companyDestroy = (await Company.find(params.id)).delete()
     response.send(companyDestroy)

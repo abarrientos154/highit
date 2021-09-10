@@ -11,7 +11,6 @@ export default async ({ store, Vue }) => {
   Vue.prototype.$api = axiosInstance
 
   axiosInstance.interceptors.response.use(function (response) {
-    // console.log('axiosResponse', response)
     // Todo bien con la respuesta
     if (response.config.method === 'post') {
       if (response.status === 201) {
@@ -30,9 +29,7 @@ export default async ({ store, Vue }) => {
     return response.data
   }, function (error) {
     // Error en la respuesta
-    console.log('debug', error.response)
     if (error.response === undefined) { // Si no hubo comunicación con el servidor
-      console.log('no hay conexion con el servidor', error)
       Notify.create({
         color: 'red-5',
         textColor: 'white',
@@ -71,7 +68,6 @@ export default async ({ store, Vue }) => {
         })
       }
       const data = error.response.data
-      // console.log('error.response.data.error', data)
       if (data) {
         if (data.statusCode === 403) {
           Notify.create({
@@ -93,18 +89,13 @@ export default async ({ store, Vue }) => {
         // Añadir mas mensajes segun codigos de error especificos y mostrar las notificaciones correspondientes
 
         // Notify.create(error.response.data.error.message)
-        // console.log(error.response.status);
-        // console.log(error.response.headers);
       } else if (error.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        // console.log(error.request)
       } else {
         // Something happened in setting up the request that triggered an Error
-        // console.log('Error', error.message)
       }
-      // console.log(error.config)
     }
 
     // return Promise.reject(data)
@@ -115,7 +106,6 @@ export default async ({ store, Vue }) => {
 
     store.dispatch('generals/fetchAccessToken')
     const token = (store.state.generals.HIGHIT_SESSION_INFO !== null) ? store.state.generals.HIGHIT_SESSION_INFO.token : false
-    // console.log('token', token)
     if (token) {
       if (!config.headers) { config.headers = {} }
       config.headers = {
