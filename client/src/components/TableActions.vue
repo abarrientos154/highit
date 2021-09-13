@@ -191,7 +191,6 @@ export default {
           this.data = res
         }
         await this.getDepartments()
-        console.log(this.data)
       }
     },
     eliminarConfirm (id) {

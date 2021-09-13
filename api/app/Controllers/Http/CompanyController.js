@@ -72,6 +72,10 @@ class CompanyController {
     const validation = await validate(dat, Company.fieldValidationRules())
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
+    } else if (((await Company.query().where({ $and: [{ $or: [{ email: dat.email }, { phone: dat.phone }, { name: dat.name }, { businessName: dat.businessName }, { numIdet: dat.numIdet }] }] }).fetch()).toJSON()).length) {
+      response.unprocessableEntity([{
+        message: 'Datos ya registrados en el sistema!'
+      }])
     } else {
       let body = dat
       let company = await Company.create(body)
