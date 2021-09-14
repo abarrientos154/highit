@@ -13,18 +13,19 @@
           <q-tr :props="props">
             <template v-for="item in columns">
               <q-td v-if="item.name !== 'color'" :key="item.name">
-                <div v-if="item.name === 'Action'" class="row justify-center">
-                  <q-btn v-if="editarBtn" icon="edit" size="sm" flat dense @click="editar(props.row._id)" />
-                  <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-ml-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
+                <div v-if="item.name === 'Action'" class="row justify-center no-wrap">
+                  <q-btn v-if="verBtn" icon="visibility" size="sm" class="q-mx-sm" flat dense @click="verItem(props.row)"/>
+                  <q-btn v-if="editarBtn" icon="edit" size="sm" class="q-mx-sm" flat dense @click="editar(props.row._id)" />
+                  <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-mx-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
                   <q-btn v-if="crearBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" label="Crear solicitud" @click="mostrardialogo(props.row._id, 1)" no-caps/>
                   <q-btn v-if="asignarBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" label="Asignar equipo" @click="mostrardialogo(props.row._id, 2)" no-caps/>
                 </div>
                 <div v-else-if="item.name === 'Profile'" class="row justify-center">
                   <q-avatar>
-                    <q-img :src="baseu + props.row._id" class="full-height"/>
+                    <q-img :src="baseu + `${route === 'companys' ? 'company_img/' : 'perfil_img/'}` + props.row._id" class="full-height"/>
                   </q-avatar>
                 </div>
-                <div v-else-if="item.name === 'departamento' || item.name === 'consultor_id'" :class="item.text ? `row justify-${item.text}` : ''">{{info.length ? info.filter(v => v._id ===  props.row[item.name])[0].name : ''}}</div>
+                <div v-else-if="item.name === 'departamento' || item.name === 'consultor_id' || item.name === 'typeContract'" :class="item.text ? `row justify-${item.text}` : ''">{{info.length && item.name === 'typeContract' ? info.filter(v => v._id ===  props.row[item.name])[0].contrato : info.length ? info.filter(v => v._id ===  props.row[item.name])[0].name : ''}}</div>
                 <div v-else :class="item.text ? `row justify-${item.text}` : ''"> {{ props.row[item.name] }} </div>
               </q-td>
               <q-td v-else :key="item.name">
@@ -53,18 +54,75 @@
       <q-btn fab icon="add" color="primary" @click="$router.push($route.path + '/form')" />
     </q-page-sticky>
     <q-dialog v-model="showModalEditar">
-      <q-card>
+      <q-card v-if="edit">
         <q-card-section>
-        <div class="row">
-         <div class="text-h6">Modifica el contrato</div>
-         <q-space />
-          <q-btn color="red" icon="close" flat round dense v-close-popup />
-        </div>
+          <div class="row">
+            <div class="text-h6">Modifica el contrato</div>
+            <q-space />
+            <q-btn color="red" icon="close" flat round dense v-close-popup />
+          </div>
           <q-input v-model="iEditContrato" outlined dense class="q-mt-sm" style="width: 300px" />
         </q-card-section>
         <q-card-actions align="center">
           <q-btn color="blue" icon="edit" label="Modificar" push @click="modificar_contrato()" v-close-popup />
         </q-card-actions>
+      </q-card>
+
+      <q-card v-else class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
+        <div class="q-pa-lg full-width">
+          <div class="column items-center">
+            <q-avatar size="170px">
+              <q-img :src="baseu + `${route === 'companys' ? 'company_img/' : 'perfil_img/'}` + ver._id" class="full-height"/>
+            </q-avatar>
+            <div class="q-py-md text-center">
+              <div class="text-h5 text-bold">{{route === 'companys' ? ver.name : ver.name + ' ' + ver.last_name}}</div>
+              <div class="text-h6 text-grey-7">{{ver.email}}</div>
+              <div class="text-bold text-grey-7">{{ver.phone}}</div>
+            </div>
+          </div>
+          <div class="q-px-sm">
+            <div class="row q-mb-sm" v-if="route === 'companys'">
+              <div class="col">
+                <div class="text-bold text-grey-7">Tipo de contrato</div>
+                <div class="text-grey-7">{{ver.contrato}}</div>
+              </div>
+              <div class="col">
+                <div class="text-bold text-grey-7">Inicio y termino de contrato:</div>
+                <div class="text-grey-7">{{ver.dateBegin}}  {{ver.dateEnd}}</div>
+              </div>
+            </div>
+            <div class="row q-mb-sm" v-if="route === 'companys'">
+              <div class="col">
+                <div class="text-bold text-grey-7">Pais</div>
+                <div class="text-grey-7">{{ver.pais}}</div>
+              </div>
+              <div class="col">
+                <div class="text-bold text-grey-7">Estado</div>
+                <div class="text-grey-7">{{ver.estado}}</div>
+              </div>
+            </div>
+            <div class="row q-mb-sm" v-if="route === 'companys'">
+              <div class="col">
+                <div class="text-bold text-grey-7">Ciudad</div>
+                <div class="text-grey-7">{{ver.ciudad}}</div>
+              </div>
+              <div class="col">
+                <div class="text-bold text-grey-7">Direccion</div>
+                <div class="text-grey-7">{{ver.direction}}</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="text-bold text-grey-7">{{route === 'companys' ? 'Codigo postal' : 'Tipo de usuario'}}</div>
+                <div class="text-grey-7">{{route === 'companys' ? ver.postalCode : rol === 2 ? ver.tipo_usuario : 'Highit'}}</div>
+              </div>
+              <div class="col">
+                <div class="text-bold text-grey-7">Nº de identificaion</div>
+                <div class="text-grey-7">{{route === 'companys' ? ver.numIdet : ver.Dni}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </q-card>
     </q-dialog>
   </q-card>
@@ -105,6 +163,10 @@ export default {
       type: Boolean,
       default: false
     },
+    verBtn: {
+      type: Boolean,
+      default: false
+    },
     editarBtn: {
       type: Boolean,
       default: true
@@ -122,9 +184,13 @@ export default {
     return {
       baseu: '',
       user: {},
+      rol: null,
       data: [],
       info: [],
+      ver: {},
+      paises: [],
       showModalEditar: false,
+      edit: false,
       iEditContrato: '',
       select: null,
       options: [],
@@ -163,13 +229,27 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
+          this.rol = res.roles[0]
+          this.baseu = env.apiUrl
           this.getEmpresas()
-          this.baseu = env.apiUrl + 'company_img/'
+          this.getPaises()
         }
       })
     },
+    verItem (itm) {
+      this.edit = false
+      this.ver = { ...itm }
+      if (this.route === 'companys') {
+        this.ver.contrato = this.info.filter(v => v._id === itm.typeContract)[0].contrato
+        this.ver.pais = this.paises.filter(v => v._id === itm.pais_id)[0].name
+        this.ver.estado = this.paises.filter(v => v._id === itm.pais_id)[0].estados.filter(v => v._id === itm.estado_id)[0].name
+        this.ver.ciudad = this.paises.filter(v => v._id === itm.pais_id)[0].estados.filter(v => v._id === itm.estado_id)[0].ciudades.filter(v => v._id === itm.ciudad_id)[0].name
+      }
+      this.showModalEditar = true
+    },
     editar (id) {
       if (this.route === 'contratos' || this.route === `contratos_by_company/${this.user.empresa}`) {
+        this.edit = true
         this.showModalEditar = true
         this.id = id
       } else {
@@ -189,8 +269,8 @@ export default {
           await this.getConsultores()
         } else {
           this.data = res
+          await this.getInfo()
         }
-        await this.getDepartments()
       }
     },
     eliminarConfirm (id) {
@@ -261,9 +341,28 @@ export default {
       }
       // const todos = this.options.unshift({ name: 'Todos', _id: 'todos' })
     },
-    async getDepartments () {
+    getPaises () {
+      this.$api.get('paises').then(res => {
+        if (res) {
+          this.paises = res
+        }
+      })
+    },
+    async getInfo () {
       if (this.user.roles[0] === 5) {
         await this.$api.get('departments/' + this.user.empresa).then(res => {
+          if (res) {
+            this.info = res
+          }
+        })
+      } else if (this.user.roles[0] === 1) {
+        await this.$api.get('contratos').then(res => {
+          if (res) {
+            this.info = res
+          }
+        })
+      } else if (this.user.roles[0] === 2) {
+        await this.$api.get('contratos_by_company/' + this.user.empresa).then(res => {
           if (res) {
             this.info = res
           }
@@ -280,6 +379,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>

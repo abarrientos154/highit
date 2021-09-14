@@ -64,6 +64,7 @@ addPrefixToGroup(
     Route.get("user_cliente/:id", "UserController.userCliente")
 
     Route.get("contratos", "ContratoController.index")
+    Route.get("contratos/:id", "ContratoController.contratosByCompany")
     Route.get("contratos_by_company/:id", "ContratoController.contratosByCompany")
     Route.post("contrato", "ContratoController.store")
     Route.delete("contratos/:id", "ContratoController.destroy")

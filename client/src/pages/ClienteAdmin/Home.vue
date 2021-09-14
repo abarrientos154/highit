@@ -536,7 +536,7 @@ export default {
       })
     },
     getSltUser () {
-      for (var i = 0; i < 6; i++) {
+      for (let i = 0; i < 6; i++) {
         this.$api.put('solicitudes_cliente/' + this.user._id, i === 0 ? { status: i } : i === 1 ? { status: i } : i === 2 ? { status: i } : i === 3 ? { status: i } : i === 4 ? { status: i } : i === 5 ? { status: i } : {}).then(res => {
           if (res) {
             if (res.length && res[0].status === 0) {
@@ -591,33 +591,30 @@ export default {
     verMas () {
       this.ver = !this.ver
       if (this.ver) {
-        this.history = this.sltHistory
+        this.history = this.sltEnd
       } else {
-        this.history = this.sltHistory.slice(0, 6)
+        this.history = this.sltEnd.slice(0, 6)
       }
     },
     saveHito () {
       this.$v.form.$touch()
       this.form.status = 5
       if (!this.$v.form.$error) {
-        const hoy = new Date()
-        this.form.date = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear()
-        this.form.time = hoy.getHours() + ':' + hoy.getMinutes()
+        this.form.date = moment().format('YYYY-MM-DD')
+        this.form.time = moment().format('HH:mm')
         this.form.company_id = this.company.company_id
         this.form.solicitud_id = this.solicitud._id
         this.$api.post('register_hito', this.form).then(res => {
           if (res) {
-            const begin = moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin)
-            const end = moment(this.form.date + ' ' + hoy.getHours() + ':' + hoy.getMinutes())
-            var horas = end.diff(begin, 'hours')
-            var minutos = end.diff(begin, 'minutes')
-            for (var j = 0; j < horas; j++) {
+            const horas = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'hours')
+            let minutos = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'minutes')
+            for (let j = 0; j < horas; j++) {
               minutos = minutos - 60
             }
-            var fin = {
+            const fin = {
               status: this.form.status,
               dateEnd: this.form.date,
-              timeEnd: hoy.getHours() + ':' + hoy.getMinutes(),
+              timeEnd: this.form.time,
               duration: horas + ':' + minutos
             }
             this.$api.put('status_solicitud/' + this.solicitud._id, fin).then(res => {

@@ -231,7 +231,7 @@ export default {
         if (res) {
           if (this.selecD !== null) {
             this.cargos = []
-            for (var i of this.areas) {
+            for (const i of this.areas) {
               if (res.filter(v => v.area_id === i._id).length) {
                 this.cargos = res.filter(v => v.area_id === i._id)
               }

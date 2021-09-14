@@ -86,7 +86,7 @@
                         </q-item-section>
                         <q-item-section>
                           <q-item-label v-html="scope.opt.nombre"/>
-                          <q-item-label class="text-grey-7">{{scope.opt.tiempo}}Hrs</q-item-label>
+                          <q-item-label class="text-grey-7">{{scope.opt.tiempo}}Min</q-item-label>
                         </q-item-section>
                       </q-item>
                     </template>
@@ -423,7 +423,7 @@ export default {
         this.form.company_id = this.user.company
         this.form.expiration = false
         this.form.status = 0
-        this.form.date = moment().format('DD/MM/YYYY')
+        this.form.date = moment().format('YYYY-MM-DD')
         this.form.time = moment().format('HH:mm')
         this.$api.post('register_solicitud', this.form).then(res => {
           if (res) {

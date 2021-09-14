@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla titulo="Listado de Usuarios" :columns="column" route="user2" :btnNew="true" :selectBtn="true" />
+    <Tabla titulo="Listado de Usuarios" :columns="column" route="user2" :btnNew="true" :verBtn="true" :selectBtn="true" />
   </div>
 </template>
 <script>
@@ -12,6 +12,7 @@ export default {
       lista: {},
       showModalEliminar: false,
       column: [
+        { name: 'Profile', label: 'Perfil', field: 'Profile', filter_type: 'false', align: 'center' },
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
         { name: 'last_name', field: 'last_name', label: 'Apellido', align: 'left' },
         { name: 'tipo_usuario', field: 'tipo_usuario', label: 'Tipo de usuario', align: 'left' },

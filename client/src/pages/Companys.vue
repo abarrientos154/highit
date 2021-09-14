@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <Tabla v-if="listado" titulo="Listado de empresas" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : null" :btnNew="true"/>
+      <Tabla v-if="listado" titulo="Listado de empresas" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : null" :btnNew="true" :verBtn="true"/>
       <!-- <q-markup-table bordered>
         <thead>
           <tr>
@@ -95,6 +95,7 @@ export default {
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
         { name: 'email', field: 'email', label: 'Correo', align: 'left' },
         { name: 'phone', field: 'phone', label: 'Telefono', align: 'left' },
+        { name: 'typeContract', field: 'typeContract', label: 'Contrato', align: 'left' },
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
       ]
     }

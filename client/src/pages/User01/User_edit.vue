@@ -148,12 +148,11 @@ export default {
         this.empresas = res
       }
     },
-
     async perfil_img () {
       this.$v.perfilfile.$touch()
       if (!this.$v.perfilfile.$error) {
-        var formData = new FormData()
-        var files = []
+        const formData = new FormData()
+        const files = []
         files[0] = this.perfilfile
         formData.append('files', files[0])
         await this.$api.post('perfil_imagen/' + this.id, formData, {

@@ -511,7 +511,7 @@ export default {
       })
     },
     getSlt () {
-      for (var i = 0; i < 6; i++) {
+      for (let i = 0; i < 6; i++) {
         this.$api.post('solicitudes_by_consultor', i === 0 ? { status: i } : i === 1 ? { status: i } : i === 2 ? { status: i } : i === 3 ? { status: i } : i === 4 ? { status: i } : i === 5 ? { status: i } : {}).then(res => {
           if (res) {
             if (res.length && res[0].status === 0) {
@@ -576,9 +576,8 @@ export default {
         this.estado = true
       }
       if (!this.$v.form.$error && this.estado) {
-        const hoy = new Date()
-        this.form.date = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear()
-        this.form.time = hoy.getHours() + ':' + hoy.getMinutes()
+        this.form.date = moment().format('YYYY-MM-DD')
+        this.form.time = moment().format('HH:mm')
         this.form.company_id = this.user.company
         this.form.solicitud_id = this.solicitud._id
         this.$api.post('register_hito', this.form).then(res => {
@@ -596,11 +595,10 @@ export default {
       }
     },
     statusRequest (idx) {
-      const hoy = new Date()
-      var status = { status: idx, consultor_id: this.user._id }
+      const status = { status: idx, consultor_id: this.user._id }
       if (this.solicitud.status === 0) {
-        status.dateBegin = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear()
-        status.timeBegin = hoy.getHours() + ':' + hoy.getMinutes()
+        status.dateBegin = moment().format('YYYY-MM-DD')
+        status.timeBegin = moment().format('HH:mm')
       }
       this.$api.put('status_solicitud/' + this.solicitud._id, status).then(res => {
         if (res) {
@@ -624,9 +622,9 @@ export default {
     verMas () {
       this.ver = !this.ver
       if (this.ver) {
-        this.solicitudes = this.sltAll
+        this.history = this.sltEnd
       } else {
-        this.solicitudes = this.sltAll.slice(0, 2)
+        this.history = this.sltEnd.slice(0, 6)
       }
     }
   }

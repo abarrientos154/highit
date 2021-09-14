@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla titulo="Listado de Usuarios" :columns="column" route="user" :btnNew="true" :selectBtn="true" />
+    <Tabla titulo="Listado de Usuarios" :columns="column" route="user" :btnNew="true" :verBtn="true" :selectBtn="true" />
     <!--- <div class="q-pa-md column items-center justify-center">
       <div class="q-mt-md text-h6 text-grey">Listado de usuarios</div>
       <q-btn color="white" text-color="black" label="Standard" @click="$router.push('/registros')"/>
@@ -45,6 +45,7 @@ export default {
       lista: {},
       showModalEliminar: false,
       column: [
+        { name: 'Profile', label: 'Perfil', field: 'Profile', filter_type: 'false', align: 'center' },
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
         { name: 'last_name', field: 'last_name', label: 'Apellido', align: 'left' },
         { name: 'email', field: 'email', label: 'Correo', align: 'left' },

@@ -186,7 +186,7 @@ export default {
       this.datos.cantidad = this.datos.actividades.length
     },
     validarFecha (filtro) {
-      var actividades = []
+      const actividades = []
       if (filtro === 1) {
         for (const i of this.datos.actividades) {
           for (const j of this.categorias.filter(v => v.departamento === this.depart)) {
@@ -205,7 +205,7 @@ export default {
           this.val = moment(moment().format('YYYY-MM-DD')).isSameOrAfter(this.fecha)
         } else if (this.type === 2) {
           this.semana = this.fecha.from + ' ... ' + this.fecha.to
-          var dias = moment(this.fecha.to).diff(this.fecha.from, 'days') + 1
+          const dias = moment(this.fecha.to).diff(this.fecha.from, 'days') + 1
           if (dias <= 7) {
             this.val = moment(moment().format('YYYY-MM-DD')).isSameOrAfter(this.fecha.to)
           } else { this.val = false }

@@ -4,7 +4,7 @@
 
     <q-dialog v-model="dialogo">
       <q-card class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
-        <div class="column items-end full-width" v-if="rol === 4">
+        <div class="column items-end full-width">
           <div class="bg-red q-mr-xl" style="width: 60px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
         </div>
         <div class="q-mb-lg q-mt-md">
