@@ -4,7 +4,7 @@
       <div class="text-h6 text-bold" style="font-size:30px">
         {{titulo}}
       </div>
-      <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" :options="options" label="Empresas" map-options emit-value option-label="name" option-value="_id"/>
+      <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" :options="options" :label="route === 'sla' ? 'Contratos' : 'Empresas'" map-options emit-value :option-label="route === 'sla' ? 'contrato' : 'name'" option-value="_id"/>
     </q-card-section>
     <q-card-section class="q-pa-none">
       <q-grid :data="filterData" :columns="columns" :columns_filter="true">
@@ -12,7 +12,7 @@
 
           <q-tr :props="props">
             <template v-for="item in columns">
-              <q-td v-if="item.name !== 'color'" :key="item.name">
+              <q-td :key="item.name">
                 <div v-if="item.name === 'Action'" class="row justify-center no-wrap">
                   <q-btn v-if="verBtn" icon="visibility" size="sm" class="q-mx-sm" flat dense @click="verItem(props.row)"/>
                   <q-btn v-if="editarBtn" icon="edit" size="sm" class="q-mx-sm" flat dense @click="editar(props.row._id)" />
@@ -26,10 +26,10 @@
                   </q-avatar>
                 </div>
                 <div v-else-if="item.name === 'departamento' || item.name === 'consultor_id' || item.name === 'typeContract'" :class="item.text ? `row justify-${item.text}` : ''">{{info.length && item.name === 'typeContract' ? info.filter(v => v._id ===  props.row[item.name])[0].contrato : info.length ? info.filter(v => v._id ===  props.row[item.name])[0].name : ''}}</div>
-                <div v-else :class="item.text ? `row justify-${item.text}` : ''"> {{ props.row[item.name] }} </div>
-              </q-td>
-              <q-td v-else :key="item.name">
-                <q-avatar :color="props.row.color2" size="30px"/>
+                <div v-else :class="item.text ? `row justify-${item.text} items-center` : ''">
+                  <q-avatar v-if="props.row.color2 && item.name === 'nombre'" class="q-mr-sm" :color="props.row.color2" size="30px"/>
+                  {{ props.row[item.name] }}
+                </div>
               </q-td>
             </template>
           </q-tr>
@@ -61,7 +61,7 @@
             <q-space />
             <q-btn color="red" icon="close" flat round dense v-close-popup />
           </div>
-          <q-input v-model="iEditContrato" outlined dense class="q-mt-sm" style="width: 300px" />
+          <q-input v-model="iEditContrato" outlined dense class="q-mt-sm" style="width: 300px" error-message="Requerido" :error="$v.iEditContrato.$error" @blur="$v.iEditContrato.$touch()"/>
         </q-card-section>
         <q-card-actions align="center">
           <q-btn color="blue" icon="edit" label="Modificar" push @click="modificar_contrato()" v-close-popup />
@@ -129,6 +129,7 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
 import env from '../env'
 export default {
   props: {
@@ -198,6 +199,9 @@ export default {
       id: ''
     }
   },
+  validations: {
+    iEditContrato: { required }
+  },
   watch: {
     async filter (val) {
       if (!this.filter) {
@@ -212,6 +216,8 @@ export default {
       if (this.select) {
         if (this.select === 'todos') {
           return this.data
+        } else if (this.route === 'sla') {
+          return this.data.filter(v => v.contrato === this.select)
         } else {
           return this.data.filter(v => v.empresa === this.select)
         }
@@ -231,7 +237,7 @@ export default {
           this.user = res
           this.rol = res.roles[0]
           this.baseu = env.apiUrl
-          this.getEmpresas()
+          this.getOptions()
           this.getPaises()
         }
       })
@@ -252,6 +258,7 @@ export default {
         this.edit = true
         this.showModalEditar = true
         this.id = id
+        this.iEditContrato = this.data.filter(v => v._id === id)[0].contrato
       } else {
         this.$router.push(this.$route.path + '/form/' + id)
       }
@@ -306,17 +313,26 @@ export default {
       })
     },
     async modificar_contrato () {
-      await this.$api.put('contrato/' + this.id, { contrato: this.iEditContrato }).then(res => {
-        if (res) {
-          this.$q.notify({
-            message: 'Contrato Modificada con exito',
-            color: 'positive'
-          })
-          this.iEditContrato = ''
-          this.getRecord()
-          this.$emit('actualizarPadre')
-        }
-      })
+      this.$v.$touch()
+      const val = this.data.filter(v => v.contrato === this.iEditContrato && v._id !== this.id)
+      if (!this.$v.iEditContrato.$error && !val.length) {
+        await this.$api.put('contrato/' + this.id, { contrato: this.iEditContrato }).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: 'Contrato Modificada con exito',
+              color: 'positive'
+            })
+            this.iEditContrato = ''
+            this.getRecord()
+            this.$emit('actualizarPadre')
+          }
+        })
+      } else {
+        this.$q.notify({
+          message: `${val.length ? 'El nombre de este contrato ya esta registrado' : 'Faltan campos por llenar'}`,
+          color: 'negative'
+        })
+      }
     },
     mostrardialogo (id, idx) {
       if (idx === 1) {
@@ -325,8 +341,20 @@ export default {
         this.$emit('asignarEquipo', id)
       }
     },
-    async getEmpresas () {
-      if (this.user.roles[0] === 1) {
+    async getOptions () {
+      if (this.route === 'sla' && this.user.roles[0] === 1) {
+        await this.$api.get('contratos').then(res => {
+          if (res) {
+            this.options = res
+          }
+        })
+      } else if (this.route === 'sla' && this.user.roles[0] === 2) {
+        await this.$api.get('contratos/' + this.user.empresa).then(res => {
+          if (res) {
+            this.options = res
+          }
+        })
+      } else if (this.user.roles[0] === 1) {
         await this.$api.get('companys').then(res => {
           if (res) {
             this.options = res

@@ -167,12 +167,12 @@ export default {
         },
         {
           icon: 'person',
-          label: 'Crear usuarios',
+          label: 'Usuarios',
           ruta: '/usuarios'
         },
         {
           icon: 'location_city',
-          label: 'Crear empresa',
+          label: 'Empresas',
           ruta: '/empresas'
         },
         {
@@ -194,12 +194,12 @@ export default {
         },
         {
           icon: 'person',
-          label: 'Crear usuarios',
+          label: 'Usuarios',
           ruta: '/usuarios2'
         },
         {
           icon: 'location_city',
-          label: 'Crear empresa',
+          label: 'Empresas',
           ruta: '/empresas'
         },
         {

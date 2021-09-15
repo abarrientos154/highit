@@ -56,23 +56,8 @@
           <div class="q-pa-md column items-center justify-center">
             <q-btn color="primary" text-color="white" label="Crear nueva prioridad" @click="guardar_SLA()" style="width:40%" />
           </div>
-          <!-- <div class="q-mt-md text-h5 text-bold">Listados de SLA´s</div> -->
           <q-card style="width:100%">
-            <Tabla titulo="Listado de prioridades creadas" ref="latabla2" :columns="column2" route="sla" :editarBtn="false"
-              :btnNew="false" :filter="filterBy"
-            />
-              <q-list bordered separator>
-                <q-item v-for="(item, index) in lista2" :key="index" class="text-grey text-bold">
-                  <div class="row justify-center items-center" style="width: 100%" >
-                    <div class="row">
-                      <q-btn flat color="grey" icon="delete" round dense @click="showModalEliminar2 = true, id_sla = item._id"/>
-                    </div>
-                    <q-item-section> {{item.nombre}}</q-item-section>
-                    <q-item-section>{{item.tiempo}} {{"Horas"}}</q-item-section>
-                    <div :class="item.color2 === 'blue' ? 'bg-blue' : item.color2 === 'red' ? 'bg-red' : 'bg-green'" style="width:20px; height:20px;border-radius:100%"></div>
-                  </div>
-                </q-item>
-              </q-list>
+            <Tabla titulo="Listado de prioridades creadas" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :selectBtn="true" :btnNew="false"/>
           </q-card>
       </div>
     </div>
@@ -118,9 +103,8 @@ export default {
       ],
       column2: [
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' },
-        { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'center', text: 'center' },
-        { name: 'color', field: 'color', label: 'Color', align: 'left' },
-        { name: 'tiempo', field: 'tiempo', label: 'Tiempo', align: 'right', text: 'end' }
+        { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'center' },
+        { name: 'tiempo', field: 'tiempo', label: 'Tiempo', align: 'right', filter_type: 'false', text: 'end' }
       ],
       lista: [],
       lista2: [],
@@ -252,16 +236,9 @@ export default {
         })
       }
     },
-    mostrarBtn () {
-      if (this.selecBoton === '') {
-        return true
-      } else {
-        return false
-      }
-    },
     Botonselec (btn, text) {
       this.form2.contrato = btn._id
-      this.filterBy = 'sla_filter?contrato=' + btn._id
+      // this.filterBy = 'sla_filter?contrato=' + btn._id
       if (text === 'cat') {
         this.selecBoton = btn
       }
