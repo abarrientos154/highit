@@ -34,7 +34,7 @@
     </div>
 
     <q-dialog v-model="gtn">
-      <q-card class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
+      <q-card class="column items-center no-wrap" style="width: 600px; border-radius: 10px;">
         <div style="width: 80%">
           <div class="q-my-lg">
             <q-item>
@@ -47,7 +47,31 @@
                 <q-item-label class="text-h3 text-grey-7">{{datos.cantidad}}</q-item-label>
               </q-item-section>
             </q-item>
-            <div class="q-mb-md">
+            <div v-if="datos.id === 8">
+              <div class="q-mb-md">
+                <div class="text-bold text-subtitle1 q-mb-sm">Selecciona un Consultor</div>
+                <q-select dense filled v-model="consultor" :options="consultores" map-options option-label="name" emit-value option-value="_id" @input="validarFecha(3)">
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                      <q-item-section avatar>
+                        <q-avatar size="35px">
+                          <q-img :src="baseu + scope.opt._id" class="full-height"/>
+                        </q-avatar>
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label v-html="scope.opt.name"/>
+                        <q-item-label class="text-grey-7">{{scope.opt.email}}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </div>
+              <div class="q-mb-md">
+                <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un estado de solicitudes</div>
+                <q-select dense filled v-model="status" :options="datos.status" map-options option-label="name" emit-value option-value="id" @input="validarFecha(2)"/>
+              </div>
+            </div>
+            <div v-else class="q-mb-md">
               <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un departamento</div>
               <q-select dense filled v-model="depart" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="validarFecha(1)"/>
             </div>
@@ -66,7 +90,7 @@
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date v-model="fecha" mask="YYYY-MM-DD" @input="validarFecha(2)"/>
+                      <q-date v-model="fecha" mask="YYYY-MM-DD" @input="validarFecha()"/>
                     </q-popup-proxy>
                   </q-icon>
                 </template>
@@ -78,7 +102,7 @@
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date v-model="fecha" mask="YYYY-MM-DD" range @input="validarFecha(2)"/>
+                      <q-date v-model="fecha" mask="YYYY-MM-DD" range @input="validarFecha()"/>
                     </q-popup-proxy>
                   </q-icon>
                 </template>
@@ -90,7 +114,7 @@
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date v-model="fecha" :mask="type == 4 ? 'YYYY' : 'MM'" minimal emit-immediately :default-view="type == 4 ? 'Years' : 'Months'" @input="validarFecha(2)"/>
+                      <q-date v-model="fecha" :mask="type == 4 ? 'YYYY' : 'MM'" minimal emit-immediately :default-view="type == 4 ? 'Years' : 'Months'" @input="validarFecha()"/>
                     </q-popup-proxy>
                   </q-icon>
                 </template>
@@ -105,6 +129,7 @@
 
 <script>
 import * as moment from 'moment'
+import env from '../../env'
 export default {
   data () {
     return {
@@ -119,7 +144,10 @@ export default {
       gestion: [],
       categorias: [],
       departamentos: [],
-      depart: ''
+      consultores: [],
+      depart: null,
+      status: null,
+      consultor: null
     }
   },
   mounted () {
@@ -133,6 +161,7 @@ export default {
           this.getGestion()
           this.getCategorias()
           this.getDepartamentos()
+          this.getConsultores()
         }
       })
     },
@@ -150,7 +179,17 @@ export default {
       this.$api.get('solicitudes_company/' + this.user.empresa).then(res => {
         if (res) {
           for (const i of this.gestion) {
-            i.actividades = res.filter(v => v.status === i.status)
+            i.actividades = []
+            if (i.id >= 7) {
+              for (const j of i.status) {
+                const actividades = res.filter(v => v.status === j.id)
+                for (const v of actividades) {
+                  i.actividades.push(v)
+                }
+              }
+            } else {
+              i.actividades = res.filter(v => v.status === i.status)
+            }
             i.aux = i.actividades
             i.cantidad = i.actividades.length
           }
@@ -172,12 +211,22 @@ export default {
         }
       })
     },
+    getConsultores () {
+      this.$api.get('user_consultor/' + this.user.empresa).then(res => {
+        if (res) {
+          this.consultores = res
+          this.baseu = env.apiUrl + 'perfil_img/'
+        }
+      })
+    },
     gestionar (itm) {
       this.datos = { ...itm }
       this.type = 1
       this.semana = ''
-      this.depart = ''
+      this.depart = null
       this.fecha = null
+      this.consultor = null
+      this.status = null
       this.gtn = !this.gtn
     },
     selecType () {
@@ -199,6 +248,16 @@ export default {
         this.datos.cantidad = actividades.length
         this.semana = ''
         this.fecha = null
+      } else if (filtro === 2) {
+        this.datos.aux = this.datos.actividades.filter(v => this.consultor === null ? v.status === this.status : v.status === this.status && v.consultor_id === this.consultor)
+        this.datos.cantidad = this.datos.actividades.filter(v => this.consultor === null ? v.status === this.status : v.status === this.status && v.consultor_id === this.consultor).length
+        this.fecha = null
+        this.semana = ''
+      } else if (filtro === 3) {
+        this.datos.aux = this.datos.actividades.filter(v => this.status === null ? v.consultor_id === this.consultor : v.consultor_id === this.consultor && v.status === this.status)
+        this.datos.cantidad = this.datos.actividades.filter(v => this.status === null ? v.consultor_id === this.consultor : v.consultor_id === this.consultor && v.status === this.status).length
+        this.fecha = null
+        this.semana = ''
       } else {
         this.$refs.qDateProxy.hide()
         if (this.type === 1) {

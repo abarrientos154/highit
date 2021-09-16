@@ -18,7 +18,7 @@ const manageData = [
     id: 1,
     status: 0,
     icon: 'update',
-    name: 'Solicitudes sin iniciar'
+    name: 'Solicitudes sin Consultor asignado'
   },
   {
     id: 2,
@@ -49,6 +49,18 @@ const manageData = [
     status: 5,
     icon: 'done_all',
     name: 'Solicitudes finalizadas'
+  },
+  {
+    id: 7,
+    status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }],
+    icon: 'assignment',
+    name: 'Solicitudes abiertas'
+  },
+  {
+    id: 8,
+    status: [{ id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }],
+    icon: 'folder_shared',
+    name: 'Total de solicitudes por Consultor'
   }
 ]
 class ManageSeeder {
