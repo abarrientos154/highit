@@ -24,12 +24,21 @@
           <q-input dense outlined filled v-model="form.businessName" placeholder="Highit Service SpA" error-message="Este campo es requerido" :error="$v.form.businessName.$error" @blur="$v.form.businessName.$touch()"/>
         </div>
         <div>
-          <div>Numero identificador</div>
+          <div>Numero de documento</div>
           <q-input dense outlined filled v-model="form.numIdet" placeholder="J30583h375" error-message="Este campo es requerido" :error="$v.form.numIdet.$error" @blur="$v.form.numIdet.$touch()"/>
         </div>
         <div>
           <div>Tipo de contrato</div>
-          <q-select outlined dense filled v-model="form.typeContract" :options="contratos" option-label="contrato" option-value="_id" map-options emit-value error-message="Este campo es requerido" :error="$v.form.typeContract.$error" @blur="$v.form.typeContract.$touch()"/>
+          <q-select dense outlined filled v-model="form.typeContract" use-input behavior="menu" input-debounce="0" :options="contratos" map-options option-label="contrato" emit-value option-value="_id" @filter="filterFn" error-message="Este campo es requerido" :error="$v.form.typeContract.$error" @blur="$v.form.typeContract.$touch()">
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-grey">
+                  No results
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+          <!-- <q-select outlined dense filled v-model="form.typeContract" :options="contratos" option-label="contrato" option-value="_id" map-options emit-value error-message="Este campo es requerido" :error="$v.form.typeContract.$error" @blur="$v.form.typeContract.$touch()"/> -->
         </div>
         <div>
           <div>Fecha inicio de contrato</div>
@@ -60,7 +69,7 @@
     <div class="q-px-md">
       <div class="q-mb-sm">
         <div class="text-h6 text-bold">Infomacion demografica</div>
-        <div class="text-grey-8">Informacion oficial de la empresa</div>
+        <div class="text-grey-8">Dirección de la empresa</div>
       </div>
       <q-list>
         <div>
@@ -88,7 +97,7 @@
     <div class="q-px-md">
       <div class="q-mb-md">
         <div class="text-h6 text-bold">Infomaciones varias</div>
-        <div class="text-grey-8">Informacion oficial de la empresa</div>
+        <div class="text-grey-8">Vias de contacto con la empresa</div>
       </div>
       <q-list>
         <div>
@@ -143,7 +152,8 @@ export default {
       selectPais: null,
       selectEstado: null,
       selectCiudad: null,
-      contratos: []
+      contratos: [],
+      contratos2: []
     }
   },
   validations: {
@@ -209,15 +219,29 @@ export default {
         this.$api.get('contratos').then(res => {
           if (res) {
             this.contratos = res
+            this.contratos2 = [...this.contratos]
           }
         })
       } else {
         this.$api.get('contratos_by_company/' + this.user.empresa).then(res => {
           if (res) {
             this.contratos = res
+            this.contratos2 = [...this.contratos]
           }
         })
       }
+    },
+    filterFn (val, update) {
+      if (val === '') {
+        update(() => {
+          this.contratos = this.contratos2
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.contratos = this.contratos2.filter(v => v.contrato.toLowerCase().indexOf(needle) > -1)
+      })
     },
     perfil_img () {
       this.PImg = this.img
@@ -229,7 +253,7 @@ export default {
     },
     saveCompany () {
       this.$v.$touch()
-      if (!this.$v.form.$error) {
+      if (!this.$v.PImg.$error && !this.$v.form.$error) {
         this.$q.loading.show({
           message: 'Guardando empresa...'
         })
@@ -264,7 +288,7 @@ export default {
       }
     },
     updateCompany () {
-      this.$v.form.$touch()
+      this.$v.$touch()
       if (!this.$v.form.$error) {
         this.$q.loading.show({
           message: 'Actualizando empresa...'

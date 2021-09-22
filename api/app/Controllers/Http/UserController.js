@@ -270,9 +270,9 @@ class UserController {
     const validation = await validate(dat, User.fieldejemplo())
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
-    } else if (((await User.where({email: dat.email}).fetch()).toJSON()).length) {
+    } else if (((await User.where({ $and: [{ $or: [{ email: dat.email }, { phone: dat.phone }, { Dni: dat.Dni }] }] }).fetch()).toJSON()).length) {
       response.unprocessableEntity([{
-        message: 'Correo ya registrado en el sistema!'
+        message: 'Datos ya registrados en el sistema!'
       }])
     } else {
       let body = dat
@@ -302,9 +302,9 @@ class UserController {
     const validation = await validate(dat, User.fieldejemplo2(dat))
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
-    } else if (((await User.where({email: dat.email}).fetch()).toJSON()).length) {
+    } else if (((await User.where({ $and: [{ $or: [{ email: dat.email }, { phone: dat.phone }, { Dni: dat.Dni }] }] }).fetch()).toJSON()).length) {
       response.unprocessableEntity([{
-        message: 'Correo ya registrado en el sistema!'
+        message: 'Datos ya registrados en el sistema!'
       }])
     } else {
       let body = dat
