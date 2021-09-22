@@ -4,7 +4,16 @@
       <div class="text-h6 text-bold" style="font-size:30px">
         {{titulo}}
       </div>
-      <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" :options="options" :label="route === 'sla' ? 'Contratos' : 'Empresas'" map-options emit-value :option-label="route === 'sla' ? 'contrato' : 'name'" option-value="_id"/>
+      <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" use-input behavior="menu" input-debounce="0" :label="route === 'sla' ? 'Contratos' : 'Empresas'" :options="options" map-options :option-label="route === 'sla' ? 'contrato' : 'name'" emit-value option-value="_id" @input="flt = true" @filter="filterFn">
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey">
+              No results
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+      <!-- <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" :options="options" :label="route === 'sla' ? 'Contratos' : 'Empresas'" map-options emit-value :option-label="route === 'sla' ? 'contrato' : 'name'" option-value="_id"/> -->
     </q-card-section>
     <q-card-section class="q-pa-none">
       <q-grid :data="filterData" :columns="columns" :columns_filter="true">
@@ -12,7 +21,7 @@
 
           <q-tr :props="props">
             <template v-for="item in columns">
-              <q-td :key="item.name">
+              <q-td v-if="flt" :key="item.name">
                 <div v-if="item.name === 'Action'" class="row justify-center no-wrap">
                   <q-btn v-if="verBtn" icon="visibility" size="sm" class="q-mx-sm" flat dense @click="verItem(props.row)"/>
                   <q-btn v-if="editarBtn" icon="edit" size="sm" class="q-mx-sm" flat dense @click="editar(props.row._id)" />
@@ -176,6 +185,10 @@ export default {
       type: Boolean,
       default: true
     },
+    selectFlt: {
+      type: Boolean,
+      default: true
+    },
     filter: {
       type: String,
       default: null
@@ -186,6 +199,7 @@ export default {
       baseu: '',
       user: {},
       rol: null,
+      empresa: null,
       data: [],
       info: [],
       ver: {},
@@ -195,7 +209,7 @@ export default {
       iEditContrato: '',
       select: null,
       options: [],
-      filterEmpresas: this.options,
+      options2: [],
       id: ''
     }
   },
@@ -227,6 +241,7 @@ export default {
     }
   },
   async mounted () {
+    this.flt = this.selectFlt
     this.userLogueado()
     await this.getRecord()
   },
@@ -237,9 +252,28 @@ export default {
           this.user = res
           this.rol = res.roles[0]
           this.baseu = env.apiUrl
+          if (this.route === 'user2') {
+            this.$api.get('company/' + this.user.empresa).then(r => {
+              if (r) {
+                this.empresa = r
+              }
+            })
+          }
           this.getOptions()
           this.getPaises()
         }
+      })
+    },
+    filterFn (val, update) {
+      if (val === '') {
+        update(() => {
+          this.options = this.options2
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.options = this.options2.filter(v => this.route === 'sla' ? v.contrato.toLowerCase().indexOf(needle) > -1 : v.name.toLowerCase().indexOf(needle) > -1)
       })
     },
     verItem (itm) {
@@ -342,31 +376,15 @@ export default {
       }
     },
     async getOptions () {
-      if (this.route === 'sla' && this.user.roles[0] === 1) {
-        await this.$api.get('contratos').then(res => {
-          if (res) {
-            this.options = res
+      await this.$api.get(this.route === 'sla' ? this.rol === 1 ? 'contratos' : 'contratos/' + this.user.empresa : this.rol === 1 ? 'companys' : 'empresas_user').then(res => {
+        if (res) {
+          this.options = res
+          if (this.empresa !== null) {
+            this.options.push(this.empresa)
           }
-        })
-      } else if (this.route === 'sla' && this.user.roles[0] === 2) {
-        await this.$api.get('contratos/' + this.user.empresa).then(res => {
-          if (res) {
-            this.options = res
-          }
-        })
-      } else if (this.user.roles[0] === 1) {
-        await this.$api.get('companys').then(res => {
-          if (res) {
-            this.options = res
-          }
-        })
-      } else {
-        await this.$api.get('empresas_user').then(res => {
-          if (res) {
-            this.options = res
-          }
-        })
-      }
+          this.options2 = [...this.options]
+        }
+      })
       // const todos = this.options.unshift({ name: 'Todos', _id: 'todos' })
     },
     getPaises () {

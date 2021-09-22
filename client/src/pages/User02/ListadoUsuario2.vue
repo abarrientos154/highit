@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla titulo="Listado de Usuarios" :columns="column" route="user2" :btnNew="true" :verBtn="true" :selectBtn="true" />
+    <Tabla titulo="Listado de Usuarios" :columns="column" route="user2" :btnNew="true" :verBtn="true" :selectBtn="true" :selectFlt="false" />
   </div>
 </template>
 <script>
