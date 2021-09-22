@@ -4,7 +4,7 @@
       <div class="text-h6 text-bold" style="font-size:30px">
         {{titulo}}
       </div>
-      <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" use-input behavior="menu" input-debounce="0" :label="route === 'sla' ? 'Contratos' : 'Empresas'" :options="options" map-options :option-label="route === 'sla' ? 'contrato' : 'name'" emit-value option-value="_id" @input="flt = true" @filter="filterFn">
+      <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" use-input behavior="menu" input-debounce="0" :label="route === 'sla' ? 'Contratos' : 'Seleccione una empresa para ver los respectivos usuarios usuarios'" :options="options" map-options :option-label="route === 'sla' ? 'contrato' : 'name'" emit-value option-value="_id" @input="select && route !== 'sla' ? flt = true : route !== 'sla' ? flt = false : ''" @filter="filterFn">
         <template v-slot:no-option>
           <q-item>
             <q-item-section class="text-grey">

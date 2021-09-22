@@ -45,7 +45,7 @@ class UserController {
     let formatearDatos = users.map(v => {
       return {
         ...v,
-        tipo_usuario: v.roles[0] === 3 ? 'consultor' : v.roles[0] === 4 ? 'cliente final' : v.roles[0] === 5 ? 'consultor administrador' : v.roles[0] === 6 ? 'cliente administrador' : 'gerente'
+        tipo_usuario: v.roles[0] === 3 ? 'Consultor' : v.roles[0] === 4 ? 'Cliente Final' : v.roles[0] === 5 ? 'Consultor Administrador' : v.roles[0] === 6 ? 'Cliente Administrador' : 'Gerente'
       }
     })
     response.send(formatearDatos);

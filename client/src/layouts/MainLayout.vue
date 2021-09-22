@@ -224,7 +224,7 @@ export default {
         },
         {
           icon: 'lightbulb',
-          label: 'conocimiento',
+          label: 'Conocimiento',
           ruta: '/vista_conocimiento'
         },
         {
@@ -241,7 +241,7 @@ export default {
         },
         {
           icon: 'lightbulb',
-          label: 'conocimiento',
+          label: 'Conocimiento',
           ruta: '/conocimiento'
         },
         {
