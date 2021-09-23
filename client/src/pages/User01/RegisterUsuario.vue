@@ -2,15 +2,12 @@
   <div>
     <div class="column items-center justify-center">
       <div style="width:100%">
-        <div class="row">
-          <q-separator vertical class="bg-grey-7"/>
+        <div class="bordes">
           <div class="q-pb-xl q-px-md q-pt-md column items-end col">
             <div class="text-h3 text-bold">NUEVO USUARIO</div>
             <div class="text-grey-8 text-h6">Creacion de nuevos usuarios para el sistema</div>
           </div>
-          <q-separator vertical class="bg-grey-7"/>
         </div>
-        <q-separator class="bg-grey-7"/>
         <q-card flat>
           <div class="q-px-md q-pt-lg">
             <div class="text-h6">Informacion del usuario</div>
@@ -75,7 +72,7 @@
                 </q-select>
             </div>
             <div class="q-pa-md column items-center justify-center">
-              <q-btn color="primary" class="q-py-sm" text-color="white" label="Crear Usuario" @click="registrar_usuario()" style="width:40%" no-caps/>
+              <q-btn color="primary" class="q-py-xs" text-color="white" label="Crear Usuario" @click="registrar_usuario()" style="width:40%" no-caps/>
             </div>
           </q-card>
       </div>
@@ -201,5 +198,11 @@ export default {
   height:80px;
   width:80px;
   cursor: pointer;
+}
+.bordes {
+  border-right: 2px solid $grey-6;
+  border-left: 2px solid $grey-6;
+  border-bottom: 2px solid $grey-6;
+  margin-left: 2px;
 }
 </style>

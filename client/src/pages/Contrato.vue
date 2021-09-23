@@ -1,81 +1,68 @@
 <template>
-  <q-page>
-    <div class="q-pa-md column items-center justify-center">
-      <div class="" style="width:100%">
-        <q-card class="" style="width:100%; height:200px">
-          <q-card-section>
-            <div class="text-h3 text-right text-bold">Contratos</div>
-            <div class="text-h5 text-right">Administra el tiempo de trabajo con tus clientes</div>
-          </q-card-section>
-        </q-card>
-          <div class="column items-center justify-center">
-            <q-card flat class="q-pl-md q-mt-md" style="width:100%">
+  <div>
+    <div class="column items-center justify-center">
+      <div style="width:100%">
+        <div class="bordes">
+          <div class="q-pb-xl q-px-md q-pt-md column items-end">
+            <div class="text-h3 text-bold">CONTRATOS</div>
+            <div class="text-grey-8 text-h6">Edicion de datos de usuarios en el sistema</div>
+          </div>
+        </div>
+          <div class="column q-pa-md items-center justify-center">
+            <q-card flat style="width:100%">
               <div class="text-h5 text-bold">Creacion de contratos</div>
               <div class="q-mt-md text-subtitle1">Introduzca el nombre del contrato</div>
               <q-input filled v-model="form.contrato" label="Nombre del contrato"
                error-message="Requerido" :error="$v.form.contrato.$error" @blur="$v.form.contrato.$touch()"
                />
                 <div class="q-pa-md column items-center justify-center">
-                  <q-btn color="primary" text-color="white" label="Crear nuevo contrato" @click="guardar_contrato()" style="width:40%" />
+                  <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nuevo contrato" @click="guardar_contrato()" style="width:40%" />
                 </div>
             </q-card>
-
-            <div class="q-mt-md text-h6 text-grey">Selecciona un contrato disponible para agregar prioridades</div>
-            <q-card style="width:100%" v-if="tabla1">
+            <q-card style="width:100%">
               <Tabla no-data-label="sin registros" titulo="Listado de contratos" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :route_id="rol === 2 ? user.empresa : null" :btnNew="false" />
             </q-card>
           </div>
-          <div class="q-mt-md text-h5 text-bold">Selecciona el contrato</div>
-          <div class="q-mt-md text-h6 text-grey">Selecciona el contrato para asignar tu requerimiento</div>
-          <div class="column items-center justify-center">
-            <div class="row no-wrap q-py-md q-px-md q-gutter-md">
-              <div v-for="(btn, index) in lista" :key="index" >
-                <q-btn no-caps class="q-px-md" :label="btn.contrato" :color="selecBoton === btn ? 'grey-6' : 'blue-grey-11'" text-color="blue-grey-9"
-                @click="Botonselec(btn, 'cat')" />
+          <div class="q-pa-md">
+            <div class="q-mt-md text-h5 text-bold">Selecciona el contrato</div>
+            <div class="q-mt-md text-subtitle1">Selecciona el contrato para definir prioridad</div>
+            <q-select filled v-model="form2.contrato" use-input behavior="menu" input-debounce="0" :options="lista" map-options option-label="contrato" emit-value option-value="_id" @filter="filterFn" :error="$v.form2.contrato.$error" @blur="$v.form2.contrato.$touch()">
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          <div class="q-mt-md text-subtitle1">Definir prioridad</div>
+            <q-input filled v-model="form2.nombre" label="Nombre de la prioridad"
+            error-message="Requerido" :error="$v.form2.nombre.$error" @blur="$v.form2.nombre.$touch()"
+            />
+            <div class="row">
+              <div class="colum">
+                <div class="q-mt-md text-subtitle1">Tiempo de atención acordado</div>
+                <div class="row">
+                  <q-input type="number" filled v-model.number="form2.tiempo" min="1" :rules="[ v => v >= 1 ]" error-message="Requerido" :error="$v.form2.tiempo.$error" @blur="$v.form2.tiempo.$touch()" style="width: 120px"/>
+                  <div class="q-ml-md q-mt-md">Minutos</div>
+                </div>
+              </div>
+              <q-space />
+              <div class="colum">
+                <div class="q-mt-md text-subtitle1">Seleccione el color</div>
+                <q-select filled v-model="color" :options="options" style="width:170px" error-message="Requerido" :error="$v.color.$error" @blur="$v.color.$touch()"/>
               </div>
             </div>
-         </div>
-         <div class="q-mt-md text-subtitle1">Nombre requerimiento</div>
-          <q-input filled v-model="form2.nombre" label="Nombre de la prioridad"
-          error-message="Requerido" :error="$v.form2.nombre.$error" @blur="$v.form2.nombre.$touch()"
-           />
-          <div class="row">
-            <div class="colum">
-              <div class="q-mt-md text-subtitle1">Tiempo que tomara</div>
-              <div class="row">
-                <q-input type="number" filled v-model.number="form2.tiempo" min="1" :rules="[ v => v >= 1 ]" error-message="Requerido" :error="$v.form2.tiempo.$error" @blur="$v.form2.tiempo.$touch()" style="width: 120px"/>
-                <div class="q-mt-lg">{{"Minutos"}}</div>
-              </div>
+            <div class="q-pa-md column items-center justify-center">
+              <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nueva prioridad" @click="guardar_SLA()" style="width:40%" />
             </div>
-            <q-space />
-            <div class="colum">
-              <div class="q-mt-md text-subtitle1">Seleccione el color</div>
-              <q-select filled v-model="color" :options="options" style="width:170px" error-message="Requerido" :error="$v.color.$error" @blur="$v.color.$touch()"/>
-            </div>
+            <q-card style="width:100%">
+              <Tabla titulo="Listado de prioridades creadas" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :selectBtn="true" :btnNew="false" :selectFlt="false"/>
+            </q-card>
           </div>
-          <div class="q-pa-md column items-center justify-center">
-            <q-btn color="primary" text-color="white" label="Crear nueva prioridad" @click="guardar_SLA()" style="width:40%" />
-          </div>
-          <q-card style="width:100%">
-            <Tabla titulo="Listado de prioridades creadas" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :selectBtn="true" :btnNew="false" :selectFlt="false"/>
-          </q-card>
       </div>
     </div>
-
-    <q-dialog v-model="showModalEliminar2">
-      <q-card>
-        <q-card-section>
-          <div class="row">
-            <div class="text-h6">¿Estas seguro de eliminar el Requerimiento?</div>
-            <q-btn color="red" icon="close" flat round dense v-close-popup />
-          </div>
-        </q-card-section>
-        <q-card-actions align="center">
-          <q-btn color="red" icon="delete" label="Eliminar" push @click="eliminar_Sla(id_sla), showModalEliminar2 = false" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-  </q-page>
+  </div>
 </template>
 <script>
 import { required } from 'vuelidate/lib/validators'
@@ -89,14 +76,8 @@ export default {
       filterBy: null,
       rol: null,
       user: {},
-      tabla1: true,
-      id_contrato: '',
-      form: {
-        contrato: ''
-      },
-      form2: {
-        contrato: ''
-      },
+      form: {},
+      form2: {},
       column: [
         { name: 'contrato', field: 'contrato', label: 'Nombre', align: 'left' },
         { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' }
@@ -108,10 +89,6 @@ export default {
       ],
       lista: [],
       lista2: [],
-      showModalEliminar: false,
-      showModalEliminar2: false,
-      selecBoton: '',
-      nuevo: '',
       color: '',
       options: ['Rojo', 'Azul', 'Verde', 'Amarillo', 'Rosado', 'Gris', 'Negro', 'Celeste', 'Anaranjado', 'Morado', 'Cafe']
     }
@@ -121,13 +98,13 @@ export default {
       contrato: { required }
     },
     form2: {
+      contrato: { required },
       nombre: { required },
       tiempo: { required }
     },
     color: { required }
   },
   mounted () {
-    // this.obtener_Sla()
     this.userLogueado()
   },
   methods: {
@@ -168,10 +145,22 @@ export default {
         })
       }
     },
+    filterFn (val, update) {
+      if (val === '') {
+        update(() => {
+          this.lista = this.lista2
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.lista = this.lista2.filter(v => v.contrato.toLowerCase().indexOf(needle) > -1)
+      })
+    },
     guardar_SLA () {
       this.$v.form2.$touch()
       this.$v.color.$touch()
-      if (!this.$v.form2.$error && !this.$v.color.$error && this.form2.contrato !== '') {
+      if (!this.$v.form2.$error && !this.$v.color.$error) {
         this.form2.color = this.color
         this.form2.status = this.rol
         if (this.rol === 2) {
@@ -183,11 +172,9 @@ export default {
               message: 'Prioridad guardada con Exito',
               color: 'positive'
             })
-            // this.obtener_Sla()
             this.form2 = {
               contrato: ''
             }
-            this.selecBoton = ''
             this.color = ''
             this.filterBy = null
             this.$v.form2.$reset()
@@ -201,30 +188,13 @@ export default {
           color: 'negative'
         })
       }
-    }, /*
-    obtener_Sla () {
-      this.$api.get('slas').then(res => {
-        if (res) {
-          this.lista2 = res
-        }
-      })
-    }, */
-    eliminar_Sla (id) {
-      this.$api.delete('sla/' + id).then(res => {
-        if (res) {
-          this.$q.notify({
-            message: 'Se elimino el requerimiento',
-            color: 'positive'
-          })
-          this.obtener_Sla()
-        }
-      })
     },
     obtener_contratos () {
       if (this.rol === 1) {
         this.$api.get('contratos').then(res => {
           if (res) {
             this.lista = res
+            this.lista2 = [...this.lista]
             this.$refs.latabla.getRecord()
             this.$refs.latabla2.getOptions()
           }
@@ -233,25 +203,22 @@ export default {
         this.$api.get('contratos_by_company/' + this.user.empresa).then(res => {
           if (res) {
             this.lista = res
+            this.lista2 = [...this.lista]
             this.$refs.latabla.getRecord()
             this.$refs.latabla2.getOptions()
           }
         })
       }
-    },
-    Botonselec (btn, text) {
-      this.form2.contrato = btn._id
-      // this.filterBy = 'sla_filter?contrato=' + btn._id
-      if (text === 'cat') {
-        this.selecBoton = btn
-      }
     }
   }
 }
 </script>
-<style lang="sass" scoped>
-.row > div
-  padding: 1px 10px
-.row + .row
-  margin-top: 1rem
+
+<style scoped lang="scss">
+.bordes {
+  border-right: 2px solid $grey-6;
+  border-left: 2px solid $grey-6;
+  border-bottom: 2px solid $grey-6;
+  margin-left: 2px;
+}
 </style>

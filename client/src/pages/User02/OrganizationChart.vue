@@ -1,21 +1,18 @@
 <template>
   <div>
-    <div class="row">
-      <q-separator vertical class="bg-grey-7"/>
+    <div class="bordes">
       <div class="q-pb-xl q-px-md q-pt-md column items-end col">
         <div class="text-h3 text-bold">ORGANIGRAMA</div>
         <div class="text-grey-8 text-h6">Crea los departamentos y areas de tu empreza</div>
       </div>
-      <q-separator vertical class="bg-grey-7"/>
     </div>
-    <q-separator class="bg-grey-7"/>
-    <div class="q-pa-lg">
-      <div class="q-mb-md">
+    <div class="q-py-lg q-px-md">
+      <div class="q-mb-lg">
         <div class="q-mb-md">
           <div class="text-bold text-h6">Creación de departamentos</div>
           <div>
             <div class="text-grey-8">Agregar nuevo departamento</div>
-            <q-input dense outlined filled v-model="formDepartment.name" placeholder="Ingresa el nombre de tu departamento" error-message="Este campo es requerido" :error="$v.formDepartment.name.$error" @blur="$v.formDepartment.name.$touch()"/>
+            <q-input outlined filled v-model="formDepartment.name" placeholder="Ingresa el nombre de tu departamento" error-message="Este campo es requerido" :error="$v.formDepartment.name.$error" @blur="$v.formDepartment.name.$touch()"/>
           </div>
           <div class="column items-center">
             <q-btn color="primary q-py-xs" text-color="white" label="Crear nuevo departamento" style="width: 90%; border-radius: 5px;" @click="save(1)" no-caps/>
@@ -23,34 +20,9 @@
         </div>
         <div v-if="departamentos.length">
           <Tabla titulo="Departamentos" @actualizarPadre="getDepartamentos()" ref="departamentos" :columns="column" route="departments" :editarBtn="false"/>
-          <!-- <q-markup-table flat>
-            <thead>
-              <tr>
-                <th colspan="2">
-                  <div class="column text-left">
-                    <div class="text-h6 text-bold">Departametos</div>
-                    <div class="text-secondary text-subtitle2">Listado de departamentos creados</div>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(departamento, index) in departamentos" :key="index">
-                <td>
-                  <div class="row items-center text-secondary no-wrap">
-                    <q-btn flat icon="delete" size="md" round dense @click="destroy(departamento._id, 1)"/>
-                    <div class="text-subtitle1">{{departamento.name}}</div>
-                  </div>
-                </td>
-                <td class="text-right">
-                  <div class="text-subtitle1 text-secondary">Cant. Usuarios: {{departamento.cantUser}}</div>
-                </td>
-              </tr>
-            </tbody>
-          </q-markup-table> -->
         </div>
       </div>
-      <div class="q-mb-md" v-if="departamentos.length">
+      <div class="q-mb-lg" v-if="departamentos.length">
         <div class="q-mb-md">
           <div class="text-bold text-h6">Creación de areas</div>
           <div>
@@ -64,7 +36,7 @@
           </div>
           <div>
             <div class="text-grey-8">Agregar nueva area</div>
-            <q-input dense outlined filled v-model="formArea.name" placeholder="Ingresa el nombre de tu nueva area" error-message="Este campo es requerido" :error="$v.formArea.name.$error" @blur="$v.formArea.name.$touch()"/>
+            <q-input outlined filled v-model="formArea.name" placeholder="Ingresa el nombre de tu nueva area" error-message="Este campo es requerido" :error="$v.formArea.name.$error" @blur="$v.formArea.name.$touch()"/>
           </div>
           <div class="column items-center">
             <q-btn color="primary q-py-xs" text-color="white" label="Crear nueva area" style="width: 90%; border-radius: 5px;" @click="save(2)" no-caps/>
@@ -72,31 +44,6 @@
         </div>
         <div v-if="areas.length">
           <Tabla titulo="Areas" @actualizarPadre="getAreas()" ref="areas" :columns="column" route="areas" :editarBtn="false"/>
-          <!-- <q-markup-table flat>
-            <thead>
-              <tr>
-                <th colspan="2">
-                  <div class="column text-left">
-                    <div class="text-h6 text-bold">Areas</div>
-                    <div class="text-secondary text-subtitle2">Listado de areas creadas</div>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(area, index) in areas" :key="index">
-                <td>
-                  <div class="row items-center text-secondary no-wrap">
-                    <q-btn flat icon="delete" size="md" round dense @click="destroy(area._id, 2)"/>
-                    <div class="text-subtitle1">{{area.name}}</div>
-                  </div>
-                </td>
-                <td class="text-right">
-                  <div class="text-subtitle1 text-secondary">Cant. Usuarios: {{area.cantUser}}</div>
-                </td>
-              </tr>
-            </tbody>
-          </q-markup-table> -->
         </div>
       </div>
       <div v-if="areas.length">
@@ -113,7 +60,7 @@
           </div>
           <div>
             <div class="text-grey-8">Agregar nuevo cargo</div>
-            <q-input dense outlined filled v-model="formCharge.name" placeholder="Ingresa el nombre del cargo" error-message="Este campo es requerido" :error="$v.formCharge.name.$error" @blur="$v.formCharge.name.$touch()"/>
+            <q-input outlined filled v-model="formCharge.name" placeholder="Ingresa el nombre del cargo" error-message="Este campo es requerido" :error="$v.formCharge.name.$error" @blur="$v.formCharge.name.$touch()"/>
           </div>
           <div class="column items-center">
             <q-btn color="primary q-py-xs" text-color="white" label="Crear nuevo cargo" style="width: 90%; border-radius: 5px;" @click="save(3)" no-caps/>
@@ -121,31 +68,6 @@
         </div>
         <div v-if="cargos.length">
           <Tabla titulo="Cargos" @actualizarPadre="getCargos()" ref="cargos" :columns="column" route="charges" :editarBtn="false"/>
-          <!-- <q-markup-table flat>
-            <thead>
-              <tr>
-                <th colspan="2">
-                  <div class="column text-left">
-                    <div class="text-h6 text-bold">Cargos</div>
-                    <div class="text-secondary text-subtitle2">Listado de cargos creados</div>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(cargo, index) in cargos" :key="index">
-                <td>
-                  <div class="row items-center text-secondary no-wrap">
-                    <q-btn flat icon="delete" size="md" round dense @click="destroy(cargo._id, 3)"/>
-                    <div class="text-subtitle1">{{cargo.name}}</div>
-                  </div>
-                </td>
-                <td class="text-right">
-                  <div class="text-subtitle1 text-secondary">Cant. Usuarios: {{cargo.cantUser}}</div>
-                </td>
-              </tr>
-            </tbody>
-          </q-markup-table> -->
         </div>
       </div>
     </div>
@@ -367,3 +289,12 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.bordes {
+  border-right: 2px solid $grey-6;
+  border-left: 2px solid $grey-6;
+  border-bottom: 2px solid $grey-6;
+  margin-left: 2px;
+}
+</style>

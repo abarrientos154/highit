@@ -1,15 +1,12 @@
 <template>
   <div>
-    <div class="row">
-      <q-separator vertical class="bg-grey-7"/>
+    <div class="bordes">
       <div class="q-pb-xl q-px-md q-pt-md column items-end col">
         <div class="text-h3 text-bold">{{edit ? 'ACTUALIZA EMPRESA' : 'NUEVA EMPRESA'}}</div>
         <div class="text-grey-8 text-h6">{{edit ? 'Modificar datos de la empresa' : 'Creacion de nuevas empresas'}}</div>
       </div>
-      <q-separator vertical class="bg-grey-7"/>
     </div>
-    <q-separator class="bg-grey-7 q-mb-lg"/>
-    <div class="q-mb-lg q-px-md">
+    <div class="q-my-lg q-px-md">
       <div class="q-mb-md">
         <div class="text-h6 text-bold">Infomación empresa</div>
         <div class="text-grey-8">Informacion oficial de la empresa</div>
@@ -17,19 +14,19 @@
       <q-list>
         <div>
           <div>Nombre comercial</div>
-          <q-input dense outlined filled v-model="form.name" placeholder="Highit Service" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
+          <q-input outlined filled v-model="form.name" placeholder="Highit Service" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
         </div>
         <div>
           <div>Razón social</div>
-          <q-input dense outlined filled v-model="form.businessName" placeholder="Highit Service SpA" error-message="Este campo es requerido" :error="$v.form.businessName.$error" @blur="$v.form.businessName.$touch()"/>
+          <q-input outlined filled v-model="form.businessName" placeholder="Highit Service SpA" error-message="Este campo es requerido" :error="$v.form.businessName.$error" @blur="$v.form.businessName.$touch()"/>
         </div>
         <div>
           <div>Numero de documento</div>
-          <q-input dense outlined filled v-model="form.numIdet" placeholder="J30583h375" error-message="Este campo es requerido" :error="$v.form.numIdet.$error" @blur="$v.form.numIdet.$touch()"/>
+          <q-input outlined filled v-model="form.numIdet" placeholder="J30583h375" error-message="Este campo es requerido" :error="$v.form.numIdet.$error" @blur="$v.form.numIdet.$touch()"/>
         </div>
         <div>
           <div>Tipo de contrato</div>
-          <q-select dense outlined filled v-model="form.typeContract" use-input behavior="menu" input-debounce="0" :options="contratos" map-options option-label="contrato" emit-value option-value="_id" @filter="filterFn" error-message="Este campo es requerido" :error="$v.form.typeContract.$error" @blur="$v.form.typeContract.$touch()">
+          <q-select outlined filled v-model="form.typeContract" use-input behavior="menu" input-debounce="0" :options="contratos" map-options option-label="contrato" emit-value option-value="_id" @filter="filterFn" error-message="Este campo es requerido" :error="$v.form.typeContract.$error" @blur="$v.form.typeContract.$touch()">
             <template v-slot:no-option>
               <q-item>
                 <q-item-section class="text-grey">
@@ -42,7 +39,7 @@
         </div>
         <div>
           <div>Fecha inicio de contrato</div>
-          <q-input dense outlined filled readonly v-model="form.dateBegin" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateBegin.$error" @blur="$v.form.dateBegin.$touch()" @click="$refs.qDateProxy.show()">
+          <q-input outlined filled readonly v-model="form.dateBegin" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateBegin.$error" @blur="$v.form.dateBegin.$touch()" @click="$refs.qDateProxy.show()">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -54,7 +51,7 @@
         </div>
         <div>
           <div>Fecha termino de contrato</div>
-          <q-input dense outlined filled readonly v-model="form.dateEnd" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateEnd.$error" @blur="$v.form.dateEnd.$touch()" @click="$refs.qDateProxy2.show()">
+          <q-input outlined filled readonly v-model="form.dateEnd" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateEnd.$error" @blur="$v.form.dateEnd.$touch()" @click="$refs.qDateProxy2.show()">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy2" transition-show="scale" transition-hide="scale">
@@ -66,7 +63,7 @@
         </div>
       </q-list>
     </div>
-    <div class="q-px-md">
+    <div class="q-px-md q-mb-lg">
       <div class="q-mb-sm">
         <div class="text-h6 text-bold">Infomacion demografica</div>
         <div class="text-grey-8">Dirección de la empresa</div>
@@ -74,23 +71,23 @@
       <q-list>
         <div>
           <div>País</div>
-          <q-select outlined dense filled v-model="selectPais" :options="paises" @input="form.pais_id = selectPais._id, estados = selectPais.estados" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectPais.$error" @blur="$v.selectPais.$touch()"/>
+          <q-select outlined filled v-model="selectPais" :options="paises" @input="form.pais_id = selectPais._id, estados = selectPais.estados" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectPais.$error" @blur="$v.selectPais.$touch()"/>
         </div>
         <div>
           <div>Estado</div>
-          <q-select outlined dense filled v-model="selectEstado" :options="estados" @input="form.estado_id = selectEstado._id, ciudades = selectEstado.ciudades" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectEstado.$error" @blur="$v.selectEstado.$touch()"/>
+          <q-select outlined filled v-model="selectEstado" :options="estados" @input="form.estado_id = selectEstado._id, ciudades = selectEstado.ciudades" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectEstado.$error" @blur="$v.selectEstado.$touch()"/>
         </div>
         <div>
           <div>Ciudad</div>
-          <q-select outlined dense filled v-model="selectCiudad" :options="ciudades" @input="form.ciudad_id = selectCiudad._id" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectCiudad.$error" @blur="$v.selectCiudad.$touch()"/>
+          <q-select outlined filled v-model="selectCiudad" :options="ciudades" @input="form.ciudad_id = selectCiudad._id" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectCiudad.$error" @blur="$v.selectCiudad.$touch()"/>
         </div>
         <div>
           <div>Dirección</div>
-          <q-input dense outlined filled v-model="form.direction" placeholder="Mi direccion #12123" error-message="Este campo es requerido" :error="$v.form.direction.$error" @blur="$v.form.direction.$touch()"/>
+          <q-input outlined filled v-model="form.direction" placeholder="Mi direccion #12123" error-message="Este campo es requerido" :error="$v.form.direction.$error" @blur="$v.form.direction.$touch()"/>
         </div>
         <div>
           <div>Código postal</div>
-          <q-input dense outlined filled v-model.number="form.postalCode" placeholder="1023400" type="number" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
+          <q-input outlined filled v-model.number="form.postalCode" placeholder="1023400" type="number" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
         </div>
       </q-list>
     </div>
@@ -102,11 +99,11 @@
       <q-list>
         <div>
           <div>Correo de contacto</div>
-          <q-input dense outlined filled v-model="form.email" placeholder="micorreo@highitservice.com" error-message="Este campo es requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
+          <q-input outlined filled v-model="form.email" placeholder="micorreo@highitservice.com" error-message="Este campo es requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
         </div>
         <div>
           <div>Telefono de contacto</div>
-          <q-input dense outlined filled v-model="form.phone" placeholder="+52 1 55 8403 5917" error-message="Este campo es requerido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
+          <q-input outlined filled v-model="form.phone" placeholder="+52 1 55 8403 5917" error-message="Este campo es requerido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
         </div>
       </q-list>
       <div>
@@ -322,3 +319,12 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.bordes {
+  border-right: 2px solid $grey-6;
+  border-left: 2px solid $grey-6;
+  border-bottom: 2px solid $grey-6;
+  margin-left: 2px;
+}
+</style>
