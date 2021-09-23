@@ -4,7 +4,7 @@
       <div class="text-h6 text-bold" style="font-size:30px">
         {{titulo}}
       </div>
-      <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" use-input behavior="menu" input-debounce="0" :label="route === 'sla' ? 'Contratos' : 'Seleccione una empresa para ver los respectivos usuarios usuarios'" :options="options" map-options :option-label="route === 'sla' ? 'contrato' : 'name'" emit-value option-value="_id" @input="select && route !== 'sla' ? flt = true : route !== 'sla' ? flt = false : ''" @filter="filterFn">
+      <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" use-input behavior="menu" input-debounce="0" :label="route === 'sla' ? 'Seleccione un contrato para ver sus respectivas prioridades' : 'Seleccione una empresa para ver los respectivos usuarios'" :options="options" map-options :option-label="route === 'sla' ? 'contrato' : 'name'" emit-value option-value="_id" @input="select ? flt = true : flt = false" @filter="filterFn">
         <template v-slot:no-option>
           <q-item>
             <q-item-section class="text-grey">
@@ -259,7 +259,6 @@ export default {
               }
             })
           }
-          this.getOptions()
           this.getPaises()
         }
       })
@@ -311,6 +310,7 @@ export default {
         } else {
           this.data = res
           await this.getInfo()
+          this.getOptions()
         }
       }
     },

@@ -11,7 +11,7 @@
           <div class="column items-center justify-center">
             <q-card flat class="q-pl-md q-mt-md" style="width:100%">
               <div class="text-h5 text-bold">Creacion de contratos</div>
-              <div class="q-mt-md text-subtitle1">introduzca el nombre del contrato</div>
+              <div class="q-mt-md text-subtitle1">Introduzca el nombre del contrato</div>
               <q-input filled v-model="form.contrato" label="Nombre del contrato"
                error-message="Requerido" :error="$v.form.contrato.$error" @blur="$v.form.contrato.$touch()"
                />
@@ -57,7 +57,7 @@
             <q-btn color="primary" text-color="white" label="Crear nueva prioridad" @click="guardar_SLA()" style="width:40%" />
           </div>
           <q-card style="width:100%">
-            <Tabla titulo="Listado de prioridades creadas" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :selectBtn="true" :btnNew="false"/>
+            <Tabla titulo="Listado de prioridades creadas" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :selectBtn="true" :btnNew="false" :selectFlt="false"/>
           </q-card>
       </div>
     </div>
@@ -157,6 +157,7 @@ export default {
             this.form.contrato = ''
             this.$v.form.contrato.$reset()
             this.$refs.latabla.getRecord()
+            this.$refs.latabla2.getOptions()
             this.obtener_contratos()
           }
         })
@@ -225,6 +226,7 @@ export default {
           if (res) {
             this.lista = res
             this.$refs.latabla.getRecord()
+            this.$refs.latabla2.getOptions()
           }
         })
       } else {
@@ -232,6 +234,7 @@ export default {
           if (res) {
             this.lista = res
             this.$refs.latabla.getRecord()
+            this.$refs.latabla2.getOptions()
           }
         })
       }

@@ -44,8 +44,7 @@
               <q-input filled v-model="form.phone" placeholder="+52 1 55 8403 5917" error-message="Requerido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
 
               <div class="q-mt-md text-subtitle1">Correo</div>
-                <q-input v-model="form.email" filled type="email" placeholder="micorreo@highitservice.com"
-                error-message="Requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
+                <q-input v-model="form.email" filled type="email" placeholder="micorreo@highitservice.com" error-message="Requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
 
               <div class="q-mt-md text-subtitle1">Contraseña</div>
                 <q-input :type="isPwd ? 'password' : 'text'" v-model="password" filled

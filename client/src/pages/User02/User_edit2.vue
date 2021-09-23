@@ -1,17 +1,22 @@
 <template>
   <div>
-    <div class="q-pa-md column items-center justify-center">
+    <div class="column items-center justify-center">
       <div style="width:100%">
-        <q-card class="" style="width:100%; height:150px">
-          <q-card-section>
-            <div class="text-h3 text-right text-bold">Editar Usuario</div>
-            <div class="text-h5 text-right">Edicion de datos de usuarios en el sistema</div>
-          </q-card-section>
-        </q-card>
-          <q-card>
-          <div class="text-h6">Informacion del usuario</div>
-          <div class="text-h7">Informacion general del usuario</div>
-          <div class="q-mt-md text-subtitle1">foto de perfil</div>
+        <div class="row">
+          <q-separator vertical class="bg-grey-7"/>
+          <div class="q-pb-xl q-px-md q-pt-md column items-end col">
+            <div class="text-h3 text-bold">EDITAR USUARIO</div>
+            <div class="text-grey-8 text-h6">Edicion de datos de usuarios en el sistema</div>
+          </div>
+          <q-separator vertical class="bg-grey-7"/>
+        </div>
+        <q-separator class="bg-grey-7"/>
+        <q-card flat>
+          <div class="q-px-md q-pt-lg">
+            <div class="text-h6">Informacion del usuario</div>
+            <div class="text-h7">Informacion general del usuario</div>
+            <div class="q-mt-md text-subtitle1">Foto de perfil</div>
+          </div>
             <q-img :src="baseu" style="height: 200px; width: 100%" >
                 <div class="column justify-center items-center bg-transparent absolute-center" style="width:100%">
                     <q-avatar size="80px">
@@ -26,21 +31,20 @@
                 </div>
             </q-img>
             <div class="q-pa-md">
-              <div class="q-mt-md text-subtitle1">Nombres</div>
-              <q-input filled v-model="form.name" placeholder="Demo Nombre" />
+              <div class="text-subtitle1">Nombres</div>
+              <q-input filled v-model="form.name" placeholder="Demo Nombre" error-message="Requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
 
               <div class="q-mt-md text-subtitle1">Apellidos</div>
-              <q-input filled v-model="form.last_name" placeholder="Demo Apellido" />
+              <q-input filled v-model="form.last_name" placeholder="Demo Apellido" error-message="Requerido" :error="$v.form.last_name.$error" @blur="$v.form.last_name.$touch()"/>
 
-              <div class="q-mt-md text-subtitle1">Correo</div>
-                <q-input v-model="form.email" filled type="email" disable placeholder="micorreo@highitservice.com"
-                error-message="Requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
-
-              <div class="q-mt-md text-subtitle1">Numero identificador</div>
-              <q-input filled v-model="form.Dni" placeholder="j3246o235" />
+              <div class="q-mt-md text-subtitle1">Numero de documento</div>
+              <q-input filled v-model="form.Dni" placeholder="j3246o235" error-message="Requerido" :error="$v.form.Dni.$error" @blur="$v.form.Dni.$touch()"/>
 
               <div class="q-mt-md text-subtitle1">Telefono</div>
-              <q-input filled v-model="form.phone" placeholder="+52 1 55 8403 5917" />
+              <q-input filled v-model="form.phone" placeholder="+52 1 55 8403 5917" error-message="Requerido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
+
+              <div class="q-mt-md text-subtitle1">Correo</div>
+              <q-input v-model="form.email" filled type="email" placeholder="micorreo@highitservice.com" error-message="Requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
 
               <div v-if="form.roles[0] === 3">
                   <div class="q-mt-sm text-h6">Selecciona un Departamento</div>
@@ -59,16 +63,23 @@
                     :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
                 </div>
 
-              <div v-if="form.roles[0] === 4">
-              <div class="q-mt-sm text-h6">Selecciona empresa</div>
+              <div v-if="form.roles[0] === 4 || form.roles[0] === 6">
+                <div class="q-mt-sm text-h6">Selecciona empresa</div>
                 <div class="q-mt-sm text-subtitle1">Listado de empresa</div>
-                <q-select filled v-model="form.empresa" :options="empresas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
-                :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()"/>
+                <q-select filled v-model="form.empresa" use-input behavior="menu" input-debounce="0" :options="empresas" map-options option-label="name" emit-value option-value="_id" @filter="filterFn" :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()">
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        No results
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </div>
 
             </div>
             <div class="q-pa-md column items-center justify-center">
-              <q-btn color="primary" text-color="white" label="Editar Usuario" @click="editar_usuario()" style="width:40%" />
+              <q-btn no-caps class="q-py-sm" color="primary" text-color="white" label="Editar Usuario" @click="editar_usuario()" style="width:40%" />
             </div>
 
             <q-separator/>
@@ -99,7 +110,7 @@
                     </template>
                   </q-input>
                   <div class="q-pa-md column items-center justify-center">
-                    <q-btn color="primary" text-color="white" label="Actualizar contraseña" @click="editar_contrasena()" style="width:50%" />
+                    <q-btn no-caps class="q-py-sm" color="primary" text-color="white" label="Actualizar contraseña" @click="editar_contrasena()" style="width:50%" />
                   </div>
               </div>
           </q-card>
@@ -126,6 +137,7 @@ export default {
       isPwd2: true,
       isPwd3: true,
       empresas: [],
+      empresas2: [],
       user: {},
       departamentos: [],
       areas: [],
@@ -136,6 +148,7 @@ export default {
     form: {
       email: { email, required },
       phone: { required },
+      Dni: { required },
       last_name: { required },
       name: { required },
       empresa: {
@@ -176,6 +189,18 @@ export default {
     this.baseu = env.apiUrl + 'perfil_img/' + this.id
   },
   methods: {
+    filterFn (val, update) {
+      if (val === '') {
+        update(() => {
+          this.empresas = this.empresas2
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.empresas = this.empresas2.filter(v => v.name.toLowerCase().indexOf(needle) > -1)
+      })
+    },
     async obtener_datos () {
       this.$q.loading.show()
       const v = await this.$api.get('datauser/' + this.id)
@@ -188,6 +213,7 @@ export default {
       await this.$api.get('empresas').then(res => {
         if (res) {
           this.empresas = res
+          this.empresas2 = [...this.empresas]
         }
       })
     },

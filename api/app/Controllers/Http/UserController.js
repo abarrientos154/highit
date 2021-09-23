@@ -30,8 +30,14 @@ class UserController {
 
   async Updateuser ({ params, response, request }) {
     let body = request.only(User.fillableEditUser)
-    await User.query().where({ _id: params.id }).update(body)
-    response.send(body)
+    if (((await User.where({ $and: [{ $or: [{ email: body.email }, { phone: body.phone }, { Dni: body.Dni }] }] }).fetch()).toJSON()).filter(v => v._id !== params.id).length) {
+      response.unprocessableEntity([{
+        message: 'Datos ya registrados en el sistema!'
+      }])
+    } else {
+      await User.query().where({ _id: params.id }).update(body)
+      response.send(body)
+    }
   }
 
   async index({ request, response, view }) {
