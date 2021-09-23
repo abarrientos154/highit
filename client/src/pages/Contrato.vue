@@ -5,12 +5,12 @@
         <div class="bordes">
           <div class="q-pb-xl q-px-md q-pt-md column items-end">
             <div class="text-h3 text-bold">CONTRATOS</div>
-            <div class="text-grey-8 text-h6">Edicion de datos de usuarios en el sistema</div>
+            <div class="text-grey-8 text-h6">Edición de datos de usuarios en el sistema</div>
           </div>
         </div>
           <div class="column q-pa-md items-center justify-center">
             <q-card flat style="width:100%">
-              <div class="text-h5 text-bold">Creacion de contratos</div>
+              <div class="text-h5 text-bold">Creación de contratos</div>
               <div class="q-mt-md text-subtitle1">Introduzca el nombre del contrato</div>
               <q-input filled v-model="form.contrato" label="Nombre del contrato"
                error-message="Requerido" :error="$v.form.contrato.$error" @blur="$v.form.contrato.$touch()"
