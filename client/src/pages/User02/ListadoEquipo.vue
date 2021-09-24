@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla titulo="Listado de Equipos" :columns="column" route="equipo" :btnNew="true" />
+    <Tabla titulo="Listado de Equipos" :columns="column" route="equipo" :btnNew="true" :selectBtn="true" :selectFlt="false"/>
   </div>
 </template>
 <script>
@@ -13,7 +13,6 @@ export default {
       showModalEliminar: false,
       column: [
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
-        { name: 'empresaName', field: 'empresaName', label: 'Empresa Asociado', align: 'left' },
         { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' }
       ]
     }

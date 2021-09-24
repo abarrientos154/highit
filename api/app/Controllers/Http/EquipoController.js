@@ -20,8 +20,9 @@ class EquipoController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-   async index ({ request, response, view }) {
-    let datos = (await Equipo.query().where({}).with('Empresa').fetch()).toJSON()
+   async index ({ request, response, view, auth }) {
+    let user = (await auth.getUser()).toJSON()
+    let datos = (await Equipo.query().where({empresa_creador: user.empresa}).with('Empresa').fetch()).toJSON()
     response.send(datos)
   }
 
