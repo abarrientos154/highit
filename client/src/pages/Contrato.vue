@@ -20,7 +20,7 @@
                 </div>
             </q-card>
             <q-card style="width:100%">
-              <Tabla no-data-label="sin registros" titulo="Listado de contratos" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :route_id="rol === 2 ? user.empresa : null" :btnNew="false" />
+              <Tabla v-if="listado" no-data-label="sin registros" titulo="Listado de contratos" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :route_id="rol === 2 ? user.empresa : null" :btnNew="false" />
             </q-card>
           </div>
           <div class="q-pa-md">
@@ -75,6 +75,7 @@ export default {
     return {
       filterBy: null,
       rol: null,
+      listado: false,
       user: {},
       form: {},
       form2: {},
@@ -113,6 +114,7 @@ export default {
         if (res) {
           this.rol = res.roles[0]
           this.user = res
+          this.listado = true
           this.obtener_contratos()
         }
       })

@@ -13,6 +13,9 @@ class Company extends Model {
     }
     return rulesUser
   }
+  contrato () {
+    return this.hasOne('App/Models/Contrato', 'typeContract', '_id')
+  }
 }
 
 module.exports = Company

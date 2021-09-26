@@ -26,7 +26,10 @@ class CompanyController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let companys = (await Company.query().where({status: 1}).fetch()).toJSON()
+    let companys = (await Company.query().where({status: 1}).with('contrato').fetch()).toJSON()
+    for (let i of companys) {
+      i.contrato = i.contrato.contrato
+    }
     response.send(companys)
   }
 
@@ -42,7 +45,10 @@ class CompanyController {
   }
 
   async companysByCompany ({ params, request, response, view }) {
-    let companys = (await Company.query().where({company_id: params.id}).fetch()).toJSON()
+    let companys = (await Company.query().where({company_id: params.id}).with('contrato').fetch()).toJSON()
+    for (let i of companys) {
+      i.contrato = i.contrato.contrato
+    }
     response.send(companys)
   }
 

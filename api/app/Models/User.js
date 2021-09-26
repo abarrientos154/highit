@@ -102,6 +102,10 @@ class User extends Model {
     return this.hasMany('App/Models/Token')
   }
 
+  department () {
+    return this.hasOne("App/Models/Department", "departamento", "_id")
+  }
+
   paisUser () {
     return this.hasOne("App/Models/Pais", "country_id", "_id")
   }

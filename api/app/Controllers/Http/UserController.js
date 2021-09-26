@@ -205,7 +205,10 @@ class UserController {
 
   async userConsultor({ request, params, response }) {
     try {
-      const user = (await User.query().where({roles: 3, company: params.id}).fetch()).toJSON()
+      let user = (await User.query().where({roles: 3, company: params.id}).with('department').fetch()).toJSON()
+      for (let i of user) {
+        i.department = i.department.name
+      }
       response.send(user)
     } catch (error) {
       console.error('user by rol: ' + error.name + ':' + error.message)

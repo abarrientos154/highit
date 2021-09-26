@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla v-if="info" titulo="Listado de Actividades" :columns="column" route="solicitudes_company" :route_id="user.empresa"/>
+    <Tabla v-if="info" titulo="Listado de Actividades" :columns="column" route="solicitudes" :route_id="user.empresa"/>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
       info: false,
       column: [
         { name: 'description', field: 'name', label: 'Actividad', align: 'left' },
-        { name: 'consultor_id', field: 'consultor_id', label: 'Consultor', align: 'left' }
+        { name: 'consultor', field: 'consultor', label: 'Consultor', align: 'left' }
       ]
     }
   },

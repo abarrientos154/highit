@@ -13,7 +13,6 @@
           </q-item>
         </template>
       </q-select>
-      <!-- <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" :options="options" :label="route === 'sla' ? 'Contratos' : 'Empresas'" map-options emit-value :option-label="route === 'sla' ? 'contrato' : 'name'" option-value="_id"/> -->
     </q-card-section>
     <q-card-section class="q-pa-none">
       <q-grid :data="filterData" :columns="columns" :columns_filter="true">
@@ -34,7 +33,6 @@
                     <q-img :src="baseu + `${route === 'companys' ? 'company_img/' : 'perfil_img/'}` + props.row._id" class="full-height"/>
                   </q-avatar>
                 </div>
-                <div v-else-if="item.name === 'departamento' || item.name === 'consultor_id' || item.name === 'typeContract'" :class="item.text ? `row justify-${item.text}` : ''">{{info.length && item.name === 'typeContract' ? info.filter(v => v._id ===  props.row[item.name])[0].contrato : info.length ? info.filter(v => v._id ===  props.row[item.name])[0].name : ''}}</div>
                 <div v-else :class="item.text ? `row justify-${item.text} items-center` : ''">
                   <q-avatar v-if="props.row.color2 && item.name === 'nombre'" class="q-mr-sm" :color="props.row.color2" size="30px"/>
                   {{ props.row[item.name] }}
@@ -44,20 +42,6 @@
           </q-tr>
         </template>
       </q-grid>
-      <!--<q-table :data="data" no-data-label="No hay registros" rows-per-page-label="Datos por pagina" :columns="columns">
-        <template v-slot:body-cell-Action="props">
-          <q-td :props="props">
-            <q-btn v-if="editarBtn" icon="edit" size="sm" flat dense @click="editar(props.row._id)" />
-            <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-ml-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
-            <q-btn v-if="crearBtn" style="width:130px" color="primary" text-color="white" label="Crear solicitud" @click="mostrardialogo(props.row._id)" />
-          </q-td>
-        </template>
-        <template v-slot:body-cell-color="props">
-          <q-td :props="props">
-              <div :class="props.row.color2 === 'blue' ? 'bg-blue' : props.row.color2 === 'red' ? 'bg-red' : 'bg-green'" style="width:20px; height:20px;border-radius:100%"></div>
-          </q-td>
-        </template>
-      </q-table> -->
     </q-card-section>
     <q-page-sticky v-if="btnNew" position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="add" color="primary" @click="$router.push($route.path + '/form')" />
@@ -201,7 +185,6 @@ export default {
       rol: null,
       empresa: null,
       data: [],
-      info: [],
       ver: {},
       paises: [],
       showModalEditar: false,
@@ -232,6 +215,10 @@ export default {
           return this.data
         } else if (this.route === 'sla') {
           return this.data.filter(v => v.contrato === this.select)
+        } else if (this.route === 'areas') {
+          return this.data.filter(v => v.department_id === this.select)
+        } else if (this.route === 'charges') {
+          return this.data.filter(v => v.area_id === this.select)
         } else {
           return this.data.filter(v => v.empresa === this.select)
         }
@@ -279,7 +266,6 @@ export default {
       this.edit = false
       this.ver = { ...itm }
       if (this.route === 'companys') {
-        this.ver.contrato = this.info.filter(v => v._id === itm.typeContract)[0].contrato
         this.ver.pais = this.paises.filter(v => v._id === itm.pais_id)[0].name
         this.ver.estado = this.paises.filter(v => v._id === itm.pais_id)[0].estados.filter(v => v._id === itm.estado_id)[0].name
         this.ver.ciudad = this.paises.filter(v => v._id === itm.pais_id)[0].estados.filter(v => v._id === itm.estado_id)[0].ciudades.filter(v => v._id === itm.ciudad_id)[0].name
@@ -304,14 +290,8 @@ export default {
         res = await this.$api.get(this.filter)
       }
       if (res) {
-        if (this.route === 'solicitudes_company') {
-          this.data = res.filter(v => v.status >= 1)
-          await this.getConsultores()
-        } else {
-          this.data = res
-          await this.getInfo()
-          this.getOptions()
-        }
+        this.data = res
+        await this.getOptions()
       }
     },
     eliminarConfirm (id) {
@@ -394,33 +374,13 @@ export default {
         }
       })
     },
-    async getInfo () {
-      if (this.user.roles[0] === 5) {
-        await this.$api.get('departments/' + this.user.empresa).then(res => {
-          if (res) {
-            this.info = res
-          }
-        })
-      } else if (this.user.roles[0] === 1) {
-        await this.$api.get('contratos').then(res => {
-          if (res) {
-            this.info = res
-          }
-        })
-      } else if (this.user.roles[0] === 2) {
-        await this.$api.get('contratos_by_company/' + this.user.empresa).then(res => {
-          if (res) {
-            this.info = res
-          }
-        })
+    selectChange (select) {
+      if (select) {
+        this.select = select
+        this.flt = true
+      } else {
+        this.flt = false
       }
-    },
-    async getConsultores () {
-      await this.$api.get('user_consultor/' + this.user.empresa).then(res => {
-        if (res) {
-          this.info = res
-        }
-      })
     }
   }
 }

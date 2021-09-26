@@ -16,6 +16,10 @@ class Solicitud extends Model {
         }
         return rules
     }
+
+    consultor () {
+      return this.hasOne("App/Models/User", "consultor_id", "_id")
+    }
 }
 
 module.exports = Solicitud

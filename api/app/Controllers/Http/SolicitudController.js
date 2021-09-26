@@ -26,7 +26,12 @@ class SolicitudController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
+  async index ({ params, request, response, view }) {
+    let solicitudes = (await Solicitud.query().where({ $and: [{ $or: [{ status: 1 }, { status: 2 }, { status: 3 }, { status: 4 }, { status: 5 }] }, { company_id: params.id }] }).with('consultor').fetch()).toJSON()
+    for (let i of solicitudes) {
+      i.consultor = i.consultor.name + ' ' + i.consultor.last_name
+    }
+    response.send(solicitudes)
   }
   
   async solicitudesCliente ({ params, request, response, view }) {

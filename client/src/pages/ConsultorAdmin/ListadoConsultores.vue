@@ -16,7 +16,7 @@ export default {
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
         { name: 'last_name', field: 'last_name', label: 'Apellido', align: 'left' },
         { name: 'email', field: 'email', label: 'Correo', align: 'left' },
-        { name: 'departamento', field: 'departamento', label: 'Departamento', align: 'left' }
+        { name: 'department', field: 'department', label: 'Departamento', align: 'left' }
       ]
     }
   },
