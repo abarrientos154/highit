@@ -1,41 +1,60 @@
 <template>
   <div>
-    <div class="q-pa-md column items-center justify-center">
-      <div class="" style="width:100%">
-        <q-card class="" style="width:100%; height:200px">
-          <q-card-section>
-            <div class="text-h3 text-right text-bold">Categoria</div>
-            <div class="text-h5 text-right">Crea las categorias de las solicitudes de tus clientes</div>
-          </q-card-section>
-        </q-card>
+    <div class="column items-center justify-center">
+      <div style="width:100%">
+        <div class="bordes">
+          <div class="q-pb-xl q-px-md q-pt-md column items-end">
+            <div class="text-h3 text-bold">CATEGORIAS</div>
+            <div class="text-grey-8 text-h6">Crea las categorias de las solicitudes de tus clientes</div>
+          </div>
+        </div>
           <div class="column items-center justify-center">
-            <q-card flat class="q-pl-md q-mt-md" style="width:100%">
+            <q-card flat class="q-pa-md" style="width:100%">
               <div class="text-h5 text-bold">Creacion de categorias</div>
               <div class="q-mt-md text-subtitle1">Selecciona el departamento</div>
-              <q-select filled @input="areasOpt(form.departamento)" v-model="form.departamento" :options="departamentos" map-options option-label="name" emit-value option-value="_id"
-               error-message="Requerido" :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()" />
+              <q-select filled v-model="form.departamento" use-input behavior="menu" input-debounce="0" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="areasOpt(form.departamento)" @filter="filterDepartments" error-message="Requerido" :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()">
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
 
-               <div class="q-mt-sm text-h6">Selecciona un Area</div>
-                  <div class="q-mt-sm text-subtitle1">Listado de Areas</div>
-                  <q-select @input="cargosOpt(form.area)" filled v-model="form.area" :options="areas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
-                    :error="$v.form.area.$error" @blur="$v.form.area.$touch()" />
+              <div class="q-mt-sm text-h6">Selecciona un Area</div>
+              <div class="q-mt-sm text-subtitle1">Listado de Areas</div>
+              <q-select filled v-model="form.area" use-input behavior="menu" input-debounce="0" :options="areas" map-options option-label="name" emit-value option-value="_id" @input="cargosOpt(form.area)" @filter="filterAreas" error-message="Requerido" :error="$v.form.area.$error" @blur="$v.form.area.$touch()">
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
 
-                <div class="q-mt-sm text-h6">Selecciona un Cargo</div>
-                <div class="q-mt-sm text-subtitle1">Listado de Cargos</div>
-                <q-select filled v-model="form.cargo" :options="cargos" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
-                  :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
+              <div class="q-mt-sm text-h6">Selecciona un Cargo</div>
+              <div class="q-mt-sm text-subtitle1">Listado de Cargos</div>
+              <q-select filled v-model="form.cargo" use-input behavior="menu" input-debounce="0" :options="cargos" map-options option-label="name" emit-value option-value="_id" @filter="filterCharges" error-message="Requerido" :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()">
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
 
               <div class="text-h5 text-bold">Creacion de categorias</div>
               <div class="q-mt-md text-subtitle1">Nombre de categoria</div>
-              <q-input filled v-model="form.nombre" placeholder="Ingresa el nombre de la categoria"
-               error-message="Requerido" :error="$v.form.nombre.$error" @blur="$v.form.nombre.$touch()"/>
+              <q-input filled v-model="form.nombre" placeholder="Ingresa el nombre de la categoria" error-message="Requerido" :error="$v.form.nombre.$error" @blur="$v.form.nombre.$touch()"/>
 
-                <div class="q-pa-md column items-center justify-center">
-                  <q-btn color="primary" text-color="white" label="Crear nueva categoria" @click="guardar_categoria()" style="width:40%" />
-                </div>
+              <div class="q-pa-md column items-center justify-center">
+                <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nueva categoria" @click="guardar_categoria()" style="width:40%" />
+              </div>
             </q-card>
             <q-card flat style="width:100%">
-              <div class="q-mt-md text-h5 text-bold">Categorias</div>
               <Tabla titulo="Listado de Categorias" ref="latabla3" :editarBtn="false" :columns="column" route="categorias" :btnNew="false" />
             </q-card>
           </div>
@@ -54,9 +73,12 @@ export default {
       user: {},
       form: {},
       departamentos: [],
+      departamentos2: [],
       lista: {},
       areas: [],
+      areas2: [],
       cargos: [],
+      cargos2: [],
       column: [
         { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' },
         { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'left' },
@@ -119,6 +141,23 @@ export default {
       this.$api.get('departments/' + this.user.empresa).then(res => {
         if (res) {
           this.departamentos = res
+          this.departamentos2 = [...this.departamentos]
+        }
+      })
+    },
+    areasOpt (id) {
+      this.$api.get('areas/' + id).then(res => {
+        if (res) {
+          this.areas = res
+          this.areas2 = [...this.areas]
+        }
+      })
+    },
+    cargosOpt (id) {
+      this.$api.get('cargos/' + id).then(res => {
+        if (res) {
+          this.cargos = res
+          this.cargos2 = [...this.cargos]
         }
       })
     },
@@ -129,20 +168,36 @@ export default {
         }
       })
     },
-    areasOpt (id) {
-      this.$api.get('areas/' + id).then(res => {
-        if (res) {
-          this.areas = res
-        }
-      })
+    filterDepartments (val, update) {
+      if (val === '') {
+        update(() => { this.departamentos = this.departamentos2 })
+        return
+      }
+      update(() => { this.departamentos = this.departamentos2.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
     },
-    cargosOpt (id) {
-      this.$api.get('cargos/' + id).then(res => {
-        if (res) {
-          this.cargos = res
-        }
-      })
+    filterAreas (val, update) {
+      if (val === '') {
+        update(() => { this.areas = this.areas2 })
+        return
+      }
+      update(() => { this.areas = this.areas2.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
+    },
+    filterCharges (val, update) {
+      if (val === '') {
+        update(() => { this.cargos = this.cargos2 })
+        return
+      }
+      update(() => { this.cargos = this.cargos2.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
     }
   }
 }
 </script>
+
+<style scoped lang="scss">
+.bordes {
+  border-right: 2px solid $grey-6;
+  border-left: 2px solid $grey-6;
+  border-bottom: 2px solid $grey-6;
+  margin-left: 2px;
+}
+</style>

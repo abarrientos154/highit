@@ -110,7 +110,7 @@
                 <div class="text-grey-7">{{route === 'companys' ? ver.postalCode : rol === 2 ? ver.tipo_usuario : 'Highit'}}</div>
               </div>
               <div class="col">
-                <div class="text-bold text-grey-7">Nº de identificaion</div>
+                <div class="text-bold text-grey-7">Nº de documento</div>
                 <div class="text-grey-7">{{route === 'companys' ? ver.numIdet : ver.Dni}}</div>
               </div>
             </div>

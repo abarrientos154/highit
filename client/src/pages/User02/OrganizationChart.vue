@@ -15,7 +15,7 @@
             <q-input outlined filled v-model="formDepartment.name" placeholder="Ingresa el nombre de tu departamento" error-message="Este campo es requerido" :error="$v.formDepartment.name.$error" @blur="$v.formDepartment.name.$touch()"/>
           </div>
           <div class="column items-center">
-            <q-btn color="primary q-py-xs" text-color="white" label="Crear nuevo departamento" style="width: 90%; border-radius: 5px;" @click="save(1)" no-caps/>
+            <q-btn color="primary" class="q-py-xs" text-color="white" label="Crear nuevo departamento" style="width: 90%; border-radius: 5px;" @click="save(1)" no-caps/>
           </div>
         </div>
         <div>
@@ -42,7 +42,7 @@
             <q-input outlined filled v-model="formArea.name" placeholder="Ingresa el nombre de tu nueva area" error-message="Este campo es requerido" :error="$v.formArea.name.$error" @blur="$v.formArea.name.$touch()"/>
           </div>
           <div class="column items-center">
-            <q-btn color="primary q-py-xs" text-color="white" label="Crear nueva area" style="width: 90%; border-radius: 5px;" @click="save(2)" no-caps/>
+            <q-btn color="primary" class="q-py-xs" text-color="white" label="Crear nueva area" style="width: 90%; border-radius: 5px;" @click="save(2)" no-caps/>
           </div>
         </div>
         <div>
@@ -54,7 +54,7 @@
           <div class="text-bold text-h6">Creación de cargos</div>
           <div>
             <div class="text-grey-8">Selecciona el area disponible</div>
-            <q-select filled v-model="formCharge.area_id" use-input behavior="menu" input-debounce="0" :options="areas2" map-options option-label="name" emit-value option-value="_id" @filter="filterAreas" @input="$refs.listaAreas.selectChange(formArea.department_id) && $refs.listaAreas.filterData()" :error="$v.formCharge.area_id.$error" @blur="$v.formCharge.area_id.$touch()">
+            <q-select filled v-model="formCharge.area_id" use-input behavior="menu" input-debounce="0" :options="areas2" map-options option-label="name" emit-value option-value="_id" @filter="filterAreas" @input="$refs.listaCargos.selectChange(formCharge.area_id) && $refs.listaCargos.filterData()" :error="$v.formCharge.area_id.$error" @blur="$v.formCharge.area_id.$touch()">
               <template v-slot:no-option>
                 <q-item>
                   <q-item-section class="text-grey">
@@ -69,7 +69,7 @@
             <q-input outlined filled v-model="formCharge.name" placeholder="Ingresa el nombre del cargo" error-message="Este campo es requerido" :error="$v.formCharge.name.$error" @blur="$v.formCharge.name.$touch()"/>
           </div>
           <div class="column items-center">
-            <q-btn color="primary q-py-xs" text-color="white" label="Crear nuevo cargo" style="width: 90%; border-radius: 5px;" @click="save(3)" no-caps/>
+            <q-btn color="primary" class="q-py-xs" text-color="white" label="Crear nuevo cargo" style="width: 90%; border-radius: 5px;" @click="save(3)" no-caps/>
           </div>
         </div>
         <div>
@@ -122,27 +122,17 @@ export default {
   methods: {
     filterDepartments (val, update) {
       if (val === '') {
-        update(() => {
-          this.departamentos2 = this.departamentos
-        })
+        update(() => { this.departamentos2 = this.departamentos })
         return
       }
-      update(() => {
-        const needle = val.toLowerCase()
-        this.departamentos2 = this.departamentos.filter(v => v.name.toLowerCase().indexOf(needle) > -1)
-      })
+      update(() => { this.departamentos2 = this.departamentos.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
     },
     filterAreas (val, update) {
       if (val === '') {
-        update(() => {
-          this.areas2 = this.areas
-        })
+        update(() => { this.areas2 = this.areas })
         return
       }
-      update(() => {
-        const needle = val.toLowerCase()
-        this.areas2 = this.areas.filter(v => v.name.toLowerCase().indexOf(needle) > -1)
-      })
+      update(() => { this.areas2 = this.areas.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
     },
     userLogueado () {
       this.$api.get('user_logueado').then(res => {
