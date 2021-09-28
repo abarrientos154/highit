@@ -17,11 +17,11 @@ export default {
       empresas: [],
       listado: false,
       column: [
-        { name: 'Profile', label: 'Perfil', field: 'Profile', filter_type: 'false', align: 'center' },
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
         { name: 'email', field: 'email', label: 'Correo', align: 'left' },
         { name: 'phone', field: 'phone', label: 'Telefono', align: 'left' },
         { name: 'contrato', field: 'contrato', label: 'Contrato', align: 'left' },
+        { name: 'Profile', label: 'Perfil', field: 'Profile', filter_type: 'false', align: 'center' },
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
       ]
     }

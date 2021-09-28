@@ -20,7 +20,7 @@
                 </div>
             </q-card>
             <q-card style="width:100%">
-              <Tabla v-if="listado" no-data-label="sin registros" titulo="Listado de contratos" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :route_id="rol === 2 ? user.empresa : null" :btnNew="false" />
+              <Tabla v-if="listado" no-data-label="Sin registros" titulo="Listado de contratos" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :route_id="rol === 2 ? user.empresa : null" :btnNew="false" />
             </q-card>
           </div>
           <div class="q-pa-md">
@@ -84,9 +84,9 @@ export default {
         { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' }
       ],
       column2: [
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' },
         { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'center' },
-        { name: 'tiempo', field: 'tiempo', label: 'Tiempo', align: 'right', filter_type: 'false', text: 'end' }
+        { name: 'tiempo', field: 'tiempo', label: 'Tiempo', align: 'right', filter_type: 'false', text: 'end' },
+        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
       ],
       lista: [],
       lista2: [],
