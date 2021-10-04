@@ -211,6 +211,8 @@ export default {
       this.solicitud.department = this.departamentos.filter(v => v._id === itm.categoria.departamento)[0].name
       this.solicitud.contrato = this.contratos.filter(v => v._id === this.company.typeContract)[0].contrato
       this.solicitud.hitos = this.hitos.filter(v => v.solicitud_id === itm._id)
+      this.form = {}
+      this.$v.form.$reset()
       this.slt = !this.slt
     },
     saveHito () {

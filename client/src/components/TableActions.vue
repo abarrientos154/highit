@@ -25,8 +25,8 @@
                   <q-btn v-if="verBtn" icon="visibility" size="sm" class="q-mx-sm" flat dense @click="verItem(props.row)"/>
                   <q-btn v-if="editarBtn" icon="edit" size="sm" class="q-mx-sm" flat dense @click="editar(props.row._id)" />
                   <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-mx-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
-                  <q-btn v-if="crearBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" label="Crear solicitud" @click="mostrardialogo(props.row._id, 1)" no-caps/>
-                  <q-btn v-if="asignarBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" label="Asignar equipo" @click="mostrardialogo(props.row._id, 2)" no-caps/>
+                  <NewSlt v-if="crearBtn" :equipment="props.row._id"/>
+                  <q-btn v-if="asignarBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" label="Asignar equipo" @click="mostrardialogo(props.row._id)" no-caps/>
                 </div>
                 <div v-else-if="item.name === 'Profile'" class="row justify-center">
                   <q-avatar>
@@ -123,8 +123,10 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import NewSlt from 'components/NewSolicitud'
 import env from '../env'
 export default {
+  components: { NewSlt },
   props: {
     titulo: {
       type: String,
@@ -348,12 +350,8 @@ export default {
         })
       }
     },
-    mostrardialogo (id, idx) {
-      if (idx === 1) {
-        this.$emit('formSlt', id)
-      } else {
-        this.$emit('asignarEquipo', id)
-      }
+    mostrardialogo (id) {
+      this.$emit('asignarEquipo', id)
     },
     async getOptions () {
       await this.$api.get(this.route === 'sla' ? this.rol === 1 ? 'contratos' : 'contratos/' + this.user.empresa : this.rol === 1 ? 'companys' : 'empresas_user').then(res => {

@@ -74,6 +74,10 @@ import { required } from 'vuelidate/lib/validators'
 import * as moment from 'moment'
 export default {
   props: {
+    equipment: {
+      type: String,
+      default: null
+    }
   },
   data () {
     return {
@@ -158,6 +162,9 @@ export default {
         this.form.user_id = this.user._id
         this.form.empresa_id = this.user.empresa
         this.form.company_id = this.user.company
+        if (this.equipment) {
+          this.form.equipment = this.equipment
+        }
         this.form.expiration = false
         this.form.status = 0
         this.form.date = moment().format('YYYY-MM-DD')
