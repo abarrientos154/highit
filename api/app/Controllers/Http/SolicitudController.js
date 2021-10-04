@@ -35,9 +35,12 @@ class SolicitudController {
   }
   
   async solicitudesCliente ({ params, request, response, view }) {
-    let dat = request.all()
-    let solicitudes = (await Solicitud.query().where({ status: dat.status, user_id: params.id }).fetch()).toJSON()
-    response.send(solicitudes)
+    let solicitudes = (await Solicitud.query().where({ user_id: params.id }).with('empresa').with('consultor').with('equipo').with('prioridad').with('categoria').fetch()).toJSON()
+    let statuSlts = []
+    for (let i = 0; i < 6; i++) {
+      statuSlts.push(solicitudes.filter(v => v.status === i))
+    }
+    response.send(statuSlts)
   }
   
   async solicitudesConsultor({ params, request, response, view }) {
@@ -53,13 +56,24 @@ class SolicitudController {
 
   async solicitudesByConsultor ({ request, response, view, auth }) {
     const user = (await auth.getUser()).toJSON()
-    let dat = request.all()
-    let solicitudes = []
+    let solicitudes = [[], [], [], [], [], []]
     let categorias = (await Category.query().where({ departamento: user.departamento, area: user.area, cargo: user.cargo }).fetch()).toJSON()
     for (var i of categorias) {
-      let slts = (await Solicitud.query().where({ status: dat.status, category: i._id }).fetch()).toJSON()
+      let slts = (await Solicitud.query().where({ category: i._id }).with('empresa').with('consultor').with('equipo').with('prioridad').with('categoria').fetch()).toJSON()
       for (var j of slts) {
-        solicitudes.push(j)
+        if (j.status === 0) {
+          solicitudes[0].push(j)
+        } else if (j.status === 1 && j.consultor_id === user._id) {
+          solicitudes[1].push(j)
+        } else if (j.status === 2 && j.consultor_id === user._id) {
+          solicitudes[2].push(j)
+        } else if (j.status === 3 && j.consultor_id === user._id) {
+          solicitudes[3].push(j)
+        } else if (j.status === 4 && j.consultor_id === user._id) {
+          solicitudes[4].push(j)
+        } else if (j.status === 5 && j.consultor_id === user._id) {
+          solicitudes[5].push(j)
+        }
       }
     }
     response.send(solicitudes)
