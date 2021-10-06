@@ -65,21 +65,23 @@
                 <q-select filled v-model="form.roles" :options="roles" map-options option-label="name" emit-value option-value="value"
                 :error="$v.form.roles.$error" @blur="$v.form.roles.$touch()" />
 
-                  <div v-if="form.roles === 3">
+                  <div v-if="form.roles === 3 || form.roles === 5">
                     <div class="q-mt-sm text-h6">Selecciona un Departamento</div>
                     <div class="q-mt-sm text-subtitle1">Listado de Departamentos</div>
                     <q-select @input="areasOpt(form.departamento)" filled v-model="form.departamento" :options="departamentos" map-options option-label="name" emit-value option-value="_id"
                     :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()" />
 
-                    <div class="q-mt-sm text-h6">Selecciona un Area</div>
-                    <div class="q-mt-sm text-subtitle1">Listado de Areas</div>
-                    <q-select @input="cargosOpt(form.area)" filled v-model="form.area" :options="areas" map-options option-label="name" emit-value option-value="_id"
-                      :error="$v.form.area.$error" @blur="$v.form.area.$touch()" />
+                    <div v-if="form.roles === 3">
+                      <div class="q-mt-sm text-h6">Selecciona un Area</div>
+                      <div class="q-mt-sm text-subtitle1">Listado de Areas</div>
+                      <q-select @input="cargosOpt(form.area)" filled v-model="form.area" :options="areas" map-options option-label="name" emit-value option-value="_id"
+                        :error="$v.form.area.$error" @blur="$v.form.area.$touch()" />
 
-                    <div class="q-mt-sm text-h6">Selecciona un Cargo</div>
-                    <div class="q-mt-sm text-subtitle1">Listado de Cargos</div>
-                    <q-select filled v-model="form.cargo" :options="cargos" map-options option-label="name" emit-value option-value="_id"
-                      :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
+                      <div class="q-mt-sm text-h6">Selecciona un Cargo</div>
+                      <div class="q-mt-sm text-subtitle1">Listado de Cargos</div>
+                      <q-select filled v-model="form.cargo" :options="cargos" map-options option-label="name" emit-value option-value="_id"
+                        :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
+                    </div>
                   </div>
 
                 <div v-if="form.roles === 4 || form.roles === 6">
@@ -183,7 +185,7 @@ export default {
       roles: { required },
       departamento: {
         required: requiredIf(function () {
-          return this.form.roles === 3
+          return this.form.roles === 3 || this.form.roles === 5
         })
       },
       cargo: {

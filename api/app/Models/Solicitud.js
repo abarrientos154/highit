@@ -21,6 +21,10 @@ class Solicitud extends Model {
       return this.hasOne("App/Models/Company", "empresa_id", "_id")
     }
 
+    cliente () {
+      return this.hasOne("App/Models/User", "user_id", "_id")
+    }
+
     consultor () {
       return this.hasOne("App/Models/User", "consultor_id", "_id")
     }

@@ -62,7 +62,93 @@
       </q-card>
 
       <q-card v-else class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
-        <div class="q-pa-lg full-width">
+        <div v-if="route === 'solicitudes'" class="full-width">
+          <div class="row q-px-lg items-center justify-between full-width">
+            <div>
+              <div v-if="ver.equipo" class="row">
+                <div class="text-bold q-mr-xs text-grey-7">Equipo: </div>
+                <div class="text-grey-7">{{ver.equipo ? ver.equipo.name : ''}}</div>
+              </div>
+            </div>
+            <div class="row">
+              <div v-if="ver.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+              <div v-if="ver.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+              <div :class="`text-caption q-px-lg text-center text-white bg-${ver.color} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{ver.prioridad}}<br>Estado: {{ver.status === 0 ? 'Sin iniciar' : ver.status === 1 ? 'Ejecución' : ver.status === 2 ? 'En espera' : ver.status === 3 ? 'Checkout' : ver.status === 4 ? 'Confirmar' : ver.status === 5 ? 'Finalizado' : ''}}</div>
+            </div>
+          </div>
+          <div class="q-mb-lg q-mt-md">
+            <div class="text-center text-h6 text-bold">Datos solicitud</div>
+            <div class="text-center text-grey-8">Descripcion de la solicitud</div>
+          </div>
+          <div class="q-px-sm q-mb-md full-width">
+            <div class="row">
+              <q-avatar class="bg-secondary q-mx-sm q-my-md" size="170px">
+                <q-img :src="ver.empresa ? baseu + 'company_img/' + ver.empresa._id : 'noimg.png'" class="full-height"/>
+              </q-avatar>
+              <div class="q-px-sm q-py-md col column justify-between">
+                <div>
+                  <div class="text-subtitle1 text-bold">{{ver.empresa ? ver.empresa.name : 'Empresa'}}</div>
+                  <div>
+                    <div class="text-bold text-caption text-grey-7">Descripcion del servicio</div>
+                    <q-scroll-area style="height: 60px;">
+                      <div class="text-grey-7" style="font-size: 10px;">{{ver.description}}</div>
+                    </q-scroll-area>
+                  </div>
+                </div>
+                <div>
+                  <div class="row">
+                    <div class="text-bold q-mr-xs text-grey-7 text-caption">Fecha de solicitud:</div>
+                    <div class="text-grey-7 text-caption">{{ver.dateSlt}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
+                    <div class="text-grey-7 text-caption">{{ver.timeSlt}}hrs</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="q-px-sm q-mb-sm">
+              <div class="row justify-center q-mb-sm">
+                <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">Categoria:</div>
+                <div class="text-grey-7 text-subtitle1">{{ver.categoria}}</div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="text-bold text-grey-7">Cliente autor</div>
+                  <div class="text-grey-7">{{ver.cliente}}</div>
+                </div>
+                <div class="col">
+                  <div class="text-bold text-grey-7">Consultor asignado</div>
+                  <div class="text-grey-7">{{ver.consultor}}</div>
+                </div>
+              </div>
+              <div class="row" v-if="ver.status > 0">
+                <div class="col">
+                  <div class="text-bold text-grey-7">Fecha de inicio</div>
+                  <div class="text-grey-7">{{ver.dateBegin}}</div>
+                </div>
+                <div class="col">
+                  <div class="text-bold text-grey-7">Hora de inicio</div>
+                  <div class="text-grey-7">{{ver.timeBegin}}hr</div>
+                </div>
+              </div>
+              <div class="row" v-if="ver.status === 5">
+                <div class="col">
+                  <div class="text-bold text-grey-7">Fecha estimada de termino</div>
+                  <div class="text-grey-7">{{ver.dateEnd}}</div>
+                </div>
+                <div class="col">
+                  <div class="text-bold text-grey-7">Hora estimada de termino</div>
+                  <div class="text-grey-7">{{ver.timeEnd}}hr</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="full-width column items-center q-mb-lg">
+            <q-btn class="text-white q-py-xs" color="primary" label="Cerrar" @click="showModalEditar = !showModalEditar" style="width: 70%; border-radius: 5px;" no-caps/>
+          </div>
+        </div>
+        <div v-else class="q-pa-lg full-width">
           <div class="column items-center">
             <q-avatar size="170px">
               <q-img :src="baseu + `${route === 'companys' ? 'company_img/' : 'perfil_img/'}` + ver._id" class="full-height"/>

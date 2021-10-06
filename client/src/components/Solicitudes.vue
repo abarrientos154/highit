@@ -340,9 +340,6 @@
                 </template>
               </q-input>
             </div>
-            <!-- <div class="column items-center">
-              <q-btn class="text-white full-width q-py-xs" color="primary" label="Filtrar solicitudes" style="border-radius: 5px;" @click="filtrarSlts()" no-caps/>
-            </div> -->
           </div>
           <div class="col">
             <q-scroll-area style="height:275px;">

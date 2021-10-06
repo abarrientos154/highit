@@ -43,21 +43,23 @@
               <div class="q-mt-md text-subtitle1">Correo</div>
               <q-input v-model="form.email" filled type="email" placeholder="micorreo@highitservice.com" error-message="Requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
 
-              <div v-if="form.roles[0] === 3">
+              <div v-if="form.roles[0] === 3 || form.roles[0] === 5">
                   <div class="q-mt-sm text-h6">Selecciona un Departamento</div>
                   <div class="q-mt-sm text-subtitle1">Listado de Departamentos</div>
                   <q-select @input="areasOpt(form.departamento), form.area = null, form.cargo = null" filled v-model="form.departamento" :options="departamentos" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
                   :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()" />
 
-                  <div class="q-mt-sm text-h6">Selecciona un Area</div>
-                  <div class="q-mt-sm text-subtitle1">Listado de Areas</div>
-                  <q-select @input="cargosOpt(form.area), form.cargo = null" filled v-model="form.area" :options="areas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
-                    :error="$v.form.area.$error" @blur="$v.form.area.$touch()" />
+                  <div v-if="form.roles[0] === 3">
+                    <div class="q-mt-sm text-h6">Selecciona un Area</div>
+                    <div class="q-mt-sm text-subtitle1">Listado de Areas</div>
+                    <q-select @input="cargosOpt(form.area), form.cargo = null" filled v-model="form.area" :options="areas" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                      :error="$v.form.area.$error" @blur="$v.form.area.$touch()" />
 
-                  <div class="q-mt-sm text-h6">Selecciona un Cargo</div>
-                  <div class="q-mt-sm text-subtitle1">Listado de Cargos</div>
-                  <q-select filled v-model="form.cargo" :options="cargos" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
-                    :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
+                    <div class="q-mt-sm text-h6">Selecciona un Cargo</div>
+                    <div class="q-mt-sm text-subtitle1">Listado de Cargos</div>
+                    <q-select filled v-model="form.cargo" :options="cargos" map-options option-label="name" emit-value option-value="_id" placeholder="Empresa 01"
+                      :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
+                  </div>
                 </div>
 
               <div v-if="form.roles[0] === 4 || form.roles[0] === 6">
@@ -150,12 +152,12 @@ export default {
       name: { required },
       empresa: {
         required: requiredIf(function () {
-          return this.form.roles[0] === 4
+          return this.form.roles[0] === 4 || this.form.roles[0] === 6
         })
       },
       departamento: {
         required: requiredIf(function () {
-          return this.form.roles[0] === 3
+          return this.form.roles[0] === 3 || this.form.roles[0] === 5
         })
       },
       cargo: {
