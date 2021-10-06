@@ -407,6 +407,7 @@ export default {
       type: 0,
       slts: [],
       slts2: [],
+      slts3: [],
       gtn: false,
       val: false,
       fecha: null,
@@ -490,6 +491,7 @@ export default {
       this.val = false
       this.slts = [...slts]
       this.slts2 = [...this.slts]
+      this.slts3 = [...this.slts]
       this.gtn = !this.gtn
     },
     selecType () {
@@ -521,11 +523,7 @@ export default {
     filtrarSlts (idx) {
       const actividades = []
       if (idx === 1 && this.depart) {
-        if (!this.slts.length) {
-          this.slts = this.slts2
-          if (this.fecha) { this.validarFecha() }
-        }
-        for (const i of this.slts) {
+        for (const i of this.slts2) {
           for (const j of this.categorias.filter(v => v.departamento === this.depart)) {
             if (i.category === j._id) {
               actividades.push(i)
@@ -533,12 +531,10 @@ export default {
           }
         }
         this.slts = actividades
+        this.slts3 = [...this.slts]
+        if (this.fecha) { this.validarFecha() }
       } else if (idx === 2 && this.fecha) {
-        if (!this.slts.length) {
-          this.slts = this.slts2
-          if (this.depart) { this.filtrarSlts(1) }
-        }
-        for (const i of this.slts) {
+        for (const i of this.slts3) {
           if (this.type === 2) {
             if (moment(i.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(i.dateSlt).isSame(this.fecha.from) || moment(i.dateSlt).isSame(this.fecha.to)) {
               actividades.push(i)
