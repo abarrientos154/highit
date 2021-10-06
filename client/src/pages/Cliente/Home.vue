@@ -259,6 +259,7 @@ export default {
                 this.history = []
                 this.slt = false
                 this.getCompany()
+                this.$refs.lista.getSltUser()
               }
             })
             this.form = {}
