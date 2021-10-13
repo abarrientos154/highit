@@ -150,6 +150,8 @@ addPrefixToGroup(
     Route.post("register_hito", "HitoController.store")
     Route.get("hitos_by_company/:id", "HitoController.show")
 
+    Route.post("register_rating", "RatingController.store")
+
     Route.get("gestion", "ManageController.index")
   }).middleware("auth")
 );

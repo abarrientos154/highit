@@ -50,7 +50,7 @@ class SolicitudController {
   async solicitudesCliente ({ params, request, response, view }) {
     let solicitudes = (await Solicitud.query().where({ user_id: params.id }).with('empresa').with('consultor').with('equipo').with('prioridad').with('categoria').fetch()).toJSON()
     let statuSlts = []
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 7; i++) {
       statuSlts.push(solicitudes.filter(v => v.status === i))
     }
     response.send(statuSlts)
@@ -69,7 +69,7 @@ class SolicitudController {
 
   async solicitudesByConsultor ({ request, response, view, auth }) {
     const user = (await auth.getUser()).toJSON()
-    let solicitudes = [[], [], [], [], [], []]
+    let solicitudes = [[], [], [], [], [], [], []]
     let categorias = (await Category.query().where({ departamento: user.departamento, area: user.area, cargo: user.cargo }).fetch()).toJSON()
     for (var i of categorias) {
       let slts = (await Solicitud.query().where({ category: i._id }).with('empresa').with('consultor').with('equipo').with('prioridad').with('categoria').fetch()).toJSON()
@@ -87,6 +87,8 @@ class SolicitudController {
             solicitudes[4].push(j)
           } else if (j.status === 5) {
             solicitudes[5].push(j)
+          } else if (j.status === 6) {
+            solicitudes[6].push(j)
           }
         }
       }

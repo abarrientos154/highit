@@ -112,7 +112,7 @@
               </div>
             </q-list>
           </div>
-          <div class="q-px-sm q-mb-md" v-if="solicitud.status > 0 && solicitud.status < 4">
+          <div class="q-px-sm q-mb-md" v-if="(solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6">
             <div>
               <div class="text-caption text-grey-8">Cambia el estado de Solicitud</div>
               <q-select dense filled v-model="form.status" :options="solicitud.estados" map-options option-label="name" emit-value option-value="status" :error="$v.form.status.$error" @blur="$v.form.status.$touch()"/>
@@ -128,7 +128,7 @@
           </div>
         </div>
         <div class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 0 && solicitud.sltBegin === 0 ? 'Iniciar Atención' : solicitud.status > 0 && solicitud.status < 4 ? 'Cambiar estado' : 'Cerrar'" style="width: 70%; border-radius: 5px;" @click="solicitud.status === 0 && solicitud.sltBegin === 0 ? statusRequest(1) : solicitud.status > 0 && solicitud.status < 4 ? saveHito() : slt = !slt" no-caps/>
+          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 0 && solicitud.sltBegin === 0 ? 'Iniciar Atención' : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? 'Cambiar estado' : 'Cerrar'" style="width: 70%; border-radius: 5px;" @click="solicitud.status === 0 && solicitud.sltBegin === 0 ? statusRequest(1) : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? saveHito() : slt = !slt" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -248,7 +248,7 @@ export default {
       this.$api.put('status_solicitud/' + this.solicitud._id, status).then(res => {
         if (res) {
           this.$q.notify({
-            message: 'Solicitud aceptada',
+            message: 'Estado de solicitud actualizado',
             color: 'positive'
           })
           this.solicitud = { hitos: [] }

@@ -61,7 +61,7 @@
               </div>
               <div class="col" v-if="solicitud.consultor">
                 <div class="text-bold text-grey-7">Usuario asignado</div>
-                <div class="text-grey-7">{{solicitud.consultor ? solicitud.consultor.name + ' ' + solicitud.consultor.last_name : ''}}</div>
+                <div class="text-grey-7">{{solicitud.consultor ? solicitud.consultor.name + ' ' + solicitud.consultor.last_name  : ''}}</div>
               </div>
             </div>
             <div class="row">
@@ -113,7 +113,7 @@
               </div>
             </q-list>
           </div>
-          <div class="q-px-sm q-mb-md" v-if="solicitud.status === 4">
+          <div class="q-px-sm q-mb-md" v-if="action === 6">
             <div>
               <div class="text-caption text-grey-8">Nombre de hito</div>
               <q-input dense v-model="form.name" filled placeholder="Nombre del hito" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
@@ -122,10 +122,26 @@
               <div class="text-caption text-grey-8">Descripción del trabajo realizado</div>
               <q-input dense v-model="form.description" filled type="textarea" placeholder="Hasta 500 caracteres" error-message="Este campo es requerido" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
             </div>
+            <div class="full-width column items-center">
+              <q-btn class="text-white q-py-xs" color="primary" label="Reabrir" @click="saveHito()" style="width: 80%; border-radius: 5px;" no-caps/>
+            </div>
+          </div>
+          <div class="q-px-sm q-mb-md" v-if="action === 5">
+            <div class="column items-center q-gutter-y-md q-pb-lg">
+              <q-rating v-model="rating" size="3.5em" color="yellow" icon="star_border" icon-selected="star"/>
+              <q-input dense class="full-width" v-model="comment" filled type="textarea" placeholder="Comenta aquí..."/>
+            </div>
+            <div class="full-width column items-center">
+              <q-btn class="text-white q-py-xs" color="primary" label="Confirmar" @click="saveRating()" style="width: 80%; border-radius: 5px;" no-caps/>
+            </div>
           </div>
         </div>
-        <div class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 4 ? 'Confirmar finalizacion' : 'Cerrar'" @click="solicitud.status === 4 ? saveHito() : slt = !slt" style="width: 70%; border-radius: 5px;" no-caps/>
+        <div class="full-width row items-center q-px-lg q-mb-lg" v-if="solicitud.status === 4 && action === null">
+          <q-btn class="col text-white q-py-xs q-mr-lg" color="primary" label="Reabrir actividad" @click="optionStatus(6)" style="border-radius: 5px;" no-caps/>
+          <q-btn class="col text-white q-py-xs" color="primary" label="Confirmar finalizacion" @click="optionStatus(5)" style="border-radius: 5px;" no-caps/>
+        </div>
+        <div v-else-if="solicitud.status !== 4" class="full-width column items-center q-mb-lg">
+          <q-btn class="text-white q-py-xs" color="primary" label="Cerrar" @click="slt = !slt" style="width: 70%; border-radius: 5px;" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -151,6 +167,9 @@ export default {
       hitos: [],
       equipos: [],
       solicitud: { hitos: [] },
+      rating: 1,
+      comment: '',
+      action: null,
       slt: false,
       ver: false
     }
@@ -182,6 +201,7 @@ export default {
           this.getDepartamentos()
           this.getContratos()
           this.getHitos()
+          this.getEquipos()
         }
       })
     },
@@ -206,6 +226,16 @@ export default {
         }
       })
     },
+    getEquipos () {
+      this.$api.get('equipo_consultor').then(res => {
+        if (res) {
+          this.equipos = res
+          this.getSltUser()
+        }
+      })
+    },
+    getSltUser () {
+    },
     verSlt (itm) {
       this.solicitud = { ...itm }
       this.solicitud.department = this.departamentos.filter(v => v._id === itm.categoria.departamento)[0].name
@@ -213,11 +243,31 @@ export default {
       this.solicitud.hitos = this.hitos.filter(v => v.solicitud_id === itm._id)
       this.form = {}
       this.$v.form.$reset()
+      this.rating = 1
+      this.comment = ''
+      this.action = null
       this.slt = !this.slt
+    },
+    optionStatus (idx) {
+      this.action = idx
+    },
+    saveRating () {
+      const rating = {
+        number: this.rating,
+        comment: this.comment,
+        solicitud_id: this.solicitud._id,
+        consultor_id: this.solicitud.consultor_id,
+        cliente_id: this.user._id
+      }
+      this.$api.post('register_rating', rating).then(res => {
+        if (res) {
+          this.statusSlt()
+        }
+      })
     },
     saveHito () {
       this.$v.form.$touch()
-      this.form.status = 5
+      this.form.status = this.action
       if (!this.$v.form.$error) {
         this.form.date = moment().format('YYYY-MM-DD')
         this.form.time = moment().format('HH:mm')
@@ -225,34 +275,7 @@ export default {
         this.form.solicitud_id = this.solicitud._id
         this.$api.post('register_hito', this.form).then(res => {
           if (res) {
-            const horas = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'hours')
-            let minutos = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'minutes')
-            for (let j = 0; j < horas; j++) {
-              minutos = minutos - 60
-            }
-            const fin = {
-              status: this.form.status,
-              dateEnd: this.form.date,
-              timeEnd: this.form.time,
-              duration: horas + ':' + minutos
-            }
-            this.$api.put('status_solicitud/' + this.solicitud._id, fin).then(res => {
-              if (res) {
-                this.$q.notify({
-                  message: 'Solicitud finalizada',
-                  color: 'positive'
-                })
-                this.solicitud = { hitos: [] }
-                this.sltConfirm = []
-                this.sltEnd = []
-                this.history = []
-                this.slt = false
-                this.getCompany()
-                this.$refs.lista.getSltUser()
-              }
-            })
-            this.form = {}
-            this.$v.form.$reset()
+            this.statusSlt()
           }
         })
       } else {
@@ -261,6 +284,38 @@ export default {
           color: 'negative'
         })
       }
+    },
+    statusSlt () {
+      let update = {}
+      if (this.action === 5) {
+        const horas = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'hours')
+        let minutos = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'minutes')
+        for (let j = 0; j < horas; j++) {
+          minutos = minutos - 60
+        }
+        update = {
+          status: this.action,
+          dateEnd: moment().format('YYYY-MM-DD'),
+          timeEnd: moment().format('HH:mm'),
+          duration: horas + ':' + minutos
+        }
+      } else if (this.action === 6) {
+        update = { status: this.action }
+      }
+      this.$api.put('status_solicitud/' + this.solicitud._id, update).then(res => {
+        if (res) {
+          this.$q.notify({
+            message: 'Estado de solicitud actualizado',
+            color: 'positive'
+          })
+          this.solicitud = { hitos: [] }
+          this.slt = false
+          this.getCompany()
+          this.$refs.lista.getSltUser()
+        }
+      })
+      this.form = {}
+      this.$v.form.$reset()
     }
   }
 }
