@@ -3,6 +3,8 @@
 const Helpers = use('Helpers')
 const Area = use("App/Models/Area")
 const Charge = use("App/Models/Charge")
+const User = use("App/Models/User")
+const Categoria = use("App/Models/Categoria")
 const mkdirp = use('mkdirp')
 const { validate } = use("Validator")
 const fs = require('fs')
@@ -110,12 +112,18 @@ class AreaController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
-    const chargesByArea = (await Charge.query().where({area_id: params.id}).fetch()).toJSON()
-    for (let i of chargesByArea) {
-      (await Charge.find(i._id)).delete()
+    if (((await User.where({ area: params.id }).fetch()).toJSON()).length || ((await Categoria.where({ area: params.id }).fetch()).toJSON()).length) {
+      response.unprocessableEntity([{
+        message: 'Eliminación fallida, esta area esta en uso'
+      }])
+    } else {
+      const chargesByArea = (await Charge.query().where({area_id: params.id}).fetch()).toJSON()
+      for (let i of chargesByArea) {
+        (await Charge.find(i._id)).delete()
+      }
+      let eliminar = (await Area.find(params.id)).delete()
+      response.send(eliminar)
     }
-    let eliminar = (await Area.find(params.id)).delete()
-    response.send(eliminar)
   }
 }
 

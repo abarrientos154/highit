@@ -2,6 +2,8 @@
 
 const Helpers = use('Helpers')
 const Charge = use("App/Models/Charge")
+const User = use("App/Models/User")
+const Categoria = use("App/Models/Categoria")
 const mkdirp = use('mkdirp')
 const { validate } = use("Validator")
 const fs = require('fs')
@@ -109,8 +111,14 @@ class ChargeController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
-    let eliminar = (await Charge.find(params.id)).delete()
-    response.send(eliminar)
+    if (((await User.where({ cargo: params.id }).fetch()).toJSON()).length || ((await Categoria.where({ cargo: params.id }).fetch()).toJSON()).length) {
+      response.unprocessableEntity([{
+        message: 'Eliminación fallida, este cargo esta en uso'
+      }])
+    } else {
+      let eliminar = (await Charge.find(params.id)).delete()
+      response.send(eliminar)
+    }
   }
 }
 

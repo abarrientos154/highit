@@ -9,6 +9,9 @@
  */
 
  const Contrato = use("App/Models/Contrato")
+ const Sla = use("App/Models/Sla")
+ const Company = use("App/Models/Company")
+ const Solicitud = use("App/Models/Solicitud")
  const { validate } = use("Validator")
  const moment = require('moment')
 
@@ -128,8 +131,32 @@ class ContratoController {
    * @param {Response} ctx.response
    */
    async destroy ({ params, request, response }) {
-    let contrato = (await Contrato.find(params.id)).delete()
-    response.send(contrato)
+    if (((await Company.where({ typeContract: params.id }).fetch()).toJSON()).length) {
+      response.unprocessableEntity([{
+        message: 'Eliminación fallida, este contrato esta en uso'
+      }])
+    } else {
+      /* let eliminar = true
+      const slasByContrato = (await Sla.query().where({ contrato: params.id }).fetch()).toJSON()
+      for (let i of slasByContrato) {
+        if (((await Solicitud.where({ priority: i._id }).fetch()).toJSON()).length) {
+          eliminar = false
+        }
+      }
+      if (eliminar) {
+        for (let i of slasByContrato) { (await Sla.find(i._id)).delete() }
+        let contrato = (await Contrato.find(params.id)).delete()
+        response.send(contrato)
+      } else {
+        response.unprocessableEntity([{
+          message: 'Eliminación fallida, prioridades del contrato en uso'
+        }])
+      } */
+      const slasByContrato = (await Sla.query().where({ contrato: params.id }).fetch()).toJSON()
+      for (let i of slasByContrato) { (await Sla.find(i._id)).delete() }
+      let contrato = (await Contrato.find(params.id)).delete()
+      response.send(contrato)
+    }
   }
 }
 

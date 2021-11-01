@@ -8,6 +8,7 @@
  * Resourceful controller for interacting with categorias
  */
  const Categoria = use("App/Models/Categoria")
+ const Solicitud = use("App/Models/Solicitud")
  const { validate } = use("Validator")
  const moment = require('moment')
 
@@ -111,6 +112,14 @@ class CategoriaController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    if (((await Solicitud.where({ category: params.id }).fetch()).toJSON()).length) {
+      response.unprocessableEntity([{
+        message: 'Eliminación fallida, esta categoria esta en uso'
+      }])
+    } else {
+      let eliminar = (await Categoria.find(params.id)).delete()
+      response.send(eliminar)
+    }
   }
 }
 

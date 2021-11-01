@@ -11,13 +11,18 @@
           <div class="column q-pa-md items-center justify-center">
             <q-card flat style="width:100%">
               <div class="text-h5 text-bold">Creación de contratos</div>
-              <div class="q-mt-md text-subtitle1">Introduzca el nombre del contrato</div>
-              <q-input filled v-model="form.contrato" label="Nombre del contrato"
-               error-message="Requerido" :error="$v.form.contrato.$error" @blur="$v.form.contrato.$touch()"
-               />
-                <div class="q-pa-md column items-center justify-center">
-                  <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nuevo contrato" @click="guardar_contrato()" style="width:40%" />
-                </div>
+              <div>
+                <div class="q-mt-md text-subtitle1">Introduzca el nombre del contrato</div>
+                <q-input filled v-model="form.contrato" label="Nombre del contrato" error-message="Requerido" :error="$v.form.contrato.$error" @blur="$v.form.contrato.$touch()"/>
+              </div>
+              <div>
+                <div class="q-mt-md text-subtitle1">Costo por usuario</div>
+                <q-input type="number" filled v-model.number="form.costo" :rules="[ v => v > 0 ]" error-message="Requerido" :error="$v.form.costo.$error" @blur="$v.form.costo.$touch()"/>
+              </div>
+
+              <div class="q-pa-md column items-center justify-center">
+                <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nuevo contrato" @click="guardar_contrato()" style="width:40%" />
+              </div>
             </q-card>
             <q-card style="width:100%">
               <Tabla v-if="listado" no-data-label="Sin registros" titulo="Listado de contratos" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :route_id="rol === 2 ? user.empresa : null" :btnNew="false" />
@@ -40,7 +45,7 @@
             error-message="Requerido" :error="$v.form2.nombre.$error" @blur="$v.form2.nombre.$touch()"
             />
             <div class="row">
-              <div class="colum">
+              <div>
                 <div class="q-mt-md text-subtitle1">Tiempo de atención acordado</div>
                 <div class="row">
                   <q-input type="number" filled v-model.number="form2.tiempo" min="1" :rules="[ v => v >= 1 ]" error-message="Requerido" :error="$v.form2.tiempo.$error" @blur="$v.form2.tiempo.$touch()" style="width: 120px"/>
@@ -48,7 +53,7 @@
                 </div>
               </div>
               <q-space />
-              <div class="colum">
+              <div>
                 <div class="q-mt-md text-subtitle1">Seleccione el color</div>
                 <q-select filled v-model="color" :options="options" style="width:170px" error-message="Requerido" :error="$v.color.$error" @blur="$v.color.$touch()"/>
               </div>
@@ -96,7 +101,8 @@ export default {
   },
   validations: {
     form: {
-      contrato: { required }
+      contrato: { required },
+      costo: { required }
     },
     form2: {
       contrato: { required },

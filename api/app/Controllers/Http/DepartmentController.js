@@ -4,6 +4,8 @@ const Helpers = use('Helpers')
 const Department = use("App/Models/Department")
 const Area = use("App/Models/Area")
 const Charge = use("App/Models/Charge")
+const User = use("App/Models/User")
+const Categoria = use("App/Models/Categoria")
 // const mkdirp = use('mkdirp')
 const { validate } = use("Validator")
 // const fs = require('fs')
@@ -114,16 +116,22 @@ class DepartmentController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
-    const areasByDepartment = (await Area.query().where({department_id: params.id}).fetch()).toJSON()
-    for (let i of areasByDepartment) {
-      const chargesByArea = (await Charge.query().where({area_id: i._id}).fetch()).toJSON()
-      for (let j of chargesByArea) {
-        (await Charge.find(j._id)).delete()
+    if (((await User.where({ departamento: params.id }).fetch()).toJSON()).length || ((await Categoria.where({ departamento: params.id }).fetch()).toJSON()).length) {
+      response.unprocessableEntity([{
+        message: 'Eliminación fallida, este departamento esta en uso'
+      }])
+    } else {
+      const areasByDepartment = (await Area.query().where({department_id: params.id}).fetch()).toJSON()
+      for (let i of areasByDepartment) {
+        const chargesByArea = (await Charge.query().where({area_id: i._id}).fetch()).toJSON()
+        for (let j of chargesByArea) {
+          (await Charge.find(j._id)).delete()
+        }
+        (await Area.find(i._id)).delete()
       }
-      (await Area.find(i._id)).delete()
+      let eliminar = (await Department.find(params.id)).delete()
+      response.send(eliminar)
     }
-    let eliminar = (await Department.find(params.id)).delete()
-    response.send(eliminar)
   }
 }
 

@@ -61,6 +61,10 @@
               </template>
           </q-input>
         </div>
+        <div>
+          <div>Numero de usuarios</div>
+          <q-input type="number" outlined filled v-model.number="form.users" placeholder="Cantidad de usuarios de la empresa" :rules="[ v => v > 0 ]" error-message="Requerido" :error="$v.form.users.$error" @blur="$v.form.users.$touch()"/>
+        </div>
       </q-list>
     </div>
     <div class="q-px-md q-mb-lg">
@@ -161,6 +165,7 @@ export default {
       typeContract: { required },
       dateBegin: { required },
       dateEnd: { required },
+      users: { required },
       direction: { required },
       postalCode: { required },
       email: { required, email },

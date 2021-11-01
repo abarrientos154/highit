@@ -8,6 +8,7 @@
  * Resourceful controller for interacting with equipos
  */
  const Equipo = use("App/Models/Equipo")
+ const Solicitud = use("App/Models/Solicitud")
  const { validate } = use("Validator")
 
 class EquipoController {
@@ -126,8 +127,14 @@ class EquipoController {
    * @param {Response} ctx.response
    */
    async destroy ({ params, request, response }) {
-    let datos = (await Equipo.find(params.id)).delete()
-    response.send(datos)
+    if (((await Solicitud.where({ equipment: params.id }).fetch()).toJSON()).length) {
+      response.unprocessableEntity([{
+        message: 'Eliminación fallida, este equipo esta en uso'
+      }])
+    } else {
+      let datos = (await Equipo.find(params.id)).delete()
+      response.send(datos)
+    }
   }
 }
 

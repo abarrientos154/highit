@@ -8,6 +8,7 @@
  * Resourceful controller for interacting with slas
  */
  const Sla = use("App/Models/Sla")
+ const Solicitud = use("App/Models/Solicitud")
  const { validate } = use("Validator")
 const Request = require('@adonisjs/framework/src/Request')
  const moment = require('moment')
@@ -154,8 +155,14 @@ class SlaController {
    * @param {Response} ctx.response
    */
    async destroy ({ params, request, response }) {
-    let sla = (await Sla.find(params.id)).delete()
-    response.send(sla)
+    if (((await Solicitud.where({ priority: params.id }).fetch()).toJSON()).length) {
+      response.unprocessableEntity([{
+        message: 'Eliminación fallida, esta prioridad esta en uso'
+      }])
+    } else {
+      let sla = (await Sla.find(params.id)).delete()
+      response.send(sla)
+    }
   }
 }
 
