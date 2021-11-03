@@ -170,6 +170,11 @@ class UserController {
     const user = (await auth.getUser()).toJSON()
     response.send(user)
   }
+  
+  async userEmail({ params, response }) {
+    const user = (await User.query().where({email: params.email}).with('empresa_user').fetch()).toJSON()
+    response.send(user)
+  }
 
   async userInfo({ request, response, auth }) {
     const user = (await auth.getUser()).toJSON()

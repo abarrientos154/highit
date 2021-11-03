@@ -28,7 +28,7 @@
               <Tabla v-if="listado" no-data-label="Sin registros" titulo="Listado de contratos" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :route_id="rol === 2 ? user.empresa : null" :btnNew="false" />
             </q-card>
           </div>
-          <div class="q-pa-md">
+          <div class="q-pa-md" v-if="rol !== 1">
             <div class="q-mt-md text-h5 text-bold">Selecciona el contrato</div>
             <div class="q-mt-md text-subtitle1">Selecciona el contrato para definir prioridad</div>
             <q-select filled v-model="form2.contrato" use-input behavior="menu" input-debounce="0" :options="lista" map-options option-label="contrato" emit-value option-value="_id" @filter="filterFn" :error="$v.form2.contrato.$error" @blur="$v.form2.contrato.$touch()">
@@ -40,7 +40,7 @@
                 </q-item>
               </template>
             </q-select>
-          <div class="q-mt-md text-subtitle1">Definir prioridad</div>
+            <div class="q-mt-md text-subtitle1">Definir prioridad</div>
             <q-input filled v-model="form2.nombre" label="Nombre de la prioridad"
             error-message="Requerido" :error="$v.form2.nombre.$error" @blur="$v.form2.nombre.$touch()"
             />
@@ -139,10 +139,12 @@ export default {
               message: 'Contrato Guardado con Exito',
               color: 'positive'
             })
-            this.form.contrato = ''
-            this.$v.form.contrato.$reset()
+            this.form = {}
+            this.$v.form.$reset()
             this.$refs.latabla.getRecord()
-            this.$refs.latabla2.getOptions()
+            if (this.rol !== 1) {
+              this.$refs.latabla2.getOptions()
+            }
             this.obtener_contratos()
           }
         })

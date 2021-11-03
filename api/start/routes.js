@@ -37,6 +37,7 @@ addPrefixToGroup(
   Route.group(() => {
     // Insertar rutas sin protección de autenticación aquí
     Route.post("login", "UserController.login");
+    Route.get("user_email/:email", "UserController.userEmail")
     Route.post("update_client", "UserController.updateClient")
     Route.get("validate_email/:email", "UserController.validateEmail")
     Route.get("email_send_app/:email", "UserController.recuperacionapp")
@@ -137,6 +138,7 @@ addPrefixToGroup(
     Route.get("company/:id", "CompanyController.show")
     Route.post("register_company", "CompanyController.store")
     Route.put("update_company/:id", "CompanyController.update")
+    Route.put("update_enable/:id", "CompanyController.updateEnable")
     Route.delete("companys/:id", "CompanyController.destroy")
 
     Route.get("solicitudes_cliente/:id", "SolicitudController.solicitudesCliente")

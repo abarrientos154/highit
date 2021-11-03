@@ -161,6 +161,12 @@ class CompanyController {
     }
   }
 
+  async updateEnable ({ params, response, request }) {
+    let body = request.all()
+    let modificar = await Company.where({_id: params.id}).update(body)
+    response.send(modificar)
+  }
+
   /**
    * Delete a upload with id.
    * DELETE uploads/:id

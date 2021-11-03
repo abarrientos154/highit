@@ -27,6 +27,7 @@
                   <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-mx-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
                   <NewSlt v-if="crearBtn" :equipment="props.row._id"/>
                   <q-btn v-if="asignarBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" label="Asignar equipo" @click="mostrardialogo(props.row._id)" no-caps/>
+                  <q-toggle v-if="habilitarBtn" v-model="props.row.enable" @input="enable(props.row)" color="positive" checked-icon="lock_open" unchecked-icon="lock"/>
                 </div>
                 <div v-else-if="item.name === 'Profile'" class="row justify-center">
                   <q-avatar>
@@ -257,6 +258,10 @@ export default {
       type: Boolean,
       default: true
     },
+    habilitarBtn: {
+      type: Boolean,
+      default: false
+    },
     selectFlt: {
       type: Boolean,
       default: true
@@ -465,6 +470,34 @@ export default {
       } else {
         this.flt = false
       }
+    },
+    enable (itm) {
+      this.$q.dialog({
+        title: '¡Confirmación!',
+        message: `esta seguro que desea ${itm.enable ? 'habilitar' : 'deshabilitar'} este registro.`,
+        cancel: {
+          flat: true,
+          label: 'Cancelar'
+        },
+        ok: {
+          label: 'Si',
+          flat: true
+        }
+      }).onOk(() => {
+        this.$api.put('update_enable/' + itm._id, { enable: itm.enable }).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: `${itm.enable ? 'Habilitado' : 'Deshabilitado'} Correctamente`,
+              color: 'positive'
+            })
+            this.getRecord()
+          }
+        })
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
     }
   }
 }

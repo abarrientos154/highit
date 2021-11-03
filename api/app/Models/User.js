@@ -106,6 +106,10 @@ class User extends Model {
     return this.hasOne("App/Models/Department", "departamento", "_id")
   }
 
+  empresa_user () {
+    return this.hasOne("App/Models/Company", "empresa", "_id")
+  }
+
   paisUser () {
     return this.hasOne("App/Models/Pais", "country_id", "_id")
   }

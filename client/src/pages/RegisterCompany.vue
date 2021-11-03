@@ -260,6 +260,7 @@ export default {
           message: 'Guardando empresa...'
         })
         this.form.status = this.rol
+        this.form.enable = true
         if (this.rol === 2) {
           this.form.company_id = this.user.empresa
         }

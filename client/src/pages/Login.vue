@@ -1,17 +1,21 @@
 <template>
-  <div>
-    <div class="absolute-center column justify-center items-center bg-white" style="width:100%">
-      <div class="column q-pa-md">
-        <div class="row justify-center q-pt-xl">
-          <img src="logo.png" style="width:150px" />
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-ma-sm">
+  <div class="q-py-lg q-px-xl">
+    <q-img src="leaderboard highit desk 4.png" style="width: 100%"/>
+    <div class="column justify-center items-center full-width" :style="baseu ? '' : 'margin-top: -50px'">
+      <q-avatar v-if="baseu" class="q-mt-xl q-mb-lg" size="200px">
+        <img :src="baseu" style="height: 100%" />
+      </q-avatar>
+      <img v-else src="Desk 1.2.png" style="width:400px"/>
+      <div :style="baseu ? '' : 'margin-top: -75px'">
+        <div>
           <div class="q-pl-lg q-mb-sm text-caption"> Correo electronico</div>
-          <q-input dense autofocus filled type="email" v-model="form.email" placeholder="Correo electrónico" :error="$v.form.email.$error" error-message="Este campo es requerido" @blur="$v.form.email.$touch()" >
+          <q-input dense autofocus filled type="email" v-model="form.email" placeholder="Correo electrónico" @input="getUser_email()" :error="$v.form.email.$error" error-message="Este campo es requerido" @blur="$v.form.email.$touch()" >
             <template v-slot:before>
               <q-icon name="mail_outline" color= "secondary" />
             </template>
           </q-input>
+        </div>
+        <div class="q-mb-md">
           <div class="q-pl-lg q-mb-sm text-caption"> Contraseña</div>
           <q-input dense filled :type="isPwd ? 'password' : 'text'" v-model="form.password" placeholder="Contraseña" :error="$v.form.password.$error" error-message="Este campo es requerido" @blur="$v.form.password.$touch()" >
             <template v-slot:before>
@@ -19,33 +23,33 @@
             </template>
           </q-input>
         </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-ma-sm">
-          <q-btn class="full-width q-py-sm" color="primary" :loading="loading"
-            @click="onSubmit()" no-caps
-              >Ingresar
-              <template v-slot:loading>
-                <q-spinner-hourglass class="on-center" />
-                Loading...
-              </template>
-          </q-btn>
-        </div>
+        <q-btn class="full-width q-py-sm" color="primary" :loading="loading"
+          @click="onSubmit()" no-caps
+            >Ingresar
+            <template v-slot:loading>
+              <q-spinner-hourglass class="on-center" />
+              Loading...
+            </template>
+        </q-btn>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import env from '../env'
 import { mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
+      baseu: null,
       isPwd: true,
       loading: false,
       email: '',
       form: {},
-      user: {}
+      user: {},
+      userEmail: {}
     }
   },
   validations: {
@@ -56,9 +60,23 @@ export default {
   },
   methods: {
     ...mapMutations('generals', ['login']),
+    getUser_email () {
+      if (this.form.email && !this.$v.form.email.$error) {
+        this.$api.get('user_email/' + this.form.email).then(res => {
+          if (res) {
+            this.userEmail = res[0]
+            if (this.userEmail && this.userEmail.empresa_user) {
+              this.baseu = env.apiUrl + 'company_img/' + this.userEmail.empresa_user._id
+            } else {
+              this.baseu = null
+            }
+          }
+        })
+      }
+    },
     onSubmit () {
       this.$v.$touch()
-      if (!this.$v.form.$error) {
+      if (this.userEmail && this.userEmail.roles[0] !== 1 ? !this.$v.form.$error && this.userEmail.empresa_user.enable : !this.$v.form.$error) {
         this.loading = true
         this.$q.loading.show({
           message: 'Iniciando sesión'
@@ -88,6 +106,11 @@ export default {
           }
           this.$q.loading.hide()
           this.loading = false
+        })
+      } else if (!this.userEmail.empresa_user.enable) {
+        this.$q.notify({
+          message: 'La empresa a la que perteneces a sido deshabilitada',
+          color: 'negative'
         })
       }
     }
