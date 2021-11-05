@@ -52,18 +52,20 @@
         <div>
           <div>Fecha termino de contrato</div>
           <q-input outlined filled readonly v-model="form.dateEnd" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateEnd.$error" @blur="$v.form.dateEnd.$touch()" @click="$refs.qDateProxy2.show()">
-              <template v-slot:append>
-                <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy ref="qDateProxy2" transition-show="scale" transition-hide="scale">
-                    <q-date v-model="form.dateEnd" mask="DD/MM/YYYY"/>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy ref="qDateProxy2" transition-show="scale" transition-hide="scale">
+                  <q-date v-model="form.dateEnd" mask="DD/MM/YYYY"/>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
           </q-input>
         </div>
-        <div>
-          <div>Numero de usuarios</div>
-          <q-input type="number" outlined filled v-model.number="form.users" placeholder="Cantidad de usuarios de la empresa" :rules="[ v => v > 0 ]" error-message="Requerido" :error="$v.form.users.$error" @blur="$v.form.users.$touch()"/>
+        <div v-if="rol === 1">
+          <div>
+            <div>Numero de usuarios</div>
+            <q-input type="number" outlined filled v-model.number="form.users" placeholder="Cantidad de usuarios de la empresa" :rules="[ v => v > 0 ]" error-message="Requerido" :error="$v.form.users.$error" @blur="$v.form.users.$touch()"/>
+          </div>
         </div>
       </q-list>
     </div>
@@ -134,7 +136,7 @@
 </template>
 
 <script>
-import { required, email } from 'vuelidate/lib/validators'
+import { required, requiredIf, email } from 'vuelidate/lib/validators'
 import env from '../env'
 export default {
   data () {
@@ -165,7 +167,11 @@ export default {
       typeContract: { required },
       dateBegin: { required },
       dateEnd: { required },
-      users: { required },
+      users: {
+        required: requiredIf(function () {
+          return this.rol === 1
+        })
+      },
       direction: { required },
       postalCode: { required },
       email: { required, email },

@@ -1,29 +1,41 @@
 <template>
   <div>
-    <div class="row">
-      <q-separator vertical class="bg-grey-7"/>
-      <div class="q-pb-xl q-px-md q-pt-md column items-end col">
+    <div class="bordes q-mb-lg">
+      <div class="q-pa-md column items-end col">
         <div class="text-h3 text-bold">HOME PRINCIPAL</div>
         <div class="text-grey-8 text-h6">Pagina de inicio del sitio</div>
+        <q-select class="full-width" filled v-model="gestionar" :options="gestion" label="Selecciona los indicadores que deseas gestionar" multiple map-options emit-value option-label="name" @input="getActividades()">
+          <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
+            <q-item v-bind="itemProps" v-on="itemEvents">
+              <q-item-section avatar>
+                <q-icon :name="opt.icon" size="40px"/>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label v-html="opt.name" ></q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-checkbox :value="selected" @input="toggleOption(opt)" />
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
       </div>
-      <q-separator vertical class="bg-grey-7"/>
     </div>
-    <q-separator class="bg-grey-7 q-mb-lg"/>
     <div class="q-mb-lg" v-if="info">
       <div class="q-mb-sm q-px-md">
         <div class="text-h5 text-bold">Gestion de actividades</div>
         <div class="text-subtitle1 text-grey-8">Indicadores asignados</div>
       </div>
       <q-list class="q-px-lg">
-        <q-card class="q-mb-md" v-for="(item, index) in gestion" :key="index" style="width: 100%; border-radius: 20px;">
+        <q-card class="q-mb-md" v-for="(item, index) in gestionar" :key="index" style="width: 100%; border-radius: 20px;">
           <q-item>
             <q-item-section avatar>
-              <q-avatar :icon="item.icon" font-size="95px" size="100px"/>
+              <q-icon :name="item.icon" size="100px"/>
             </q-item-section>
             <q-item-section>
               <div class="row items-center justify-between no-wrap">
                 <q-item-label class="text-bold text-h6 text-no-wrap">{{item.name}}</q-item-label>
-                <q-btn dense flat round icon="pending" @click="gestionar(item)"/>
+                <q-btn dense flat round icon="pending" @click="gestionarDatos(item)"/>
               </div>
               <q-item-label class="text-subtitle1">Actividades realizadas:</q-item-label>
               <q-item-label class="text-h3 text-grey-7">{{item.cantidad}}</q-item-label>
@@ -142,6 +154,7 @@ export default {
       semana: '',
       user: {},
       gestion: [],
+      gestionar: [],
       categorias: [],
       departamentos: [],
       consultores: [],
@@ -168,17 +181,14 @@ export default {
     getGestion () {
       this.$api.get('gestion').then(res => {
         if (res) {
-          for (const i of this.user.manage) {
-            this.gestion.push(res.filter(v => v._id === i)[0])
-          }
-          this.getActividades()
+          this.gestion = res
         }
       })
     },
     getActividades () {
       this.$api.get('solicitudes_company/' + this.user.empresa).then(res => {
         if (res) {
-          for (const i of this.gestion) {
+          for (const i of this.gestionar) {
             i.actividades = []
             if (i.id >= 7) {
               for (const j of i.status) {
@@ -219,7 +229,7 @@ export default {
         }
       })
     },
-    gestionar (itm) {
+    gestionarDatos (itm) {
       this.datos = { ...itm }
       this.type = 1
       this.semana = ''
@@ -295,3 +305,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.bordes {
+  border-right: 2px solid $grey-6;
+  border-left: 2px solid $grey-6;
+  border-bottom: 2px solid $grey-6;
+}
+</style>

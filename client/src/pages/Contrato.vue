@@ -15,7 +15,22 @@
                 <div class="q-mt-md text-subtitle1">Introduzca el nombre del contrato</div>
                 <q-input filled v-model="form.contrato" label="Nombre del contrato" error-message="Requerido" :error="$v.form.contrato.$error" @blur="$v.form.contrato.$touch()"/>
               </div>
-              <div>
+              <!-- <div v-if="rol !== 1">
+                <div class="q-mt-md text-subtitle1">Empresas</div>
+                <q-select filled v-model="form.empresas" :options="empresas" label="Selecciona las empresas a las que pertenece el contrato" multiple emit-value map-options option-value="_id" option-label="name" error-message="Requerido" :error="$v.form.empresas.$error" @blur="$v.form.empresas.$touch()">
+                  <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
+                    <q-item v-bind="itemProps" v-on="itemEvents">
+                      <q-item-section>
+                        <q-item-label v-html="opt.name"></q-item-label>
+                      </q-item-section>
+                      <q-item-section side>
+                        <q-checkbox :value="selected" @input="toggleOption(opt)" />
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </div> -->
+              <div v-if="rol === 1">
                 <div class="q-mt-md text-subtitle1">Costo por usuario</div>
                 <q-input type="number" filled v-model.number="form.costo" :rules="[ v => v > 0 ]" error-message="Requerido" :error="$v.form.costo.$error" @blur="$v.form.costo.$touch()"/>
               </div>
@@ -70,7 +85,7 @@
   </div>
 </template>
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required, requiredIf } from 'vuelidate/lib/validators'
 import Tabla from '../components/TableActions'
 export default {
   components: {
@@ -96,13 +111,23 @@ export default {
       lista: [],
       lista2: [],
       color: '',
-      options: ['Rojo', 'Azul', 'Verde', 'Amarillo', 'Rosado', 'Gris', 'Negro', 'Celeste', 'Anaranjado', 'Morado', 'Cafe']
+      options: ['Rojo', 'Azul', 'Verde', 'Amarillo', 'Rosado', 'Gris', 'Negro', 'Celeste', 'Anaranjado', 'Morado', 'Cafe'],
+      empresas: []
     }
   },
   validations: {
     form: {
       contrato: { required },
-      costo: { required }
+      /* empresas: {
+        required: requiredIf(function () {
+          return this.rol !== 1
+        })
+      }, */
+      costo: {
+        required: requiredIf(function () {
+          return this.rol === 1
+        })
+      }
     },
     form2: {
       contrato: { required },
@@ -122,6 +147,7 @@ export default {
           this.user = res
           this.listado = true
           this.obtener_contratos()
+          // this.getEmpresas()
         }
       })
     },
@@ -206,7 +232,6 @@ export default {
             this.lista = res
             this.lista2 = [...this.lista]
             this.$refs.latabla.getRecord()
-            this.$refs.latabla2.getOptions()
           }
         })
       } else {
@@ -219,7 +244,16 @@ export default {
           }
         })
       }
-    }
+    }/* ,
+    getEmpresas () {
+      if (this.rol !== 1) {
+        this.$api.get('companys/' + this.user.empresa).then(res => {
+          if (res) {
+            this.empresas = res
+          }
+        })
+      }
+    } */
   }
 }
 </script>

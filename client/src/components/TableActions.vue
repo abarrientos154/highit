@@ -494,7 +494,7 @@ export default {
           }
         })
       }).onCancel(() => {
-        // console.log('>>>> Cancel')
+        itm.enable = !itm.enable
       }).onDismiss(() => {
         // console.log('I am triggered on both OK and Cancel')
       })

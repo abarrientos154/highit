@@ -62,8 +62,16 @@
 
                 <div class="q-mt-sm text-h6">Tipo de cuenta</div>
                 <div class="q-mt-sm text-subtitle1">Seleccione el rol que tendra el usuario</div>
-                <q-select filled v-model="form.roles" :options="roles" map-options option-label="name" emit-value option-value="value"
-                :error="$v.form.roles.$error" @blur="$v.form.roles.$touch()" />
+                <q-select filled v-model="form.roles" :options="roles" map-options option-label="name" emit-value option-value="value" :error="$v.form.roles.$error" @blur="$v.form.roles.$touch()">
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                      <q-item-section>
+                        <q-item-label v-html="scope.opt.name"/>
+                        <q-item-label class="text-grey-7">{{scope.opt.description}}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
 
                   <div v-if="form.roles === 3 || form.roles === 5">
                     <div class="q-mt-sm text-h6">Selecciona un Departamento</div>
@@ -97,26 +105,6 @@
                     </template>
                   </q-select>
                 </div>
-
-              <div v-if="form.roles === 7">
-                <div class="q-mt-sm text-h6">Selecciona gestion</div>
-                <div class="q-mt-sm text-subtitle1">Listado de indicadores a gestionar</div>
-                <q-select filled v-model="form.manage" :options="gestion" multiple map-options option-label="name" emit-value option-value="_id" :error="$v.form.manage.$error" @blur="$v.form.manage.$touch()">
-                  <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
-                    <q-item v-bind="itemProps" v-on="itemEvents">
-                      <q-item-section avatar>
-                        <q-icon :name="opt.icon" size="40px"/>
-                      </q-item-section>
-                      <q-item-section>
-                        <q-item-label v-html="opt.name" ></q-item-label>
-                      </q-item-section>
-                      <q-item-section side>
-                        <q-checkbox :value="selected" @input="toggleOption(opt)" />
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                </q-select>
-              </div>
             </div>
             <div class="q-pa-md column items-center justify-center">
               <q-btn color="primary" class="q-py-xs" text-color="white" label="Crear Usuario" @click="registrar_usuario()" style="width:40%" no-caps/>
@@ -142,29 +130,33 @@ export default {
       isPwd2: true,
       empresas: [],
       empresas2: [],
-      gestion: [],
       departamentos: [],
       areas: [],
       cargos: [],
       roles: [
         {
           name: 'Gerente',
+          description: 'Se encarga de gestionar las actividades realizadas por los clientes y consultores, segun el estado de las mismas.',
           value: 7
         },
         {
           name: 'Consultor Administrador',
+          description: 'Asegura el buen manejo y distribución de las actividades y consultores.',
           value: 5
         },
         {
           name: 'Cliente Administrador',
+          description: 'Distrubuye los equipos pertenecientes a su empresa entre los clientes finales de la misma y a su vez, cumple con la función de un cliente final.',
           value: 6
         },
         {
           name: 'Consultor',
+          description: 'Son los usuarios capacitados para llevar a cavo las diversas solicitudes hechas por los clientes finales.',
           value: 3
         },
         {
           name: 'Cliente Final',
+          description: 'Estos usuarios son los encargados de hacer saber las necesidades de su empresa y que sean solventadas segun su urgencia.',
           value: 4
         }
       ]
@@ -197,11 +189,6 @@ export default {
         required: requiredIf(function () {
           return this.form.roles === 3
         })
-      },
-      manage: {
-        required: requiredIf(function () {
-          return this.form.roles === 7
-        })
       }
     },
     password: { required, maxLength: maxLength(256), minLength: minLength(6) },
@@ -220,13 +207,6 @@ export default {
       update(() => {
         const needle = val.toLowerCase()
         this.empresas = this.empresas2.filter(v => v.name.toLowerCase().indexOf(needle) > -1)
-      })
-    },
-    getGestion () {
-      this.$api.get('gestion').then(res => {
-        if (res) {
-          this.gestion = res
-        }
       })
     },
     getDepartamentos () {
@@ -289,7 +269,6 @@ export default {
         if (res) {
           this.rol = res.roles[0]
           this.user = res
-          this.getGestion()
           this.getDepartamentos()
           this.getEmpresas()
         }
