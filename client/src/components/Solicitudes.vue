@@ -44,49 +44,6 @@
         </q-scroll-area>
       </div>
 
-      <div v-if="sltReopen.length" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pb-sm q-mb-md">
-        <div class="q-px-lg q-mb-sm">
-          <div class="row items-center justify-between">
-            <div class="text-h6 text-bold">Solicitudes Reabiertas</div>
-            <q-btn v-if="sltReopen.length > 2" dense flat round icon="pending" @click="gestionar(sltReopen)"/>
-          </div>
-          <div class="text-grey-8">{{rol === 3 ? 'Listado de actividades reabiertas' : 'Estas son las solicitudes que has reabierto'}}</div>
-        </div>
-        <q-scroll-area :style="sltReopen.length === 1 ? 'height: 210px;' : 'height: 405px;'">
-          <q-list class="q-px-lg q-pt-md">
-            <q-card class="q-mb-md full-width" v-for="(item, index) in sltReopen" :key="index" @click="verSlt(item, index)">
-              <div class="row q-px-lg items-center justify-between">
-                <div class="row text-caption">
-                  <div class="q-mr-xs">Nº de solicitud:</div>
-                  <div class="text-bold">{{index + 1}}</div>
-                </div>
-                <div class="row">
-                  <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 20px; height: 25px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
-                  <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
-                  <div :class="`text-caption text-white bg-${item.prioridad.color2} q-px-lg row items-center`" style="height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{item.prioridad.nombre}}</div>
-                </div>
-              </div>
-              <div class="row">
-                <q-avatar class="bg-secondary q-ml-md q-my-md" size="110px">
-                  <q-img :src="baseu + item.empresa._id" class="full-height"/>
-                </q-avatar>
-                <div class="q-px-sm q-py-md col">
-                  <div class="row">
-                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                    <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
-                  </div>
-                  <div class="text-subtitle1 text-bold">{{item.empresa.name}}</div>
-                  <div>
-                    <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
-                    <div class="text-grey ellipsis-3-lines" style="font-size: 10px;">{{item.description}}</div>
-                  </div>
-                </div>
-              </div>
-            </q-card>
-          </q-list>
-        </q-scroll-area>
-      </div>
-
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pb-md q-mb-md">
         <div class="q-px-lg q-mb-sm">
           <div class="row items-center justify-between">
@@ -157,10 +114,53 @@
         </q-scroll-area>
       </div>
 
+      <div v-if="sltReopen.length" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pb-sm q-mb-md">
+        <div class="q-px-lg q-mb-sm">
+          <div class="row items-center justify-between">
+            <div class="text-h6 text-bold">Solicitudes Reabiertas</div>
+            <q-btn v-if="sltReopen.length > 2" dense flat round icon="pending" @click="gestionar(sltReopen)"/>
+          </div>
+          <div class="text-grey-8">{{rol === 3 ? 'Listado de actividades reabiertas' : 'Estas son las solicitudes que has reabierto'}}</div>
+        </div>
+        <q-scroll-area :style="sltReopen.length === 1 ? 'height: 210px;' : 'height: 405px;'">
+          <q-list class="q-px-lg q-pt-md">
+            <q-card class="q-mb-md full-width" v-for="(item, index) in sltReopen" :key="index" @click="verSlt(item, index)">
+              <div class="row q-px-lg items-center justify-between">
+                <div class="row text-caption">
+                  <div class="q-mr-xs">Nº de solicitud:</div>
+                  <div class="text-bold">{{index + 1}}</div>
+                </div>
+                <div class="row">
+                  <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 20px; height: 25px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                  <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                  <div :class="`text-caption text-white bg-${item.prioridad.color2} q-px-lg row items-center`" style="height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{item.prioridad.nombre}}</div>
+                </div>
+              </div>
+              <div class="row">
+                <q-avatar class="bg-secondary q-ml-md q-my-md" size="110px">
+                  <q-img :src="baseu + item.empresa._id" class="full-height"/>
+                </q-avatar>
+                <div class="q-px-sm q-py-md col">
+                  <div class="row">
+                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                    <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
+                  </div>
+                  <div class="text-subtitle1 text-bold">{{item.empresa.name}}</div>
+                  <div>
+                    <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                    <div class="text-grey ellipsis-3-lines" style="font-size: 10px;">{{item.description}}</div>
+                  </div>
+                </div>
+              </div>
+            </q-card>
+          </q-list>
+        </q-scroll-area>
+      </div>
+
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pb-md q-mb-md">
         <div class="q-px-lg q-mb-sm">
           <div class="row items-center justify-between">
-            <div class="text-h6 text-bold">Solicitudes en espera</div>
+            <div class="text-h6 text-bold">Solicitudes pausadas</div>
             <q-btn v-if="sltProgress.length > 2" dense flat round icon="pending" @click="gestionar(sltProgress)"/>
           </div>
           <div class="text-grey-8">{{rol === 3 ? 'Listado de actividades por finalizar' : 'Estas son tus solicitudes que no han sido finalizadas'}}</div>
@@ -243,60 +243,17 @@
         </q-scroll-area>
       </div>
 
-      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pb-md">
+      <div :class="`${sltReopen.length ? 'col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6' : 'full-width'} q-pb-md`">
         <div class="q-px-lg q-mb-sm">
           <div class="row items-center justify-between">
             <div class="text-h6 text-bold">Solicitudes por confirmar</div>
-            <q-btn v-if="sltConfirm.length > 2" dense flat round icon="pending" @click="gestionar(sltConfirm)"/>
+            <q-btn v-if="sltReopen.length ? sltConfirm.length > 2 : sltConfirm.length > 4" dense flat round icon="pending" @click="gestionar(sltConfirm)"/>
           </div>
           <div class="text-grey-8">{{rol === 3 ? 'Listado de actividades en espera de confirmacion' : 'Confirma que tus solicitudes han sido finalizadas'}}</div>
         </div>
-        <q-scroll-area v-if="sltConfirm.length" :style="sltConfirm.length === 1 ? 'height: 210px;' : 'height: 405px;'">
-          <q-list class="q-px-lg q-pt-md">
-            <q-card class="q-mb-md full-width" v-for="(item, index) in sltConfirm" :key="index" @click="verSlt(item, index)">
-              <div class="row q-px-lg items-center justify-between">
-                <div class="row text-caption">
-                  <div class="q-mr-xs">Nº de solicitud:</div>
-                  <div class="text-bold">{{index + 1}}</div>
-                </div>
-                <div class="row">
-                  <div v-if="item.expiration" class="bg-primary q-mr-sm" style="width: 20px; height: 25px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
-                  <div v-if="item.equipment" class="bg-info q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
-                  <div :class="`text-caption text-white bg-${item.prioridad.color2} q-px-lg row items-center`" style="height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{item.prioridad.nombre}}</div>
-                </div>
-              </div>
-              <div class="row">
-                <q-avatar class="bg-secondary q-ml-md q-my-md" size="110px">
-                  <q-img :src="baseu + item.empresa._id" class="full-height"/>
-                </q-avatar>
-                <div class="q-px-sm q-py-md col">
-                  <div class="row">
-                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
-                    <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
-                  </div>
-                  <div class="text-subtitle1 text-bold">{{item.empresa.name}}</div>
-                  <div>
-                    <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
-                    <div class="text-grey ellipsis-3-lines" style="font-size: 10px;">{{item.description}}</div>
-                  </div>
-                </div>
-              </div>
-            </q-card>
-          </q-list>
-        </q-scroll-area>
-      </div>
-
-      <div :class="`${!sltReopen.length ? 'col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6' : 'full-width'} q-pb-md`">
-        <div class="q-px-lg q-mb-sm">
-          <div class="row items-center justify-between">
-            <div class="text-h6 text-bold">Historial de solicitudes</div>
-            <q-btn v-if="sltEnd.length > 2" dense flat round icon="pending" @click="gestionar(sltEnd)"/>
-          </div>
-          <div class="text-grey-8">listado de solicitudes finalizadas</div>
-        </div>
-        <q-scroll-area v-if="sltEnd.length" :style="sltReopen.length ? sltEnd.length < 3 ? 'height: 210px;' : 'height: 405px;' : sltEnd.length === 1 ? 'height: 210px;' : 'height: 405px;'">
-          <q-list :class="`${sltReopen.length ? 'row' : 'q-px-lg'} q-pt-md`">
-            <div :class="`${!sltReopen.length ? 'full-width' : 'col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-lg'} q-mb-md`" v-for="(item, index) in sltEnd" :key="index">
+        <q-scroll-area v-if="sltConfirm.length" :style="!sltReopen.length ? sltConfirm.length < 3 ? 'height: 210px;' : 'height: 405px;' : sltConfirm.length === 1 ? 'height: 210px;' : 'height: 405px;'">
+          <q-list :class="`${!sltReopen.length ? 'row' : 'q-px-lg'} q-pt-md`">
+            <div :class="`${sltReopen.length ? 'full-width' : 'col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-lg'} q-mb-md`" v-for="(item, index) in sltConfirm" :key="index">
               <q-card class="full-width" @click="verSlt(item, index)">
                 <div class="row q-px-lg items-center justify-between">
                   <div class="row text-caption">

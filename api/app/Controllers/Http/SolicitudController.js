@@ -32,15 +32,33 @@ class SolicitudController {
     let categorias = (await Category.query().where({ departamento: user.departamento }).fetch()).toJSON()
     for (var i of categorias) {
       let slts = (await Solicitud.query().where({ $and: [{ $or: [{ status: 1 }, { status: 2 }, { status: 3 }, { status: 4 }, { status: 5 }] }, { company_id: params.id, category: i._id }] }).with('cliente').with('empresa').with('consultor').with('equipo').with('prioridad').with('categoria').fetch()).toJSON()
-      for (var j of slts) {
-        j.prioridad.color2 = j.prioridad.color === 'Azul' ? 'blue' : j.prioridad.color === 'Rojo' ? 'red' : j.prioridad.color === 'Verde' ? 'green' : j.prioridad.color === 'Amarillo' ? 'yellow' : j.prioridad.color === 'Rosado' ? 'pink' : j.prioridad.color === 'Gris' ? 'grey' : j.prioridad.color === 'Negro' ? 'black' : j.prioridad.color === 'Celeste' ? 'blue-3' : j.prioridad.color === 'Anaranjado' ? 'orange' : j.prioridad.color === 'Morado' ? 'purple' : 'brown'
-        solicitudes.push(j)
-      }
+      for (let j of slts) { solicitudes.push(j) }
     }
     for (let i of solicitudes) {
+      i.empresa = i.empresa.name
       i.cliente = i.cliente.name + ' ' + i.cliente.last_name
       i.consultor = i.consultor.name + ' ' + i.consultor.last_name
-      i.color = i.prioridad.color2
+      i.color = i.prioridad.color === 'Azul' ? 'blue' : i.prioridad.color === 'Rojo' ? 'red' : i.prioridad.color === 'Verde' ? 'green' : i.prioridad.color === 'Amarillo' ? 'yellow' : i.prioridad.color === 'Rosado' ? 'pink' : i.prioridad.color === 'Gris' ? 'grey' : i.prioridad.color === 'Negro' ? 'black' : i.prioridad.color === 'Celeste' ? 'blue-3' : i.prioridad.color === 'Anaranjado' ? 'orange' : i.prioridad.color === 'Morado' ? 'purple' : 'brown'
+      i.prioridad = i.prioridad.nombre
+      i.categoria = i.categoria.nombre
+    }
+    response.send(solicitudes)
+  }
+  
+  async sltHistory ({ request, response, view, auth }) {
+    const user = (await auth.getUser()).toJSON()
+    let solicitudes = []
+    if (user.roles[0] === 3) {
+      solicitudes = (await Solicitud.query().where({ status: 5, consultor_id: user._id }).with('cliente').with('empresa').with('consultor').with('equipo').with('prioridad').with('categoria').fetch()).toJSON()
+    } else {
+      solicitudes = (await Solicitud.query().where({ status: 5, user_id: user._id }).with('cliente').with('empresa').with('consultor').with('equipo').with('prioridad').with('categoria').fetch()).toJSON()
+    }
+    for (let i of solicitudes) {
+      if (i.equipment) { i.equipo = i.equipo.name }
+      i.empresa = i.empresa.name
+      i.cliente = i.cliente.name + ' ' + i.cliente.last_name
+      i.consultor = i.consultor.name + ' ' + i.consultor.last_name
+      i.color = i.prioridad.color === 'Azul' ? 'blue' : i.prioridad.color === 'Rojo' ? 'red' : i.prioridad.color === 'Verde' ? 'green' : i.prioridad.color === 'Amarillo' ? 'yellow' : i.prioridad.color === 'Rosado' ? 'pink' : i.prioridad.color === 'Gris' ? 'grey' : i.prioridad.color === 'Negro' ? 'black' : i.prioridad.color === 'Celeste' ? 'blue-3' : i.prioridad.color === 'Anaranjado' ? 'orange' : i.prioridad.color === 'Morado' ? 'purple' : 'brown'
       i.prioridad = i.prioridad.nombre
       i.categoria = i.categoria.nombre
     }

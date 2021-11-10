@@ -122,7 +122,12 @@ export default {
         {
           icon: 'home',
           label: 'Inicio',
-          ruta: ''
+          ruta: '/inicio_consultor'
+        },
+        {
+          icon: 'assignment',
+          label: 'Historial de solicitudes',
+          ruta: '/historial_solicitudes'
         },
         {
           icon: 'lightbulb',
@@ -140,6 +145,11 @@ export default {
           icon: 'home',
           label: 'Inicio',
           ruta: '/inicio_cliente'
+        },
+        {
+          icon: 'assignment',
+          label: 'Historial de solicitudes',
+          ruta: '/historial_solicitudes'
         },
         {
           icon: 'stream',
@@ -179,6 +189,11 @@ export default {
           icon: 'home',
           label: 'Inicio',
           ruta: '/inicio_cliente_admin'
+        },
+        {
+          icon: 'assignment',
+          label: 'Historial de solicitudes',
+          ruta: '/historial_solicitudes'
         },
         {
           icon: 'stream',

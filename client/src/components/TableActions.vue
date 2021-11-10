@@ -1,216 +1,247 @@
 <template>
-  <q-card>
-    <q-card-section>
-      <div class="text-h6 text-bold" style="font-size:30px">
-        {{titulo}}
-      </div>
-      <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" use-input behavior="menu" input-debounce="0" :label="route === 'sla' ? 'Seleccione un contrato para ver las prioridades respectivas' : 'Seleccione una empresa para ver el listado respectivo'" :options="options" map-options :option-label="route === 'sla' ? 'contrato' : 'name'" emit-value option-value="_id" @input="select ? flt = true : flt = false" @filter="filterFn">
-        <template v-slot:no-option>
-          <q-item>
-            <q-item-section class="text-grey">
-              No results
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
-    </q-card-section>
-    <q-card-section class="q-pa-none">
-      <q-grid :data="filterData" :columns="columns" :columns_filter="true">
-        <template v-slot:body="props">
+  <div>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6 text-bold" style="font-size:30px">
+          {{titulo}}
+        </div>
+        <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" use-input behavior="menu" input-debounce="0" label="Selecciona una opción para ver el respectivo listado" :options="options" map-options :option-label="route === 'sla' ? 'contrato' : route === 'solicitudes' ? 'nombre' : 'name'" emit-value option-value="_id" @input="select ? flt = true : flt = false" @filter="filterFn">
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+        <q-input v-if="inputBtn" class="q-mt-md" filled readonly v-model="fecha" placeholder="AAAA-MM-DD ... AAAA-MM-DD" @click="$refs.qDateProxy.show()">
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                <q-date v-model="select" mask="YYYY-MM-DD" range @input="select ? flt = true : flt = false"/>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </q-card-section>
+      <q-card-section class="q-pa-none">
+        <q-grid :data="filterData" :columns="columns" :columns_filter="true">
+          <template v-slot:body="props">
 
-          <q-tr :props="props">
-            <template v-for="item in columns">
-              <q-td v-if="flt" :key="item.name">
-                <div v-if="item.name === 'Action'" class="row justify-center no-wrap">
-                  <q-btn v-if="verBtn" icon="visibility" size="sm" class="q-mx-sm" flat dense @click="verItem(props.row)"/>
-                  <q-btn v-if="editarBtn" icon="edit" size="sm" class="q-mx-sm" flat dense @click="editar(props.row._id)" />
-                  <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-mx-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
-                  <NewSlt v-if="crearBtn" :equipment="props.row._id"/>
-                  <q-btn v-if="asignarBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" label="Asignar equipo" @click="mostrardialogo(props.row._id)" no-caps/>
-                  <q-toggle v-if="habilitarBtn" v-model="props.row.enable" @input="enable(props.row)" color="positive" checked-icon="lock_open" unchecked-icon="lock"/>
-                </div>
-                <div v-else-if="item.name === 'Profile'" class="row justify-center">
-                  <q-avatar>
-                    <q-img :src="baseu + `${route === 'companys' ? 'company_img/' : 'perfil_img/'}` + props.row._id" class="full-height"/>
-                  </q-avatar>
-                </div>
-                <div v-else :class="item.text ? `row justify-${item.text} items-center` : ''">
-                  <q-avatar v-if="props.row.color2 && item.name === 'nombre'" class="q-mr-sm" :color="props.row.color2" size="30px"/>
-                  {{ props.row[item.name] }}
-                </div>
-              </q-td>
-            </template>
-          </q-tr>
-        </template>
-      </q-grid>
-    </q-card-section>
-    <q-page-sticky v-if="btnNew" position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="add" color="primary" @click="$router.push($route.path + '/form')" />
-    </q-page-sticky>
-    <q-dialog v-model="showModalEditar">
-      <q-card v-if="edit">
-        <q-card-section>
-          <div class="row">
-            <div class="text-h6">Modifica el contrato</div>
-            <q-space />
-            <q-btn color="red" icon="close" flat round dense v-close-popup />
-          </div>
-          <q-input v-model="iEditContrato" outlined dense class="q-mt-sm" style="width: 300px" error-message="Requerido" :error="$v.iEditContrato.$error" @blur="$v.iEditContrato.$touch()"/>
-        </q-card-section>
-        <q-card-actions align="center">
-          <q-btn color="blue" icon="edit" label="Modificar" push @click="modificar_contrato()" v-close-popup />
-        </q-card-actions>
-      </q-card>
+            <q-tr :props="props">
+              <template v-for="item in columns">
+                <q-td v-if="flt" :key="item.name">
+                  <div v-if="item.name === 'Action'" class="row justify-center no-wrap">
+                    <q-btn v-if="verBtn" icon="visibility" size="sm" class="q-mx-sm" flat dense @click="verItem(props.row)"/>
+                    <q-btn v-if="editarBtn" icon="edit" size="sm" class="q-mx-sm" flat dense @click="editar(props.row._id)" />
+                    <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-mx-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
+                    <NewSlt v-if="crearBtn" :equipment="props.row._id"/>
+                    <q-btn v-if="asignarBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" label="Asignar equipo" @click="mostrardialogo(props.row._id)" no-caps/>
+                    <q-toggle v-if="habilitarBtn" v-model="props.row.enable" @input="enable(props.row)" color="positive" checked-icon="lock_open" unchecked-icon="lock"/>
+                  </div>
+                  <div v-else-if="item.name === 'Profile'" class="row justify-center">
+                    <q-avatar>
+                      <q-img :src="baseu + `${route === 'companys' ? 'company_img/' : 'perfil_img/'}` + props.row._id" class="full-height"/>
+                    </q-avatar>
+                  </div>
+                  <div v-else :class="item.text ? `row justify-${item.text} items-center` : ''">
+                    <q-avatar v-if="props.row.color2 && item.name === 'nombre'" class="q-mr-sm" :color="props.row.color2" size="30px"/>
+                    {{ props.row[item.name] }}
+                  </div>
+                </q-td>
+              </template>
+            </q-tr>
+          </template>
+        </q-grid>
+      </q-card-section>
+      <q-page-sticky v-if="btnNew" position="bottom-right" :offset="[18, 18]">
+        <q-btn fab icon="add" color="primary" @click="$router.push($route.path + '/form')" />
+      </q-page-sticky>
+      <q-dialog v-model="showModalEditar">
+        <q-card v-if="edit">
+          <q-card-section>
+            <div class="row">
+              <div class="text-h6">Modifica el contrato</div>
+              <q-space />
+              <q-btn color="red" icon="close" flat round dense v-close-popup />
+            </div>
+            <q-input v-model="iEditContrato" outlined dense class="q-mt-sm" style="width: 300px" error-message="Requerido" :error="$v.iEditContrato.$error" @blur="$v.iEditContrato.$touch()"/>
+          </q-card-section>
+          <q-card-actions align="center">
+            <q-btn color="blue" icon="edit" label="Modificar" push @click="modificar_contrato()" v-close-popup />
+          </q-card-actions>
+        </q-card>
 
-      <q-card v-else class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
-        <div v-if="route === 'solicitudes'" class="full-width">
-          <div class="row q-px-lg items-center justify-between full-width">
-            <div>
-              <div v-if="ver.equipo" class="row">
-                <div class="text-bold q-mr-xs text-grey-7">Equipo: </div>
-                <div class="text-grey-7">{{ver.equipo ? ver.equipo.name : ''}}</div>
+        <q-card v-else class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
+          <div v-if="route === 'solicitudes' || route === 'solicitudes_history'" class="full-width">
+            <div class="row q-px-lg items-center justify-between full-width">
+              <div>
+                <div v-if="ver.equipo" class="row">
+                  <div class="text-bold q-mr-xs text-grey-7">Equipo: </div>
+                  <div class="text-grey-7">{{ver.equipo ? ver.equipo.name : ''}}</div>
+                </div>
+              </div>
+              <div class="row">
+                <div v-if="ver.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div v-if="ver.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+                <div :class="`text-caption q-px-lg text-center text-white bg-${ver.color} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{ver.prioridad}}<br>Estado: {{ver.status === 0 ? 'Sin iniciar' : ver.status === 1 ? 'Ejecución' : ver.status === 2 ? 'En espera' : ver.status === 3 ? 'Checkout' : ver.status === 4 ? 'Confirmar' : ver.status === 5 ? 'Finalizado' : ''}}</div>
               </div>
             </div>
-            <div class="row">
-              <div v-if="ver.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
-              <div v-if="ver.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
-              <div :class="`text-caption q-px-lg text-center text-white bg-${ver.color} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{ver.prioridad}}<br>Estado: {{ver.status === 0 ? 'Sin iniciar' : ver.status === 1 ? 'Ejecución' : ver.status === 2 ? 'En espera' : ver.status === 3 ? 'Checkout' : ver.status === 4 ? 'Confirmar' : ver.status === 5 ? 'Finalizado' : ''}}</div>
+            <div class="q-mb-lg q-mt-md">
+              <div class="text-center text-h6 text-bold">Datos solicitud</div>
+              <div class="text-center text-grey-8">Descripcion de la solicitud</div>
             </div>
-          </div>
-          <div class="q-mb-lg q-mt-md">
-            <div class="text-center text-h6 text-bold">Datos solicitud</div>
-            <div class="text-center text-grey-8">Descripcion de la solicitud</div>
-          </div>
-          <div class="q-px-sm q-mb-md full-width">
-            <div class="row">
-              <q-avatar class="bg-secondary q-mx-sm q-my-md" size="170px">
-                <q-img :src="ver.empresa ? baseu + 'company_img/' + ver.empresa._id : 'noimg.png'" class="full-height"/>
-              </q-avatar>
-              <div class="q-px-sm q-py-md col column justify-between">
-                <div>
-                  <div class="text-subtitle1 text-bold">{{ver.empresa ? ver.empresa.name : 'Empresa'}}</div>
+            <div class="q-px-sm q-mb-md full-width">
+              <div class="row">
+                <q-avatar class="bg-secondary q-mx-sm q-my-md" size="170px">
+                  <q-img :src="baseu + 'company_img/' + ver.empresa_id" class="full-height"/>
+                </q-avatar>
+                <div class="q-px-sm q-py-md col column justify-between">
                   <div>
-                    <div class="text-bold text-caption text-grey-7">Descripcion del servicio</div>
-                    <q-scroll-area style="height: 60px;">
-                      <div class="text-grey-7" style="font-size: 10px;">{{ver.description}}</div>
-                    </q-scroll-area>
+                    <div class="text-subtitle1 text-bold">{{ver.empresa}}</div>
+                    <div>
+                      <div class="text-bold text-caption text-grey-7">Descripcion del servicio</div>
+                      <q-scroll-area style="height: 60px;">
+                        <div class="text-grey-7" style="font-size: 10px;">{{ver.description}}</div>
+                      </q-scroll-area>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <div class="row">
-                    <div class="text-bold q-mr-xs text-grey-7 text-caption">Fecha de solicitud:</div>
-                    <div class="text-grey-7 text-caption">{{ver.dateSlt}}</div>
-                  </div>
-                  <div class="row">
-                    <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
-                    <div class="text-grey-7 text-caption">{{ver.timeSlt}}hrs</div>
+                  <div>
+                    <div class="row">
+                      <div class="text-bold q-mr-xs text-grey-7 text-caption">Fecha de solicitud:</div>
+                      <div class="text-grey-7 text-caption">{{ver.dateSlt}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
+                      <div class="text-grey-7 text-caption">{{ver.timeSlt}}hrs</div>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div class="q-px-sm q-mb-sm">
+                <div v-if="ver.equipment" class="row justify-center q-mb-sm">
+                  <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">Equipo:</div>
+                  <div class="text-grey-7 text-subtitle1">{{ver.equipo}}</div>
+                </div>
+                <div class="row">
+                  <div v-if="route === 'solicitudes' || (route === 'solicitudes_history' && rol === 3)" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <div class="text-bold text-grey-7">Usuario cliente</div>
+                    <div class="text-grey-7">{{ver.cliente}}</div>
+                  </div>
+                  <div v-if="route === 'solicitudes' || (route === 'solicitudes_history' && rol !== 3)" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <div class="text-bold text-grey-7">Consultor asignado</div>
+                    <div class="text-grey-7">{{ver.consultor}}</div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <div class="text-bold text-grey-7">Categoria</div>
+                    <div class="text-grey-7">{{ver.categoria}}</div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="ver.status > 0">
+                    <div class="text-bold text-grey-7">Fecha de inicio</div>
+                    <div class="text-grey-7">{{ver.dateBegin}}</div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="ver.status > 0">
+                    <div class="text-bold text-grey-7">Hora de inicio</div>
+                    <div class="text-grey-7">{{ver.timeBegin}}hr</div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="ver.status === 5">
+                    <div class="text-bold text-grey-7">Fecha estimada de termino</div>
+                    <div class="text-grey-7">{{ver.dateEnd}}</div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="ver.status === 5">
+                    <div class="text-bold text-grey-7">Hora estimada de termino</div>
+                    <div class="text-grey-7">{{ver.timeEnd}}hr</div>
+                  </div>
+                </div>
+              </div>
+              <div v-if="hitos.length" class="full-width q-px-sm q-mb-md">
+                <div class="q-mb-sm">
+                  <div class="text-subtitle1 text-bold">Historial de actividades</div>
+                  <div class="text-grey-8">Descripcion de los comentarios realizados</div>
+                </div>
+                <q-list>
+                  <div v-for="(item, index) in hitos" :key="index">
+                    <div class="row justify-between">
+                      <div class="text-grey-8 text-bold">{{item.name}}</div>
+                      <div class="row">
+                        <div class="text-grey-8 q-mr-xs text-bold">Fecha</div>
+                        <div class="text-grey-8">{{item.date + ' ' + item.time + 'hr'}}</div>
+                      </div>
+                    </div>
+                    <div class="text-grey-8">{{item.description}}</div>
+                  </div>
+                </q-list>
+              </div>
             </div>
-            <div class="q-px-sm q-mb-sm">
-              <div class="row justify-center q-mb-sm">
-                <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">Categoria:</div>
-                <div class="text-grey-7 text-subtitle1">{{ver.categoria}}</div>
+            <div class="full-width column items-center q-mb-lg">
+              <q-btn class="text-white q-py-xs" color="primary" label="Cerrar Ventana" @click="showModalEditar = !showModalEditar" style="width: 70%; border-radius: 5px;" no-caps/>
+            </div>
+          </div>
+          <div v-else class="q-pa-lg full-width">
+            <div class="column items-center">
+              <q-avatar size="170px">
+                <q-img :src="baseu + `${route === 'companys' ? 'company_img/' : 'perfil_img/'}` + ver._id" class="full-height"/>
+              </q-avatar>
+              <div class="q-py-md text-center">
+                <div class="text-h5 text-bold">{{route === 'companys' ? ver.name : ver.name + ' ' + ver.last_name}}</div>
+                <div class="text-h6 text-grey-7">{{ver.email}}</div>
+                <div class="text-bold text-grey-7">{{ver.phone}}</div>
+              </div>
+            </div>
+            <div class="q-px-sm">
+              <div class="row q-mb-sm" v-if="route === 'companys'">
+                <div class="col">
+                  <div class="text-bold text-grey-7">Tipo de contrato</div>
+                  <div class="text-grey-7">{{ver.contrato}}</div>
+                </div>
+                <div class="col">
+                  <div class="text-bold text-grey-7">Inicio y termino de contrato:</div>
+                  <div class="text-grey-7">{{ver.dateBegin}}  {{ver.dateEnd}}</div>
+                </div>
+              </div>
+              <div class="row q-mb-sm" v-if="route === 'companys'">
+                <div class="col">
+                  <div class="text-bold text-grey-7">Pais</div>
+                  <div class="text-grey-7">{{ver.pais}}</div>
+                </div>
+                <div class="col">
+                  <div class="text-bold text-grey-7">Estado</div>
+                  <div class="text-grey-7">{{ver.estado}}</div>
+                </div>
+              </div>
+              <div class="row q-mb-sm" v-if="route === 'companys'">
+                <div class="col">
+                  <div class="text-bold text-grey-7">Ciudad</div>
+                  <div class="text-grey-7">{{ver.ciudad}}</div>
+                </div>
+                <div class="col">
+                  <div class="text-bold text-grey-7">Direccion</div>
+                  <div class="text-grey-7">{{ver.direction}}</div>
+                </div>
               </div>
               <div class="row">
                 <div class="col">
-                  <div class="text-bold text-grey-7">Cliente autor</div>
-                  <div class="text-grey-7">{{ver.cliente}}</div>
+                  <div class="text-bold text-grey-7">{{route === 'companys' ? 'Codigo postal' : 'Tipo de usuario'}}</div>
+                  <div class="text-grey-7">{{route === 'companys' ? ver.postalCode : rol === 2 ? ver.tipo_usuario : 'Highit'}}</div>
                 </div>
                 <div class="col">
-                  <div class="text-bold text-grey-7">Consultor asignado</div>
-                  <div class="text-grey-7">{{ver.consultor}}</div>
-                </div>
-              </div>
-              <div class="row" v-if="ver.status > 0">
-                <div class="col">
-                  <div class="text-bold text-grey-7">Fecha de inicio</div>
-                  <div class="text-grey-7">{{ver.dateBegin}}</div>
-                </div>
-                <div class="col">
-                  <div class="text-bold text-grey-7">Hora de inicio</div>
-                  <div class="text-grey-7">{{ver.timeBegin}}hr</div>
-                </div>
-              </div>
-              <div class="row" v-if="ver.status === 5">
-                <div class="col">
-                  <div class="text-bold text-grey-7">Fecha estimada de termino</div>
-                  <div class="text-grey-7">{{ver.dateEnd}}</div>
-                </div>
-                <div class="col">
-                  <div class="text-bold text-grey-7">Hora estimada de termino</div>
-                  <div class="text-grey-7">{{ver.timeEnd}}hr</div>
+                  <div class="text-bold text-grey-7">Nº de documento</div>
+                  <div class="text-grey-7">{{route === 'companys' ? ver.numIdet : ver.Dni}}</div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="full-width column items-center q-mb-lg">
-            <q-btn class="text-white q-py-xs" color="primary" label="Cerrar" @click="showModalEditar = !showModalEditar" style="width: 70%; border-radius: 5px;" no-caps/>
-          </div>
-        </div>
-        <div v-else class="q-pa-lg full-width">
-          <div class="column items-center">
-            <q-avatar size="170px">
-              <q-img :src="baseu + `${route === 'companys' ? 'company_img/' : 'perfil_img/'}` + ver._id" class="full-height"/>
-            </q-avatar>
-            <div class="q-py-md text-center">
-              <div class="text-h5 text-bold">{{route === 'companys' ? ver.name : ver.name + ' ' + ver.last_name}}</div>
-              <div class="text-h6 text-grey-7">{{ver.email}}</div>
-              <div class="text-bold text-grey-7">{{ver.phone}}</div>
-            </div>
-          </div>
-          <div class="q-px-sm">
-            <div class="row q-mb-sm" v-if="route === 'companys'">
-              <div class="col">
-                <div class="text-bold text-grey-7">Tipo de contrato</div>
-                <div class="text-grey-7">{{ver.contrato}}</div>
-              </div>
-              <div class="col">
-                <div class="text-bold text-grey-7">Inicio y termino de contrato:</div>
-                <div class="text-grey-7">{{ver.dateBegin}}  {{ver.dateEnd}}</div>
-              </div>
-            </div>
-            <div class="row q-mb-sm" v-if="route === 'companys'">
-              <div class="col">
-                <div class="text-bold text-grey-7">Pais</div>
-                <div class="text-grey-7">{{ver.pais}}</div>
-              </div>
-              <div class="col">
-                <div class="text-bold text-grey-7">Estado</div>
-                <div class="text-grey-7">{{ver.estado}}</div>
-              </div>
-            </div>
-            <div class="row q-mb-sm" v-if="route === 'companys'">
-              <div class="col">
-                <div class="text-bold text-grey-7">Ciudad</div>
-                <div class="text-grey-7">{{ver.ciudad}}</div>
-              </div>
-              <div class="col">
-                <div class="text-bold text-grey-7">Direccion</div>
-                <div class="text-grey-7">{{ver.direction}}</div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="text-bold text-grey-7">{{route === 'companys' ? 'Codigo postal' : 'Tipo de usuario'}}</div>
-                <div class="text-grey-7">{{route === 'companys' ? ver.postalCode : rol === 2 ? ver.tipo_usuario : 'Highit'}}</div>
-              </div>
-              <div class="col">
-                <div class="text-bold text-grey-7">Nº de documento</div>
-                <div class="text-grey-7">{{route === 'companys' ? ver.numIdet : ver.Dni}}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </q-card>
-    </q-dialog>
-  </q-card>
+        </q-card>
+      </q-dialog>
+    </q-card>
+    <div v-if="(selectBtn || inputBtn) && !select && data.length" class="full-width q-mt-md text-center text-h5 text-italic text-grey">Debes seleccionar una opción en la parte superior para ver los registros</div>
+  </div>
 </template>
 
 <script>
 import { required } from 'vuelidate/lib/validators'
 import NewSlt from 'components/NewSolicitud'
+import * as moment from 'moment'
 import env from '../env'
 export default {
   components: { NewSlt },
@@ -239,6 +270,10 @@ export default {
       default: false
     },
     asignarBtn: {
+      type: Boolean,
+      default: false
+    },
+    inputBtn: {
       type: Boolean,
       default: false
     },
@@ -279,6 +314,7 @@ export default {
       empresa: null,
       data: [],
       ver: {},
+      hitos: [],
       paises: [],
       showModalEditar: false,
       edit: false,
@@ -286,7 +322,8 @@ export default {
       select: null,
       options: [],
       options2: [],
-      id: ''
+      id: '',
+      fecha: ''
     }
   },
   validations: {
@@ -312,6 +349,12 @@ export default {
           return this.data.filter(v => v.department_id === this.select)
         } else if (this.route === 'charges') {
           return this.data.filter(v => v.area_id === this.select)
+        } else if (this.route === 'user_consultor') {
+          return this.data.filter(v => v.departamento === this.select)
+        } else if (this.route === 'solicitudes') {
+          return this.data.filter(v => v.category === this.select)
+        } else if (this.route === 'solicitudes_history') {
+          return this.data.filter(v => this.filterFecha(v))
         } else {
           return this.data.filter(v => v.empresa === this.select)
         }
@@ -326,6 +369,12 @@ export default {
     await this.getRecord()
   },
   methods: {
+    filterFecha (itm) {
+      this.fecha = this.select.from + ' ... ' + this.select.to
+      if (itm.dateSlt === this.select.from || itm.dateSlt === this.select.to || moment(itm.dateSlt).isBetween(this.select.from, this.select.to)) {
+        return true
+      }
+    },
     userLogueado () {
       this.$api.get('user_logueado').then(res => {
         if (res) {
@@ -352,12 +401,19 @@ export default {
       }
       update(() => {
         const needle = val.toLowerCase()
-        this.options = this.options2.filter(v => this.route === 'sla' ? v.contrato.toLowerCase().indexOf(needle) > -1 : v.name.toLowerCase().indexOf(needle) > -1)
+        this.options = this.options2.filter(v => this.route === 'sla' ? v.contrato.toLowerCase().indexOf(needle) > -1 : this.route === 'solicitudes' ? v.nombre.toLowerCase().indexOf(needle) > -1 : v.name.toLowerCase().indexOf(needle) > -1)
       })
     },
     verItem (itm) {
       this.edit = false
       this.ver = { ...itm }
+      if (this.route === 'solicitudes_history' || this.route === 'solicitudes') {
+        this.$api.get('history_hitos/' + this.ver._id).then(res => {
+          if (res) {
+            this.hitos = res
+          }
+        })
+      }
       if (this.route === 'companys') {
         this.ver.pais = this.paises.filter(v => v._id === itm.pais_id)[0].name
         this.ver.estado = this.paises.filter(v => v._id === itm.pais_id)[0].estados.filter(v => v._id === itm.estado_id)[0].name
@@ -445,7 +501,7 @@ export default {
       this.$emit('asignarEquipo', id)
     },
     async getOptions () {
-      await this.$api.get(this.route === 'sla' ? this.rol === 1 ? 'contratos' : 'contratos/' + this.user.empresa : this.rol === 1 ? 'companys' : 'empresas_user').then(res => {
+      await this.$api.get(this.route === 'sla' ? this.rol === 1 ? 'contratos' : 'contratos/' + this.user.empresa : this.route === 'user_consultor' ? 'departments' : this.route === 'solicitudes' ? 'categorias/' + this.user.empresa : this.rol === 1 ? 'companys' : 'empresas_user').then(res => {
         if (res) {
           this.options = res
           if (this.empresa !== null) {

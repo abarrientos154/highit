@@ -3,7 +3,7 @@
     <q-img src="leaderboard highit desk 4.png" style="width: 100%"/>
     <div class="column justify-center items-center full-width" :style="baseu ? '' : 'margin-top: -50px'">
       <q-avatar v-if="baseu" class="q-mt-xl q-mb-lg" size="200px">
-        <img :src="baseu" style="height: 100%" />
+        <q-img :src="baseu" style="height: 100%" />
       </q-avatar>
       <img v-else src="Desk 1.2.png" style="width:400px"/>
       <div :style="baseu ? '' : 'margin-top: -75px'">

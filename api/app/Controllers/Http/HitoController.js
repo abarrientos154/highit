@@ -88,6 +88,16 @@ class HitoController {
     response.send(hitos)
   }
 
+  async history({
+    params,
+    request,
+    response,
+    view
+  }) {
+    let hitos = (await Hito.query().where({solicitud_id: params.id}).fetch()).toJSON()
+    response.send(hitos)
+  }
+
   /**
    * Render a form to update an existing Hito.
    * GET Hito/:id/edit

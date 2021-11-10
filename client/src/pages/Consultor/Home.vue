@@ -96,7 +96,7 @@
           </div>
           <div v-if="solicitud.hitos.length" class="full-width q-px-sm q-mb-md">
             <div class="q-mb-sm">
-              <div class="text-subtitle1 text-bold">Historial de hitos</div>
+              <div class="text-subtitle1 text-bold">Historial de actividades</div>
               <div class="text-grey-8">Descripcion de los comentarios realizados</div>
             </div>
             <q-list>
@@ -118,8 +118,8 @@
               <q-select dense filled v-model="form.status" :options="solicitud.estados" map-options option-label="name" emit-value option-value="status" :error="$v.form.status.$error" @blur="$v.form.status.$touch()"/>
             </div>
             <div>
-              <div class="text-caption text-grey-8">Nombre de hito</div>
-              <q-input dense v-model="form.name" filled placeholder="Nombre del hito" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
+              <div class="text-caption text-grey-8">Nombre de la actividad</div>
+              <q-input dense v-model="form.name" filled placeholder="Nombre" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
             </div>
             <div>
               <div class="text-caption text-grey-8">Descripción del trabajo realizado</div>
@@ -128,7 +128,7 @@
           </div>
         </div>
         <div class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 0 && solicitud.sltBegin === 0 ? 'Iniciar Atención' : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? 'Cambiar estado' : 'Cerrar'" style="width: 70%; border-radius: 5px;" @click="solicitud.status === 0 && solicitud.sltBegin === 0 ? statusRequest(1) : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? saveHito() : slt = !slt" no-caps/>
+          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 0 && solicitud.sltBegin === 0 ? 'Iniciar Atención' : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? 'Cambiar estado' : 'Cerrar Ventana'" style="width: 70%; border-radius: 5px;" @click="solicitud.status === 0 && solicitud.sltBegin === 0 ? statusRequest(1) : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? saveHito() : slt = !slt" no-caps/>
         </div>
       </q-card>
     </q-dialog>

@@ -31,12 +31,13 @@ const routes = [
       { path: '/conocimiento/form', component: () => import('pages/Consultor/RegisterConocimiento.vue') },
       { path: '/conocimiento/form/:id', component: () => import('pages/Consultor/Conocimiento_edit.vue') },
       // Cliente Administrador
-      { path: '/inicio_cliente_admin', component: () => import('pages/ClienteAdmin/Home.vue') },
+      { path: '/inicio_cliente_admin', component: () => import('pages/HomeCliente.vue') },
       { path: '/equipos_cliente', component: () => import('pages/ClienteAdmin/ListadoEquipo.vue') },
       // Cliente
-      { path: '/inicio_cliente', component: () => import('pages/Cliente/Home.vue') },
-      { path: '/equipos_consultor', component: () => import('pages/Cliente/ListadoEquipo.vue') },
+      { path: '/inicio_cliente', component: () => import('pages/HomeCliente.vue') },
+      { path: '/equipos_consultor', component: () => import('pages/ClienteFinal/ListadoEquipo.vue') },
       // Generales
+      { path: '/historial_solicitudes', component: () => import('pages/HistorialActividades.vue') },
       { path: '/contratos', component: () => import('pages/Contrato.vue') },
       { path: '/empresas', component: () => import('pages/Companys.vue') },
       { path: '/empresas/form', component: () => import('pages/RegisterCompany.vue') },

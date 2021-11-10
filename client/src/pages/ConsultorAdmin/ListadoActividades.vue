@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla v-if="info" titulo="Listado de Actividades" :columns="column" route="solicitudes" :route_id="user.empresa" :verBtn="true" :editarBtn="false" :eliminarBtn="false"/>
+    <Tabla v-if="info" titulo="Listado de Actividades" :columns="column" route="solicitudes" :route_id="user.empresa" :verBtn="true" :editarBtn="false" :selectBtn="true" :selectFlt="false" :eliminarBtn="false"/>
   </div>
 </template>
 
@@ -13,9 +13,10 @@ export default {
       user: {},
       info: false,
       column: [
-        { name: 'cliente', field: 'cliente', label: 'Autor', align: 'left' },
-        { name: 'prioridad', field: 'prioridad', label: 'Prioridad', align: 'left' },
         { name: 'description', field: 'description', label: 'Actividad', align: 'left' },
+        { name: 'prioridad', field: 'prioridad', label: 'Prioridad', align: 'left' },
+        { name: 'categoria', field: 'categoria', label: 'Categoria', align: 'left' },
+        { name: 'empresa', field: 'empresa', label: 'Cliente', align: 'left' },
         { name: 'consultor', field: 'consultor', label: 'Consultor', align: 'left' },
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
       ]

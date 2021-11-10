@@ -97,7 +97,7 @@
           </div>
           <div v-if="solicitud.hitos.length" class="full-width q-px-sm q-mb-md">
             <div class="q-mb-sm">
-              <div class="text-subtitle1 text-bold">Historial de hitos</div>
+              <div class="text-subtitle1 text-bold">Historial de actividades</div>
               <div class="text-grey-8">Descripcion de los comentarios realisados</div>
             </div>
             <q-list>
@@ -115,8 +115,8 @@
           </div>
           <div class="q-px-sm q-mb-md" v-if="action === 6">
             <div>
-              <div class="text-caption text-grey-8">Nombre de hito</div>
-              <q-input dense v-model="form.name" filled placeholder="Nombre del hito" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
+              <div class="text-caption text-grey-8">Nombre de la actividad</div>
+              <q-input dense v-model="form.name" filled placeholder="Nombre" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
             </div>
             <div>
               <div class="text-caption text-grey-8">Descripción del trabajo realizado</div>
@@ -141,7 +141,7 @@
           <q-btn class="col text-white q-py-xs" color="primary" label="Confirmar finalizacion" @click="optionStatus(5)" style="border-radius: 5px;" no-caps/>
         </div>
         <div v-else-if="solicitud.status !== 4" class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" label="Cerrar" @click="slt = !slt" style="width: 70%; border-radius: 5px;" no-caps/>
+          <q-btn class="text-white q-py-xs" color="primary" label="Cerrar Ventana" @click="slt = !slt" style="width: 70%; border-radius: 5px;" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -150,10 +150,10 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
-import NewSlt from '../../components/NewSolicitud'
-import ListaSlt from '../../components/Solicitudes'
+import NewSlt from '../components/NewSolicitud'
+import ListaSlt from '../components/Solicitudes'
 import * as moment from 'moment'
-import env from '../../env'
+import env from '../env'
 export default {
   components: { NewSlt, ListaSlt },
   data () {
