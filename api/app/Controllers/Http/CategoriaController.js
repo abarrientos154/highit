@@ -80,6 +80,12 @@ class CategoriaController {
     response.send(datos)
   }
 
+  async categoriesDepartment ({ params, request, response, view, auth }) {
+    let user = (await auth.getUser()).toJSON()
+    let datos = (await Categoria.query().where({company_id: user.empresa, departamento: params.id}).fetch()).toJSON()
+    response.send(datos)
+  }
+
   /**
    * Render a form to update an existing categoria.
    * GET categorias/:id/edit

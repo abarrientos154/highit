@@ -118,6 +118,7 @@ addPrefixToGroup(
 
     Route.post("categoria", "CategoriaController.store")
     Route.get("categorias/:id", "CategoriaController.show")
+    Route.get("categorias_departamento/:id", "CategoriaController.categoriesDepartment")
     Route.get("categorias", "CategoriaController.index")
     Route.delete("categorias/:id", "CategoriaController.destroy")
 

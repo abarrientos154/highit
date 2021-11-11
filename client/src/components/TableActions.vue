@@ -501,7 +501,7 @@ export default {
       this.$emit('asignarEquipo', id)
     },
     async getOptions () {
-      await this.$api.get(this.route === 'sla' ? this.rol === 1 ? 'contratos' : 'contratos/' + this.user.empresa : this.route === 'user_consultor' ? 'departments' : this.route === 'solicitudes' ? 'categorias/' + this.user.empresa : this.rol === 1 ? 'companys' : 'empresas_user').then(res => {
+      await this.$api.get(this.route === 'sla' ? this.rol === 1 ? 'contratos' : 'contratos/' + this.user.empresa : this.route === 'user_consultor' ? 'departments' : this.route === 'solicitudes' ? 'categorias_departamento/' + this.user.departamento : this.rol === 1 ? 'companys' : 'empresas_user').then(res => {
         if (res) {
           this.options = res
           if (this.empresa !== null) {

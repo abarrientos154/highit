@@ -43,7 +43,7 @@
               <Tabla v-if="listado" no-data-label="Sin registros" titulo="Listado de contratos" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :route_id="rol === 2 ? user.empresa : null" :btnNew="false" />
             </q-card>
           </div>
-          <div class="q-pa-md" v-if="rol !== 1">
+          <div class="q-pa-md" v-if="rol === 2">
             <div class="q-mt-md text-h5 text-bold">Selecciona el contrato</div>
             <div class="q-mt-md text-subtitle1">Selecciona el contrato para definir prioridad</div>
             <q-select filled v-model="form2.contrato" use-input behavior="menu" input-debounce="0" :options="lista" map-options option-label="contrato" emit-value option-value="_id" @filter="filterFn" :error="$v.form2.contrato.$error" @blur="$v.form2.contrato.$touch()">
