@@ -2,6 +2,7 @@
 
 const Helpers = use('Helpers')
 const Company = use("App/Models/Company")
+const User = use("App/Models/User")
 const mkdirp = use('mkdirp')
 const { validate } = use("Validator")
 const fs = require('fs')
@@ -29,6 +30,7 @@ class CompanyController {
     let companys = (await Company.query().where({status: 1}).with('contrato').fetch()).toJSON()
     for (let i of companys) {
       i.contrato = i.contrato.contrato
+      i.cantUsers = ((await User.query().where({roles: 2, empresa: i._id}).fetch()).toJSON()).length
     }
     response.send(companys)
   }
