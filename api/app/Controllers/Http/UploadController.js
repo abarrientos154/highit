@@ -82,7 +82,6 @@ class UploadController {
       [
         {
           alignment: 'center',
-          border: [true, true, true, true],
           style: 'textbold',
           margin: [0, 5, 0, 5],
           text: [
@@ -91,7 +90,6 @@ class UploadController {
         },
         {
           alignment: 'center',
-          border: [false, true, true, true],
           style: 'textbold',
           margin: [0, 5, 0, 5],
           text: [
@@ -100,7 +98,6 @@ class UploadController {
         },
         {
           alignment: 'center',
-          border: [false, true, true, true],
           style: 'textbold',
           margin: [0, 5, 0, 5],
           text: [
@@ -109,7 +106,6 @@ class UploadController {
         },
         {
           alignment: 'center',
-          border: [false, true, true, true],
           style: 'textbold',
           margin: [0, 5, 0, 5],
           text: [
@@ -122,17 +118,15 @@ class UploadController {
       info.push([
         {
           alignment: 'center',
-          border: [true, false, true, true],
           style: 'textblack',
-          margin: [0, 10, 0, 0],
+          margin: [0, 5, 0, 0],
           text: [
             { style: '', text: `${i.dateSlt}` }
           ]
         },
         {
           alignment: 'center',
-          border: [false, false, true, true],
-          style: 'textblack',
+          style: 'textDescription',
           margin: [0, 2, 0, 2],
           text: [
             { style: '', text: `${i.description}` }
@@ -140,18 +134,16 @@ class UploadController {
         },
         {
           alignment: 'center',
-          border: [false, false, true, true],
           style: 'textblack',
-          margin: [0, 10, 0, 0],
+          margin: [0, 5, 0, 0],
           text: [
             { style: '', text: `${i.status === 0 ? 'Sin iniciar' : i.status === 1 ? 'En ejecución' : i.status === 2 ? 'En pausa' : i.status === 3 ? 'Checkout' : i.status === 4 ? 'Por confirmar' : i.status === 5 ? 'Finalizada' : 'Reabierta'}` }
           ]
         },
         {
           alignment: 'center',
-          border: [false, false, true, true],
           style: 'textblack',
-          margin: [0, 10, 0, 0],
+          margin: [0, 5, 0, 0],
           text: [
             { style: '', text: `${i.status === 0 ? i.cliente.name + ' ' + i.cliente.last_name : i.consultor.name + ' ' + i.consultor.last_name}` }
           ]
@@ -180,7 +172,7 @@ class UploadController {
                   border: [false, false, false, false],
                   style: 'tableDescription',
                   table: {
-                    widths: [70, 200, 70, 100],
+                    widths: [70, 200, 70, 90],
                     body: info
                   },
                   layout: {
@@ -205,7 +197,12 @@ class UploadController {
       ],
       styles: {
         tableDescription: {
-          margin: [4, 4, 40, 4],
+          margin: [4, 4, 50, 4],
+        },
+        textDescription: {
+          fontSize: 7,
+          margin: [0, 0, 0, 0],
+          color: '#000000'
         },
         textblack: {
           fontSize: 8,
@@ -221,7 +218,7 @@ class UploadController {
       }
     }
     var pdfDoc = await printer.createPdfKitDocument(docDefinition)
-    var fileName = `${body._id}.pdf`
+    var fileName = `${body.name}.pdf`
     mkdirp.sync(`${Helpers.appRoot()}/storage/uploads/pdf`)
     var filePath = `${Helpers.appRoot('storage/uploads/pdf')}/${fileName}`
     pdfDoc.pipe(fs.createWriteStream(filePath))
