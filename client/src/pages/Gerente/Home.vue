@@ -35,7 +35,10 @@
             <q-item-section>
               <div class="row items-center justify-between no-wrap">
                 <q-item-label class="text-bold text-h6 text-no-wrap">{{item.name}}</q-item-label>
-                <q-btn dense flat round icon="pending" @click="gestionarDatos(item)"/>
+                <div v-if="item.cantidad > 0">
+                  <q-btn dense flat round icon="description" @click="pdfGenerate(item)"/>
+                  <q-btn dense flat round icon="pending" @click="gestionarDatos(item)"/>
+                </div>
               </div>
               <q-item-label class="text-subtitle1">Actividades realizadas:</q-item-label>
               <q-item-label class="text-h3 text-grey-7">{{item.cantidad}}</q-item-label>
@@ -140,11 +143,14 @@
 </template>
 
 <script>
+import { openURL } from 'quasar'
 import * as moment from 'moment'
 import env from '../../env'
 export default {
   data () {
     return {
+      baseu: '',
+      baseuPdf: '',
       type: 0,
       info: false,
       datos: {},
@@ -164,6 +170,7 @@ export default {
     }
   },
   mounted () {
+    this.baseuPdf = env.apiUrl + 'file_pdf/'
     this.userLogueado()
   },
   methods: {
@@ -243,6 +250,21 @@ export default {
       this.semana = ''
       this.fecha = null
       this.datos.cantidad = this.datos.actividades.length
+    },
+    pdfGenerate (itm) {
+      this.$q.loading.show({
+        message: 'Generando archivo'
+      })
+      this.$api.post('generate_pdf', itm).then(res => {
+        if (res) {
+          console.log(res)
+          const vm = this
+          setTimeout(function () {
+            openURL(vm.baseuPdf + res)
+            vm.$q.loading.hide()
+          }, 5000)
+        } else { this.$q.loading.hide() }
+      })
     },
     validarFecha (filtro) {
       const actividades = []

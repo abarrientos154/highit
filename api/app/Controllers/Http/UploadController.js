@@ -1,11 +1,12 @@
 'use strict'
 
 const Helpers = use('Helpers')
+const mkdirp = use('mkdirp')
+const PdfMake = use("pdfmake")
 const Conocimiento = use("App/Models/Conocimiento")
-
-/* const mkdirp = use('mkdirp')
-const { validate } = use("Validator")
 const fs = require('fs')
+
+/* const { validate } = use("Validator")
 var randomize = require('randomatic'); */
 
 
@@ -70,6 +71,163 @@ class UploadController {
     request,
     response
   }) {}
+
+  async generatePdf({
+    request,
+    response
+  }) {
+    let body = request.body
+    let actividades = body.actividades
+    let info = [
+      [
+        {
+          alignment: 'center',
+          border: [true, true, true, true],
+          style: 'textbold',
+          margin: [0, 5, 0, 5],
+          text: [
+            { style: '', text: 'FECHA' }
+          ]
+        },
+        {
+          alignment: 'center',
+          border: [false, true, true, true],
+          style: 'textbold',
+          margin: [0, 5, 0, 5],
+          text: [
+            { style: '', text: 'DESCRIPCIÓN' }
+          ]
+        },
+        {
+          alignment: 'center',
+          border: [false, true, true, true],
+          style: 'textbold',
+          margin: [0, 5, 0, 5],
+          text: [
+            { style: '', text: 'SITUACIÓN' }
+          ]
+        },
+        {
+          alignment: 'center',
+          border: [false, true, true, true],
+          style: 'textbold',
+          margin: [0, 5, 0, 5],
+          text: [
+            { style: '', text: 'CONTACTO' }
+          ]
+        }
+      ]
+    ]
+    for (const i of actividades) {
+      info.push([
+        {
+          alignment: 'center',
+          border: [true, false, true, true],
+          style: 'textblack',
+          margin: [0, 10, 0, 0],
+          text: [
+            { style: '', text: `${i.dateSlt}` }
+          ]
+        },
+        {
+          alignment: 'center',
+          border: [false, false, true, true],
+          style: 'textblack',
+          margin: [0, 2, 0, 2],
+          text: [
+            { style: '', text: `${i.description}` }
+          ]
+        },
+        {
+          alignment: 'center',
+          border: [false, false, true, true],
+          style: 'textblack',
+          margin: [0, 10, 0, 0],
+          text: [
+            { style: '', text: `${i.status === 0 ? 'Sin iniciar' : i.status === 1 ? 'En ejecución' : i.status === 2 ? 'En pausa' : i.status === 3 ? 'Checkout' : i.status === 4 ? 'Por confirmar' : i.status === 5 ? 'Finalizada' : 'Reabierta'}` }
+          ]
+        },
+        {
+          alignment: 'center',
+          border: [false, false, true, true],
+          style: 'textblack',
+          margin: [0, 10, 0, 0],
+          text: [
+            { style: '', text: `${i.status === 0 ? i.cliente.name + ' ' + i.cliente.last_name : i.consultor.name + ' ' + i.consultor.last_name}` }
+          ]
+        }
+      ])
+    }
+    var fonts = {
+      Roboto: {
+        normal: 'fonts/Roboto-Regular.ttf',
+        bold: 'fonts/Roboto-Medium.ttf',
+        italics: 'fonts/Roboto-Italic.ttf',
+        bolditalics: 'fonts/Roboto-MediumItalic.ttf'
+      }
+    }
+    var printer = new PdfMake(fonts)
+    let docDefinition = {
+      pageSize: 'letter',
+      // pageOrientation: 'landscape',
+      pageMargins: [40, 7, 40, 7],
+      content: [
+        {
+          table: {
+            body: [
+              [
+                {
+                  border: [false, false, false, false],
+                  style: 'tableDescription',
+                  table: {
+                    widths: [70, 200, 70, 100],
+                    body: info
+                  },
+                  layout: {
+                    hLineColor: function (i, node) {
+                      return (i !== 1) ? '#636363' : 'black'
+                    },
+                    vLineColor: function (i, node) {
+                      return (i === 0 || i === node.table.widths.length) ? '#636363' : 'black'
+                    },
+                    fillColor: function (rowIndex, node, columnIndex) {
+                      return (rowIndex % 2 === 0) ? '#CCC9C8' : '#999999'
+                    }
+                  }
+                }
+              ]
+            ]
+          },
+          layout: {
+            fillColor: '#CCC9C8'
+          }
+        }
+      ],
+      styles: {
+        tableDescription: {
+          margin: [4, 4, 40, 4],
+        },
+        textblack: {
+          fontSize: 8,
+          margin: [0, 0, 0, 0],
+          color: '#000000'
+        },
+        textbold: {
+          bold: true,
+          fontSize: 9,
+          margin: [0, 0, 0, 0],
+          color: '#000000'
+        }
+      }
+    }
+    var pdfDoc = await printer.createPdfKitDocument(docDefinition)
+    var fileName = `${body._id}.pdf`
+    mkdirp.sync(`${Helpers.appRoot()}/storage/uploads/pdf`)
+    var filePath = `${Helpers.appRoot('storage/uploads/pdf')}/${fileName}`
+    pdfDoc.pipe(fs.createWriteStream(filePath))
+    pdfDoc.end()
+    response.send(fileName)
+  }
 
   /**
    * Display a single upload.
@@ -163,6 +321,11 @@ class UploadController {
   async getFileByDirectoryCompany ({ params, request, response }) {
     const dir = params.file
     response.download(Helpers.appRoot('storage/uploads/companyFiles') + `/${dir}`)
+  }
+
+  async getFileByDirectoryPdf ({ params, request, response }) {
+    const dir = params.file
+    response.download(Helpers.appRoot('storage/uploads/pdf') + `/${dir}`)
   }
 }
 

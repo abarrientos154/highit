@@ -81,7 +81,7 @@ class SolicitudController {
   }
   
   async solicitudesCompany ({ params, request, response, view }) {
-    let solicitudes = (await Solicitud.query().where('company_id', params.id).fetch()).toJSON()
+    let solicitudes = (await Solicitud.query().where('company_id', params.id).with('cliente').with('consultor').fetch()).toJSON()
     response.send(solicitudes)
   }
 
