@@ -1,6 +1,6 @@
 <template>
-  <div class="q-py-lg q-px-xl">
-    <q-img src="leaderboard highit desk 4.png" style="width: 100%"/>
+  <div class="column items-center q-py-lg q-px-xl">
+    <q-img src="leaderboard highit desk 4.png" style="width: 100%; max-width: 900px"/>
     <div class="column justify-center items-center full-width" :style="baseu ? '' : 'margin-top: -50px'">
       <q-avatar v-if="baseu" class="q-mt-xl q-mb-lg" size="200px">
         <q-img :src="baseu" style="height: 100%" />
