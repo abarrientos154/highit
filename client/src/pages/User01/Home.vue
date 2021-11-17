@@ -8,7 +8,7 @@
     </div>
     <div class="text-center text-h5 text-bold">Estadistica de empresas</div>
     <div>
-      <GChart v-if="info" type="ColumnChart" :data="chartData" :options="chartOptions"/>
+      <GChart v-if="info && chartData.length > 1" type="ColumnChart" :data="chartData" :options="chartOptions"/>
     </div>
   </div>
 </template>
