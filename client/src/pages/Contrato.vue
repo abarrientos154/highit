@@ -15,24 +15,9 @@
                 <div class="q-mt-md text-subtitle1">Introduzca el nombre del contrato</div>
                 <q-input filled v-model="form.contrato" label="Nombre del contrato" error-message="Requerido" :error="$v.form.contrato.$error" @blur="$v.form.contrato.$touch()"/>
               </div>
-              <!-- <div v-if="rol !== 1">
-                <div class="q-mt-md text-subtitle1">Empresas</div>
-                <q-select filled v-model="form.empresas" :options="empresas" label="Selecciona las empresas a las que pertenece el contrato" multiple emit-value map-options option-value="_id" option-label="name" error-message="Requerido" :error="$v.form.empresas.$error" @blur="$v.form.empresas.$touch()">
-                  <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
-                    <q-item v-bind="itemProps" v-on="itemEvents">
-                      <q-item-section>
-                        <q-item-label v-html="opt.name"></q-item-label>
-                      </q-item-section>
-                      <q-item-section side>
-                        <q-checkbox :value="selected" @input="toggleOption(opt)" />
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                </q-select>
-              </div> -->
               <div v-if="rol === 1">
                 <div class="q-mt-md text-subtitle1">Costo por usuario</div>
-                <q-input type="number" filled v-model.number="form.costo" :rules="[ v => v > 0 ]" error-message="Requerido" :error="$v.form.costo.$error" @blur="$v.form.costo.$touch()"/>
+                <q-input type="number" filled v-model.number="form.costo" error-message="Requerido" :error="$v.form.costo.$error" @blur="$v.form.costo.$touch()"/>
               </div>
 
               <div class="q-pa-md column items-center justify-center">
@@ -63,7 +48,7 @@
               <div>
                 <div class="q-mt-md text-subtitle1">Tiempo de atención acordado</div>
                 <div class="row">
-                  <q-input type="number" filled v-model.number="form2.tiempo" min="1" :rules="[ v => v >= 1 ]" error-message="Requerido" :error="$v.form2.tiempo.$error" @blur="$v.form2.tiempo.$touch()" style="width: 120px"/>
+                  <q-input type="number" filled v-model.number="form2.tiempo" error-message="Requerido" :error="$v.form2.tiempo.$error" @blur="$v.form2.tiempo.$touch()" style="width: 120px"/>
                   <div class="q-ml-md q-mt-md">Minutos</div>
                 </div>
               </div>
@@ -85,7 +70,7 @@
   </div>
 </template>
 <script>
-import { required, requiredIf } from 'vuelidate/lib/validators'
+import { required, requiredIf, minValue } from 'vuelidate/lib/validators'
 import Tabla from '../components/TableActions'
 export default {
   components: {
@@ -118,21 +103,17 @@ export default {
   validations: {
     form: {
       contrato: { required },
-      /* empresas: {
-        required: requiredIf(function () {
-          return this.rol !== 1
-        })
-      }, */
       costo: {
         required: requiredIf(function () {
           return this.rol === 1
-        })
+        }),
+        minValue: minValue(1)
       }
     },
     form2: {
       contrato: { required },
       nombre: { required },
-      tiempo: { required }
+      tiempo: { required, minValue: minValue(1) }
     },
     color: { required }
   },
@@ -145,6 +126,13 @@ export default {
         if (res) {
           this.rol = res.roles[0]
           this.user = res
+          if (this.rol === 1) {
+            this.column = [
+              { name: 'contrato', field: 'contrato', label: 'Nombre', align: 'left' },
+              { name: 'costo', field: 'costo', label: 'Costo', align: 'right', text: 'end' },
+              { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' }
+            ]
+          }
           this.listado = true
           this.obtener_contratos()
           // this.getEmpresas()
@@ -244,16 +232,7 @@ export default {
           }
         })
       }
-    }/* ,
-    getEmpresas () {
-      if (this.rol !== 1) {
-        this.$api.get('companys/' + this.user.empresa).then(res => {
-          if (res) {
-            this.empresas = res
-          }
-        })
-      }
-    } */
+    }
   }
 }
 </script>
