@@ -107,9 +107,9 @@ export default {
           this.$q.loading.hide()
           this.loading = false
         })
-      } else if (!this.userEmail.empresa_user.enable) {
+      } else {
         this.$q.notify({
-          message: 'La empresa a la que perteneces a sido deshabilitada',
+          message: !this.userEmail.empresa_user.enable ? 'La empresa a la que perteneces ha sido deshabilitada' : 'Debes llenar los campos correspondientes',
           color: 'negative'
         })
       }

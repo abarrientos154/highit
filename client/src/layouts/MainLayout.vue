@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
 
-    <q-drawer v-model="drawer1" show-if-above :width="200" :breakpoint="500" bordered content-class="">
+    <q-drawer v-model="drawer1" show-if-above :width="225" :breakpoint="500" bordered content-class="">
       <q-scroll-area class="fit">
         <div class="row justify-center q-py-md">
           <q-avatar size="120px">
@@ -11,16 +11,25 @@
         <div class="text-center text-grey-8 text-subtitle1">¿Qué quieres hacer?</div>
 
         <q-list class="q-pt-md">
-          <div v-for="(item, index) in menu" :key="index">
-            <q-item dense clickable v-ripple @click="item.label === 'Cerrar sesión' ? cerrarSesion() : item.ruta !== '' ? $router.push(item.ruta) : ''">
+          <q-expansion-item borderless v-for="(item, index) in menu" :key="index" :expand-icon="!item.items ? 'm' : 'expand_more'" :expanded-icon="!item.items ? 'l' : 'expand_less'" @click="item.items ? '' : item.label === 'Cerrar sesión' ? cerrarSesion() : $router.push(item.ruta)">
+            <template v-slot:header>
               <q-item-section avatar>
-                <q-icon color="grey-8" :name="item.icon" />
+                <q-icon :name="item.icon"/>
               </q-item-section>
-              <q-item-section class="text-grey-8">
-                {{ item.label }}
+              <q-item-section style="margin-left: -25px">
+                <q-item-label>{{ item.label }}</q-item-label>
+              </q-item-section>
+            </template>
+
+            <q-item clickable dense v-ripple v-for="(item2, index) in item.items" :key="index" @click="$router.push(item2.ruta)">
+              <q-item-section avatar class="q-ml-md">
+                <q-icon :name="item2.icon" size="20px"/>
+              </q-item-section>
+              <q-item-section style="margin-left: -25px">
+                <q-item-label class="text-caption">{{ item2.label }}</q-item-label>
               </q-item-section>
             </q-item>
-          </div>
+          </q-expansion-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -51,19 +60,25 @@ export default {
           ruta: '/inicio_user01'
         },
         {
-          icon: 'person',
-          label: 'Usuarios',
-          ruta: '/usuarios'
-        },
-        {
-          icon: 'location_city',
-          label: 'Empresas',
-          ruta: '/empresas'
-        },
-        {
-          icon: 'list_alt',
-          label: 'Contratos',
-          ruta: '/contratos'
+          icon: 'settings',
+          label: 'Configuración',
+          items: [
+            {
+              icon: 'assignment_turned_in',
+              label: 'Contratos',
+              ruta: '/contratos'
+            },
+            {
+              icon: 'business',
+              label: 'Empresas',
+              ruta: '/empresas'
+            },
+            {
+              icon: 'person',
+              label: 'Usuarios',
+              ruta: '/usuarios'
+            }
+          ]
         },
         {
           icon: 'logout',
@@ -78,34 +93,40 @@ export default {
           ruta: '/inicio_user02'
         },
         {
-          icon: 'person',
-          label: 'Usuarios',
-          ruta: '/usuarios2'
+          icon: 'settings',
+          label: 'Configuración',
+          items: [
+            {
+              icon: 'assignment_turned_in',
+              label: 'Contratos',
+              ruta: '/contratos'
+            },
+            {
+              icon: 'category',
+              label: 'Categorias',
+              ruta: '/categorias'
+            },
+            {
+              icon: 'schema',
+              label: 'Organigrama',
+              ruta: '/organigrama'
+            },
+            {
+              icon: 'business',
+              label: 'Empresas',
+              ruta: '/empresas'
+            },
+            {
+              icon: 'person',
+              label: 'Usuarios',
+              ruta: '/usuarios2'
+            }
+          ]
         },
         {
-          icon: 'location_city',
-          label: 'Empresas',
-          ruta: '/empresas'
-        },
-        {
-          icon: 'location_city',
-          label: 'Crear Categorias',
-          ruta: '/categorias'
-        },
-        {
-          icon: 'location_city',
-          label: 'Crear Equipos',
+          icon: 'devices_other',
+          label: 'Inventario',
           ruta: '/equipos'
-        },
-        {
-          icon: 'category',
-          label: 'Organigrama',
-          ruta: '/organigrama'
-        },
-        {
-          icon: 'list_alt',
-          label: 'Contratos',
-          ruta: '/contratos'
         },
         {
           icon: 'lightbulb',
@@ -120,14 +141,20 @@ export default {
       ],
       menuConsultor: [
         {
-          icon: 'home',
-          label: 'Inicio',
-          ruta: '/inicio_consultor'
-        },
-        {
-          icon: 'assignment',
-          label: 'Historial de solicitudes',
-          ruta: '/historial_solicitudes'
+          icon: 'wysiwyg',
+          label: 'Solicitudes',
+          items: [
+            {
+              icon: 'view_list',
+              label: 'Listado de solicitudes',
+              ruta: '/inicio_consultor'
+            },
+            {
+              icon: 'assignment',
+              label: 'Historial de solicitudes',
+              ruta: '/historial_solicitudes'
+            }
+          ]
         },
         {
           icon: 'lightbulb',
@@ -142,18 +169,24 @@ export default {
       ],
       menuCliente: [
         {
-          icon: 'home',
-          label: 'Inicio',
-          ruta: '/inicio_cliente'
+          icon: 'wysiwyg',
+          label: 'Solicitudes',
+          items: [
+            {
+              icon: 'view_list',
+              label: 'Listado de solicitudes',
+              ruta: '/inicio_cliente'
+            },
+            {
+              icon: 'assignment',
+              label: 'Historial de solicitudes',
+              ruta: '/historial_solicitudes'
+            }
+          ]
         },
         {
-          icon: 'assignment',
-          label: 'Historial de solicitudes',
-          ruta: '/historial_solicitudes'
-        },
-        {
-          icon: 'stream',
-          label: 'Equipos',
+          icon: 'devices_other',
+          label: 'Inventario',
           ruta: '/equipos_consultor'
         },
         {
@@ -169,14 +202,20 @@ export default {
           ruta: '/inicio_consultor_admin'
         },
         {
-          icon: 'stream',
+          icon: 'support_agent',
           label: 'Consultores',
-          ruta: '/consultores'
-        },
-        {
-          icon: 'stream',
-          label: 'Actividades',
-          ruta: '/atividades_consultor'
+          items: [
+            {
+              icon: 'assignment_ind',
+              label: 'Listado de consultores',
+              ruta: '/consultores'
+            },
+            {
+              icon: 'manage_accounts',
+              label: 'Actividades por consultor',
+              ruta: '/atividades_consultor'
+            }
+          ]
         },
         {
           icon: 'logout',
@@ -186,18 +225,24 @@ export default {
       ],
       menuClienteAdmin: [
         {
-          icon: 'home',
-          label: 'Inicio',
-          ruta: '/inicio_cliente_admin'
+          icon: 'wysiwyg',
+          label: 'Solicitudes',
+          items: [
+            {
+              icon: 'view_list',
+              label: 'Listado de solicitudes',
+              ruta: '/inicio_cliente_admin'
+            },
+            {
+              icon: 'assignment',
+              label: 'Historial de solicitudes',
+              ruta: '/historial_solicitudes'
+            }
+          ]
         },
         {
-          icon: 'assignment',
-          label: 'Historial de solicitudes',
-          ruta: '/historial_solicitudes'
-        },
-        {
-          icon: 'stream',
-          label: 'Equipos',
+          icon: 'devices_other',
+          label: 'Inventario',
           ruta: '/equipos_cliente'
         },
         {
@@ -208,8 +253,8 @@ export default {
       ],
       menuGerente: [
         {
-          icon: 'home',
-          label: 'Inicio',
+          icon: 'list',
+          label: 'Indicadores',
           ruta: '/inicio_gerente'
         },
         {
