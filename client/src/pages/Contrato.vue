@@ -12,12 +12,20 @@
             <q-card flat style="width:100%">
               <div class="text-h5 text-bold">Creación de contratos</div>
               <div>
-                <div class="q-mt-md text-subtitle1">Introduzca el nombre del contrato</div>
-                <q-input filled v-model="form.contrato" label="Nombre del contrato" error-message="Requerido" :error="$v.form.contrato.$error" @blur="$v.form.contrato.$touch()"/>
+                <div class="q-mt-md text-subtitle1">Nombre del contrato</div>
+                <q-input filled v-model="form.contrato" label="Nombre" error-message="Requerido" :error="$v.form.contrato.$error" @blur="$v.form.contrato.$touch()"/>
               </div>
+
               <div v-if="rol === 1">
+                <div class="q-mt-md text-subtitle1">Tipo de moneda</div>
+                <q-select filled v-model="form.moneda" :options="['CLP', 'USD', 'EUR', 'MXN', 'BRL', 'COP']" error-message="Requerido" :error="$v.form.moneda.$error" @blur="$v.form.moneda.$touch()"/>
+
                 <div class="q-mt-md text-subtitle1">Costo por usuario</div>
-                <q-input type="number" filled v-model.number="form.costo" error-message="Requerido" :error="$v.form.costo.$error" @blur="$v.form.costo.$touch()"/>
+                <q-field filled :suffix="form.moneda" error-message="Requerido" :error="$v.form.costo.$error" @blur="$v.form.costo.$touch()">
+                  <template v-slot:control>
+                    <money class="q-field__input text-right" v-model="form.costo"/>
+                  </template>
+                </q-field>
               </div>
 
               <div class="q-pa-md column items-center justify-center">
@@ -72,10 +80,9 @@
 <script>
 import { required, requiredIf, minValue } from 'vuelidate/lib/validators'
 import Tabla from '../components/TableActions'
+import { Money } from 'v-money'
 export default {
-  components: {
-    Tabla
-  },
+  components: { Tabla, Money },
   data () {
     return {
       filterBy: null,
@@ -103,11 +110,16 @@ export default {
   validations: {
     form: {
       contrato: { required },
+      moneda: {
+        required: requiredIf(function () {
+          return this.rol === 1
+        })
+      },
       costo: {
         required: requiredIf(function () {
           return this.rol === 1
         }),
-        minValue: minValue(1)
+        minValue: minValue(0.01)
       }
     },
     form2: {
@@ -130,6 +142,7 @@ export default {
             this.column = [
               { name: 'contrato', field: 'contrato', label: 'Nombre', align: 'left' },
               { name: 'costo', field: 'costo', label: 'Costo', align: 'right', text: 'end' },
+              { name: 'moneda', field: 'moneda', label: 'Moneda', align: 'left' },
               { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' }
             ]
           }
@@ -140,6 +153,7 @@ export default {
       })
     },
     guardar_contrato () {
+      console.log(this.form)
       this.$v.form.$touch()
       const val = this.lista.filter(v => v.contrato === this.form.contrato)
       if (!this.$v.form.$error && !val.length) {
@@ -241,7 +255,6 @@ export default {
 .bordes {
   border-right: 2px solid $grey-6;
   border-left: 2px solid $grey-6;
-  border-bottom: 2px solid $grey-6;
-  margin-left: 2px;
+  border-bottom: 2px solid $grey-6
 }
 </style>
