@@ -5,7 +5,7 @@
         <div class="bordes">
           <div class="q-pb-xl q-px-md q-pt-md column items-end">
             <div class="text-h3 text-bold">CONTRATOS</div>
-            <div class="text-grey-8 text-h6">Edición de datos de usuarios en el sistema</div>
+            <div class="text-grey-8 text-h6">Historial y registro de contratos</div>
           </div>
         </div>
           <div class="column q-pa-md items-center justify-center">
@@ -142,7 +142,6 @@ export default {
             this.column = [
               { name: 'contrato', field: 'contrato', label: 'Nombre', align: 'left' },
               { name: 'costo', field: 'costo', label: 'Costo', align: 'right', text: 'end' },
-              { name: 'moneda', field: 'moneda', label: 'Moneda', align: 'left' },
               { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' }
             ]
           }

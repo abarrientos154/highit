@@ -29,6 +29,8 @@ class CompanyController {
   async index ({ request, response, view }) {
     let companys = (await Company.query().where({status: 1}).with('contrato').fetch()).toJSON()
     for (let i of companys) {
+      i.moneda = i.contrato.moneda
+      i.totalContrato = i.contrato.costo * i.users
       i.contrato = i.contrato.contrato
       i.cantUsers = ((await User.query().where({roles: 2, empresa: i._id}).fetch()).toJSON()).length
     }

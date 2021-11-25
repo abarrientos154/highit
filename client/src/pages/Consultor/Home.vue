@@ -54,41 +54,35 @@
               <div class="text-subtitle1 text-grey-7">{{solicitud.equipo ? solicitud.equipo.name : ''}}</div>
             </div>
             <div class="row">
-              <div class="col">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <div class="text-bold text-grey-7">Tipo de contrato</div>
                 <div class="text-grey-7">{{solicitud.contrato}}</div>
               </div>
-              <div class="col" v-if="solicitud.status > 0">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status > 0">
                 <div class="text-bold text-grey-7">Usuario asignado</div>
                 <div class="text-grey-7">{{user.name + ' ' + user.last_name}}</div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <div class="text-bold text-grey-7">Categoria</div>
                 <div class="text-grey-7">{{solicitud.categoria ? solicitud.categoria.nombre : ''}}</div>
               </div>
-              <div class="col">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <div class="text-bold text-grey-7">Departamento</div>
                 <div class="text-grey-7">{{solicitud.department}}</div>
               </div>
-            </div>
-            <div class="row" v-if="solicitud.status > 0">
-              <div class="col">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status > 0">
                 <div class="text-bold text-grey-7">Fecha de inicio</div>
                 <div class="text-grey-7">{{solicitud.dateBegin}}</div>
               </div>
-              <div class="col">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status > 0">
                 <div class="text-bold text-grey-7">Hora de inicio</div>
                 <div class="text-grey-7">{{solicitud.timeBegin}}hr</div>
               </div>
-            </div>
-            <div class="row" v-if="solicitud.status === 5">
-              <div class="col">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status === 5">
                 <div class="text-bold text-grey-7">Fecha estimada de termino</div>
                 <div class="text-grey-7">{{solicitud.dateEnd}}</div>
               </div>
-              <div class="col">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status === 5">
                 <div class="text-bold text-grey-7">Hora estimada de termino</div>
                 <div class="text-grey-7">{{solicitud.timeEnd}}</div>
               </div>

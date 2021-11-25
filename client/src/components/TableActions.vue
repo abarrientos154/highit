@@ -44,6 +44,9 @@
                       <q-img :src="baseu + `${route === 'companys' ? 'company_img/' : 'perfil_img/'}` + props.row._id" class="full-height"/>
                     </q-avatar>
                   </div>
+                  <div v-else-if="item.name === 'totalContrato' || item.name === 'costo'">
+                    <money readonly class="q-field__input text-right" v-model="props.row[item.name]" :suffix="` ${props.row.moneda}`"/>
+                  </div>
                   <div v-else :class="item.text ? `row justify-${item.text} items-center` : ''">
                     <q-avatar v-if="props.row.color2 && item.name === 'nombre'" class="q-mr-sm" :color="props.row.color2" size="30px"/>
                     {{ props.row[item.name] }}
@@ -241,10 +244,11 @@
 <script>
 import { required } from 'vuelidate/lib/validators'
 import NewSlt from 'components/NewSolicitud'
+import { Money } from 'v-money'
 import * as moment from 'moment'
 import env from '../env'
 export default {
-  components: { NewSlt },
+  components: { NewSlt, Money },
   props: {
     titulo: {
       type: String,

@@ -198,6 +198,5 @@ export default {
   border-right: 2px solid $grey-6;
   border-left: 2px solid $grey-6;
   border-bottom: 2px solid $grey-6;
-  margin-left: 2px;
 }
 </style>
