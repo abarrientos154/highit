@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div>
-      <Tabla v-if="listado" titulo="Listado de empresas" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : null" :habilitarBtn="true" :eliminarBtn="false" :btnNew="true" :verBtn="true"/>
-    </div>
+    <Tabla v-if="listado" titulo="Listado de empresas" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : null" :habilitarBtn="true" :eliminarBtn="false" :btnNew="true" :verBtn="true"/>
   </div>
 </template>
 

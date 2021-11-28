@@ -4,8 +4,8 @@
     <q-drawer v-model="drawer1" show-if-above :width="225" :breakpoint="500" bordered content-class="">
       <q-scroll-area class="fit">
         <div class="row justify-center q-py-md">
-          <q-avatar size="120px">
-            <q-img :src="rol !== 1 ? baseu : 'noimg.png'" style="height: 100%;"/>
+          <q-avatar size="120px" class="shadow-5">
+            <q-img :src="rol !== 1 ? baseu : 'Desk.jpg'" style="height: 100%;"/>
           </q-avatar>
         </div>
         <div class="text-center text-grey-8 text-subtitle1">¿Qué quieres hacer?</div>

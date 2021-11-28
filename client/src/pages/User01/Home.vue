@@ -1,12 +1,13 @@
 <template>
   <div>
     <div class="bordes q-mb-md">
-      <div class="q-pb-xl q-px-md q-pt-md column items-end col">
+      <div class="q-px-md q-py-md column items-end col">
         <div class="text-h3 text-bold">HOME PRINCIPAL</div>
         <div class="text-grey-8 text-h6">Pagina de inicio del sitio</div>
+        <q-select class="full-width" filled v-model="empresa" :options="empresas" label="Selecciona una empresa" map-options emit-value option-label="name" @input="filtrar()"/>
       </div>
     </div>
-    <div class="text-center text-h5 text-bold">Estadistica de empresas</div>
+    <div class="text-center text-h5 text-bold">Estadisticas de usuarios por empresa</div>
     <div>
       <GChart v-if="info && chartData.length > 1" type="ColumnChart" :data="chartData" :options="chartOptions"/>
     </div>
@@ -20,11 +21,17 @@ export default {
   data () {
     return {
       info: false,
-      chartData: [
-        ['Element', 'Usuarios', { role: 'style' }]
-      ],
+      empresas: [],
+      empresa: null,
+      chartData: [],
       chartOptions: {
-        legend: { position: 'none' }
+        legend: { position: 'none' },
+        series: {
+          0: { targetAxisIndex: 0 }
+        },
+        vAxes: {
+          0: { title: 'Cantidad de usuarios' }
+        }
       }
     }
   },
@@ -35,10 +42,27 @@ export default {
     getEmpresas () {
       this.$api.get('companys').then(res => {
         if (res) {
+          this.chartData = [
+            ['Element', 'Usuarios', { role: 'style' }]
+          ]
           for (const i of res) { this.chartData.push([i.name, i.cantUsers, 'color: gray']) }
+          this.empresas = res
+          this.empresas.push({ name: 'Todas las empresas' })
         }
         this.info = true
       })
+    },
+    filtrar () {
+      if (this.empresa) {
+        if (this.empresa.name === 'Todas las empresas') {
+          this.getEmpresas()
+        } else {
+          this.chartData = [
+            ['Element', 'Usuarios', { role: 'style' }],
+            [this.empresa.name, this.empresa.cantUsers, 'color: gray']
+          ]
+        }
+      }
     }
   }
 }

@@ -211,6 +211,7 @@ export default {
       })
     },
     getPaises () {
+      this.$q.loading.show()
       this.$api.get('paises').then(res => {
         if (res) {
           this.paises = res
@@ -220,6 +221,7 @@ export default {
             this.selectCiudad = this.selectEstado.ciudades.filter(v => v._id === this.form.ciudad_id)[0]
           }
         }
+        this.$q.loading.hide()
       })
     },
     getContratos () {

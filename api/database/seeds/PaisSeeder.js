@@ -16,11 +16,15 @@ const Pais = use("App/Models/Pais")
 const paisData = [
   {
     id: 1,
-    name: 'Pais1'
+    name: 'Brasil'
   },
   {
     id: 2,
-    name: 'Pais2'
+    name: 'México'
+  },
+  {
+    id: 3,
+    name: 'Estados Unidos'
   }
 ]
 class PaisSeeder {
@@ -30,6 +34,7 @@ class PaisSeeder {
       if (!pais) {
         await Pais.create(paisData[i])
       } else {
+        pais.id = paisData[i].id
         pais.name = paisData[i].name
         await pais.save()
       }

@@ -152,10 +152,10 @@ export default {
       })
     },
     guardar_contrato () {
-      console.log(this.form)
       this.$v.form.$touch()
       const val = this.lista.filter(v => v.contrato === this.form.contrato)
       if (!this.$v.form.$error && !val.length) {
+        this.$q.loading.show()
         this.form.status = this.rol
         if (this.rol === 2) {
           this.form.company_id = this.user.empresa
@@ -174,6 +174,7 @@ export default {
             }
             this.obtener_contratos()
           }
+          this.$q.loading.hide()
         })
       } else {
         this.$q.notify({
