@@ -42,7 +42,8 @@ const routes = [
       { path: '/empresas', component: () => import('pages/Companys.vue') },
       { path: '/empresas/form', component: () => import('pages/RegisterCompany.vue') },
       { path: '/empresas/form/:id', component: () => import('pages/RegisterCompany.vue') },
-      { path: '/categorias', component: () => import('pages/User02/Categorias.vue') }
+      { path: '/categorias', component: () => import('pages/User02/Categorias.vue') },
+      { path: '/notificaciones', component: () => import('pages/Notifications.vue') }
     ]
   },
 

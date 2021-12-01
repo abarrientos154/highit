@@ -1,16 +1,20 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-
     <q-drawer v-model="drawer1" show-if-above :width="225" :breakpoint="500" bordered content-class="">
       <q-scroll-area class="fit">
+        <q-btn flat round dense class="absolute-top-right q-ma-sm" color="grey-8" icon="notifications_none" @click="visto = true, $router.push('/notificaciones')">
+          <q-badge v-if="notifications.length && !visto" color="red" rounded floating transparent/>
+        </q-btn>
         <div class="row justify-center q-py-md">
           <q-avatar size="120px" class="shadow-5">
             <q-img :src="rol !== 1 ? baseu : 'Desk.jpg'" style="height: 100%;"/>
           </q-avatar>
         </div>
-        <div class="text-center text-grey-8 text-subtitle1">¿Qué quieres hacer?</div>
+        <div v-if="rol !== 1" class="text-center text-bold text-h6">{{user.name}} {{user.last_name}}</div>
+        <div class="text-center text-grey-8 text-subtitle1">{{rol === 1 ? 'Administrador' : rol === 2 ? 'Highit' : rol === 3 ? 'Consultor' : rol === 4 ? 'Cliente final' : rol === 5 ? 'Consultor administrador' : rol === 6 ? 'Cliente administrador' : 'Gerente'}}</div>
 
         <q-list class="q-pt-md">
+          <div class="text-center text-grey-8 text-caption q-mb-xs">¿Qué quieres hacer?</div>
           <q-expansion-item borderless v-for="(item, index) in menu" :key="index" :expand-icon="!item.items ? 'm' : 'expand_more'" :expanded-icon="!item.items ? 'l' : 'expand_less'" @click="item.items ? '' : item.label === 'Cerrar sesión' ? cerrarSesion() : $router.push(item.ruta)">
             <template v-slot:header>
               <q-item-section avatar>
@@ -37,7 +41,6 @@
     <q-page-container>
       <router-view/>
     </q-page-container>
-
   </q-layout>
 </template>
 
@@ -52,6 +55,8 @@ export default {
       rol: 0,
       user: {},
       drawer1: true,
+      visto: false,
+      notifications: [],
       menu: [],
       menuUser01: [
         {
@@ -102,14 +107,14 @@ export default {
               ruta: '/contratos'
             },
             {
-              icon: 'category',
-              label: 'Categorias',
-              ruta: '/categorias'
-            },
-            {
               icon: 'schema',
               label: 'Organigrama',
               ruta: '/organigrama'
+            },
+            {
+              icon: 'category',
+              label: 'Categorias',
+              ruta: '/categorias'
             },
             {
               icon: 'business',
@@ -283,6 +288,7 @@ export default {
             this.baseu = env.apiUrl + 'perfil_img/' + this.user._id
           }
           this.menuRol()
+          this.getNotifications()
         }
       })
     },
@@ -302,6 +308,13 @@ export default {
       } else if (this.rol === 7) {
         this.menu = this.menuGerente
       }
+    },
+    getNotifications () {
+      this.$api.get('notifications').then(res => {
+        if (res) {
+          this.notifications = res
+        }
+      })
     }
   }
 }

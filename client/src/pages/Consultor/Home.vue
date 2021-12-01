@@ -238,6 +238,7 @@ export default {
       if (this.solicitud.status === 0) {
         status.dateBegin = moment().format('YYYY-MM-DD')
         status.timeBegin = moment().format('HH:mm')
+        this.$api.post('register_notification', { user_id: this.solicitud.user_id, emit_id: this.user._id, status: false, solicitud_id: this.solicitud._id, icon: 'cached', name: 'Solicitud en ejecución', description: `El consultor ${this.user.name} ${this.user.last_name}, ha aceptado llevar a cabo la actividad en la que solicitas: ${this.solicitud.description}` })
       }
       this.$api.put('status_solicitud/' + this.solicitud._id, status).then(res => {
         if (res) {

@@ -16,6 +16,9 @@ class Sla extends Model {
     }
     return rulesUser
   }
+  Contrato () {
+    return this.hasOne("App/Models/Contrato", "contrato", "_id")
+  }
 }
 
 module.exports = Sla

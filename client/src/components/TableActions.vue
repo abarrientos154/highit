@@ -447,7 +447,6 @@ export default {
         if (this.route === 'user2') {
           this.user.tipo_usuario = 'Highit'
           this.data.push(this.user)
-          console.log(this.data)
         }
         await this.getOptions()
       }

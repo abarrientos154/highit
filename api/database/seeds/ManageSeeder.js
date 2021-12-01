@@ -24,7 +24,7 @@ const manageData = [
     id: 2,
     status: 1,
     icon: 'cached',
-    name: 'Solicitudes en ejecucion'
+    name: 'Solicitudes en ejecución'
   },
   {
     id: 3,

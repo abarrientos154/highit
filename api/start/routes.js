@@ -144,6 +144,7 @@ addPrefixToGroup(
     Route.put("update_enable/:id", "CompanyController.updateEnable")
     Route.delete("companys/:id", "CompanyController.destroy")
 
+    Route.get("solicitud/:id", "SolicitudController.show")
     Route.get("solicitudes_cliente/:id", "SolicitudController.solicitudesCliente")
     Route.put("solicitudes_consultor/:id", "SolicitudController.solicitudesConsultor")
     Route.get("solicitudes_company/:id", "SolicitudController.solicitudesCompany")
@@ -161,5 +162,10 @@ addPrefixToGroup(
     Route.post("register_rating", "RatingController.store")
 
     Route.get("gestion", "ManageController.index")
+
+    Route.get("notifications", "NotificationController.index")
+    Route.get("notifications_false", "NotificationController.index2")
+    Route.post("register_notification", "NotificationController.store")
+    Route.put("update_notification/:id", "NotificationController.update")
   }).middleware("auth")
 );
