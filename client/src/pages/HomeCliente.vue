@@ -16,7 +16,7 @@
             <div class="q-mr-xs">Nº de solicitud:</div>
             <div class="text-bold">{{solicitud.num}}</div>
           </div>
-          <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : 'Prioridad'}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En espera' : solicitud.status === 3 ? 'Checkout' : solicitud.status === 4 ? 'Confirmar' : solicitud.status === 5 ? 'Finalizado' : ''}}</div>
+          <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : 'Prioridad'}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En espera' : solicitud.status === 3 ? 'Checkout' : solicitud.status === 4 ? 'Confirmar' : solicitud.status === 5 ? 'Finalizado' : 'Reabierta'}}</div>
         </div>
         <div class="q-mb-lg q-mt-md">
           <div class="text-center text-h6 text-bold">Datos solicitud</div>
@@ -298,6 +298,15 @@ export default {
       }
       this.$api.put('status_solicitud/' + this.solicitud._id, update).then(res => {
         if (res) {
+          this.$api.post('register_notification', {
+            user_id: this.solicitud.consultor_id,
+            emit_id: this.user._id,
+            status: false,
+            solicitud_id: this.solicitud._id,
+            icon: this.action === 5 ? 'done_all' : 'open_in_browser',
+            name: this.action === 5 ? 'Servicio finalizado' : 'Servicio reabierto',
+            description: `${this.action === 5 ? 'Felicidades ha finalizado con exito' : 'Se ha reabierto'} el servicio prestado al cliente ${this.user.name} ${this.user.last_name}, en el que solicita: ${this.solicitud.description}`
+          })
           this.$q.notify({
             message: 'Estado de solicitud actualizado',
             color: 'positive'

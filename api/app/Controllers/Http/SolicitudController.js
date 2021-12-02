@@ -160,7 +160,6 @@ class SolicitudController {
    */
   async show ({ params, request, response, view }) {
     let solicitud = await Solicitud.with('empresa').with('consultor').with('equipo').with('prioridad.Contrato').with('categoria.Departamento').find(params.id)
-    solicitud.color = solicitud.prioridad.color === 'Azul' ? 'blue' : solicitud.prioridad.color === 'Rojo' ? 'red' : solicitud.prioridad.color === 'Verde' ? 'green' : solicitud.prioridad.color === 'Amarillo' ? 'yellow' : solicitud.prioridad.color === 'Rosado' ? 'pink' : solicitud.prioridad.color === 'Gris' ? 'grey' : solicitud.prioridad.color === 'Negro' ? 'black' : solicitud.prioridad.color === 'Celeste' ? 'blue-3' : solicitud.prioridad.color === 'Anaranjado' ? 'orange' : solicitud.prioridad.color === 'Morado' ? 'purple' : 'brown'
     solicitud.hitos = (await Hito.query().where({solicitud_id: params.id}).fetch()).toJSON()
     response.send(solicitud)
   }

@@ -8,9 +8,8 @@
     </div>
     <div class="q-mb-lg">
       <q-list class="q-px-lg">
-        <q-card class="q-mb-md" v-for="(item, index) in notifications" :key="index" style="width: 100%; border-radius: 20px;">
+        <q-card :class="`q-mb-md ${!item.status ? 'sinVer' : ''}`" v-for="(item, index) in notifications" :key="index" style="width: 100%; border-radius: 20px;">
           <q-item clickable @click="verNotification(item)">
-            <div v-if="!item.status" class="absolute-top-right text-caption q-px-lg q-mx-lg text-center text-white bg-red row items-center" style="height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">Sin ver</div>
             <q-item-section avatar>
               <q-icon :name="item.icon" size="100px"/>
             </q-item-section>
@@ -145,7 +144,7 @@ export default {
     getNotifications () {
       this.$api.get('notifications').then(res => {
         if (res) {
-          this.notifications = res
+          this.notifications = res.reverse()
         }
       })
     },
@@ -154,6 +153,9 @@ export default {
         this.$api.get('solicitud/' + itm.solicitud_id).then(res => {
           if (res) {
             this.solicitud = res
+            if (this.solicitud.prioridad) {
+              this.solicitud.color = this.solicitud.prioridad.color === 'Azul' ? 'blue' : this.solicitud.prioridad.color === 'Rojo' ? 'red' : this.solicitud.prioridad.color === 'Verde' ? 'green' : this.solicitud.prioridad.color === 'Amarillo' ? 'yellow' : this.solicitud.prioridad.color === 'Rosado' ? 'pink' : this.solicitud.prioridad.color === 'Gris' ? 'grey' : this.solicitud.prioridad.color === 'Negro' ? 'black' : this.solicitud.prioridad.color === 'Celeste' ? 'blue-3' : this.solicitud.prioridad.color === 'Anaranjado' ? 'orange' : this.solicitud.prioridad.color === 'Morado' ? 'purple' : 'brown'
+            }
             console.log(res)
             this.ver = true
           }
@@ -161,7 +163,7 @@ export default {
       }
       if (!itm.status) {
         this.$api.put('update_notification/' + itm._id, { status: true })
-        this.getNotifications()
+        itm.status = true
       }
     }
   }
@@ -173,5 +175,8 @@ export default {
   border-right: 2px solid $grey-6;
   border-left: 2px solid $grey-6;
   border-bottom: 2px solid $grey-6;
+}
+.sinVer {
+  border-right: 10px solid red;
 }
 </style>

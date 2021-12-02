@@ -15,7 +15,7 @@
             <div class="q-mr-xs">Nº de solicitud:</div>
             <div class="text-bold">{{solicitud.num}}</div>
           </div>
-          <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : 'Prioridad'}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En espera' : solicitud.status === 3 ? 'Checkout' : solicitud.status === 4 ? 'Confirmar' : solicitud.status === 5 ? 'Finalizado' : ''}}</div>
+          <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : 'Prioridad'}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En pausa' : solicitud.status === 3 ? 'Checkout' : solicitud.status === 4 ? 'Confirmar' : solicitud.status === 5 ? 'Finalizado' : 'Reabierta'}}</div>
         </div>
         <div class="q-mb-lg q-mt-md">
           <div class="text-center text-h6 text-bold">{{solicitud.status === 0 && solicitud.sltBegin === 0 ? 'Tomar solicitud' : solicitud.status === 1 || solicitud.status === 2 ||solicitud.status === 3 ? 'Cambiar estado' : 'Datos solicitud'}}</div>
@@ -145,7 +145,12 @@ export default {
       departamentos: [],
       contratos: [],
       hitos: [],
-      estados: [{ name: 'Iniciada', status: 1 }, { name: 'En espera', status: 2 }, { name: 'Checkout', status: 3 }, { name: 'Finalizado', status: 4 }],
+      estados: [
+        { name: 'Iniciada', status: 1 },
+        { name: 'En pausa', status: 2 },
+        { name: 'Checkout', status: 3 },
+        { name: 'Finalizado', status: 4 }
+      ],
       slt: false,
       estado: false
     }
@@ -238,10 +243,18 @@ export default {
       if (this.solicitud.status === 0) {
         status.dateBegin = moment().format('YYYY-MM-DD')
         status.timeBegin = moment().format('HH:mm')
-        this.$api.post('register_notification', { user_id: this.solicitud.user_id, emit_id: this.user._id, status: false, solicitud_id: this.solicitud._id, icon: 'cached', name: 'Solicitud en ejecución', description: `El consultor ${this.user.name} ${this.user.last_name}, ha aceptado llevar a cabo la actividad en la que solicitas: ${this.solicitud.description}` })
       }
       this.$api.put('status_solicitud/' + this.solicitud._id, status).then(res => {
         if (res) {
+          this.$api.post('register_notification', {
+            user_id: this.solicitud.user_id,
+            emit_id: this.user._id,
+            status: false,
+            solicitud_id: this.solicitud._id,
+            icon: idx === 1 ? 'cached' : idx === 2 ? 'schedule' : idx === 3 ? 'published_with_changes' : 'done',
+            name: `Estado de solicitud modificado a ${idx === 1 ? '"Iniciada"' : idx === 2 ? '"En pausa"' : idx === 3 ? '"Checkout"' : '"Confirmar"'}`,
+            description: `El consultor ${this.user.name} ${this.user.last_name}, ha ${this.solicitud.status === 0 ? 'aceptado llevar a cabo' : `modificado el estado a ${idx === 1 ? '"Iniciada"' : idx === 2 ? '"En pausa"' : idx === 3 ? '"Checkout"' : '"Confirmar"'}, de`} la actividad en la que solicitas: ${this.solicitud.description}`
+          })
           this.$q.notify({
             message: 'Estado de solicitud actualizado',
             color: 'positive'

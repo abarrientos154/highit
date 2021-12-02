@@ -310,7 +310,7 @@ export default {
       }
     },
     getNotifications () {
-      this.$api.get('notifications').then(res => {
+      this.$api.get('notifications_sin_ver').then(res => {
         if (res) {
           this.notifications = res
         }
