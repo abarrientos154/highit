@@ -1,66 +1,56 @@
 <template>
   <div>
-    <div class="column items-center justify-center">
-      <div style="width:100%">
-        <div class="bordes">
-          <div class="q-pb-xl q-px-md q-pt-md column items-end">
-            <div class="text-h3 text-bold">CATEGORIAS</div>
-            <div class="text-grey-8 text-h6">Crea las categorias de las solicitudes de tus clientes</div>
-          </div>
-        </div>
-          <div class="column items-center justify-center">
-            <q-card flat class="q-pa-md" style="width:100%">
-              <div class="text-h5 text-bold">Creacion de categorias</div>
-              <div class="q-mt-md text-subtitle1">Selecciona el departamento</div>
-              <q-select filled v-model="form.departamento" use-input behavior="menu" input-debounce="0" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="areasOpt(form.departamento)" @filter="filterDepartments" error-message="Requerido" :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()">
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-grey">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
-
-              <div class="q-mt-sm text-h6">Selecciona un Area</div>
-              <div class="q-mt-sm text-subtitle1">Listado de Areas</div>
-              <q-select filled v-model="form.area" use-input behavior="menu" input-debounce="0" :options="areas" map-options option-label="name" emit-value option-value="_id" @input="cargosOpt(form.area)" @filter="filterAreas" error-message="Requerido" :error="$v.form.area.$error" @blur="$v.form.area.$touch()">
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-grey">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
-
-              <div class="q-mt-sm text-h6">Selecciona un Cargo</div>
-              <div class="q-mt-sm text-subtitle1">Listado de Cargos</div>
-              <q-select filled v-model="form.cargo" use-input behavior="menu" input-debounce="0" :options="cargos" map-options option-label="name" emit-value option-value="_id" @filter="filterCharges" error-message="Requerido" :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()">
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-grey">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
-
-              <div class="text-h5 text-bold">Creacion de categorias</div>
-              <div class="q-mt-md text-subtitle1">Nombre de categoria</div>
-              <q-input filled v-model="form.nombre" placeholder="Ingresa el nombre de la categoria" error-message="Requerido" :error="$v.form.nombre.$error" @blur="$v.form.nombre.$touch()"/>
-
-              <div class="q-pa-md column items-center justify-center">
-                <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nueva categoria" @click="guardar_categoria()" style="width:40%" />
-              </div>
-            </q-card>
-            <q-card flat style="width:100%">
-              <Tabla titulo="Listado de Categorias" ref="latabla3" :editarBtn="false" :columns="column" route="categorias" :btnNew="false" />
-            </q-card>
-          </div>
-      </div>
+    <div class="q-pa-md">
+      <div class="text-h4 text-bold">CATEGORIAS</div>
+      <div class="text-grey text-h6">Crea las categorias de las solicitudes de tus clientes</div>
     </div>
 
+    <div>
+      <div class="q-pa-md">
+        <div class="text-h5 text-bold">Creación de categorias</div>
+        <div class="q-mt-md text-subtitle1">Selecciona un departamento</div>
+        <q-select filled v-model="form.departamento" use-input behavior="menu" input-debounce="0" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="areasOpt(form.departamento)" @filter="filterDepartments" error-message="Requerido" :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()">
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+
+        <div class="q-mt-sm text-subtitle1">Selecciona un Area</div>
+        <q-select filled v-model="form.area" use-input behavior="menu" input-debounce="0" :options="areas" map-options option-label="name" emit-value option-value="_id" @input="cargosOpt(form.area)" @filter="filterAreas" error-message="Requerido" :error="$v.form.area.$error" @blur="$v.form.area.$touch()">
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+
+        <div class="q-mt-sm text-subtitle1">Selecciona un Cargo</div>
+        <q-select filled v-model="form.cargo" use-input behavior="menu" input-debounce="0" :options="cargos" map-options option-label="name" emit-value option-value="_id" @filter="filterCharges" error-message="Requerido" :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()">
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+
+        <div class="q-mt-md text-subtitle1">Nombre de categoria</div>
+        <q-input filled v-model="form.nombre" placeholder="Ingresa el nombre de la categoria" error-message="Requerido" :error="$v.form.nombre.$error" @blur="$v.form.nombre.$touch()"/>
+
+        <div class="row justify-center">
+          <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nueva categoria" @click="guardar_categoria()" style="width:40%" />
+        </div>
+      </div>
+
+      <Tabla subtitulo="Listado de categorias" ref="latabla3" :editarBtn="false" :columns="column" route="categorias" :btnNew="false" />
+    </div>
   </div>
 </template>
 <script>
@@ -194,9 +184,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.bordes {
-  border-right: 2px solid $grey-6;
-  border-left: 2px solid $grey-6;
-  border-bottom: 2px solid $grey-6;
-}
 </style>

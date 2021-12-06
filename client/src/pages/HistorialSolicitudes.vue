@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla titulo="Historial de solicitudes" :columns="column" route="solicitudes_history" :verBtn="true" :editarBtn="false" :inputBtn="true" :selectFlt="false" :eliminarBtn="false"/>
+    <Tabla titulo="HISTORIAL DE SOLICITUDES" subtitulo="Listado de solicitudes finalizadas" :columns="column" route="solicitudes_history" :verBtn="true" :editarBtn="false" :inputBtn="true" :selectFlt="false" :eliminarBtn="false"/>
   </div>
 </template>
 

@@ -41,8 +41,6 @@ addPrefixToGroup(
     Route.post("update_client", "UserController.updateClient")
     Route.get("validate_email/:email", "UserController.validateEmail")
     Route.get("email_send_app/:email", "UserController.recuperacionapp")
-    Route.post("user_by_rol", "UserController.userByRol") // metodo para obtener usuarios segun el rol
-    Route.get("user_by_id/:id", "UserController.userById") // metodo para obtener informacion del usuario por id del mismo
     Route.get("paises", "PaisController.index")
 
     Route.get('obtener_logo', 'UploadController.getLogo')
@@ -50,20 +48,23 @@ addPrefixToGroup(
     Route.get('perfil_img/:file', 'UploadController.getFileByDirectoryPerfil')
     Route.get('archivo/:id/:file', 'UploadController.getarchivo')
     Route.get('file_pdf/:file', 'UploadController.getFileByDirectoryPdf')
-
   })
   );
   addPrefixToGroup(
     Route.group(() => {
       // Insertar rutas con protección de autenticación aquí
-    Route.get("user_info", "UserController.userInfo") // metodo para obtener informacion del usuario que esta logueado
-    Route.get("user_logueado", "UserController.userLogueado")
-    Route.get("all_user", "UserController.allUser") // metodo para obtener informacion del usuario que esta logueado
-    Route.post("user_by_status", "UserController.userByStatus") // metodo para obtener proveedores pendientes
-    Route.post("user_by_rol", "UserController.userByRol")
-    Route.put("update_status/:id", "UserController.userStatus") // metodo para bloquear o desbloquear usuarios
+    Route.get("user_logueado", "UserController.userLogueado") // metodo para obtener informacion del usuario que esta logueado
+    Route.get("user", "UserController.index")
     Route.get("user_consultor/:id", "UserController.userConsultor")
     Route.get("user_cliente/:id", "UserController.userCliente")
+    Route.get('datauser/:id', 'UserController.userById')
+    Route.post("register_user", "UserController.registerUser")
+    Route.put("datos_edit/:id", "UserController.updateUser")
+    Route.delete("user/:id", "UserController.destroy")
+
+    Route.put("password_edit/:id", "UserController.changePassword")
+    Route.post('perfil_imagen/:user_id', 'UploadController.newimagen')
+    Route.post('generate_pdf', 'UploadController.generatePdf')
 
     Route.get("contratos", "ContratoController.index")
     Route.get("contratos/:id", "ContratoController.contratosByCompany")
@@ -79,29 +80,13 @@ addPrefixToGroup(
     Route.delete("sla/:id", "SlaController.destroy")
     Route.get("sla_filter", "SlaController.filterByContracts")
 
-    Route.post("register_user", "UserController.User_register")
-    Route.get("user", "UserController.index")
-    Route.delete("user/:id", "UserController.destroy")
-    Route.get('datauser/:id', 'UserController.userById')
-    Route.put("datos_edit/:id", "UserController.Updateuser")
-
-    Route.post("register_user2", "UserController.User_register2")
-    Route.get("user2", "UserController.index2")
-    Route.delete("user2/:id", "UserController.destroy2")
-    Route.put("datos_edit2/:id", "UserController.Updateuser")
-
-    Route.put("password_edit/:id", "UserController.changePassword")
-    Route.post('perfil_imagen/:user_id', 'UploadController.newimagen')
-    Route.post('generate_pdf', 'UploadController.generatePdf')
-
-
-    Route.post("equipo", "EquipoController.store")
     Route.get('equipo', 'EquipoController.index')
-    Route.delete("equipo/:id", "EquipoController.destroy")
     Route.get('equipo/:id', 'EquipoController.show')
     Route.get('equipo_cliente', 'EquipoController.equipos_cliente')
+    Route.post("equipo", "EquipoController.store")
     Route.put("equipo/:id", "EquipoController.update")
     Route.put("asignar_equipo/:id", "EquipoController.asignarEquipo")
+    Route.delete("equipo/:id", "EquipoController.destroy")
 
     Route.get('departments', 'DepartmentController.index2')
     Route.get('departments/:id', 'DepartmentController.index')
@@ -109,27 +94,27 @@ addPrefixToGroup(
     Route.delete("departments/:id", "DepartmentController.destroy")
 
     Route.get('areas', 'AreaController.index')
+    Route.get("areas/:id", "AreaController.show")
     Route.post('register_area', 'AreaController.store')
     Route.delete("areas/:id", "AreaController.destroy")
-    Route.get("areas/:id", "AreaController.show")
-    Route.get("cargos/:id", "ChargeController.show")
-
+    
     Route.get('charges', 'ChargeController.index')
+    Route.get("cargos/:id", "ChargeController.show")
     Route.post('register_charge', 'ChargeController.store')
     Route.delete("charges/:id", "ChargeController.destroy")
 
-    Route.post("categoria", "CategoriaController.store")
     Route.get("categorias/:id", "CategoriaController.show")
     Route.get("categorias_departamento/:id", "CategoriaController.categoriesDepartment")
     Route.get("categorias", "CategoriaController.index")
+    Route.post("categoria", "CategoriaController.store")
     Route.delete("categorias/:id", "CategoriaController.destroy")
 
-    Route.post('conocimientos', 'ConocimientoController.store')
     Route.get('conocimientos', 'ConocimientoController.index')
     Route.get("conocimientos/:id", "ConocimientoController.show")
-    Route.put("edit_conocimiento/:id", "ConocimientoController.update")
-    Route.post('edit_archivos_conocimiento/:id', 'ConocimientoController.editArchivos')
     Route.get('conocimiento/:id', 'ConocimientoController.conocimientoById')
+    Route.post('conocimientos', 'ConocimientoController.store')
+    Route.post('edit_archivos_conocimiento/:id', 'ConocimientoController.editArchivos')
+    Route.put("edit_conocimiento/:id", "ConocimientoController.update")
 
     Route.get('equipo_consultor', 'EquipoController.equipos_consultor')
 
@@ -151,9 +136,9 @@ addPrefixToGroup(
     Route.get("solicitudes/:id", "SolicitudController.index")
     Route.get("solicitudes_by_consultor", "SolicitudController.solicitudesByConsultor")
     Route.get("solicitudes_history", "SolicitudController.sltHistory")
+    Route.post("register_solicitud", "SolicitudController.store")
     Route.put("status_solicitud/:id", "SolicitudController.update")
     Route.put("expire_solicitud/:id", "SolicitudController.expireSlt")
-    Route.post("register_solicitud", "SolicitudController.store")
 
     Route.post("register_hito", "HitoController.store")
     Route.get("hitos_by_company/:id", "HitoController.show")

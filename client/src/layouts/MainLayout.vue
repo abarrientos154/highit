@@ -1,21 +1,27 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-drawer v-model="drawer1" show-if-above :width="225" :breakpoint="500" bordered content-class="">
-      <q-scroll-area class="fit">
-        <q-btn flat round dense class="absolute-top-right q-ma-sm" color="grey-8" icon="notifications_none" @click="visto = true, $router.push('/notificaciones')">
+    <q-header class="bg-primary">
+      <q-toolbar class="justify-between">
+        <q-btn flat round dense @click="drawer1 = !drawer1" icon="menu" color="white"/>
+        <q-btn flat round dense color="white" icon="notifications_none" @click="visto = true, $router.push('/notificaciones')">
           <q-badge v-if="notifications.length && !visto" color="red" rounded floating transparent/>
         </q-btn>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer v-model="drawer1" bordered show-if-above :width="225" :breakpoint="500" content-class="bg-primary">
+      <q-scroll-area class="fit">
         <div class="row justify-center q-py-md">
           <q-avatar size="120px" class="shadow-5">
             <q-img :src="rol !== 1 ? baseu : 'Desk.jpg'" style="height: 100%;"/>
           </q-avatar>
         </div>
-        <div v-if="rol !== 1" class="text-center text-bold text-h6">{{user.name}} {{user.last_name}}</div>
-        <div class="text-center text-grey-8 text-subtitle1">{{rol === 1 ? 'Administrador' : rol === 2 ? 'Highit' : rol === 3 ? 'Consultor' : rol === 4 ? 'Cliente final' : rol === 5 ? 'Consultor administrador' : rol === 6 ? 'Cliente administrador' : 'Gerente'}}</div>
+        <div v-if="rol !== 1" class="text-center text-bold text-h6 text-white">{{user.name}} {{user.last_name}}</div>
+        <div class="text-center text-caption text-white">{{rol === 1 ? 'Administrador' : rol === 2 ? 'Highit' : rol === 3 ? 'Consultor' : rol === 4 ? 'Cliente final' : rol === 5 ? 'Consultor administrador' : rol === 6 ? 'Cliente administrador' : 'Gerente'}}</div>
 
-        <q-list class="q-pt-md">
-          <div class="text-center text-grey-8 text-caption q-mb-xs">¿Qué quieres hacer?</div>
-          <q-expansion-item borderless v-for="(item, index) in menu" :key="index" :expand-icon="!item.items ? 'm' : 'expand_more'" :expanded-icon="!item.items ? 'l' : 'expand_less'" @click="item.items ? '' : item.label === 'Cerrar sesión' ? cerrarSesion() : $router.push(item.ruta)">
+        <q-list class="q-pt-md" dark>
+          <div class="text-center text-subtitle1 q-mb-xs">Barra de navegación</div>
+          <q-expansion-item v-for="(item, index) in menu" :key="index" :expand-icon="!item.items ? 'm' : 'expand_more'" :expanded-icon="!item.items ? 'l' : 'expand_less'" @click="item.items ? '' : item.label === 'Cerrar sesión' ? cerrarSesion() : $router.push(item.ruta)">
             <template v-slot:header>
               <q-item-section avatar>
                 <q-icon :name="item.icon"/>
@@ -38,7 +44,7 @@
       </q-scroll-area>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="fondo">
       <router-view/>
     </q-page-container>
   </q-layout>
@@ -56,6 +62,8 @@ export default {
       user: {},
       drawer1: true,
       visto: false,
+      titulo: '',
+      subtitulo: '',
       notifications: [],
       menu: [],
       menuUser01: [
@@ -124,7 +132,7 @@ export default {
             {
               icon: 'person',
               label: 'Usuarios',
-              ruta: '/usuarios2'
+              ruta: '/usuarios'
             }
           ]
         },
@@ -136,7 +144,7 @@ export default {
         {
           icon: 'lightbulb',
           label: 'Bases de conocimiento',
-          ruta: '/vista_conocimiento'
+          ruta: '/conocimientos'
         },
         {
           icon: 'logout',
@@ -146,13 +154,18 @@ export default {
       ],
       menuConsultor: [
         {
+          icon: 'home',
+          label: 'Inicio',
+          ruta: '/inicio_consultor'
+        },
+        {
           icon: 'wysiwyg',
           label: 'Solicitudes',
           items: [
             {
               icon: 'view_list',
               label: 'Listado de solicitudes',
-              ruta: '/inicio_consultor'
+              ruta: '/solicitudes_consultor'
             },
             {
               icon: 'assignment',
@@ -164,7 +177,7 @@ export default {
         {
           icon: 'lightbulb',
           label: 'Bases de conocimiento',
-          ruta: '/conocimiento'
+          ruta: '/conocimientos'
         },
         {
           icon: 'logout',
@@ -174,13 +187,18 @@ export default {
       ],
       menuCliente: [
         {
+          icon: 'home',
+          label: 'Inicio',
+          ruta: '/inicio_cliente'
+        },
+        {
           icon: 'wysiwyg',
           label: 'Solicitudes',
           items: [
             {
               icon: 'view_list',
               label: 'Listado de solicitudes',
-              ruta: '/inicio_cliente'
+              ruta: '/solicitudes'
             },
             {
               icon: 'assignment',
@@ -192,7 +210,7 @@ export default {
         {
           icon: 'devices_other',
           label: 'Inventario',
-          ruta: '/equipos_consultor'
+          ruta: '/equipos'
         },
         {
           icon: 'logout',
@@ -230,13 +248,18 @@ export default {
       ],
       menuClienteAdmin: [
         {
+          icon: 'home',
+          label: 'Inicio',
+          ruta: '/inicio_cliente_admin'
+        },
+        {
           icon: 'wysiwyg',
           label: 'Solicitudes',
           items: [
             {
               icon: 'view_list',
               label: 'Listado de solicitudes',
-              ruta: '/inicio_cliente_admin'
+              ruta: '/solicitudes'
             },
             {
               icon: 'assignment',
@@ -248,7 +271,7 @@ export default {
         {
           icon: 'devices_other',
           label: 'Inventario',
-          ruta: '/equipos_cliente'
+          ruta: '/equipos'
         },
         {
           icon: 'logout',
@@ -258,9 +281,14 @@ export default {
       ],
       menuGerente: [
         {
+          icon: 'home',
+          label: 'Inicio',
+          ruta: '/inicio_gerente'
+        },
+        {
           icon: 'list',
           label: 'Indicadores',
-          ruta: '/inicio_gerente'
+          ruta: '/indicadores'
         },
         {
           icon: 'logout',
@@ -319,3 +347,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.fondo {
+  background-image: url('../../public/fondo.jpg');
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+</style>

@@ -1,14 +1,12 @@
 <template>
   <div>
-    <div class="bordes">
-      <div class="q-pb-xl q-px-md q-pt-md column items-end col">
-        <div class="text-h3 text-bold">{{edit ? 'ACTUALIZA EMPRESA' : 'NUEVA EMPRESA'}}</div>
-        <div class="text-grey-8 text-h6">{{edit ? 'Modificar datos de la empresa' : 'Creacion de nuevas empresas'}}</div>
-      </div>
+    <div class="q-pa-md">
+      <div class="text-h4 text-bold">{{edit ? 'ACTUALIZA EMPRESA' : 'NUEVA EMPRESA'}}</div>
+      <div class="text-grey text-h6">{{edit ? 'Modificar datos de la empresa' : 'Creacion de nuevas empresas'}}</div>
     </div>
     <div class="q-my-lg q-px-md">
       <div class="q-mb-md">
-        <div class="text-h6 text-bold">Infomación empresa</div>
+        <div class="text-h6 text-bold">Datos de la empresa</div>
         <div class="text-grey-8">Informacion oficial de la empresa</div>
       </div>
       <q-list>
@@ -35,7 +33,6 @@
               </q-item>
             </template>
           </q-select>
-          <!-- <q-select outlined dense filled v-model="form.typeContract" :options="contratos" option-label="contrato" option-value="_id" map-options emit-value error-message="Este campo es requerido" :error="$v.form.typeContract.$error" @blur="$v.form.typeContract.$touch()"/> -->
         </div>
         <div>
           <div>Fecha inicio de contrato</div>
@@ -99,7 +96,7 @@
     </div>
     <div class="q-px-md">
       <div class="q-mb-md">
-        <div class="text-h6 text-bold">Infomaciones varias</div>
+        <div class="text-h6 text-bold">Datos de contacto</div>
         <div class="text-grey-8">Vias de contacto con la empresa</div>
       </div>
       <q-list>
@@ -115,12 +112,12 @@
       <div>
         <div>Foto de perfil</div>
         <div class="column items-center">
-          <q-avatar rounded style="height: 150px; width: 100%;" class="bg-grey-5 q-mb-sm">
-            <q-img style="height: 100%;" :src="perfilImg">
-              <q-file  borderless v-model="img" class="button-camera" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1; width: 100%; height: 100%;">
+          <q-avatar rounded style="height: 200px; width: 100%;" class="q-mb-sm">
+            <q-img style="height: 100%;" :src="img || edit ? perfilImg : 'nopublicidad.jpg'">
+              <q-file  borderless v-model="img" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1; width: 100%; height: 100%; cursor: pointer;">
                 <div class="column items-center justify-center absolute-full" style="height: 150px;">
-                  <q-icon name="backup" class="" size="75px" color="grey-6" />
-                  <div class="text-center text-grey-6 text-caption">Toca para selecciona la foto de perfil de la empresa</div>
+                  <q-icon name="backup" class="q-mt-xl" size="75px" color="white"/>
+                  <div class="text-center text-white text-caption">Toca para selecciona la foto de perfil de la empresa</div>
                 </div>
               </q-file>
             </q-img>
@@ -130,7 +127,7 @@
       </div>
     </div>
     <div class="column items-center q-pa-lg">
-      <q-btn class="q-py-sm" :label="edit ? 'Actualizar empresa' : 'Crear empresa'" color="primary" style="width: 85%;" @click="edit ? updateCompany() : saveCompany()" no-caps/>
+      <q-btn class="q-py-sm" :label="edit ? 'Actualizar empresa' : 'Crear empresa'" color="primary" style="width: 40%;" @click="edit ? updateCompany() : saveCompany()" no-caps/>
     </div>
   </div>
 </template>
@@ -335,9 +332,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.bordes {
-  border-right: 2px solid $grey-6;
-  border-left: 2px solid $grey-6;
-  border-bottom: 2px solid $grey-6;
-}
 </style>

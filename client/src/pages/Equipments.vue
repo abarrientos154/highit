@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla titulo="Listado de Equipos" @asignarEquipo="asignarEquipo($event)" :columns="column" route="equipo_consultor" :eliminarBtn="false" :editarBtn="false" :crearBtn="true" :asignarBtn="true"/>
+    <Tabla v-if="rol" titulo="PRODUCTOS" @asignarEquipo="asignarEquipo($event)" :subtitulo="rol === 2 ? 'Listado de equipos para tus clientes' : rol === 4 ? 'Listado de equipos asignado' : 'Listado de equipos pertenecientes a tu empresa'" :columns="column" :route="rol === 2 ? 'equipo' : rol === 4 ? 'equipo_cliente' : 'equipo_consultor'" :btnNew="this.rol === 2 ? true : false" :selectBtn="rol === 2 ? true : false" :selectFlt="rol === 2 ? false : true" :eliminarBtn="rol !== 2 ? false : true" :editarBtn="rol !== 2 ? false : true" :crearBtn="rol === 2 ? false : true" :asignarBtn="rol !== 6 ? false : true"/>
 
     <q-dialog v-model="dialogo">
       <q-card class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
@@ -33,13 +33,13 @@
 </template>
 <script>
 import { required } from 'vuelidate/lib/validators'
-import Tabla from '../../components/TableActions'
-import env from '../../env'
+import Tabla from '../components/TableActions'
+import env from '../env'
 export default {
   components: { Tabla },
   data () {
     return {
-      rol: 0,
+      rol: null,
       baseu: '',
       user: {},
       clientes: [],
@@ -61,6 +61,7 @@ export default {
   },
   methods: {
     userLogueado () {
+      this.$q.loading.show()
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.rol = res.roles[0]
@@ -75,6 +76,7 @@ export default {
           this.baseu = env.apiUrl + 'perfil_img/'
           this.clientes = res
         }
+        this.$q.loading.hide()
       })
     },
     asignarEquipo (id) {
@@ -86,7 +88,9 @@ export default {
     asignar () {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
+        this.$q.loading.show()
         this.$api.put('asignar_equipo/' + this.form.equipment, { cliente: this.form.cliente }).then(res => {
+          this.$q.loading.hide()
           if (res) {
             this.$q.notify({
               message: 'Asignacion realizada correctamente',

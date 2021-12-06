@@ -28,7 +28,7 @@ class UserController {
    * @param {View} ctx.view
    */
 
-  async Updateuser ({ params, response, request }) {
+  async updateUser ({ params, response, request }) {
     let body = request.only(User.fillableEditUser)
     if (((await User.where({ $and: [{ $or: [{ email: body.email }, { phone: body.phone }, { Dni: body.Dni }] }] }).fetch()).toJSON()).filter(v => v._id !== params.id).length) {
       response.unprocessableEntity([{
@@ -40,21 +40,21 @@ class UserController {
     }
   }
 
-  async index({ request, response, view }) {
-    let users = (await User.query().where({ roles: 2 }).fetch()).toJSON()
-    response.send(users);
-  }
-
-  async index2({ request, response, view, auth }) {
+  async index({ request, response, view, auth }) {
     let user = (await auth.getUser()).toJSON()
-    let users = (await User.query().where({ $and: [ {$or:[  { roles: [3] }, { roles: [4] }, { roles: [5] }, { roles: [6] }, { roles: [7] }]}, { empresa_creador: user.empresa } ] }).fetch()).toJSON()
-    let formatearDatos = users.map(v => {
-      return {
-        ...v,
-        tipo_usuario: v.roles[0] === 3 ? 'Consultor' : v.roles[0] === 4 ? 'Cliente Final' : v.roles[0] === 5 ? 'Consultor Administrador' : v.roles[0] === 6 ? 'Cliente Administrador' : 'Gerente'
-      }
-    })
-    response.send(formatearDatos);
+    if (user.roles[0] === 1) {
+      let users = (await User.query().where({ roles: 2 }).fetch()).toJSON()
+      response.send(users);
+    } else {
+      let users = (await User.query().where({ $and: [ {$or:[  { roles: [3] }, { roles: [4] }, { roles: [5] }, { roles: [6] }, { roles: [7] }]}, { empresa_creador: user.empresa } ] }).fetch()).toJSON()
+      let formatearDatos = users.map(v => {
+        return {
+          ...v,
+          tipo_usuario: v.roles[0] === 3 ? 'Consultor' : v.roles[0] === 4 ? 'Cliente Final' : v.roles[0] === 5 ? 'Consultor Administrador' : v.roles[0] === 6 ? 'Cliente Administrador' : 'Gerente'
+        }
+      })
+      response.send(formatearDatos);
+    }
   }
 
   async show({ request, response, auth }) {
@@ -68,87 +68,6 @@ class UserController {
     response.send(data)
   }
 
-  /**
-   * Create/save a new user.
-   * POST users
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-
-  async registerProveedor({ request, response }) {
-      var dat = request.only(['dat'])
-      dat = JSON.parse(dat.dat)
-      const validation = await validate(dat, User.fieldValidationRulesProveedor())
-      if (validation.fails()) {
-        response.unprocessableEntity(validation.messages())
-      } else if (((await User.where({email: dat.email}).fetch()).toJSON()).length) {
-        response.unprocessableEntity([{
-          message: 'Correo ya registrado en el sistema!'
-        }])
-      } else {
-        let images_ident = []
-        for (let i = 0; i < 2; i++) {
-          let codeFile = randomize('Aa0', 30)
-          const profilePic = request.file('IFiles' + i, {
-            types: ['image']
-          })
-          if (Helpers.appRoot('storage/uploads/identificacionFiles')) {
-            await profilePic.move(Helpers.appRoot('storage/uploads/identificacionFiles'), {
-              name: codeFile,
-              overwrite: true
-            })
-          } else {
-            mkdirp.sync(`${__dirname}/storage/Excel`)
-          }
-          images_ident.push(profilePic.fileName)
-        }
-
-        let body = dat
-        body.estatus = 0 // Estatus para verificacion del Proveedor
-        body.roles = [3]
-        body.images_ident = images_ident
-        body.tienda.calificacion = 0
-        const user = await User.create(body)
-
-        const profilePic2 = request.file('PFiles', {
-          types: ['image']
-        })
-        if (Helpers.appRoot('storage/uploads/tiendaFiles')) {
-          await profilePic2.move(Helpers.appRoot('storage/uploads/tiendaFiles'), {
-            name: user._id.toString(),
-            overwrite: true
-          })
-        } else {
-          mkdirp.sync(`${__dirname}/storage/Excel`)
-        }
-
-        const profilePic3 = request.file('RFiles', {
-          types: ['image']
-        })
-        if (Helpers.appRoot('storage/uploads/perfil')) {
-          await profilePic3.move(Helpers.appRoot('storage/uploads/perfil'), {
-            name: user._id.toString(),
-            overwrite: true
-          })
-        } else {
-          mkdirp.sync(`${__dirname}/storage/Excel`)
-        }
-        const data = { name: profilePic3.fileName }
-        response.send(user)
-      }
-  }
-
-  async editProveedor({ request, response, auth }) {
-    let user = (await auth.getUser()).toJSON()
-    let body = request.all()
-    delete body.tienda.country
-    delete body.tienda.city
-    let editar = await User.query().where('_id', user._id).update(body)
-    response.send(editar)
-  }
-
   async validateEmail({ request, response, params }) {
     if (((await User.where({email: params.email}).fetch()).toJSON()).length) {
       response.unprocessableEntity([{
@@ -158,12 +77,6 @@ class UserController {
     } else {
       response.send({error: false})
     }
-  }
-
-  async allUser({ request, response, auth }) {
-    let allUsers = (await User.query().where({}).fetch()).toJSON()
-    let users = allUsers.filter(v => v.email !== 'admin@triyus.com')
-    response.send(users)
   }
 
   async userLogueado({ request, response, auth }) {
@@ -176,36 +89,9 @@ class UserController {
     response.send(user)
   }
 
-  async userInfo({ request, response, auth }) {
-    const user = (await auth.getUser()).toJSON()
-    response.send(user)
-  }
-
   async userById({ params, response }) {
     const user = await User.find(params.id)
     response.send(user)
-  }
-
-  async userByRol({ request, params, response }) {
-    try {
-      let rol = request.all()
-      const user = (await User.query().where({roles: rol.rol}).fetch()).toJSON()
-      response.send(user)
-    } catch (error) {
-      console.error('user by rol: ' + error.name + ':' + error.message)
-    }
-  }
-
-  async userByStatus({ request, params, response }) {
-    let rol = request.all()
-    const user = (await User.query().where({roles: rol.rol, estatus: 0}).fetch()).toJSON()
-    response.send(user)
-  }
-
-  async userStatus({ params, request, response }) {
-    let dat = request.all()
-    let modificar = await User.query().where('_id', params.id).update({estatus: dat.estatus})
-    response.send(modificar)
   }
 
   async userConsultor({ request, params, response }) {
@@ -230,21 +116,6 @@ class UserController {
   }
 
   async update({ request, response, params }) {
-
-  }
-
-  async destroy({ params, request, response }) {
-    const { id } = params;
-    const user = await User.find(id);
-    await user.delete();
-    response.send(user)
-  }
-
-  async destroy2({ params, request, response }) {
-    const { id } = params;
-    const user = await User.find(id);
-    await user.delete();
-    response.send(user)
   }
 
   async login({ auth, request }) {
@@ -277,43 +148,11 @@ class UserController {
   }
 
 
-  async User_register({ request, response }) {
+  async registerUser({ request, response }) {
     let dat = request.only(['dat'])
     dat = JSON.parse(dat.dat)
 
     const validation = await validate(dat, User.fieldejemplo())
-    if (validation.fails()) {
-      response.unprocessableEntity(validation.messages())
-    } else if (((await User.where({ $and: [{ $or: [{ email: dat.email }, { phone: dat.phone }, { Dni: dat.Dni }] }] }).fetch()).toJSON()).length) {
-      response.unprocessableEntity([{
-        message: 'Datos ya registrados en el sistema!'
-      }])
-    } else {
-      let body = dat
-      // const rol = body.roles
-      body.roles = [2]
-
-      const user = await User.create(body)
-      const profilePic = request.file('perfil', {
-        types: ['image']
-      })
-      if (Helpers.appRoot('storage/uploads/perfil')) {
-        await profilePic.move(Helpers.appRoot('storage/uploads/perfil'), {
-          name: user._id.toString(),
-          overwrite: true
-        })
-      } else {
-        mkdirp.sync(`${__dirname}/storage/Excel`)
-      }
-      response.send(user)
-    }
-  }
-
-
-  async User_register2({ request, response }) {
-    let dat = request.only(['dat'])
-    dat = JSON.parse(dat.dat)
-    const validation = await validate(dat, User.fieldejemplo2(dat))
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else if (((await User.where({ $and: [{ $or: [{ email: dat.email }, { phone: dat.phone }, { Dni: dat.Dni }] }] }).fetch()).toJSON()).length) {
@@ -363,6 +202,12 @@ class UserController {
     }
   }
 
+  async destroy({ params, request, response }) {
+    const { id } = params;
+    const user = await User.find(id);
+    await user.delete();
+    response.send(user)
+  }
 }
 
 module.exports = UserController;

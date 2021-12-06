@@ -1,10 +1,8 @@
 <template>
   <div>
-    <div class="bordes q-mb-lg">
-      <div class="q-px-md q-pt-md q-pb-xl column items-end col">
-        <div class="text-h3 text-bold">Notificaciones</div>
-        <div class="text-grey-8 text-h6">Acá te mantenemos al tanto de lo que sucede</div>
-      </div>
+    <div class="q-pa-md">
+      <div class="text-h4 text-bold">NOTIFICACIONES</div>
+      <div class="text-grey text-h6">Historial de notificaciones, donde te matenemos informado</div>
     </div>
     <div class="q-mb-lg">
       <q-list class="q-px-lg">

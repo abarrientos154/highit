@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla titulo="Listado de Conocimientos" @mostrar="datos_vista" :columns="column" route="conocimientos" :btnNew="false" :eliminarBtn="false" :verBtn="true" />
+    <Tabla v-if="rol" titulo="BASES DE CONOCIMIENTO" subtitulo="Listado de conocimientos registrados" @mostrar="datos_vista" :columns="column" route="conocimientos" :btnNew="rol === 3 ? true : false" :editarBtn="rol === 3 ? true : false" :eliminarBtn="false" :verBtn="true" />
     <q-dialog v-model="dialogo">
       <q-card class="" style="width:450px">
       <div class="q-pa-xl">
@@ -22,12 +22,13 @@
   </div>
 </template>
 <script>
-import Tabla from '../../components/Tablasecundaria'
-import env from '../../env'
+import Tabla from '../components/TableActions'
+import env from '../env'
 export default {
   components: { Tabla },
   data () {
     return {
+      rol: null,
       column: [
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
         { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
@@ -38,16 +39,26 @@ export default {
     }
   },
   mounted () {
+    this.userLogueado()
     this.baseApi = env.apiUrl + 'archivo/'
   },
   methods: {
+    userLogueado () {
+      this.$q.loading.show()
+      this.$api.get('user_logueado').then(res => {
+        if (res) {
+          this.rol = res.roles[0]
+        }
+        this.$q.loading.hide()
+      })
+    },
     datos_vista (id) {
       this.$api.get('conocimiento/' + id).then(res => {
         if (res) {
           this.form = res
+          this.dialogo = true
         }
       })
-      this.dialogo = true
     }
   }
 }

@@ -1,79 +1,78 @@
 <template>
   <div>
-    <div class="column items-center justify-center">
-      <div style="width:100%">
-        <div class="bordes">
-          <div class="q-pb-xl q-px-md q-pt-md column items-end">
-            <div class="text-h3 text-bold">CONTRATOS</div>
-            <div class="text-grey-8 text-h6">Historial y registro de contratos</div>
+    <div class="q-pa-md">
+      <div class="text-h4 text-bold">CONTRATOS</div>
+      <div class="text-grey text-h6">Listado y registro de contratos</div>
+    </div>
+
+    <div>
+      <div class="q-pa-md">
+        <div class="text-h5 text-bold">Creación de contratos</div>
+        <div>
+          <div class="text-subtitle1">Nombre del contrato</div>
+          <q-input filled v-model="form.contrato" label="Nombre" error-message="Requerido" :error="$v.form.contrato.$error" @blur="$v.form.contrato.$touch()"/>
+        </div>
+
+        <div v-if="rol === 1">
+          <div class="q-mt-sm text-subtitle1">Tipo de moneda</div>
+          <q-select filled v-model="form.moneda" :options="['CLP', 'USD', 'EUR', 'MXN', 'BRL', 'COP']" error-message="Requerido" :error="$v.form.moneda.$error" @blur="$v.form.moneda.$touch()"/>
+
+          <div class="q-mt-sm text-subtitle1">Costo por usuario</div>
+          <q-field filled :suffix="form.moneda" error-message="Requerido" :error="$v.form.costo.$error" @blur="$v.form.costo.$touch()">
+            <template v-slot:control>
+              <money class="q-field__input text-right" v-model="form.costo"/>
+            </template>
+          </q-field>
+        </div>
+
+        <div class="row justify-center">
+          <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nuevo contrato" @click="guardar_contrato()" style="width:40%" />
+        </div>
+      </div>
+
+      <Tabla v-if="listado" no-data-label="Sin registros" subtitulo="Listado de contratos" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :route_id="rol === 2 ? user.empresa : null" :btnNew="false" />
+    </div>
+
+    <div v-if="rol === 2">
+      <div class="q-pa-md">
+        <div class="q-mt-md text-h5 text-bold">Añadir prioridad</div>
+
+        <div class="text-subtitle1">Selecciona el contrato para definir prioridad</div>
+        <q-select filled v-model="form2.contrato" use-input behavior="menu" input-debounce="0" :options="lista" map-options option-label="contrato" emit-value option-value="_id" @filter="filterFn" :error="$v.form2.contrato.$error" @blur="$v.form2.contrato.$touch()">
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+
+        <div class="q-mt-md text-subtitle1">Definir prioridad</div>
+        <q-input filled v-model="form2.nombre" label="Nombre de la prioridad" error-message="Requerido" :error="$v.form2.nombre.$error" @blur="$v.form2.nombre.$touch()"/>
+
+        <div class="row">
+          <div class="col q-pr-md">
+            <div class="q-mt-md text-subtitle1">Tiempo de atención acordado</div>
+            <q-input type="number" filled v-model.number="form2.tiempo" error-message="Requerido" :error="$v.form2.tiempo.$error" @blur="$v.form2.tiempo.$touch()">
+              <template v-slot:after class="text-subtitle2">
+                <div class="text-subtitle2">Minutos</div>
+              </template>
+            </q-input>
+          </div>
+
+          <div class="col q-pl-md">
+            <div class="q-mt-md text-subtitle1">Seleccione el color</div>
+            <q-select filled v-model="color" :options="options" error-message="Requerido" :error="$v.color.$error" @blur="$v.color.$touch()"/>
           </div>
         </div>
-          <div class="column q-pa-md items-center justify-center">
-            <q-card flat style="width:100%">
-              <div class="text-h5 text-bold">Creación de contratos</div>
-              <div>
-                <div class="q-mt-md text-subtitle1">Nombre del contrato</div>
-                <q-input filled v-model="form.contrato" label="Nombre" error-message="Requerido" :error="$v.form.contrato.$error" @blur="$v.form.contrato.$touch()"/>
-              </div>
 
-              <div v-if="rol === 1">
-                <div class="q-mt-md text-subtitle1">Tipo de moneda</div>
-                <q-select filled v-model="form.moneda" :options="['CLP', 'USD', 'EUR', 'MXN', 'BRL', 'COP']" error-message="Requerido" :error="$v.form.moneda.$error" @blur="$v.form.moneda.$touch()"/>
-
-                <div class="q-mt-md text-subtitle1">Costo por usuario</div>
-                <q-field filled :suffix="form.moneda" error-message="Requerido" :error="$v.form.costo.$error" @blur="$v.form.costo.$touch()">
-                  <template v-slot:control>
-                    <money class="q-field__input text-right" v-model="form.costo"/>
-                  </template>
-                </q-field>
-              </div>
-
-              <div class="q-pa-md column items-center justify-center">
-                <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nuevo contrato" @click="guardar_contrato()" style="width:40%" />
-              </div>
-            </q-card>
-            <q-card style="width:100%">
-              <Tabla v-if="listado" no-data-label="Sin registros" titulo="Listado de contratos" @actualizarPadre="obtener_contratos()" ref="latabla" :columns="column" route="contratos" :route_id="rol === 2 ? user.empresa : null" :btnNew="false" />
-            </q-card>
-          </div>
-          <div class="q-pa-md" v-if="rol === 2">
-            <div class="q-mt-md text-h5 text-bold">Selecciona el contrato</div>
-            <div class="q-mt-md text-subtitle1">Selecciona el contrato para definir prioridad</div>
-            <q-select filled v-model="form2.contrato" use-input behavior="menu" input-debounce="0" :options="lista" map-options option-label="contrato" emit-value option-value="_id" @filter="filterFn" :error="$v.form2.contrato.$error" @blur="$v.form2.contrato.$touch()">
-              <template v-slot:no-option>
-                <q-item>
-                  <q-item-section class="text-grey">
-                    No results
-                  </q-item-section>
-                </q-item>
-              </template>
-            </q-select>
-            <div class="q-mt-md text-subtitle1">Definir prioridad</div>
-            <q-input filled v-model="form2.nombre" label="Nombre de la prioridad"
-            error-message="Requerido" :error="$v.form2.nombre.$error" @blur="$v.form2.nombre.$touch()"
-            />
-            <div class="row">
-              <div>
-                <div class="q-mt-md text-subtitle1">Tiempo de atención acordado</div>
-                <div class="row">
-                  <q-input type="number" filled v-model.number="form2.tiempo" error-message="Requerido" :error="$v.form2.tiempo.$error" @blur="$v.form2.tiempo.$touch()" style="width: 120px"/>
-                  <div class="q-ml-md q-mt-md">Minutos</div>
-                </div>
-              </div>
-              <q-space />
-              <div>
-                <div class="q-mt-md text-subtitle1">Seleccione el color</div>
-                <q-select filled v-model="color" :options="options" style="width:170px" error-message="Requerido" :error="$v.color.$error" @blur="$v.color.$touch()"/>
-              </div>
-            </div>
-            <div class="q-pa-md column items-center justify-center">
-              <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nueva prioridad" @click="guardar_SLA()" style="width:40%" />
-            </div>
-            <q-card style="width:100%">
-              <Tabla titulo="Listado de prioridades creadas" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :selectBtn="true" :btnNew="false" :selectFlt="false"/>
-            </q-card>
-          </div>
+        <div class="row justify-center">
+          <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nueva prioridad" @click="guardar_SLA()" style="width:40%" />
+        </div>
       </div>
+
+      <Tabla subtitulo="Listado de prioridades" ref="latabla2" :columns="column2" route="sla" :editarBtn="false" :selectBtn="true" :btnNew="false" :selectFlt="false"/>
     </div>
   </div>
 </template>
@@ -252,9 +251,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.bordes {
-  border-right: 2px solid $grey-6;
-  border-left: 2px solid $grey-6;
-  border-bottom: 2px solid $grey-6
-}
 </style>

@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <div class="bordes q-mb-md">
-      <div class="q-px-md q-py-md column items-end col">
-        <div class="text-h3 text-bold">HOME PRINCIPAL</div>
-        <div class="text-grey-8 text-h6">Pagina de inicio del sitio</div>
-        <q-select class="full-width" filled v-model="empresa" :options="empresas" label="Selecciona una empresa" map-options emit-value option-label="name" @input="filtrar()"/>
-      </div>
+  <div class="q-pa-md">
+    <div class="q-pb-md">
+      <div class="text-h4 text-bold">PÁGINA PRINCIPAL</div>
+      <div class="text-grey-8 text-h6">Pagina de inicio del sitio</div>
+      <q-select filled v-model="empresa" :options="empresas" label="Selecciona una empresa" map-options emit-value option-label="name" @input="filtrar()"/>
     </div>
-    <div class="text-center text-h5 text-bold">Estadisticas de usuarios por empresa</div>
+    <div class="text-center text-h5 text-bold q-mb-sm">Estadisticas de usuarios por empresa</div>
     <div>
       <GChart v-if="info && chartData.length > 1" type="ColumnChart" :data="chartData" :options="chartOptions"/>
     </div>
@@ -69,9 +67,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.bordes {
-  border-right: 2px solid $grey-6;
-  border-left: 2px solid $grey-6;
-  border-bottom: 2px solid $grey-6;
-}
 </style>

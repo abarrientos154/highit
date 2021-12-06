@@ -1,11 +1,9 @@
 <template>
-  <q-scroll-area :visible="false" class="window-height">
-    <div class="bordes q-mb-lg">
-      <div class="q-pa-md column items-end col">
-        <div class="text-h3 text-bold">HOME PRINCIPAL</div>
-        <div class="text-grey-8 text-h6">Pagina de inicio del sitio</div>
-        <NewSlt @actualizarPadre="$refs.lista.getSltUser()"/>
-      </div>
+  <div>
+    <div class="q-pa-md q-mb-lg">
+      <div class="text-h4 text-bold">SOLICITUDES</div>
+      <div class="text-grey text-h6">Listados de solicitudes segun su estado</div>
+      <NewSlt @actualizarPadre="$refs.lista.getSltUser()"/>
     </div>
     <ListaSlt ref="lista" @ver="verSlt($event)"/>
 
@@ -139,7 +137,7 @@
         </div>
       </q-card>
     </q-dialog>
-  </q-scroll-area>
+  </div>
 </template>
 
 <script>

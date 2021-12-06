@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla v-if="info" titulo="Listado de Actividades" :columns="column" route="solicitudes" :route_id="user.empresa" :verBtn="true" :editarBtn="false" :selectBtn="true" :selectFlt="false" :eliminarBtn="false"/>
+    <Tabla v-if="info" titulo="LISTADO DE ACTIVIDADES" subtitulo="Historial de actividades por consultor asignado" :columns="column" route="solicitudes" :route_id="user.empresa" :verBtn="true" :editarBtn="false" :selectBtn="true" :selectFlt="false" :eliminarBtn="false"/>
   </div>
 </template>
 

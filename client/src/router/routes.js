@@ -6,43 +6,40 @@ const routes = [
     children: [
       // User 01
       { path: '/inicio_user01', component: () => import('pages/User01/Home.vue') },
-      { path: '/usuarios', component: () => import('pages/User01/ListadoUsuario.vue') },
-      { path: '/usuarios/form/:id', component: () => import('pages/User01/User_edit.vue') },
-      { path: '/usuarios/form', component: () => import('pages/User01/RegisterUsuario.vue') },
       // User 02
       { path: '/inicio_user02', component: () => import('pages/User02/Home.vue') },
       { path: '/organigrama', component: () => import('pages/User02/OrganizationChart.vue') },
-      { path: '/usuarios2', component: () => import('pages/User02/ListadoUsuario2.vue') },
-      { path: '/usuarios2/form', component: () => import('pages/User02/RegisterUsuario2.vue') },
-      { path: '/usuarios2/form/:id', component: () => import('pages/User02/User_edit2.vue') },
-      { path: '/equipos', component: () => import('pages/User02/ListadoEquipo.vue') },
-      { path: '/equipos/form', component: () => import('pages/User02/RegisterEquipo.vue') },
-      { path: '/equipos/form/:id', component: () => import('pages/User02/Equipo_edit.vue') },
-      { path: '/vista_conocimiento', component: () => import('pages/User02/ListadoConocimiento.vue') },
+      { path: '/categorias', component: () => import('pages/User02/Categorias.vue') },
+      { path: '/equipos/form', component: () => import('pages/User02/RegisterEquipment.vue') },
+      { path: '/equipos/form/:id', component: () => import('pages/User02/RegisterEquipment.vue') },
       // Gerente
       { path: '/inicio_gerente', component: () => import('pages/Gerente/Home.vue') },
+      { path: '/indicadores', component: () => import('pages/Gerente/Indicadores.vue') },
       // Consultor Administrador
       { path: '/inicio_consultor_admin', component: () => import('pages/ConsultorAdmin/Home.vue') },
       { path: '/consultores', component: () => import('pages/ConsultorAdmin/ListadoConsultores.vue') },
       { path: '/atividades_consultor', component: () => import('pages/ConsultorAdmin/ListadoActividades.vue') },
       // Consultor
       { path: '/inicio_consultor', component: () => import('pages/Consultor/Home.vue') },
-      { path: '/conocimiento', component: () => import('pages/Consultor/ListadoConocimiento.vue') },
-      { path: '/conocimiento/form', component: () => import('pages/Consultor/RegisterConocimiento.vue') },
-      { path: '/conocimiento/form/:id', component: () => import('pages/Consultor/Conocimiento_edit.vue') },
+      { path: '/solicitudes_consultor', component: () => import('pages/Consultor/Solicitudes.vue') },
+      { path: '/conocimientos/form', component: () => import('pages/Consultor/RegisterConocimiento.vue') },
+      { path: '/conocimientos/form/:id', component: () => import('pages/Consultor/RegisterConocimiento.vue') },
       // Cliente Administrador
-      { path: '/inicio_cliente_admin', component: () => import('pages/HomeCliente.vue') },
-      { path: '/equipos_cliente', component: () => import('pages/ClienteAdmin/ListadoEquipo.vue') },
+      { path: '/inicio_cliente_admin', component: () => import('pages/ClienteAdmin/Home.vue') },
       // Cliente
-      { path: '/inicio_cliente', component: () => import('pages/HomeCliente.vue') },
-      { path: '/equipos_consultor', component: () => import('pages/ClienteFinal/ListadoEquipo.vue') },
+      { path: '/inicio_cliente', component: () => import('pages/ClienteFinal/Home.vue') },
       // Generales
-      { path: '/historial_solicitudes', component: () => import('pages/HistorialActividades.vue') },
-      { path: '/contratos', component: () => import('pages/Contrato.vue') },
+      { path: '/usuarios', component: () => import('pages/Users.vue') },
+      { path: '/usuarios/form', component: () => import('pages/RegisterUser.vue') },
+      { path: '/usuarios/form/:id', component: () => import('pages/RegisterUser.vue') },
       { path: '/empresas', component: () => import('pages/Companys.vue') },
       { path: '/empresas/form', component: () => import('pages/RegisterCompany.vue') },
       { path: '/empresas/form/:id', component: () => import('pages/RegisterCompany.vue') },
-      { path: '/categorias', component: () => import('pages/User02/Categorias.vue') },
+      { path: '/historial_solicitudes', component: () => import('pages/HistorialSolicitudes.vue') },
+      { path: '/solicitudes', component: () => import('pages/Solicitudes.vue') },
+      { path: '/contratos', component: () => import('pages/Contrato.vue') },
+      { path: '/equipos', component: () => import('pages/Equipments.vue') },
+      { path: '/conocimientos', component: () => import('pages/Conocimientos.vue') },
       { path: '/notificaciones', component: () => import('pages/Notifications.vue') }
     ]
   },
