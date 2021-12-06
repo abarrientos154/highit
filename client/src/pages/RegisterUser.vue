@@ -50,7 +50,7 @@
             </q-select>
           </div>
 
-          <div v-if="rol === 1 || !edit ? form.roles === 4 || form.roles === 6 : form.roles[0] === 4 || form.roles[0] === 6">
+          <div v-if="!edit ? rol === 1 || form.roles === 4 || form.roles === 6 : rol === 1 || form.roles[0] === 4 || form.roles[0] === 6">
             <div class="q-mt-sm text-subtitle1">Seleccione empresa</div>
             <q-select filled v-model="form.empresa" use-input behavior="menu" input-debounce="0" :options="empresas" map-options option-label="name" emit-value option-value="_id" @filter="filterFn" :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()">
               <template v-slot:no-option>
@@ -298,6 +298,9 @@ export default {
         }
       } else { this.form.roles = 2 }
       if (!this.$v.perfilfile.$error && !this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
+        this.$q.loading.show({
+          message: 'Guardando usuario...'
+        })
         this.form.password = this.password
         const formData = new FormData()
         formData.append('perfil', this.perfilfile)

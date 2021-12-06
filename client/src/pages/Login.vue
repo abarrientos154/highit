@@ -1,11 +1,13 @@
 <template>
-  <div class="column items-center q-py-lg q-px-xl">
+  <div class="column items-center q-py-lg">
     <q-img src="leaderboard highit desk 4.png" style="width: 100%; max-width: 750px"/>
+
     <div class="column justify-center items-center full-width" :style="baseu ? '' : 'margin-top: -50px'">
       <q-avatar v-if="baseu" class="q-mt-xl q-mb-lg" size="200px">
         <q-img :src="baseu" style="height: 100%" />
       </q-avatar>
       <img v-else src="Desk 1.2.png" style="width:400px"/>
+
       <div :style="baseu ? '' : 'margin-top: -75px'">
         <div>
           <div class="q-pl-lg q-mb-sm text-caption"> Correo electronico</div>
@@ -15,6 +17,7 @@
             </template>
           </q-input>
         </div>
+
         <div class="q-mb-md">
           <div class="q-pl-lg q-mb-sm text-caption"> Contraseña</div>
           <q-input dense filled :type="isPwd ? 'password' : 'text'" v-model="form.password" placeholder="Contraseña" :error="$v.form.password.$error" error-message="Este campo es requerido" @blur="$v.form.password.$touch()" >
@@ -23,13 +26,13 @@
             </template>
           </q-input>
         </div>
-        <q-btn class="full-width q-py-sm" color="primary" :loading="loading"
-          @click="onSubmit()" no-caps
-            >Ingresar
-            <template v-slot:loading>
-              <q-spinner-hourglass class="on-center" />
-              Loading...
-            </template>
+
+        <q-btn class="full-width q-py-xs" color="primary" :loading="loading" @click="rol ? onSubmit() : getUser_email()" no-caps>
+          Ingresar
+          <template v-slot:loading>
+            <q-spinner-hourglass class="on-center" />
+            Loading...
+          </template>
         </q-btn>
       </div>
     </div>
@@ -49,7 +52,8 @@ export default {
       email: '',
       form: {},
       user: {},
-      userEmail: {}
+      rol: null,
+      empresaEnable: false
     }
   },
   validations: {
@@ -63,10 +67,12 @@ export default {
     getUser_email () {
       if (this.form.email && !this.$v.form.email.$error) {
         this.$api.get('user_email/' + this.form.email).then(res => {
-          if (res) {
-            this.userEmail = res[0]
-            if (this.userEmail && this.userEmail.empresa_user) {
-              this.baseu = env.apiUrl + 'company_img/' + this.userEmail.empresa_user._id
+          if (res.length) {
+            const userEmail = res[0]
+            this.rol = userEmail.roles[0]
+            if (this.rol !== 1) {
+              this.empresaEnable = userEmail.empresa_user.enable
+              this.baseu = env.apiUrl + 'company_img/' + userEmail.empresa
             } else {
               this.baseu = null
             }
@@ -76,7 +82,7 @@ export default {
     },
     onSubmit () {
       this.$v.$touch()
-      if (this.userEmail && this.userEmail.roles[0] !== 1 ? !this.$v.form.$error && this.userEmail.empresa_user.enable : !this.$v.form.$error) {
+      if (this.rol && this.rol !== 1 ? !this.$v.form.$error && this.empresaEnable : !this.$v.form.$error) {
         this.loading = true
         this.$q.loading.show({
           message: 'Iniciando sesión'
@@ -100,16 +106,13 @@ export default {
             } else if (this.user.roles[0] === 7) {
               this.$router.push('/inicio_gerente')
             }
-          } else {
-            this.loading = false
-            this.$q.loading.hide()
           }
           this.$q.loading.hide()
           this.loading = false
         })
       } else {
         this.$q.notify({
-          message: !this.userEmail.empresa_user.enable ? 'La empresa a la que perteneces ha sido deshabilitada' : 'Debes llenar los campos correspondientes',
+          message: !this.empresaEnable ? 'La empresa a la que perteneces ha sido deshabilitada' : 'Debes llenar los campos correspondientes',
           color: 'negative'
         })
       }

@@ -113,7 +113,7 @@
         <div>Foto de perfil</div>
         <div class="column items-center">
           <q-avatar rounded style="height: 200px; width: 100%;" class="q-mb-sm">
-            <q-img style="height: 100%;" :src="img || edit ? perfilImg : 'nopublicidad.jpg'">
+            <q-img style="height: 100%;" :src="PImg || edit ? perfilImg : 'nopublicidad.jpg'">
               <q-file  borderless v-model="img" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1; width: 100%; height: 100%; cursor: pointer;">
                 <div class="column items-center justify-center absolute-full" style="height: 150px;">
                   <q-icon name="backup" class="q-mt-xl" size="75px" :color="!$v.PImg.$error ? 'white' : 'negative'"/>

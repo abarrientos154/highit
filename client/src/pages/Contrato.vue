@@ -138,6 +138,7 @@ export default {
         if (res) {
           this.rol = res.roles[0]
           this.user = res
+          this.listado = true
           if (this.rol === 1) {
             this.column = [
               { name: 'contrato', field: 'contrato', label: 'Nombre', align: 'left' },
@@ -145,7 +146,6 @@ export default {
               { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' }
             ]
           }
-          this.listado = true
           this.obtener_contratos()
         }
       })
