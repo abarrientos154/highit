@@ -35,11 +35,11 @@ const routes = [
       { path: '/empresas', component: () => import('pages/Companys.vue') },
       { path: '/empresas/form', component: () => import('pages/RegisterCompany.vue') },
       { path: '/empresas/form/:id', component: () => import('pages/RegisterCompany.vue') },
-      { path: '/historial_solicitudes', component: () => import('pages/HistorialSolicitudes.vue') },
-      { path: '/solicitudes', component: () => import('pages/Solicitudes.vue') },
       { path: '/contratos', component: () => import('pages/Contrato.vue') },
       { path: '/equipos', component: () => import('pages/Equipments.vue') },
       { path: '/conocimientos', component: () => import('pages/Conocimientos.vue') },
+      { path: '/solicitudes', component: () => import('pages/Solicitudes.vue') },
+      { path: '/historial_solicitudes', component: () => import('pages/HistorialSolicitudes.vue') },
       { path: '/notificaciones', component: () => import('pages/Notifications.vue') }
     ]
   },

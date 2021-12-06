@@ -132,21 +132,8 @@ export default {
     this.userLogueado()
   },
   methods: {
-    filterDepartments (val, update) {
-      if (val === '') {
-        update(() => { this.departamentos2 = this.departamentos })
-        return
-      }
-      update(() => { this.departamentos2 = this.departamentos.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
-    },
-    filterAreas (val, update) {
-      if (val === '') {
-        update(() => { this.areas2 = this.areas })
-        return
-      }
-      update(() => { this.areas2 = this.areas.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
-    },
     userLogueado () {
+      this.$q.loading.show()
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
@@ -172,12 +159,27 @@ export default {
         }
       })
     },
+    filterDepartments (val, update) {
+      if (val === '') {
+        update(() => { this.departamentos2 = this.departamentos })
+        return
+      }
+      update(() => { this.departamentos2 = this.departamentos.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
+    },
     getCargos () {
       this.$api.get('charges').then(res => {
         if (res) {
           this.cargos = res
         }
+        this.$q.loading.hide()
       })
+    },
+    filterAreas (val, update) {
+      if (val === '') {
+        update(() => { this.areas2 = this.areas })
+        return
+      }
+      update(() => { this.areas2 = this.areas.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
     },
     save (idx) {
       if (idx === 1) {

@@ -14,7 +14,7 @@
           <q-img :src="perfilfile || edit ? perfilImg : 'nopublicidad.jpg'" style="height: 100%;" >
             <q-file  borderless v-model="perfilfile" @input="changeperfilfile()" accept=".jpg, image/*" style="z-index:1; font-size: 0px; width: 100%; height: 100%; cursor: pointer;">
               <div class="column items-center justify-center absolute-full" style="height: 150px;">
-                <q-icon name="backup" class="q-mt-xl" size="75px" color="white"/>
+                <q-icon name="backup" class="q-mt-xl" size="75px" :color="!$v.perfilfile.$error ? 'white' : 'negative'"/>
                 <div :class="!$v.perfilfile.$error ? 'text-white' : 'text-negative'" class="text-caption">Toca para seleccionar la foto de perfil del usuario</div>
               </div>
             </q-file>
@@ -209,7 +209,6 @@ export default {
           if (this.rol !== 1) { this.getDepartamentos() }
           if (this.$route.params.id) { this.getDatos(this.$route.params.id) }
         }
-        this.$q.loading.hide()
       })
     },
     async getEmpresas () {
@@ -218,6 +217,7 @@ export default {
           this.empresas = res
           this.empresas2 = [...this.empresas]
         }
+        this.$q.loading.hide()
       })
     },
     async getDepartamentos () {

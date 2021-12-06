@@ -4,6 +4,7 @@
       <div class="text-h4 text-bold">NOTIFICACIONES</div>
       <div class="text-grey text-h6">Historial de notificaciones, donde te matenemos informado</div>
     </div>
+
     <div class="q-mb-lg">
       <q-list class="q-px-lg">
         <q-card :class="`q-mb-md ${!item.status ? 'sinVer' : ''}`" v-for="(item, index) in notifications" :key="index" style="width: 100%; border-radius: 20px;">
@@ -140,10 +141,12 @@ export default {
   },
   methods: {
     getNotifications () {
+      this.$q.loading.show()
       this.$api.get('notifications').then(res => {
         if (res) {
           this.notifications = res.reverse()
         }
+        this.$q.loading.hide()
       })
     },
     verNotification (itm) {
@@ -169,11 +172,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.bordes {
-  border-right: 2px solid $grey-6;
-  border-left: 2px solid $grey-6;
-  border-bottom: 2px solid $grey-6;
-}
 .sinVer {
   border-right: 10px solid red;
 }

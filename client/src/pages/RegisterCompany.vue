@@ -116,13 +116,12 @@
             <q-img style="height: 100%;" :src="img || edit ? perfilImg : 'nopublicidad.jpg'">
               <q-file  borderless v-model="img" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1; width: 100%; height: 100%; cursor: pointer;">
                 <div class="column items-center justify-center absolute-full" style="height: 150px;">
-                  <q-icon name="backup" class="q-mt-xl" size="75px" color="white"/>
-                  <div class="text-center text-white text-caption">Toca para selecciona la foto de perfil de la empresa</div>
+                  <q-icon name="backup" class="q-mt-xl" size="75px" :color="!$v.PImg.$error ? 'white' : 'negative'"/>
+                  <div :class="!$v.PImg.$error ? 'text-white' : 'text-negative'" class="text-center text-caption">Toca para seleccionar la foto de perfil de la empresa</div>
                 </div>
               </q-file>
             </q-img>
           </q-avatar>
-          <div v-if="$v.PImg.$error" class="text-negative">La imagen es Requerida</div>
         </div>
       </div>
     </div>
@@ -187,28 +186,20 @@ export default {
       this.getCompanyById()
     }
     this.userLogueado()
-    this.getPaises()
   },
   methods: {
     userLogueado () {
+      this.$q.loading.show()
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.rol = res.roles[0]
           this.user = res
           this.getContratos()
-        }
-      })
-    },
-    getCompanyById () {
-      this.$api.get('company/' + this.id).then(res => {
-        if (res) {
-          this.form = res
-          this.perfilImg = env.apiUrl + 'company_img/' + this.id
+          this.getPaises()
         }
       })
     },
     getPaises () {
-      this.$q.loading.show()
       this.$api.get('paises').then(res => {
         if (res) {
           this.paises = res
@@ -222,21 +213,12 @@ export default {
       })
     },
     getContratos () {
-      if (this.rol === 1) {
-        this.$api.get('contratos').then(res => {
-          if (res) {
-            this.contratos = res
-            this.contratos2 = [...this.contratos]
-          }
-        })
-      } else {
-        this.$api.get('contratos_by_company/' + this.user.empresa).then(res => {
-          if (res) {
-            this.contratos = res
-            this.contratos2 = [...this.contratos]
-          }
-        })
-      }
+      this.$api.get(this.rol === 1 ? 'contratos' : 'contratos_by_company/' + this.user.empresa).then(res => {
+        if (res) {
+          this.contratos = res
+          this.contratos2 = [...this.contratos]
+        }
+      })
     },
     filterFn (val, update) {
       if (val === '') {
@@ -248,6 +230,14 @@ export default {
       update(() => {
         const needle = val.toLowerCase()
         this.contratos = this.contratos2.filter(v => v.contrato.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    getCompanyById () {
+      this.$api.get('company/' + this.id).then(res => {
+        if (res) {
+          this.form = res
+          this.perfilImg = env.apiUrl + 'company_img/' + this.id
+        }
       })
     },
     perfil_img () {

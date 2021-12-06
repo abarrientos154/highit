@@ -25,11 +25,13 @@ export default {
   },
   methods: {
     userLogueado () {
+      this.$q.loading.show()
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
           this.info = true
         }
+        this.$q.loading.hide()
       })
     }
   }

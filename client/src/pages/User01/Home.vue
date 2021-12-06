@@ -1,8 +1,8 @@
 <template>
   <div class="q-pa-md">
     <div class="q-pb-md">
-      <div class="text-h4 text-bold">PÁGINA PRINCIPAL</div>
-      <div class="text-grey-8 text-h6">Pagina de inicio del sitio</div>
+      <div class="text-h4 text-bold">PAGINA PRINCIPAL</div>
+      <div class="text-grey text-h6">Pagina de inicio del sitio</div>
       <q-select filled v-model="empresa" :options="empresas" label="Selecciona una empresa" map-options emit-value option-label="name" @input="filtrar()"/>
     </div>
     <div class="text-center text-h5 text-bold q-mb-sm">Estadisticas de usuarios por empresa</div>

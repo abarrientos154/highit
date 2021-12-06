@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla titulo="USUARIOS" subtitulo="Listado de usuarios segun la empresa a la que pertenecen" :columns="column" route="user" :btnNew="true" :eliminarBtn="false" :verBtn="true" :selectBtn="true" :selectFlt="false" />
+    <Tabla v-if="rol" titulo="USUARIOS" subtitulo="Listado de usuarios segun la empresa a la que pertenecen" :columns="column" route="user" :btnNew="true" :eliminarBtn="false" :verBtn="true" :selectBtn="true" :selectFlt="false" />
   </div>
 </template>
 <script>
@@ -25,6 +25,7 @@ export default {
   },
   methods: {
     userLogueado () {
+      this.$q.loading.show()
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.rol = res.roles[0]
@@ -40,6 +41,7 @@ export default {
             ]
           }
         }
+        this.$q.loading.hide()
       })
     }
   }

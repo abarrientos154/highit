@@ -133,6 +133,7 @@ export default {
   },
   methods: {
     userLogueado () {
+      this.$q.loading.show()
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.rol = res.roles[0]
@@ -146,8 +147,30 @@ export default {
           }
           this.listado = true
           this.obtener_contratos()
-          // this.getEmpresas()
         }
+      })
+    },
+    obtener_contratos () {
+      this.$api.get(this.rol === 1 ? 'contratos' : 'contratos_by_company/' + this.user.empresa).then(res => {
+        if (res) {
+          this.lista = res
+          this.lista2 = [...this.lista]
+          this.$refs.latabla.getRecord()
+          if (this.rol !== 1) { this.$refs.latabla2.getOptions() }
+        }
+        this.$q.loading.hide()
+      })
+    },
+    filterFn (val, update) {
+      if (val === '') {
+        update(() => {
+          this.lista = this.lista2
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.lista = this.lista2.filter(v => v.contrato.toLowerCase().indexOf(needle) > -1)
       })
     },
     guardar_contrato () {
@@ -168,9 +191,7 @@ export default {
             this.form = {}
             this.$v.form.$reset()
             this.$refs.latabla.getRecord()
-            if (this.rol !== 1) {
-              this.$refs.latabla2.getOptions()
-            }
+            if (this.rol !== 1) { this.$refs.latabla2.getOptions() }
             this.obtener_contratos()
           }
           this.$q.loading.hide()
@@ -181,18 +202,6 @@ export default {
           color: 'negative'
         })
       }
-    },
-    filterFn (val, update) {
-      if (val === '') {
-        update(() => {
-          this.lista = this.lista2
-        })
-        return
-      }
-      update(() => {
-        const needle = val.toLowerCase()
-        this.lista = this.lista2.filter(v => v.contrato.toLowerCase().indexOf(needle) > -1)
-      })
     },
     guardar_SLA () {
       this.$v.form2.$touch()
@@ -223,26 +232,6 @@ export default {
         this.$q.notify({
           message: 'Faltan campos por llenar',
           color: 'negative'
-        })
-      }
-    },
-    obtener_contratos () {
-      if (this.rol === 1) {
-        this.$api.get('contratos').then(res => {
-          if (res) {
-            this.lista = res
-            this.lista2 = [...this.lista]
-            this.$refs.latabla.getRecord()
-          }
-        })
-      } else {
-        this.$api.get('contratos_by_company/' + this.user.empresa).then(res => {
-          if (res) {
-            this.lista = res
-            this.lista2 = [...this.lista]
-            this.$refs.latabla.getRecord()
-            this.$refs.latabla2.getOptions()
-          }
         })
       }
     }

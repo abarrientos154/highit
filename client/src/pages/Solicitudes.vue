@@ -178,6 +178,7 @@ export default {
   },
   methods: {
     userLogueado () {
+      this.$q.loading.show()
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
@@ -195,6 +196,7 @@ export default {
           this.getHitos()
           this.getEquipos()
         }
+        this.$q.loading.hide()
       })
     },
     getDepartamentos () {

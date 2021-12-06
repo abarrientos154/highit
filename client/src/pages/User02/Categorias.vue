@@ -90,11 +90,65 @@ export default {
   },
   methods: {
     userLogueado () {
+      this.$q.loading.show()
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
           this.getDepartamentos()
           this.obtener_categorias()
+        }
+        this.$q.loading.hide()
+      })
+    },
+    getDepartamentos () {
+      this.$api.get('departments/' + this.user.empresa).then(res => {
+        if (res) {
+          this.departamentos = res
+          this.departamentos2 = [...this.departamentos]
+        }
+      })
+    },
+    filterDepartments (val, update) {
+      if (val === '') {
+        update(() => { this.departamentos = this.departamentos2 })
+        return
+      }
+      update(() => { this.departamentos = this.departamentos2.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
+    },
+    areasOpt (id) {
+      this.$api.get('areas/' + id).then(res => {
+        if (res) {
+          this.areas = res
+          this.areas2 = [...this.areas]
+        }
+      })
+    },
+    filterAreas (val, update) {
+      if (val === '') {
+        update(() => { this.areas = this.areas2 })
+        return
+      }
+      update(() => { this.areas = this.areas2.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
+    },
+    cargosOpt (id) {
+      this.$api.get('cargos/' + id).then(res => {
+        if (res) {
+          this.cargos = res
+          this.cargos2 = [...this.cargos]
+        }
+      })
+    },
+    filterCharges (val, update) {
+      if (val === '') {
+        update(() => { this.cargos = this.cargos2 })
+        return
+      }
+      update(() => { this.cargos = this.cargos2.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
+    },
+    obtener_categorias () {
+      this.$api.get('categorias/' + this.user.empresa).then(res => {
+        if (res) {
+          this.lista = res
         }
       })
     },
@@ -126,58 +180,6 @@ export default {
           color: 'negative'
         })
       }
-    },
-    getDepartamentos () {
-      this.$api.get('departments/' + this.user.empresa).then(res => {
-        if (res) {
-          this.departamentos = res
-          this.departamentos2 = [...this.departamentos]
-        }
-      })
-    },
-    areasOpt (id) {
-      this.$api.get('areas/' + id).then(res => {
-        if (res) {
-          this.areas = res
-          this.areas2 = [...this.areas]
-        }
-      })
-    },
-    cargosOpt (id) {
-      this.$api.get('cargos/' + id).then(res => {
-        if (res) {
-          this.cargos = res
-          this.cargos2 = [...this.cargos]
-        }
-      })
-    },
-    obtener_categorias () {
-      this.$api.get('categorias/' + this.user.empresa).then(res => {
-        if (res) {
-          this.lista = res
-        }
-      })
-    },
-    filterDepartments (val, update) {
-      if (val === '') {
-        update(() => { this.departamentos = this.departamentos2 })
-        return
-      }
-      update(() => { this.departamentos = this.departamentos2.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
-    },
-    filterAreas (val, update) {
-      if (val === '') {
-        update(() => { this.areas = this.areas2 })
-        return
-      }
-      update(() => { this.areas = this.areas2.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
-    },
-    filterCharges (val, update) {
-      if (val === '') {
-        update(() => { this.cargos = this.cargos2 })
-        return
-      }
-      update(() => { this.cargos = this.cargos2.filter(v => v.name.toLowerCase().indexOf(val.toLowerCase()) > -1) })
     }
   }
 }

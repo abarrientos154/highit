@@ -20,6 +20,7 @@ export default {
   },
   methods: {
     userLogueado () {
+      this.$q.loading.show()
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.rol = res.roles[0]
@@ -32,6 +33,7 @@ export default {
             { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
           ]
         }
+        this.$q.loading.hide()
       })
     }
   }

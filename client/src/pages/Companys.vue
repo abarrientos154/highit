@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla v-if="listado" titulo="EMPRESAS" subtitulo="Listado de empresas con sus respectivos datos" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : null" :habilitarBtn="true" :eliminarBtn="false" :btnNew="true" :verBtn="true"/>
+    <Tabla v-if="rol" titulo="EMPRESAS" subtitulo="Listado de empresas con sus respectivos datos" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : null" :habilitarBtn="true" :eliminarBtn="false" :btnNew="true" :verBtn="true"/>
   </div>
 </template>
 
@@ -13,7 +13,6 @@ export default {
       rol: null,
       user: {},
       empresas: [],
-      listado: false,
       column: [
         { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
         { name: 'email', field: 'email', label: 'Correo', align: 'left' },
@@ -29,6 +28,7 @@ export default {
   },
   methods: {
     userLogueado () {
+      this.$q.loading.show()
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
@@ -44,8 +44,8 @@ export default {
               { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
             ]
           }
-          this.listado = true
         }
+        this.$q.loading.hide()
       })
     }
   }
