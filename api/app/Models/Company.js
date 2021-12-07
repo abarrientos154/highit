@@ -5,7 +5,7 @@ const Model = use('Model')
 
 class Company extends Model {
   static get fillable() {
-    return ['email']
+    return ['email','phone','name','businessName','numIdet','typeContract','dateBegin','dateEnd','users','pais_id','estado_id','ciudad_id','direction','postalCode']
   }
   static fieldValidationRules() {
     const rulesUser = {

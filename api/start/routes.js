@@ -42,6 +42,11 @@ addPrefixToGroup(
     Route.get("validate_email/:email", "UserController.validateEmail")
     Route.get("email_send_app/:email", "UserController.recuperacionapp")
     Route.get("paises", "PaisController.index")
+    Route.get("pais/:id", "PaisController.paisById")
+    Route.get("estados/:id", "EstadoController.index")
+    Route.get("estado/:id", "EstadoController.estadoById")
+    Route.get("ciudades/:id", "CiudadController.index")
+    Route.get("ciudad/:id", "CiudadController.ciudadById")
 
     Route.get('obtener_logo', 'UploadController.getLogo')
     Route.get('company_img/:file', 'UploadController.getFileByDirectoryCompany')
@@ -63,7 +68,8 @@ addPrefixToGroup(
     Route.delete("user/:id", "UserController.destroy")
 
     Route.put("password_edit/:id", "UserController.changePassword")
-    Route.post('perfil_imagen/:user_id', 'UploadController.newimagen')
+    Route.post('perfil_imagen/:user_id', 'UploadController.newImagen')
+    Route.post('perfil_company/:company_id', 'UploadController.newImagenCompany')
     Route.post('generate_pdf', 'UploadController.generatePdf')
 
     Route.get("contratos", "ContratoController.index")

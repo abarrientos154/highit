@@ -1,6 +1,6 @@
 'use strict'
 
-const Pais = use("App/Models/Pais")
+const Estado = use("App/Models/Estado")
 // const { validate } = use("Validator")
 // const Helpers = use('Helpers')
 // const mkdirp = use('mkdirp')
@@ -12,15 +12,15 @@ const Pais = use("App/Models/Pais")
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-class PaisController {
-  async index ({ request, response, view }) {
-    let datos = (await Pais.query().where({}).fetch()).toJSON()
-    response.send(datos)
+class EstadoController {
+  async index ({ params, request, response, view }) {
+    let estados = (await Estado.query().where({ pais_id: parseInt(params.id) }).fetch()).toJSON()
+    response.send(estados)
   }
-  async paisById({ params, response }) {
-    const pais = await Pais.find(params.id)
-    response.send(pais)
+  async estadoById({ params, response }) {
+    const estado = await Estado.find(params.id)
+    response.send(estado)
   }
 }
 
-module.exports = PaisController
+module.exports = EstadoController

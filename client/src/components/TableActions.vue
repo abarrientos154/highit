@@ -325,7 +325,6 @@ export default {
       data: [],
       ver: {},
       hitos: [],
-      paises: [],
       showModalEditar: false,
       edit: false,
       iEditContrato: '',
@@ -398,7 +397,6 @@ export default {
               }
             })
           }
-          this.getPaises()
         }
       })
     },
@@ -415,11 +413,23 @@ export default {
       })
     },
     verItem (itm) {
+      const vm = this
+      this.$q.loading.show({
+        message: 'Cargando datos...'
+      })
       if (this.route === 'conocimientos') {
-        this.$emit('mostrar', itm._id)
+        setTimeout(function () {
+          vm.$emit('mostrar', itm._id)
+          vm.$q.loading.hide()
+        }, 2000)
       } else {
         this.edit = false
         this.ver = { ...itm }
+        if (this.route === 'companys') {
+          this.$api.get('pais/' + itm.pais_id).then(res => { if (res) { this.ver.pais = res.name } })
+          this.$api.get('estado/' + itm.estado_id).then(res => { if (res) { this.ver.estado = res.name } })
+          this.$api.get('ciudad/' + itm.ciudad_id).then(res => { if (res) { this.ver.ciudad = res.name } })
+        }
         if (this.route === 'solicitudes_history' || this.route === 'solicitudes') {
           this.$api.get('history_hitos/' + this.ver._id).then(res => {
             if (res) {
@@ -427,12 +437,10 @@ export default {
             }
           })
         }
-        if (this.route === 'companys') {
-          this.ver.pais = this.paises.filter(v => v._id === itm.pais_id)[0].name
-          this.ver.estado = this.paises.filter(v => v._id === itm.pais_id)[0].estados.filter(v => v._id === itm.estado_id)[0].name
-          this.ver.ciudad = this.paises.filter(v => v._id === itm.pais_id)[0].estados.filter(v => v._id === itm.estado_id)[0].ciudades.filter(v => v._id === itm.ciudad_id)[0].name
-        }
-        this.showModalEditar = true
+        setTimeout(function () {
+          vm.showModalEditar = true
+          vm.$q.loading.hide()
+        }, 2000)
       }
     },
     editar (id) {
@@ -529,13 +537,6 @@ export default {
         }
       })
       // const todos = this.options.unshift({ name: 'Todos', _id: 'todos' })
-    },
-    getPaises () {
-      this.$api.get('paises').then(res => {
-        if (res) {
-          this.paises = res
-        }
-      })
     },
     selectChange (select) {
       if (select) {

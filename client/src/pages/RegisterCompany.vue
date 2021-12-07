@@ -74,15 +74,15 @@
       <q-list>
         <div>
           <div>País</div>
-          <q-select outlined filled v-model="selectPais" :options="paises" @input="form.pais_id = selectPais._id, estados = selectPais.estados" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectPais.$error" @blur="$v.selectPais.$touch()"/>
+          <q-select outlined filled v-model="form.pais_id" :options="paises" @input="getEstados(paises.find(v => v._id === form.pais_id).id), form.estado_id = null, form.ciudad_id = null" option-label="name" map-options emit-value option-value="_id" error-message="Este campo es requerido" :error="$v.form.pais_id.$error" @blur="$v.form.pais_id.$touch()"/>
         </div>
         <div>
           <div>Estado</div>
-          <q-select outlined filled v-model="selectEstado" :options="estados" @input="form.estado_id = selectEstado._id, ciudades = selectEstado.ciudades" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectEstado.$error" @blur="$v.selectEstado.$touch()"/>
+          <q-select outlined filled v-model="form.estado_id" :options="estados" @input="getCiudades(estados.find(v => v._id === form.estado_id).id), form.ciudad_id = null" option-label="name" map-options emit-value option-value="_id" error-message="Este campo es requerido" :error="$v.form.estado_id.$error" @blur="$v.form.estado_id.$touch()"/>
         </div>
         <div>
           <div>Ciudad</div>
-          <q-select outlined filled v-model="selectCiudad" :options="ciudades" @input="form.ciudad_id = selectCiudad._id" option-label="name" map-options error-message="Este campo es requerido" :error="$v.selectCiudad.$error" @blur="$v.selectCiudad.$touch()"/>
+          <q-select outlined filled v-model="form.ciudad_id" :options="ciudades" option-label="name" map-options emit-value option-value="_id" error-message="Este campo es requerido" :error="$v.form.ciudad_id.$error" @blur="$v.form.ciudad_id.$touch()"/>
         </div>
         <div>
           <div>Dirección</div>
@@ -113,8 +113,8 @@
         <div>Foto de perfil</div>
         <div class="column items-center">
           <q-avatar rounded style="height: 200px; width: 100%;" class="q-mb-sm">
-            <q-img style="height: 100%;" :src="PImg || edit ? perfilImg : 'nopublicidad.jpg'">
-              <q-file  borderless v-model="img" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1; width: 100%; height: 100%; cursor: pointer;">
+            <q-img style="height: 100%;" :src="perfilImg || edit ? perfilImg : 'nopublicidad.jpg'">
+              <q-file  borderless v-model="PImg" @input="perfil_img()" accept=".jpg, image/*" style="z-index: 1; font-size: 0px; width: 100%; height: 100%; cursor: pointer;">
                 <div class="column items-center justify-center absolute-full" style="height: 150px;">
                   <q-icon name="backup" class="q-mt-xl" size="75px" :color="!$v.PImg.$error ? 'white' : 'negative'"/>
                   <div :class="!$v.PImg.$error ? 'text-white' : 'text-negative'" class="text-center text-caption">Toca para seleccionar la foto de perfil de la empresa</div>
@@ -141,9 +141,8 @@ export default {
       user: {},
       id: '',
       edit: false,
-      img: null,
-      perfilImg: '',
-      PImg: {},
+      perfilImg: null,
+      PImg: null,
       form: {},
       paises: [],
       estados: [],
@@ -168,24 +167,19 @@ export default {
           return this.rol === 1
         })
       },
+      pais_id: { required },
+      estado_id: { required },
+      ciudad_id: { required },
       direction: { required },
       postalCode: { required },
       email: { required, email },
       phone: { required }
     },
-    PImg: { required },
-    perfilImg: { required },
-    selectPais: { required },
-    selectEstado: { required },
-    selectCiudad: { required }
+    PImg: { required }
   },
   mounted () {
-    if (this.$route.params.id) {
-      this.id = this.$route.params.id
-      this.edit = true
-      this.getCompanyById()
-    }
     this.userLogueado()
+    if (this.$route.params.id) { this.getCompanyById(this.$route.params.id) }
   },
   methods: {
     userLogueado () {
@@ -204,12 +198,27 @@ export default {
         if (res) {
           this.paises = res
           if (this.edit) {
-            this.selectPais = this.paises.filter(v => v._id === this.form.pais_id)[0]
-            this.selectEstado = this.selectPais.estados.filter(v => v._id === this.form.estado_id)[0]
-            this.selectCiudad = this.selectEstado.ciudades.filter(v => v._id === this.form.ciudad_id)[0]
+            this.getEstados(this.paises.filter(v => v._id === this.form.pais_id)[0].id)
           }
         }
         this.$q.loading.hide()
+      })
+    },
+    getEstados (id) {
+      this.$api.get('estados/' + id).then(res => {
+        if (res) {
+          this.estados = res
+          if (this.edit) {
+            this.getCiudades(this.estados.filter(v => v._id === this.form.estado_id)[0].id)
+          }
+        }
+      })
+    },
+    getCiudades (id) {
+      this.$api.get('ciudades/' + id).then(res => {
+        if (res) {
+          this.ciudades = res
+        }
       })
     },
     getContratos () {
@@ -232,20 +241,32 @@ export default {
         this.contratos = this.contratos2.filter(v => v.contrato.toLowerCase().indexOf(needle) > -1)
       })
     },
-    getCompanyById () {
-      this.$api.get('company/' + this.id).then(res => {
+    getCompanyById (id) {
+      this.$api.get('company/' + id).then(res => {
         if (res) {
+          this.id = id
+          this.edit = true
           this.form = res
           this.perfilImg = env.apiUrl + 'company_img/' + this.id
         }
       })
     },
     perfil_img () {
-      this.PImg = this.img
-      this.perfilImg = URL.createObjectURL(this.img)
-      this.img = null
-      if (this.edit) {
-        this.form.img = true
+      if (this.PImg) {
+        this.perfilImg = URL.createObjectURL(this.PImg)
+        if (this.edit) {
+          this.$v.PImg.$touch()
+          if (!this.$v.PImg.$error) {
+            const formData = new FormData()
+            formData.append('files', this.PImg)
+            this.$api.post('perfil_company/' + this.id, formData, {
+              headers: {
+                'Content-Type': undefined
+              }
+            })
+            location.reload()
+          }
+        }
       }
     },
     saveCompany () {
@@ -286,21 +307,12 @@ export default {
       }
     },
     updateCompany () {
-      this.$v.$touch()
+      this.$v.form.$touch()
       if (!this.$v.form.$error) {
         this.$q.loading.show({
           message: 'Actualizando empresa...'
         })
-        const formData = new FormData()
-        const files = []
-        files[0] = this.PImg
-        formData.append('PFiles', files[0])
-        formData.append('dat', JSON.stringify(this.form))
-        this.$api.put('update_company/' + this.id, formData, {
-          headers: {
-            'Content-Type': undefined
-          }
-        }).then(res => {
+        this.$api.put('update_company/' + this.id, this.form).then(res => {
           if (res) {
             this.$q.notify({
               message: 'La empresa se actualizo correctamente',

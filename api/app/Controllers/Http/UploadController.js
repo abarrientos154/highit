@@ -272,8 +272,7 @@ class UploadController {
     response
   }) {}
 
-  async newimagen ({ request, response, params }) {
-    // let user = (await auth.getUser()).toJSON()
+  async newImagen ({ request, response, params }) {
     var profilePic = request.file('files', {
       types: ['image'],
       size: '25mb'
@@ -292,6 +291,29 @@ class UploadController {
         return profilePic.error()
       } else {
         response.send(params.user_id)
+      }
+    }
+  }
+
+  async newImagenCompany ({ request, response, params }) {
+    var profilePic = request.file('files', {
+      types: ['image'],
+      size: '25mb'
+    })
+    if (profilePic) {
+      if (Helpers.appRoot('storage/uploads/companyFiles')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/companyFiles'), {
+          name: params.company_id,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      } else {
+        response.send(params.company_id)
       }
     }
   }
