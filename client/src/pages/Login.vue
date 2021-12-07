@@ -76,6 +76,8 @@ export default {
               this.baseu = env.apiUrl + 'company_img/' + userEmail.empresa
             }
           } else {
+            this.rol = null
+            this.empresaEnable = false
             this.baseu = null
           }
         })
