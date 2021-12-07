@@ -68,14 +68,15 @@ export default {
       if (this.form.email && !this.$v.form.email.$error) {
         this.$api.get('user_email/' + this.form.email).then(res => {
           if (res.length) {
+            this.baseu = null
             const userEmail = res[0]
             this.rol = userEmail.roles[0]
             if (this.rol !== 1) {
               this.empresaEnable = userEmail.empresa_user.enable
               this.baseu = env.apiUrl + 'company_img/' + userEmail.empresa
-            } else {
-              this.baseu = null
             }
+          } else {
+            this.baseu = null
           }
         })
       }
