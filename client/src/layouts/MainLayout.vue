@@ -338,9 +338,9 @@ export default {
       }
     },
     getNotifications () {
-      this.$api.get('notifications_sin_ver').then(res => {
+      this.$api.get('notifications').then(res => {
         if (res) {
-          this.notifications = res
+          this.notifications = res.filter(v => v.status === false)
         }
       })
     }

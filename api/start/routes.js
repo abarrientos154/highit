@@ -155,7 +155,6 @@ addPrefixToGroup(
     Route.get("gestion", "ManageController.index")
 
     Route.get("notifications", "NotificationController.index")
-    Route.get("notifications_sin_ver", "NotificationController.index2")
     Route.post("register_notification", "NotificationController.store")
     Route.put("update_notification/:id", "NotificationController.update")
   }).middleware("auth")

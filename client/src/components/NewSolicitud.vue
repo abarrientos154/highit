@@ -171,6 +171,15 @@ export default {
         this.form.time = moment().format('HH:mm')
         this.$api.post('register_solicitud', this.form).then(res => {
           if (res) {
+            this.$api.post('register_notification', {
+              user_id: this.form.category,
+              emit_id: this.user._id,
+              status: false,
+              solicitud_id: res._id,
+              icon: 'note_add',
+              name: 'Nueva solicitud',
+              description: `El cliente ${this.user.name} ${this.user.last_name} ha hecho una nueva solicitud compatible con tu departamento, area y cargo, en la que solicita: ${res.description}`
+            })
             this.$q.notify({
               message: 'Solicitud creada correctamente',
               color: 'positive'
