@@ -85,9 +85,10 @@ addPrefixToGroup(
     Route.get("sla_by_company/:id", "SlaController.slaByCompany")
     Route.delete("sla/:id", "SlaController.destroy")
     Route.get("sla_filter", "SlaController.filterByContracts")
-
+    
     Route.get('equipo', 'EquipoController.index')
     Route.get('equipo/:id', 'EquipoController.show')
+    Route.get('equipo_consultor', 'EquipoController.equipos_consultor')
     Route.get('equipo_cliente', 'EquipoController.equipos_cliente')
     Route.post("equipo", "EquipoController.store")
     Route.put("equipo/:id", "EquipoController.update")
@@ -122,8 +123,6 @@ addPrefixToGroup(
     Route.post('edit_archivos_conocimiento/:id', 'ConocimientoController.editArchivos')
     Route.put("edit_conocimiento/:id", "ConocimientoController.update")
 
-    Route.get('equipo_consultor', 'EquipoController.equipos_consultor')
-
     Route.get("companys", "CompanyController.index")
     Route.get("empresas", "CompanyController.index2")
     Route.get("empresas_user", "CompanyController.indexuser")
@@ -150,6 +149,7 @@ addPrefixToGroup(
     Route.get("hitos_by_company/:id", "HitoController.show")
     Route.get("history_hitos/:id", "HitoController.history")
 
+    Route.get("rating/:id", "RatingController.show")
     Route.post("register_rating", "RatingController.store")
 
     Route.get("gestion", "ManageController.index")

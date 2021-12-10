@@ -83,7 +83,10 @@ class RatingController {
     request,
     response,
     view
-  }) {}
+  }) {
+    const datos = (await Rating.query().where({solicitud_id: params.id}).first()).toJSON()
+    response.send(datos)
+  }
 
   /**
    * Render a form to update an existing Rating.

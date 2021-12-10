@@ -11,6 +11,7 @@ class Equipo extends Model {
   static get fillableEdit() {
     return ['name', 'descripcion', 'empresa']
   }
+
   static fieldValidationRules() {
     const rulesUser = {
       name: "string",
@@ -20,8 +21,13 @@ class Equipo extends Model {
     }
     return rulesUser
   }
+
   Empresa () {
     return this.hasOne('App/Models/Company', 'empresa', '_id')
+  }
+
+  Cliente () {
+    return this.hasOne('App/Models/User', 'cliente', '_id')
   }
 }
 

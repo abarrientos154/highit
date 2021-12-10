@@ -23,19 +23,30 @@ class EquipoController {
    */
    async index ({ request, response, view, auth }) {
     let user = (await auth.getUser()).toJSON()
-    let datos = (await Equipo.query().where({empresa_creador: user.empresa}).with('Empresa').fetch()).toJSON()
+    let datos = (await Equipo.query().where({empresa_creador: user.empresa}).with('Empresa').with('Cliente').fetch()).toJSON()
+    for (let i of datos) {
+      i.Empresa = i.Empresa.name
+      if (i.Cliente) { i.Cliente = i.Cliente.name + ' ' + i.Cliente.last_name }
+    }
     response.send(datos)
   }
 
   async equipos_consultor ({ request, response, view, auth }) {
     let user = (await auth.getUser()).toJSON()
-    let datos = (await Equipo.query().where({empresa: user.empresa}).with('Empresa').fetch()).toJSON()
+    let datos = (await Equipo.query().where({empresa: user.empresa}).with('Empresa').with('Cliente').fetch()).toJSON()
+    for (let i of datos) {
+      i.Empresa = i.Empresa.name
+      if (i.Cliente) { i.Cliente = i.Cliente.name + ' ' + i.Cliente.last_name }
+    }
     response.send(datos)
   }
 
   async equipos_cliente ({ request, response, view, auth }) {
     let user = (await auth.getUser()).toJSON()
     let datos = (await Equipo.query().where({cliente: user._id}).with('Empresa').fetch()).toJSON()
+    for (let i of datos) {
+      i.Empresa = i.Empresa.name
+    }
     response.send(datos)
   }
 

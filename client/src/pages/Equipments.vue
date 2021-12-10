@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla v-if="rol" titulo="PRODUCTOS" @asignarEquipo="asignarEquipo($event)" :subtitulo="rol === 2 ? 'Listado de equipos para tus clientes' : rol === 4 ? 'Listado de equipos asignado' : 'Listado de equipos pertenecientes a tu empresa'" :columns="column" :route="rol === 2 ? 'equipo' : rol === 4 ? 'equipo_cliente' : 'equipo_consultor'" :btnNew="this.rol === 2 ? true : false" :selectBtn="rol === 2 ? true : false" :selectFlt="rol === 2 ? false : true" :eliminarBtn="rol !== 2 ? false : true" :editarBtn="rol !== 2 ? false : true" :crearBtn="rol === 2 ? false : true" :asignarBtn="rol !== 6 ? false : true"/>
+    <Tabla v-if="rol" ref="Tabla" titulo="PRODUCTOS" @asignarEquipo="asignarEquipo($event)" :subtitulo="rol === 2 ? 'Listado de equipos para tus clientes' : rol === 4 ? 'Listado de equipos asignado' : 'Listado de equipos pertenecientes a tu empresa'" :columns="column" :route="rol === 2 ? 'equipo' : rol === 4 ? 'equipo_cliente' : 'equipo_consultor'" :btnNew="this.rol === 2 ? true : false" :selectBtn="rol === 2 ? true : false" :selectFlt="rol === 2 ? false : true" :eliminarBtn="rol !== 2 ? false : true" :editarBtn="rol !== 2 ? false : true" :crearBtn="rol === 2 ? false : true" :asignarBtn="rol !== 6 ? false : true"/>
 
     <q-dialog v-model="dialogo">
       <q-card class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
@@ -67,6 +67,13 @@ export default {
           this.rol = res.roles[0]
           this.user = res
           this.getClientes()
+          if (this.rol === 2) {
+            this.column = [
+              { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
+              { name: 'Empresa', field: 'Empresa', label: 'Empresa', align: 'left' },
+              { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' }
+            ]
+          }
         }
       })
     },
@@ -98,6 +105,7 @@ export default {
             })
             this.form = {}
             this.$v.form.$reset()
+            this.$refs.Tabla.getRecord()
             this.dialogo = false
           }
         })

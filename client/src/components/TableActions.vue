@@ -49,7 +49,7 @@
                 </div>
 
                 <div v-else :class="item.text ? `row justify-${item.text} items-center` : ''">
-                  <q-avatar v-if="props.row.color2 && item.name === 'nombre'" class="q-mr-sm" :color="props.row.color2" size="30px"/>{{ props.row[item.name] }}
+                  <q-avatar v-if="props.row.color2 && item.name === 'nombre'" class="q-mr-sm" :color="props.row.color2" size="30px"/>{{ props.row.Cliente && item.name === 'name' ? props.row[item.name] + ' - ' + props.row.Cliente : props.row[item.name] }}
                 </div>
               </q-td>
             </template>
@@ -178,6 +178,13 @@
                   <div class="text-grey-8">{{item.description}}</div>
                 </div>
               </q-list>
+            </div>
+            <div v-if="ver.rating" class="column items-center text-grey-8 q-px-sm">
+              <q-rating readonly v-model="ver.rating.number" size="3.5em" color="yellow" icon="star_border" icon-selected="star"/>
+              <div v-if="ver.rating.comment">
+                <div class="text-bold">Comentario</div>
+                <div>{{ver.rating.comment}}</div>
+              </div>
             </div>
           </div>
           <div class="full-width column items-center q-mb-lg">
@@ -431,11 +438,8 @@ export default {
           this.$api.get('ciudad/' + itm.ciudad_id).then(res => { if (res) { this.ver.ciudad = res.name } })
         }
         if (this.route === 'solicitudes_history' || this.route === 'solicitudes') {
-          this.$api.get('history_hitos/' + this.ver._id).then(res => {
-            if (res) {
-              this.hitos = res
-            }
-          })
+          this.$api.get('history_hitos/' + this.ver._id).then(res => { if (res) { this.hitos = res } })
+          this.$api.get('rating/' + this.ver._id).then(res => { if (res) { this.ver.rating = res } })
         }
         setTimeout(function () {
           vm.showModalEditar = true
