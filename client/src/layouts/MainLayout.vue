@@ -441,5 +441,7 @@ export default {
   background-image: url('../../public/fondo.jpg');
   background-attachment: fixed;
   min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 </style>
