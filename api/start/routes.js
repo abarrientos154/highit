@@ -47,6 +47,9 @@ addPrefixToGroup(
     Route.get("estado/:id", "EstadoController.estadoById")
     Route.get("ciudades/:id", "CiudadController.index")
     Route.get("ciudad/:id", "CiudadController.ciudadById")
+    Route.get("question_security", "SecurityController.index")
+    Route.get("question_security/:id", "SecurityController.show")
+    Route.put("password_edit/:id", "UserController.changePassword")
 
     Route.get('obtener_logo', 'UploadController.getLogo')
     Route.get('company_img/:file', 'UploadController.getFileByDirectoryCompany')
@@ -67,7 +70,6 @@ addPrefixToGroup(
     Route.put("datos_edit/:id", "UserController.updateUser")
     Route.delete("user/:id", "UserController.destroy")
 
-    Route.put("password_edit/:id", "UserController.changePassword")
     Route.post('perfil_imagen/:user_id', 'UploadController.newImagen')
     Route.post('perfil_company/:company_id', 'UploadController.newImagenCompany')
     Route.post('generate_pdf', 'UploadController.generatePdf')
@@ -157,5 +159,6 @@ addPrefixToGroup(
     Route.get("notifications", "NotificationController.index")
     Route.post("register_notification", "NotificationController.store")
     Route.put("update_notification/:id", "NotificationController.update")
+
   }).middleware("auth")
 );

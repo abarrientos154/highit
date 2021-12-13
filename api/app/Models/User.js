@@ -7,12 +7,8 @@ const Model = use('Model')
 const Hash = use('Hash')
 
 class User extends Model {
-
-  static get fillableEditUser() {
-    return ['name', 'last_name', 'phone', 'email', 'Dni', 'empresa', 'departamento', 'area' , 'cargo']
-  }
   static get fillable() {
-    return ['name','last_name','phone', 'email', 'Dni', 'password', 'empresa', 'departamento', 'area' , 'cargo']
+    return ['name', 'last_name', 'phone', 'email', 'Dni', 'empresa', 'departamento', 'area' , 'cargo', 'security']
   }
 
   static fieldValidationRules() {
@@ -22,58 +18,12 @@ class User extends Model {
       name: 'required',
       last_name: 'required',
       phone: 'required',
-      password: 'required|string|max:256'
-    }
-    return rulesUser
-  }
-
-  static fieldejemplo() {
-    const rulesUser = {
-      email: 'required|email',
-      Dni: 'required',
-      name: 'required',
-      last_name: 'required',
-      phone: 'required',
       empresa: 'required',
       password: 'required|string|max:256'
-
     }
     return rulesUser
   }
 
-  static fieldejemplo2(datos) {
-    const rulesUser = {
-      email: 'required|email',
-      Dni: 'required',
-      name: 'required',
-      last_name: 'required',
-      phone: 'required',
-      password: 'required|string|max:256',
-      empresa_creador:'string'
-      /* empresa: 'string',  rol 4
-
-      departamento: 'string', rol 3
-      area: 'string',
-      cargo: 'string' */
-    }
-    if (datos.roles === 3) {
-      rulesUser.departamento = 'required'
-      rulesUser.area = 'required'
-      rulesUser.cargo = 'required'
-    } else {
-      rulesUser.empresa = 'required'
-    }
-
-    return rulesUser
-  }
-
-  static fieldValidationRulesProveedor() {
-    const rulesUser = {
-      email: 'required|email',
-      password: 'required|string|max:256'
-    }
-    return rulesUser
-  }
   static boot() {
     super.boot()
 

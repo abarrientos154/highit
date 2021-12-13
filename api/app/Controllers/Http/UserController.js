@@ -29,7 +29,7 @@ class UserController {
    */
 
   async updateUser ({ params, response, request }) {
-    let body = request.only(User.fillableEditUser)
+    let body = request.only(User.fillable)
     if (((await User.where({ $and: [{ $or: [{ email: body.email }, { phone: body.phone }, { Dni: body.Dni }] }] }).fetch()).toJSON()).filter(v => v._id !== params.id).length) {
       response.unprocessableEntity([{
         message: 'Datos ya registrados en el sistema!'
@@ -152,7 +152,7 @@ class UserController {
     let dat = request.only(['dat'])
     dat = JSON.parse(dat.dat)
 
-    const validation = await validate(dat, User.fieldejemplo())
+    const validation = await validate(dat, User.fieldValidationRules())
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else if (((await User.where({ $and: [{ $or: [{ email: dat.email }, { phone: dat.phone }, { Dni: dat.Dni }] }] }).fetch()).toJSON()).length) {
@@ -185,15 +185,19 @@ class UserController {
     const user = await User.find(params.id)
 
     // verify if current password matches
-    const verifyPassword = await Hash.verify(
-        request.input('password'),
-        user.password
-    )
+    let verifyPassword = false
+    if (request.input('password')) {
+      verifyPassword = await Hash.verify(request.input('password'), user.password)
+    } else if (request.input('answer') && request.input('answer2')) {
+      if (request.input('answer') === user.security.answer && request.input('answer2') === user.security.answer2) {
+        verifyPassword = true
+      }
+    }
 
     // display appropriate message
     if (!verifyPassword) {
       response.unprocessableEntity([{
-        message: 'Contraseña actual incorrecta'
+        message: request.input('password') ? 'Contraseña actual incorrecta' : 'Respuestas invalidas'
       }])
     } else {
       user.password = request.input('newPassword')
