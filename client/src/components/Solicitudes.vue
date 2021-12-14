@@ -501,20 +501,14 @@ export default {
     },
     validarFecha () {
       this.$refs.qDateProxy.hide()
-      if (this.type === 1) {
-        this.val = moment(moment().format('YYYY-MM-DD')).isSameOrAfter(this.fecha)
-      } else if (this.type === 2) {
+      if (this.type === 2) {
         this.semana = this.fecha.from + ' ... ' + this.fecha.to
         const dias = moment(this.fecha.to).diff(this.fecha.from, 'days') + 1
-        if (dias <= 7) {
-          this.val = moment(moment().format('YYYY-MM-DD')).isSameOrAfter(this.fecha.to)
-        } else { this.val = false }
-      } else if (this.type === 3 || this.type === 4) {
-        this.val = moment(moment().format(this.type === 3 ? 'MM' : 'YYYY')).isSameOrAfter(this.fecha)
-      }
+        if (dias <= 7) { this.val = true } else { this.val = false }
+      } else { this.val = true }
       if (!this.val) {
         this.$q.notify({
-          message: 'Debe ingresar una fecha valida',
+          message: 'Has superado el rango de dias que tiene una semana',
           color: 'negative'
         })
         this.semana = ''

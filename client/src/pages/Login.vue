@@ -244,6 +244,7 @@ export default {
               message: 'Informacion actualizada con exito.',
               color: 'positive'
             })
+            this.recovery = false
           }
           this.$q.loading.hide()
         })

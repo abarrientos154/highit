@@ -48,9 +48,9 @@
     </div>
 
     <q-dialog v-model="gtn">
-      <q-card class="column items-center no-wrap" style="width: 600px; border-radius: 10px;">
-        <div style="width: 80%">
-          <div class="q-my-lg">
+      <q-card style="width: 100%; border-radius: 10px;">
+        <div class="q-pa-lg">
+          <div class="row justify-center">
             <q-item>
               <q-item-section avatar>
                 <q-icon :name="datos.icon" size="100px"/>
@@ -61,79 +61,79 @@
                 <q-item-label class="text-h3 text-grey-7">{{datos.cantidad}}</q-item-label>
               </q-item-section>
             </q-item>
-            <div v-if="datos.id === 8">
-              <div class="q-mb-md">
-                <div class="text-bold text-subtitle1 q-mb-sm">Selecciona un Consultor</div>
-                <q-select dense filled v-model="consultor" :options="consultores" map-options option-label="name" emit-value option-value="_id" @input="validarFecha(3)">
-                  <template v-slot:option="scope">
-                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                      <q-item-section avatar>
-                        <q-avatar size="35px">
-                          <q-img :src="baseu + scope.opt._id" class="full-height"/>
-                        </q-avatar>
-                      </q-item-section>
-                      <q-item-section>
-                        <q-item-label v-html="scope.opt.name"/>
-                        <q-item-label class="text-grey-7">{{scope.opt.email}}</q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                </q-select>
-              </div>
-              <div class="q-mb-md">
-                <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un estado de solicitudes</div>
-                <q-select dense filled v-model="status" :options="datos.status" map-options option-label="name" emit-value option-value="id" @input="validarFecha(2)"/>
-              </div>
-            </div>
-            <div v-else class="q-mb-md">
-              <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un departamento</div>
-              <q-select dense filled v-model="depart" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="validarFecha(1)"/>
+          </div>
+          <div v-if="datos.id === 8">
+            <div class="q-mb-md">
+              <div class="text-bold text-subtitle1 q-mb-sm">Selecciona un Consultor</div>
+              <q-select dense filled v-model="consultor" :options="consultores" map-options option-label="name" emit-value option-value="_id" @input="filtrar(3)">
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                    <q-item-section avatar>
+                      <q-avatar size="35px">
+                        <q-img :src="baseu + scope.opt._id" class="full-height"/>
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label v-html="scope.opt.name"/>
+                      <q-item-label class="text-grey-7">{{scope.opt.email}}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </div>
             <div class="q-mb-md">
-              <div class="text-bold text-subtitle1">Tipo de gestion</div>
-              <div class="row justify-between">
-                <q-radio v-model="type" :val="1" label="Diaria" @input="selecType()"/>
-                <q-radio v-model="type" :val="2" label="Semanal" @input="selecType()"/>
-                <q-radio v-model="type" :val="3" label="Mensual" @input="selecType()"/>
-                <q-radio v-model="type" :val="4" label="Anual" @input="selecType()"/>
-              </div>
+              <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un estado de solicitudes</div>
+              <q-select dense filled v-model="status" :options="datos.status" map-options option-label="name" emit-value option-value="id" @input="filtrar(2)"/>
             </div>
-            <div v-if="type === 1">
-              <div class="text-bold text-subtitle1 q-mb-sm">Ingresar fecha</div>
-              <q-input dense filled readonly v-model="fecha" placeholder="AAAA-MM-DD" @click="$refs.qDateProxy.show()">
-                <template v-slot:append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date v-model="fecha" mask="YYYY-MM-DD" @input="validarFecha()"/>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
+          </div>
+          <div v-else class="q-mb-md">
+            <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un departamento</div>
+            <q-select dense filled v-model="depart" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="filtrar(1)"/>
+          </div>
+          <div class="q-mb-md">
+            <div class="text-bold text-subtitle1">Tipo de gestion</div>
+            <div class="row justify-between">
+              <q-radio v-model="type" :val="1" label="Diaria" @input="selecType()"/>
+              <q-radio v-model="type" :val="2" label="Semanal" @input="selecType()"/>
+              <q-radio v-model="type" :val="3" label="Mensual" @input="selecType()"/>
+              <q-radio v-model="type" :val="4" label="Anual" @input="selecType()"/>
             </div>
-            <div v-if="type === 2">
-              <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un rango de 7 dias o menos</div>
-              <q-input  dense filled readonly v-model="semana" placeholder="AAAA-MM-DD ... AAAA-MM-DD" @click="$refs.qDateProxy.show()">
-                <template v-slot:append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date v-model="fecha" mask="YYYY-MM-DD" range @input="validarFecha()"/>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-            <div v-if="type === 3 || type === 4">
-              <div class="text-bold text-subtitle1 q-mb-sm">{{type === 4 ? 'Seleccione un año' : 'Seleccione un mes'}}</div>
-              <q-input dense filled readonly v-model="fecha" :placeholder="type == 4 ? 'AAAA' : 'MM'" :mask="type == 4 ? '####' : '##'"  @click="$refs.qDateProxy.show()">
-                <template v-slot:append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date v-model="fecha" :mask="type == 4 ? 'YYYY' : 'MM'" minimal emit-immediately :default-view="type == 4 ? 'Years' : 'Months'" @input="validarFecha()"/>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
+          </div>
+          <div v-if="type === 1">
+            <div class="text-bold text-subtitle1 q-mb-sm">Ingresar fecha</div>
+            <q-input dense filled readonly v-model="fecha" placeholder="AAAA-MM-DD" @click="$refs.qDateProxy.show()">
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                    <q-date v-model="fecha" mask="YYYY-MM-DD" @input="filtrar()"/>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
+          <div v-if="type === 2">
+            <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un rango de 7 dias o menos</div>
+            <q-input  dense filled readonly v-model="semana" placeholder="AAAA-MM-DD ... AAAA-MM-DD" @click="$refs.qDateProxy.show()">
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                    <q-date v-model="fecha" mask="YYYY-MM-DD" range @input="filtrar()"/>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
+          <div v-if="type === 3 || type === 4">
+            <div class="text-bold text-subtitle1 q-mb-sm">{{type === 4 ? 'Seleccione un año' : 'Seleccione un mes'}}</div>
+            <q-input dense filled readonly v-model="fecha" :placeholder="type == 4 ? 'AAAA' : 'MM'" :mask="type == 4 ? '####' : '##'"  @click="$refs.qDateProxy.show()">
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                    <q-date v-model="fecha" :mask="type == 4 ? 'YYYY' : 'MM'" minimal emit-immediately :default-view="type == 4 ? 'Years' : 'Months'" @input="filtrar()"/>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
           </div>
         </div>
       </q-card>
@@ -154,7 +154,6 @@ export default {
       info: false,
       datos: {},
       gtn: false,
-      val: false,
       fecha: null,
       semana: '',
       user: {},
@@ -193,28 +192,6 @@ export default {
         }
       })
     },
-    getActividades () {
-      this.$api.get('solicitudes_company/' + this.user.empresa).then(res => {
-        if (res) {
-          for (const i of this.gestionar) {
-            i.actividades = []
-            if (i.id >= 7) {
-              for (const j of i.status) {
-                const actividades = res.filter(v => v.status === j.id)
-                for (const v of actividades) {
-                  i.actividades.push(v)
-                }
-              }
-            } else {
-              i.actividades = res.filter(v => v.status === i.status)
-            }
-            i.aux = i.actividades
-            i.cantidad = i.actividades.length
-          }
-          this.info = true
-        }
-      })
-    },
     getCategorias () {
       this.$api.get('categorias/' + this.user.empresa).then(res => {
         if (res) {
@@ -234,6 +211,28 @@ export default {
         if (res) {
           this.consultores = res
           this.baseu = env.apiUrl + 'perfil_img/'
+        }
+      })
+    },
+    getActividades () {
+      this.$api.get('solicitudes_company/' + this.user.empresa).then(res => {
+        if (res) {
+          for (const i of this.gestionar) {
+            i.actividades = []
+            if (i.id >= 7) {
+              for (const j of i.status) {
+                const actividades = res.filter(v => v.status === j.id)
+                for (const v of actividades) {
+                  i.actividades.push(v)
+                }
+              }
+            } else {
+              i.actividades = res.filter(v => v.status === i.status)
+            }
+            i.aux = i.actividades
+            i.cantidad = i.actividades.length
+          }
+          this.info = true
         }
       })
     },
@@ -267,7 +266,7 @@ export default {
         } else { this.$q.loading.hide() }
       })
     },
-    validarFecha (filtro) {
+    filtrar (filtro) {
       const actividades = []
       if (filtro === 1) {
         for (const i of this.datos.actividades) {
@@ -293,35 +292,31 @@ export default {
         this.semana = ''
       } else {
         this.$refs.qDateProxy.hide()
-        if (this.type === 1) {
-          this.val = moment(moment().format('YYYY-MM-DD')).isSameOrAfter(this.fecha)
-        } else if (this.type === 2) {
+        if (this.type === 2) {
           this.semana = this.fecha.from + ' ... ' + this.fecha.to
           const dias = moment(this.fecha.to).diff(this.fecha.from, 'days') + 1
           if (dias <= 7) {
-            this.val = moment(moment().format('YYYY-MM-DD')).isSameOrAfter(this.fecha.to)
-          } else { this.val = false }
-        } else if (this.type === 3 || this.type === 4) {
-          this.val = moment(moment().format(this.type === 3 ? 'MM' : 'YYYY')).isSameOrAfter(this.fecha)
-        }
-        if (this.val) {
-          for (const i of this.datos.aux) {
-            if (this.type === 2) {
+            for (const i of this.datos.aux) {
               if (moment(i.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(i.dateSlt).isSame(this.fecha.from) || moment(i.dateSlt).isSame(this.fecha.to)) {
                 actividades.push(i)
               }
-            } else {
-              if (moment(moment(i.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha)) {
-                actividades.push(i)
-              }
+            }
+            this.datos.cantidad = actividades.length
+          } else {
+            this.$q.notify({
+              message: 'Has superado el rango de dias que tiene una semana',
+              color: 'negative'
+            })
+            this.semana = ''
+            this.fecha = null
+          }
+        } else {
+          for (const i of this.datos.aux) {
+            if (moment(moment(i.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha)) {
+              actividades.push(i)
             }
           }
           this.datos.cantidad = actividades.length
-        } else {
-          this.$q.notify({
-            message: 'Debe ingresar una fecha valida',
-            color: 'negative'
-          })
         }
       }
     }
