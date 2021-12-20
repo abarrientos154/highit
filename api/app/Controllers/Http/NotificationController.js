@@ -2,6 +2,8 @@
 
 const Notification = use("App/Models/Notification")
 const Categoria = use("App/Models/Categoria")
+const User = use("App/Models/User")
+const Email = use("App/Functions/Email")
 const { validate } = use("Validator")
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -30,6 +32,24 @@ class NotificationController {
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else {
+      const categoria = (await Categoria.query().where({ _id: body.user_id }).fetch()).toJSON()
+      if (categoria) {
+        let users = (await User.query().where({ departamento: categoria.departamento, area: categoria.area, cargo: categoria.cargo }).fetch()).toJSON()
+        for (const i of users) {
+          await Email.sendMail(i.email, body.name, `
+            <center>
+              ${body.description}
+            </center>
+          `)
+        }
+      } else {
+        let user = (await User.query().where({ _id: body.user_id }).first()).toJSON()
+        await Email.sendMail(user.email, body.name, `
+          <center>
+            ${body.description}
+          </center>
+        `)
+      }
       const nuevo = await Notification.create(body)
       response.send(nuevo)
     }

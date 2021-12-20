@@ -438,22 +438,6 @@ export default {
     getSltUser () {
       this.$api.get(this.rol === 3 ? 'solicitudes_by_consultor' : 'solicitudes_cliente/' + this.user._id).then(res => {
         if (res) {
-          for (const i of res) {
-            for (const j of i) {
-              j.prioridad.color2 = j.prioridad.color === 'Azul' ? 'blue' : j.prioridad.color === 'Rojo' ? 'red' : j.prioridad.color === 'Verde' ? 'green' : j.prioridad.color === 'Amarillo' ? 'yellow' : j.prioridad.color === 'Rosado' ? 'pink' : j.prioridad.color === 'Gris' ? 'grey' : j.prioridad.color === 'Negro' ? 'black' : j.prioridad.color === 'Celeste' ? 'blue-3' : j.prioridad.color === 'Anaranjado' ? 'orange' : j.prioridad.color === 'Morado' ? 'purple' : 'brown'
-              if (!j.expiration && j.status === 0) {
-                const fecha = moment(j.dateSlt + ' ' + j.timeSlt)
-                const horas = moment().diff(fecha, 'minutes')
-                if (horas > j.prioridad.tiempo) {
-                  this.$api.put('expire_solicitud/' + j._id).then(res => {
-                    if (res) {
-                      j.expiration = true
-                    }
-                  })
-                }
-              }
-            }
-          }
           this.solicitudes = res[0]
           this.sltBegin = res[1]
           this.sltProgress = res[2]

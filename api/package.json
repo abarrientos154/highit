@@ -34,7 +34,7 @@
     "image-to-base64": "^2.0.1",
     "lucid-mongo": "^3.1.6",
     "mailgun-js": "^0.22.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.1",
     "mongodb-core": "^3.2.7",
     "node-geometry-library": "^1.1.1",
     "pdfmake": "^0.1.72",

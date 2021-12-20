@@ -34,7 +34,7 @@
             <q-item-section>
               <div class="row items-center justify-between no-wrap">
                 <q-item-label class="text-bold text-h6 text-no-wrap">{{item.name}}</q-item-label>
-                <div v-if="item.cantidad > 0">
+                <div v-if="item.actividades.length">
                   <q-btn dense flat round icon="description" @click="pdfGenerate(item)"/>
                   <q-btn dense flat round icon="pending" @click="gestionarDatos(item)"/>
                 </div>
@@ -62,8 +62,8 @@
               </q-item-section>
             </q-item>
           </div>
-          <div v-if="datos.id === 8">
-            <div class="q-mb-md">
+          <div v-if="datos.id === 10 || datos.id === 11 || datos.id === 12 || datos.id === 13">
+            <div v-if="datos.id === 10 || datos.id === 11" class="q-mb-md">
               <div class="text-bold text-subtitle1 q-mb-sm">Selecciona un Consultor</div>
               <q-select dense filled v-model="consultor" :options="consultores" map-options option-label="name" emit-value option-value="_id" @input="filtrar(3)">
                 <template v-slot:option="scope">
@@ -81,7 +81,11 @@
                 </template>
               </q-select>
             </div>
-            <div class="q-mb-md">
+            <div v-else-if="datos.id === 12 || datos.id === 13" class="q-mb-md">
+              <div class="text-bold text-subtitle1 q-mb-sm">Seleccione una categoria</div>
+              <q-select dense filled v-model="categoria" :options="categorias" map-options option-label="nombre" emit-value option-value="_id" @input="filtrar(4)"/>
+            </div>
+            <div v-if="datos.id === 10 || datos.id === 12" class="q-mb-md">
               <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un estado de solicitudes</div>
               <q-select dense filled v-model="status" :options="datos.status" map-options option-label="name" emit-value option-value="id" @input="filtrar(2)"/>
             </div>
@@ -164,7 +168,8 @@ export default {
       consultores: [],
       depart: null,
       status: null,
-      consultor: null
+      consultor: null,
+      categoria: null
     }
   },
   mounted () {
@@ -219,18 +224,41 @@ export default {
         if (res) {
           for (const i of this.gestionar) {
             i.actividades = []
-            if (i.id >= 7) {
+            if (i.id === 8 || i.id === 9 || i.id === 10 || i.id === 12 || i.id === 14 || i.id === 15) {
               for (const j of i.status) {
-                const actividades = res.filter(v => v.status === j.id)
-                for (const v of actividades) {
-                  i.actividades.push(v)
-                }
+                const actividades = res[j.id]
+                for (const v of actividades) { i.actividades.push(v) }
               }
+              i.aux = i.actividades
             } else {
-              i.actividades = res.filter(v => v.status === i.status)
+              i.actividades = res[i.status]
+              i.aux = i.actividades
             }
-            i.aux = i.actividades
-            i.cantidad = i.actividades.length
+            if (i.id === 9) {
+              const abiertas = i.actividades.filter(v => v.status !== 5).length
+              const cerradas = i.actividades.filter(v => v.status === 5).length
+              i.cantidad = abiertas + ' / ' + cerradas
+            } else if (i.id === 11 || i.id === 13) {
+              let dias = 0
+              let horas = 0
+              let minutos = 0
+              for (const j of i.actividades) {
+                dias = dias + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'days')
+                horas = horas + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'hours')
+                minutos = minutos + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'minutes')
+              }
+              for (let j = 0; j < horas; j++) { minutos = minutos - 60 }
+              for (let j = 0; j < dias; j++) { horas = horas - 24 }
+              i.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
+            } else if (i.id === 14) {
+              i.actividades = i.actividades.filter(v => !v.expiration)
+              i.aux = i.actividades
+              i.cantidad = i.actividades.length
+            } else if (i.id === 15) {
+              i.cantidad = ((i.actividades.filter(v => !v.expiration).length / i.actividades.length) * 100) + '%'
+            } else {
+              i.cantidad = i.actividades.length
+            }
           }
           this.info = true
         }
@@ -243,13 +271,13 @@ export default {
       this.depart = null
       this.fecha = null
       this.consultor = null
+      this.categoria = null
       this.status = null
       this.gtn = !this.gtn
     },
     selecType () {
       this.semana = ''
       this.fecha = null
-      this.datos.cantidad = this.datos.actividades.length
     },
     pdfGenerate (itm) {
       this.$q.loading.show({
@@ -277,31 +305,87 @@ export default {
           }
         }
         this.datos.aux = actividades
-        this.datos.cantidad = actividades.length
+        if (this.datos.id === 9) {
+          this.datos.cantidad = actividades.filter(v => v.status !== 5).length + ' / ' + actividades.filter(v => v.status === 5).length
+        } else if (this.datos.id === 15) {
+          this.datos.cantidad = ((actividades.filter(v => !v.expiration).length / actividades.length) * 100) + '%'
+        } else {
+          this.datos.cantidad = actividades.length
+        }
         this.semana = ''
         this.fecha = null
       } else if (filtro === 2) {
         this.datos.aux = this.datos.actividades.filter(v => this.consultor === null ? v.status === this.status : v.status === this.status && v.consultor_id === this.consultor)
-        this.datos.cantidad = this.datos.actividades.filter(v => this.consultor === null ? v.status === this.status : v.status === this.status && v.consultor_id === this.consultor).length
+        this.datos.cantidad = this.datos.aux.length
         this.fecha = null
         this.semana = ''
       } else if (filtro === 3) {
         this.datos.aux = this.datos.actividades.filter(v => this.status === null ? v.consultor_id === this.consultor : v.consultor_id === this.consultor && v.status === this.status)
-        this.datos.cantidad = this.datos.actividades.filter(v => this.status === null ? v.consultor_id === this.consultor : v.consultor_id === this.consultor && v.status === this.status).length
+        if (this.datos.id === 11) {
+          let dias = 0
+          let horas = 0
+          let minutos = 0
+          for (const i of this.datos.aux) {
+            dias = dias + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
+            horas = horas + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
+            minutos = minutos + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
+          }
+          for (let i = 0; i < horas; i++) { minutos = minutos - 60 }
+          for (let i = 0; i < dias; i++) { horas = horas - 24 }
+          this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
+        } else {
+          this.datos.cantidad = this.datos.aux.length
+        }
+        this.fecha = null
+        this.semana = ''
+      } else if (filtro === 4) {
+        this.datos.aux = this.datos.actividades.filter(v => this.status === null ? v.category === this.categoria : v.category === this.categoria && v.status === this.status)
+        if (this.datos.id === 13) {
+          let dias = 0
+          let horas = 0
+          let minutos = 0
+          for (const i of this.datos.aux) {
+            dias = dias + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
+            horas = horas + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
+            minutos = minutos + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
+          }
+          for (let i = 0; i < horas; i++) { minutos = minutos - 60 }
+          for (let i = 0; i < dias; i++) { horas = horas - 24 }
+          this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
+        } else {
+          this.datos.cantidad = this.datos.aux.length
+        }
         this.fecha = null
         this.semana = ''
       } else {
         this.$refs.qDateProxy.hide()
         if (this.type === 2) {
           this.semana = this.fecha.from + ' ... ' + this.fecha.to
-          const dias = moment(this.fecha.to).diff(this.fecha.from, 'days') + 1
-          if (dias <= 7) {
+          if (moment(this.fecha.to).diff(this.fecha.from, 'days') + 1 <= 7) {
             for (const i of this.datos.aux) {
               if (moment(i.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(i.dateSlt).isSame(this.fecha.from) || moment(i.dateSlt).isSame(this.fecha.to)) {
                 actividades.push(i)
               }
             }
-            this.datos.cantidad = actividades.length
+            if (this.datos.id === 9) {
+              this.datos.cantidad = actividades.filter(v => v.status !== 5).length + ' / ' + actividades.filter(v => v.status === 5).length
+            } else if (this.datos.id === 11 || this.datos.id === 13) {
+              let dias = 0
+              let horas = 0
+              let minutos = 0
+              for (const i of actividades) {
+                dias = dias + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
+                horas = horas + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
+                minutos = minutos + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
+              }
+              for (let i = 0; i < horas; i++) { minutos = minutos - 60 }
+              for (let i = 0; i < dias; i++) { horas = horas - 24 }
+              this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
+            } else if (this.datos.id === 15) {
+              this.datos.cantidad = ((actividades.filter(v => !v.expiration).length / actividades.length) * 100) + '%'
+            } else {
+              this.datos.cantidad = actividades.length
+            }
           } else {
             this.$q.notify({
               message: 'Has superado el rango de dias que tiene una semana',
@@ -316,7 +400,25 @@ export default {
               actividades.push(i)
             }
           }
-          this.datos.cantidad = actividades.length
+          if (this.datos.id === 9) {
+            this.datos.cantidad = actividades.filter(v => v.status !== 5).length + ' / ' + actividades.filter(v => v.status === 5).length
+          } else if (this.datos.id === 11 || this.datos.id === 13) {
+            let dias = 0
+            let horas = 0
+            let minutos = 0
+            for (const i of actividades) {
+              dias = dias + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
+              horas = horas + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
+              minutos = minutos + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
+            }
+            for (let i = 0; i < horas; i++) { minutos = minutos - 60 }
+            for (let i = 0; i < dias; i++) { horas = horas - 24 }
+            this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
+          } else if (this.datos.id === 15) {
+            this.datos.cantidad = ((actividades.filter(v => !v.expiration).length / actividades.length) * 100) + '%'
+          } else {
+            this.datos.cantidad = actividades.length
+          }
         }
       }
     }

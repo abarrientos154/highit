@@ -282,16 +282,16 @@ export default {
     statusSlt () {
       let update = {}
       if (this.action === 5) {
-        const horas = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'hours')
+        const dias = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'days')
+        let horas = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'hours')
         let minutos = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'minutes')
-        for (let j = 0; j < horas; j++) {
-          minutos = minutos - 60
-        }
+        for (let i = 0; i < horas; i++) { minutos = minutos - 60 }
+        for (let i = 0; i < dias; i++) { horas = horas - 24 }
         update = {
           status: this.action,
           dateEnd: moment().format('YYYY-MM-DD'),
           timeEnd: moment().format('HH:mm'),
-          duration: horas + ':' + minutos
+          duration: (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
         }
       } else if (this.action === 6) {
         update = { status: this.action }

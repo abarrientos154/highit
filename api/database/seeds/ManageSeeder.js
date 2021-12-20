@@ -52,15 +52,57 @@ const manageData = [
   },
   {
     id: 7,
-    status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }],
+    status: 6,
+    icon: 'open_in_browser',
+    name: 'Solicitudes reabiertas'
+  },
+  {
+    id: 8,
+    status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 6, name: 'Reabiertas' }],
     icon: 'assignment',
     name: 'Solicitudes abiertas'
   },
   {
-    id: 8,
-    status: [{ id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }],
-    icon: 'folder_shared',
-    name: 'Total de solicitudes por Consultor'
+    id: 9,
+    status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 6, name: 'Reabiertas' }, { id: 5, name: 'Finalizadas' }],
+    icon: 'data_usage',
+    name: 'Solicitudes abiertas/ceradas'
+  },
+  {
+    id: 10,
+    status: [{ id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }, { id: 6, name: 'Reabiertas' }],
+    icon: 'assignment_ind',
+    name: 'Solicitudes por Consultor'
+  },
+  {
+    id: 11,
+    status: 5,
+    icon: 'pending_actions',
+    name: 'Tiempo de atención por consultor'
+  },
+  {
+    id: 12,
+    status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 6, name: 'Reabiertas' }, { id: 5, name: 'Finalizadas' }],
+    icon: 'category',
+    name: 'Solicitides por categoria'
+  },
+  {
+    id: 13,
+    status: 5,
+    icon: 'timelapse',
+    name: 'Tiempo de atención por categoria'
+  },
+  {
+    id: 14,
+    status: [{ id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }, { id: 6, name: 'Reabiertas' }],
+    icon: 'alarm_on',
+    name: 'Solicitudes con su prioridad cumplida'
+  },
+  {
+    id: 15,
+    status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }, { id: 6, name: 'Reabiertas' }],
+    icon: 'running_with_errors',
+    name: 'Porcentaje de cumplimiento de las prioridades'
   }
 ]
 class ManageSeeder {

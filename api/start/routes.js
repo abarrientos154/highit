@@ -145,7 +145,6 @@ addPrefixToGroup(
     Route.get("solicitudes_history", "SolicitudController.sltHistory")
     Route.post("register_solicitud", "SolicitudController.store")
     Route.put("status_solicitud/:id", "SolicitudController.update")
-    Route.put("expire_solicitud/:id", "SolicitudController.expireSlt")
 
     Route.post("register_hito", "HitoController.store")
     Route.get("hitos_by_company/:id", "HitoController.show")
