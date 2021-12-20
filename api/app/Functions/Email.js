@@ -3,7 +3,7 @@ const Mail = use('Mail')
 exports.sendMail = async (to, subject, message, attach, cc, bcc) => {
   try {
     await Mail.raw(message, (msg) => {
-      msg.from('revisiones@slimedeal.com', 'Petfriendly')
+      msg.from('highitdesk@gmail.com', 'Highit')
       msg.to(to)
       msg.subject(subject)
      // msg.cc('slimedeal@user.com')
