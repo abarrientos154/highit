@@ -25,25 +25,28 @@
         <div class="text-h5 text-bold">Listado de gestión</div>
         <div class="text-subtitle1 text-grey-8">Gestión de los indicadores selecionados</div>
       </div>
-      <q-list class="q-px-lg">
-        <q-card class="q-mb-md" v-for="(item, index) in gestionar" :key="index" style="width: 100%; border-radius: 20px;">
-          <q-item>
-            <q-item-section avatar>
-              <q-icon :name="item.icon" size="100px"/>
-            </q-item-section>
-            <q-item-section>
-              <div class="row items-center justify-between no-wrap">
-                <q-item-label class="text-bold text-h6 text-no-wrap">{{item.name}}</q-item-label>
-                <div v-if="item.actividades.length">
-                  <q-btn dense flat round icon="description" @click="pdfGenerate(item)"/>
-                  <q-btn dense flat round icon="pending" @click="gestionarDatos(item)"/>
+      <q-list class="row q-pa-sm">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pa-sm" v-for="(item, index) in gestionar" :key="index">
+          <q-card style="border-radius: 20px;">
+            <q-item>
+              <q-item-section avatar class="column items-center justify-between">
+                <q-icon :name="item.icon" size="75px"/>
+                <div v-if="item.actividades && item.actividades.length" class="column q-gutter-xs">
+                  <q-btn dense outline rounded icon="description" label="PDF" @click="pdfGenerate(item)" no-caps/>
+                  <q-btn dense outline rounded icon="pending" label="Opciones" @click="gestionarDatos(item)" no-caps/>
                 </div>
-              </div>
-              <q-item-label class="text-subtitle1">Actividades realizadas:</q-item-label>
-              <q-item-label class="text-h3 text-grey-7">{{item.cantidad}}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-card>
+              </q-item-section>
+              <q-item-section class="column justify-between">
+                <q-item-label class="text-bold text-h6">{{item.name}}</q-item-label>
+                <div>
+                  <q-item-label class="text-subtitle1">Actividades realizadas:</q-item-label>
+                  <money v-if="item.id === 15" readonly class="q-field__input text-h4 text-grey-7 q-mt-sm" v-model="item.cantidad" suffix=" %"/>
+                  <div v-else class="text-h4 text-grey-7">{{item.cantidad}}</div>
+                </div>
+              </q-item-section>
+            </q-item>
+          </q-card>
+        </div>
       </q-list>
     </div>
 
@@ -147,9 +150,11 @@
 
 <script>
 import { openURL } from 'quasar'
+import { Money } from 'v-money'
 import * as moment from 'moment'
 import env from '../../env'
 export default {
+  components: { Money },
   data () {
     return {
       baseu: '',
@@ -243,9 +248,9 @@ export default {
               let horas = 0
               let minutos = 0
               for (const j of i.actividades) {
-                dias = dias + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'days')
-                horas = horas + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'hours')
-                minutos = minutos + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'minutes')
+                dias = dias + moment(j.dateEnd + ' ' + j.timeEnd).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'days')
+                horas = horas + moment(j.dateEnd + ' ' + j.timeEnd).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'hours')
+                minutos = minutos + moment(j.dateEnd + ' ' + j.timeEnd).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'minutes')
               }
               for (let j = 0; j < horas; j++) { minutos = minutos - 60 }
               for (let j = 0; j < dias; j++) { horas = horas - 24 }
@@ -255,7 +260,7 @@ export default {
               i.aux = i.actividades
               i.cantidad = i.actividades.length
             } else if (i.id === 15) {
-              i.cantidad = ((i.actividades.filter(v => !v.expiration).length / i.actividades.length) * 100) + '%'
+              i.cantidad = ((i.actividades.filter(v => !v.expiration).length / i.actividades.length) * 100)
             } else {
               i.cantidad = i.actividades.length
             }
@@ -308,7 +313,7 @@ export default {
         if (this.datos.id === 9) {
           this.datos.cantidad = actividades.filter(v => v.status !== 5).length + ' / ' + actividades.filter(v => v.status === 5).length
         } else if (this.datos.id === 15) {
-          this.datos.cantidad = ((actividades.filter(v => !v.expiration).length / actividades.length) * 100) + '%'
+          this.datos.cantidad = ((actividades.filter(v => !v.expiration).length / actividades.length) * 100)
         } else {
           this.datos.cantidad = actividades.length
         }
@@ -326,9 +331,9 @@ export default {
           let horas = 0
           let minutos = 0
           for (const i of this.datos.aux) {
-            dias = dias + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
-            horas = horas + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
-            minutos = minutos + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
+            dias = dias + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
+            horas = horas + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
+            minutos = minutos + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
           }
           for (let i = 0; i < horas; i++) { minutos = minutos - 60 }
           for (let i = 0; i < dias; i++) { horas = horas - 24 }
@@ -345,9 +350,9 @@ export default {
           let horas = 0
           let minutos = 0
           for (const i of this.datos.aux) {
-            dias = dias + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
-            horas = horas + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
-            minutos = minutos + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
+            dias = dias + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
+            horas = horas + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
+            minutos = minutos + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
           }
           for (let i = 0; i < horas; i++) { minutos = minutos - 60 }
           for (let i = 0; i < dias; i++) { horas = horas - 24 }
@@ -374,15 +379,15 @@ export default {
               let horas = 0
               let minutos = 0
               for (const i of actividades) {
-                dias = dias + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
-                horas = horas + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
-                minutos = minutos + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
+                dias = dias + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
+                horas = horas + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
+                minutos = minutos + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
               }
               for (let i = 0; i < horas; i++) { minutos = minutos - 60 }
               for (let i = 0; i < dias; i++) { horas = horas - 24 }
               this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
             } else if (this.datos.id === 15) {
-              this.datos.cantidad = ((actividades.filter(v => !v.expiration).length / actividades.length) * 100) + '%'
+              this.datos.cantidad = ((actividades.filter(v => !v.expiration).length / actividades.length) * 100)
             } else {
               this.datos.cantidad = actividades.length
             }
@@ -407,15 +412,15 @@ export default {
             let horas = 0
             let minutos = 0
             for (const i of actividades) {
-              dias = dias + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
-              horas = horas + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
-              minutos = minutos + moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
+              dias = dias + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'days')
+              horas = horas + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'hours')
+              minutos = minutos + moment(i.dateEnd + ' ' + i.timeEnd).diff(moment(i.dateBegin + ' ' + i.timeBegin), 'minutes')
             }
             for (let i = 0; i < horas; i++) { minutos = minutos - 60 }
             for (let i = 0; i < dias; i++) { horas = horas - 24 }
             this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
           } else if (this.datos.id === 15) {
-            this.datos.cantidad = ((actividades.filter(v => !v.expiration).length / actividades.length) * 100) + '%'
+            this.datos.cantidad = ((actividades.filter(v => !v.expiration).length / actividades.length) * 100)
           } else {
             this.datos.cantidad = actividades.length
           }
