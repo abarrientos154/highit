@@ -42,7 +42,7 @@
           </q-expansion-item>
         </q-list>
       </q-scroll-area>
-      <div class="bg-primary absolute-bottom q-py-xs text-center text-caption text-white">Highit Desck <b>v0.1</b></div>
+      <div class="bg-primary absolute-bottom q-py-xs text-center text-caption text-white">HIGHIT DESK <b>v0.1</b></div>
     </q-drawer>
 
     <q-page-container class="fondo">

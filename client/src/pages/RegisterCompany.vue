@@ -90,7 +90,7 @@
         </div>
         <div>
           <div>Código postal</div>
-          <q-input outlined filled v-model.number="form.postalCode" placeholder="1023400" type="number" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
+          <q-input outlined filled v-model="form.postalCode" placeholder="1023400" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
         </div>
       </q-list>
     </div>

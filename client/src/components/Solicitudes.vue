@@ -74,19 +74,21 @@
                 <div class="text-caption text-grey-7">
                   <div class="ellipsis-3-lines q-mb-sm"><b>Descripcion del servicio:</b> {{item.description}}</div>
                   <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <div class="col">
                       <div class="text-bold">Fecha de solicitud:</div>
                       <div>{{item.dateSlt}}</div>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <div class="col">
                       <div class="text-bold">Hora de solicitud:</div>
                       <div>{{item.timeSlt}}hr</div>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                  </div>
+                  <div class="row">
+                    <div class="col">
                       <div class="text-bold">Fecha de inicio</div>
                       <div>{{item.dateBegin}}</div>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <div class="col">
                       <div class="text-bold">Hora de inicio</div>
                       <div>{{item.timeBegin}}hr</div>
                     </div>
