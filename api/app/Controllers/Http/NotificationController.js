@@ -32,7 +32,7 @@ class NotificationController {
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else {
-      const categoria = (await Categoria.query().where({ _id: body.user_id }).fetch()).toJSON()
+      const categoria = await Categoria.query().where({ _id: body.user_id }).first()
       if (categoria) {
         let users = (await User.query().where({ departamento: categoria.departamento, area: categoria.area, cargo: categoria.cargo }).fetch()).toJSON()
         for (const i of users) {
@@ -43,12 +43,14 @@ class NotificationController {
           `)
         }
       } else {
-        let user = (await User.query().where({ _id: body.user_id }).first()).toJSON()
-        await Email.sendMail(user.email, body.name, `
-          <center>
-            ${body.description}
-          </center>
-        `)
+        let user = await User.query().where({ _id: body.user_id }).first()
+        if (user) {
+          await Email.sendMail(user.email, body.name, `
+            <center>
+              ${body.description}
+            </center>
+          `)
+        }
       }
       const nuevo = await Notification.create(body)
       response.send(nuevo)

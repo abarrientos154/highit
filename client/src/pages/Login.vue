@@ -1,16 +1,15 @@
 <template>
-  <div class="column items-center q-py-lg">
-    <q-img src="leaderboard highit desk 4.png" style="width: 100%; max-width: 750px"/>
+  <div class="window-width row justify-center q-pa-md">
+    <q-img src="leaderboard highit desk 4.png" style="max-width: 750px"/>
 
-    <div class="column justify-center items-center full-width" :style="baseu ? '' : 'margin-top: -50px'">
-      <q-avatar v-if="baseu" class="q-mt-xl q-mb-lg" size="200px">
-        <q-img :src="baseu" style="height: 100%" />
+    <div class="absolute-center column items-center no-wrap" :style="$q.platform.is.desktop ? 'padding-top: 150px' : ''">
+      <q-avatar class="q-mb-md" size="225px">
+        <q-img :src="baseu" class="full-height"/>
       </q-avatar>
-      <img v-else src="Desk 1.2.png" style="width:400px"/>
 
-      <div :style="baseu ? '' : 'margin-top: -75px'">
+      <div style="min-width: 300px">
         <div>
-          <div class="q-pl-lg q-mb-sm text-caption"> Correo electronico</div>
+          <div class="q-pl-lg q-mb-sm text-caption">Correo electronico</div>
           <q-input dense autofocus filled type="email" v-model="form.email" placeholder="Correo electrónico" @input="getUserEmail()" :error="$v.form.email.$error" error-message="Este campo es requerido" @blur="$v.form.email.$touch()" >
             <template v-slot:before>
               <q-icon name="mail_outline" color= "secondary" />
@@ -19,7 +18,7 @@
         </div>
 
         <div class="q-mb-md">
-          <div class="q-pl-lg q-mb-sm text-caption"> Contraseña</div>
+          <div class="q-pl-lg q-mb-sm text-caption">Contraseña</div>
           <q-input dense filled type="password" v-model="form.password" placeholder="Contraseña" :error="$v.form.password.$error" error-message="Este campo es requerido" @blur="$v.form.password.$touch()" >
             <template v-slot:before>
               <q-icon name="vpn_key" color= "secondary" />
@@ -40,63 +39,63 @@
           <div class="text-bold text-primary cursor-pointer" @click="recoveryPassword()">Recuperar</div>
         </div>
       </div>
+
+      <q-dialog v-model="recovery">
+        <q-card class="q-pa-md column" style="width: 475px; border-radius: 10px;">
+          <q-carousel animated class="col-auto" v-model="slide" transition-prev="slide-right" transition-next="slide-left">
+            <q-carousel-slide :name="0" class="q-pa-none">
+              <div class="text-center text-h6 text-bold">Responde las preguntas</div>
+              <div class="text-center text-subtitle1 text-bold">de seguridad para confirmar que es tu cuenta</div>
+
+              <div class="q-mt-lg">
+                <div>{{question}}</div>
+                <q-input filled :readonly="question === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer" :placeholder="question === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : 'Respuesta'" error-message="Este campo es requerido" :error="$v.form2.answer.$error" @blur="$v.form2.answer.$touch()" @click="question === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+                  <template v-if="question === 'Fecha de nacimiento:'" v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                        <q-date v-model="form2.answer" mask="DD/MM/YYYY"/>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+
+              <div class="q-my-sm">
+                <div>{{question2}}</div>
+                <q-input filled :readonly="question2 === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer2" :placeholder="question2 === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : 'Respuesta'" error-message="Este campo es requerido" :error="$v.form2.answer2.$error" @blur="$v.form2.answer2.$touch()" @click="question2 === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+                  <template v-if="question2 === 'Fecha de nacimiento:'" v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                        <q-date v-model="form2.answer2" mask="DD/MM/YYYY"/>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+            </q-carousel-slide>
+
+            <q-carousel-slide :name="1" class="q-pa-none">
+              <div class="text-center text-h6 text-bold">Establece tu nueva</div>
+              <div class="text-center text-subtitle1 text-bold">contraseña y repitela para confirmar</div>
+
+              <div class="q-mt-sm text-subtitle1">Contraseña</div>
+              <q-input :type="isPwd ? 'password' : 'text'" v-model="newPassword" filled error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.newPassword.$error" @blur="$v.newPassword.$touch()">
+                <template v-slot:append>
+                  <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd = !isPwd" />
+                </template>
+              </q-input>
+
+              <div class="q-mt-sm text-subtitle1">Repite contraseña</div>
+              <q-input :type="isPwd ? 'password' : 'text'" v-model="repeatNewPassword" filled error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.repeatNewPassword.$error" @blur="$v.repeatNewPassword.$touch()"/>
+            </q-carousel-slide>
+          </q-carousel>
+
+          <div class="row justify-center">
+            <q-btn dense class="text-white q-py-xs" color="primary" :label="slide === 0 ? 'Siguiente' : 'Guardar'" @click="slide === 0 ? siguiente() : changePassword()" style="width: 70%; border-radius: 5px;" no-caps/>
+          </div>
+        </q-card>
+      </q-dialog>
     </div>
-
-    <q-dialog v-model="recovery">
-      <q-card class="q-pa-md column" style="width: 475px; border-radius: 10px;">
-        <q-carousel animated class="col-auto" v-model="slide" transition-prev="slide-right" transition-next="slide-left">
-          <q-carousel-slide :name="0" class="q-pa-none">
-            <div class="text-center text-h6 text-bold">Responde las preguntas</div>
-            <div class="text-center text-subtitle1 text-bold">de seguridad para confirmar que es tu cuenta</div>
-
-            <div class="q-mt-lg">
-              <div>{{question}}</div>
-              <q-input filled :readonly="question === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer" :placeholder="question === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : 'Respuesta'" error-message="Este campo es requerido" :error="$v.form2.answer.$error" @blur="$v.form2.answer.$touch()" @click="question === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
-                <template v-if="question === 'Fecha de nacimiento:'" v-slot:append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date v-model="form2.answer" mask="DD/MM/YYYY"/>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-
-            <div class="q-my-sm">
-              <div>{{question2}}</div>
-              <q-input filled :readonly="question2 === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer2" :placeholder="question2 === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : 'Respuesta'" error-message="Este campo es requerido" :error="$v.form2.answer2.$error" @blur="$v.form2.answer2.$touch()" @click="question2 === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
-                <template v-if="question2 === 'Fecha de nacimiento:'" v-slot:append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date v-model="form2.answer2" mask="DD/MM/YYYY"/>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-          </q-carousel-slide>
-
-          <q-carousel-slide :name="1" class="q-pa-none">
-            <div class="text-center text-h6 text-bold">Establece tu nueva</div>
-            <div class="text-center text-subtitle1 text-bold">contraseña y repitela para confirmar</div>
-
-            <div class="q-mt-sm text-subtitle1">Contraseña</div>
-            <q-input :type="isPwd ? 'password' : 'text'" v-model="newPassword" filled error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.newPassword.$error" @blur="$v.newPassword.$touch()">
-              <template v-slot:append>
-                <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd = !isPwd" />
-              </template>
-            </q-input>
-
-            <div class="q-mt-sm text-subtitle1">Repite contraseña</div>
-            <q-input :type="isPwd ? 'password' : 'text'" v-model="repeatNewPassword" filled error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.repeatNewPassword.$error" @blur="$v.repeatNewPassword.$touch()"/>
-          </q-carousel-slide>
-        </q-carousel>
-
-        <div class="row justify-center">
-          <q-btn dense class="text-white q-py-xs" color="primary" :label="slide === 0 ? 'Siguiente' : 'Guardar'" @click="slide === 0 ? siguiente() : changePassword()" style="width: 70%; border-radius: 5px;" no-caps/>
-        </div>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 
@@ -108,7 +107,7 @@ export default {
   data () {
     return {
       slide: 0,
-      baseu: null,
+      baseu: 'Desk.jpg',
       loading: false,
       email: '',
       form: {},
@@ -144,17 +143,18 @@ export default {
       if (this.form.email && !this.$v.form.email.$error) {
         this.$api.get('user_email/' + this.form.email).then(res => {
           if (res.length) {
-            this.baseu = null
             this.userEmail = res[0]
             this.rol = this.userEmail.roles[0]
             if (this.rol !== 1) {
               this.empresaEnable = this.userEmail.empresa_user.enable
               this.baseu = env.apiUrl + 'company_img/' + this.userEmail.empresa
+            } else {
+              this.baseu = 'Desk.jpg'
             }
           } else {
             this.rol = null
             this.empresaEnable = false
-            this.baseu = null
+            this.baseu = 'Desk.jpg'
           }
         })
       }
