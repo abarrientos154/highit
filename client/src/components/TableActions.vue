@@ -439,7 +439,9 @@ export default {
         }
         if (this.route === 'solicitudes_history' || this.route === 'solicitudes') {
           this.$api.get('history_hitos/' + this.ver._id).then(res => { if (res) { this.hitos = res } })
-          this.$api.get('rating/' + this.ver._id).then(res => { if (res) { this.ver.rating = res } })
+          if (this.ver.status === 5) {
+            this.$api.get('rating/' + this.ver._id).then(res => { if (res) { this.ver.rating = res } })
+          }
         }
         setTimeout(function () {
           vm.showModalEditar = true

@@ -66,7 +66,7 @@ const manageData = [
     id: 9,
     status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 6, name: 'Reabiertas' }, { id: 5, name: 'Finalizadas' }],
     icon: 'data_usage',
-    name: 'Solicitudes abiertas/ceradas'
+    name: 'Solicitudes abiertas/cerradas'
   },
   {
     id: 10,

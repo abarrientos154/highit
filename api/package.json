@@ -31,7 +31,7 @@
     "adonis-pdf": "0.0.22",
     "axios": "^0.19.2",
     "exceljs": "^3.5.0",
-    "image-to-base64": "^2.0.1",
+    "image-to-base64": "^2.2.0",
     "lucid-mongo": "^3.1.6",
     "mailgun-js": "^0.22.0",
     "moment": "^2.29.1",

@@ -11,7 +11,7 @@
         </div>
         <q-scroll-area v-if="solicitudes.length" :style="solicitudes.length === 1 ? 'height: 210px;' : 'height: 405px;'">
           <q-list class="q-px-lg q-pt-md">
-            <q-card class="q-mb-md full-width" v-for="(item, index) in solicitudes" :key="index" @click="verSlt(item, index)">
+            <q-card class="q-mb-md full-width cursor-pointer" v-for="(item, index) in solicitudes" :key="index" @click="verSlt(item, index)">
               <div class="row q-px-lg items-center justify-between">
                 <div class="row text-caption">
                   <div class="q-mr-xs">Nº de solicitud:</div>
@@ -54,7 +54,7 @@
         </div>
         <q-scroll-area v-if="sltBegin.length" :style="sltBegin.length === 1 && rol !== 3 ? 'height: 210px;' : 'height: 405px;'">
           <q-list class="q-px-lg q-pt-md">
-            <q-card :class="`${rol !== 3 ? 'q-mb-md' : ''} full-width`" v-for="(item, index) in sltBegin" :key="index" @click="verSlt(item, index)" :style="rol === 3 ? 'height: 370px;' : ''">
+            <q-card :class="`${rol !== 3 ? 'q-mb-md' : ''} full-width cursor-pointer`" v-for="(item, index) in sltBegin" :key="index" @click="verSlt(item, index)" :style="rol === 3 ? 'height: 370px;' : ''">
               <div class="row q-px-lg items-center justify-between">
                 <div class="row text-caption">
                   <div class="q-mr-xs">Nº de solicitud:</div>
@@ -126,7 +126,7 @@
         </div>
         <q-scroll-area :style="sltReopen.length === 1 ? 'height: 210px;' : 'height: 405px;'">
           <q-list class="q-px-lg q-pt-md">
-            <q-card class="q-mb-md full-width" v-for="(item, index) in sltReopen" :key="index" @click="verSlt(item, index)">
+            <q-card class="q-mb-md full-width cursor-pointer" v-for="(item, index) in sltReopen" :key="index" @click="verSlt(item, index)">
               <div class="row q-px-lg items-center justify-between">
                 <div class="row text-caption">
                   <div class="q-mr-xs">Nº de solicitud:</div>
@@ -169,7 +169,7 @@
         </div>
         <q-scroll-area v-if="sltProgress.length" :style="sltProgress.length === 1 ? 'height: 210px;' : 'height: 405px;'">
           <q-list class="q-px-lg q-pt-md">
-            <q-card class="q-mb-md full-width" v-for="(item, index) in sltProgress" :key="index" @click="verSlt(item, index)">
+            <q-card class="q-mb-md full-width cursor-pointer" v-for="(item, index) in sltProgress" :key="index" @click="verSlt(item, index)">
               <div class="row q-px-lg items-center justify-between">
                 <div class="row text-caption">
                   <div class="q-mr-xs">Nº de solicitud:</div>
@@ -212,7 +212,7 @@
         </div>
         <q-scroll-area v-if="sltCheckout.length" :style="sltCheckout.length === 1 ? 'height: 210px;' : 'height: 405px;'">
           <q-list class="q-px-lg q-pt-md">
-            <q-card class="q-mb-md full-width" v-for="(item, index) in sltCheckout" :key="index" @click="verSlt(item, index)">
+            <q-card class="q-mb-md full-width cursor-pointer" v-for="(item, index) in sltCheckout" :key="index" @click="verSlt(item, index)">
               <div class="row q-px-lg items-center justify-between">
                 <div class="row text-caption">
                   <div class="q-mr-xs">Nº de solicitud:</div>
@@ -256,7 +256,7 @@
         <q-scroll-area v-if="sltConfirm.length" :style="!sltReopen.length ? sltConfirm.length < 3 ? 'height: 210px;' : 'height: 405px;' : sltConfirm.length === 1 ? 'height: 210px;' : 'height: 405px;'">
           <q-list :class="`${!sltReopen.length ? 'row' : 'q-px-lg'} q-pt-md`">
             <div :class="`${sltReopen.length ? 'full-width' : 'col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-px-lg'} q-mb-md`" v-for="(item, index) in sltConfirm" :key="index">
-              <q-card class="full-width" @click="verSlt(item, index)">
+              <q-card class="full-width cursor-pointer" @click="verSlt(item, index)">
                 <div class="row q-px-lg items-center justify-between">
                   <div class="row text-caption">
                     <div class="q-mr-xs">Nº de solicitud:</div>

@@ -120,7 +120,7 @@
           </div>
           <div class="q-px-sm q-mb-md" v-if="action === 5">
             <div class="column items-center q-gutter-y-md q-pb-lg">
-              <q-rating v-model="rating" size="3.5em" color="yellow" icon="star_border" icon-selected="star"/>
+              <q-rating v-model="rating" size="3.5em" :color="$v.rating.$error ? 'red' : 'yellow'" icon="star_border" icon-selected="star"/>
               <q-input dense class="full-width" v-model="comment" filled type="textarea" placeholder="Comenta aquí..."/>
             </div>
             <div class="full-width column items-center">
@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required, minValue } from 'vuelidate/lib/validators'
 import NewSlt from '../components/NewSolicitud'
 import ListaSlt from '../components/Solicitudes'
 import * as moment from 'moment'
@@ -171,7 +171,8 @@ export default {
       status: { required },
       name: { required },
       description: { required }
-    }
+    },
+    rating: { required, minValue: minValue(1) }
   },
   mounted () {
     this.userLogueado()
@@ -246,18 +247,26 @@ export default {
       this.action = idx
     },
     saveRating () {
-      const rating = {
-        number: this.rating,
-        comment: this.comment,
-        solicitud_id: this.solicitud._id,
-        consultor_id: this.solicitud.consultor_id,
-        cliente_id: this.user._id
-      }
-      this.$api.post('register_rating', rating).then(res => {
-        if (res) {
-          this.statusSlt()
+      this.$v.rating.$touch()
+      if (!this.$v.rating.$error) {
+        const rating = {
+          number: this.rating,
+          comment: this.comment,
+          solicitud_id: this.solicitud._id,
+          consultor_id: this.solicitud.consultor_id,
+          cliente_id: this.user._id
         }
-      })
+        this.$api.post('register_rating', rating).then(res => {
+          if (res) {
+            this.statusSlt()
+          }
+        })
+      } else {
+        this.$q.notify({
+          message: 'Debe ingresar la calificación',
+          color: 'negative'
+        })
+      }
     },
     saveHito () {
       this.$v.form.$touch()
@@ -282,11 +291,17 @@ export default {
     statusSlt () {
       let update = {}
       if (this.action === 5) {
-        const dias = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'days')
-        let horas = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'hours')
+        let dias = 0
+        let horas = 0
         let minutos = moment(moment().format('YYYY-MM-DD HH:mm')).diff(moment(this.solicitud.dateBegin + ' ' + this.solicitud.timeBegin), 'minutes')
-        for (let i = 0; i < horas; i++) { minutos = minutos - 60 }
-        for (let i = 0; i < dias; i++) { horas = horas - 24 }
+        while (minutos >= 60) {
+          minutos = minutos - 60
+          horas = horas + 1
+          while (horas >= 24) {
+            horas = horas - 24
+            dias = dias + 1
+          }
+        }
         update = {
           status: this.action,
           dateEnd: moment().format('YYYY-MM-DD'),
