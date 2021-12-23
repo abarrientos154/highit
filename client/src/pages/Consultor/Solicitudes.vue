@@ -13,7 +13,11 @@
             <div class="q-mr-xs">Nº de solicitud:</div>
             <div class="text-bold">{{solicitud.num}}</div>
           </div>
-          <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : 'Prioridad'}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En pausa' : solicitud.status === 3 ? 'Checkout' : solicitud.status === 4 ? 'Confirmar' : solicitud.status === 5 ? 'Finalizado' : 'Reabierta'}}</div>
+          <div class="row">
+            <div v-if="solicitud.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+            <div v-if="solicitud.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
+            <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : 'Prioridad'}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En espera' : solicitud.status === 3 ? 'Checkout' : solicitud.status === 4 ? 'Confirmar' : solicitud.status === 5 ? 'Finalizado' : 'Reabierta'}}</div>
+          </div>
         </div>
         <div class="q-mb-lg q-mt-md">
           <div class="text-center text-h6 text-bold">{{solicitud.status === 0 && solicitud.sltBegin === 0 ? 'Tomar solicitud' : solicitud.status === 1 || solicitud.status === 2 ||solicitud.status === 3 ? 'Cambiar estado' : 'Datos solicitud'}}</div>
@@ -28,7 +32,10 @@
               <div>
                 <div class="text-subtitle1 text-bold">{{solicitud.empresa ? solicitud.empresa.name : 'Empresa'}}</div>
                 <div>
-                  <div class="text-bold text-caption text-grey-7">Descripcion del servicio</div>
+                  <div class="row justify-between items-center">
+                    <div class="text-bold text-caption text-grey-7">Descripcion del servicio:</div>
+                    <div v-if="solicitud.scheduled" class="text-bold text-grey-7" style="font-size: 10px;">Solicitud agendada</div>
+                  </div>
                   <q-scroll-area style="height: 60px;">
                     <div class="text-grey-7" style="font-size: 10px;">{{solicitud.description}}</div>
                   </q-scroll-area>

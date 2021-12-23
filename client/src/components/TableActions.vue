@@ -13,15 +13,27 @@
             </q-item>
           </template>
         </q-select>
-        <q-input v-if="inputBtn" class="q-mt-md" filled readonly v-model="fecha" placeholder="AAAA-MM-DD ... AAAA-MM-DD" @click="$refs.qDateProxy.show()">
-          <template v-slot:append>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                <q-date v-model="select" mask="YYYY-MM-DD" range @input="select ? flt = true : flt = false"/>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
+        <div class="row q-mt-md">
+          <q-input class="col" v-if="inputBtn" filled readonly v-model="select.from" label="Fecha inicial" placeholder="AAAA-MM-DD" @click="$refs.qDateProxy.show()">
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                  <q-date v-model="select.from" mask="YYYY-MM-DD" @input="select.from && select.to ? flt = true : flt = false"/>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+          <q-space class="q-px-sm"/>
+          <q-input class="col" v-if="inputBtn" filled readonly v-model="select.to" label="Fecha final" placeholder="AAAA-MM-DD" @click="$refs.qDateProxy2.show()">
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy ref="qDateProxy2" transition-show="scale" transition-hide="scale">
+                  <q-date v-model="select.to" mask="YYYY-MM-DD" @input="select.from && select.to ? flt = true : flt = false"/>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div>
       </div>
 
       <q-grid :data="filterData" :columns="columns" :columns_filter="true">
@@ -107,7 +119,10 @@
                 <div>
                   <div class="text-subtitle1 text-bold">{{ver.empresa}}</div>
                   <div>
-                    <div class="text-bold text-caption text-grey-7">Descripcion del servicio</div>
+                    <div class="row justify-between items-center">
+                      <div class="text-bold text-caption text-grey-7">Descripcion del servicio:</div>
+                      <div v-if="ver.scheduled" class="text-bold text-grey-7" style="font-size: 10px;">Solicitud agendada</div>
+                    </div>
                     <q-scroll-area style="height: 60px;">
                       <div class="text-grey-7" style="font-size: 10px;">{{ver.description}}</div>
                     </q-scroll-area>
@@ -335,7 +350,7 @@ export default {
       showModalEditar: false,
       edit: false,
       iEditContrato: '',
-      select: null,
+      select: {},
       options: [],
       options2: [],
       id: '',
@@ -370,7 +385,7 @@ export default {
         } else if (this.route === 'solicitudes') {
           return this.data.filter(v => v.category === this.select)
         } else if (this.route === 'solicitudes_history') {
-          return this.data.filter(v => this.filterFecha(v))
+          return this.data.filter(v => this.validarFecha(this.select) && (moment(v.dateSlt).isBetween(this.select.from, this.select.to) || moment(v.dateSlt).isSame(this.select.from) || moment(v.dateSlt).isSame(this.select.to)))
         } else {
           return this.data.filter(v => v.empresa === this.select)
         }
@@ -381,14 +396,22 @@ export default {
   },
   async mounted () {
     this.flt = this.selectFlt
+    if (!this.inputBtn) { this.select = null }
     this.userLogueado()
     await this.getRecord()
   },
   methods: {
-    filterFecha (itm) {
-      this.fecha = this.select.from + ' ... ' + this.select.to
-      if (itm.dateSlt === this.select.from || itm.dateSlt === this.select.to || moment(itm.dateSlt).isBetween(this.select.from, this.select.to)) {
+    validarFecha (fch) {
+      if (fch.from && fch.to && moment(fch.from).isBefore(fch.to)) {
         return true
+      } else {
+        if (fch.from && fch.to) {
+          this.$q.notify({
+            message: 'La fecha final debe ser posterior a la fecha inicial',
+            color: 'negative'
+          })
+        }
+        return false
       }
     },
     userLogueado () {

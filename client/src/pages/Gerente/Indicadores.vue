@@ -5,14 +5,14 @@
       <div class="text-grey text-h6">Gestión de las actividades realizadas por otros usuarios</div>
       <q-select class="full-width" filled v-model="gestionar" :options="gestion" label="Selecciona los indicadores que deseas gestionar" multiple map-options emit-value option-label="name" @input="getActividades()">
         <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
-          <q-item v-bind="itemProps" v-on="itemEvents">
-            <q-item-section avatar>
+          <q-item v-bind="itemProps" v-on="opt.id !== 16 ? itemEvents : ''">
+            <q-item-section avatar v-if="opt.id !== 16">
               <q-icon :name="opt.icon" size="40px"/>
             </q-item-section>
-            <q-item-section>
-              <q-item-label v-html="opt.name" ></q-item-label>
+            <q-item-section @click="opt.id === 16 ? selectAll() : ''">
+              <q-item-label :class="opt.id === 16 ? 'text-center text-bold text-primary' : ''" v-html="opt.name" ></q-item-label>
             </q-item-section>
-            <q-item-section side>
+            <q-item-section side v-if="opt.id !== 16">
               <q-checkbox :value="selected" @input="toggleOption(opt)" />
             </q-item-section>
           </q-item>
@@ -224,6 +224,12 @@ export default {
       this.$api.get('gestion').then(res => {
         if (res) {
           this.gestion = res
+          this.gestion.push({
+            id: 16,
+            icon: '',
+            name: 'Seleccionar todo',
+            actividades: []
+          })
         }
       })
     },
@@ -254,6 +260,10 @@ export default {
           this.clientes = res
         }
       })
+    },
+    selectAll () {
+      this.gestionar = this.gestion.filter(v => v.id !== 16)
+      this.getActividades()
     },
     getActividades () {
       this.$api.get('solicitudes_company/' + this.user.empresa).then(res => {

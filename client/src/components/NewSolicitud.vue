@@ -156,8 +156,9 @@ export default {
       if (!this.fchHr) {
         this.form.dateSlt = moment().format('YYYY-MM-DD')
         this.form.timeSlt = moment().format('HH:mm')
+        this.form.scheduled = false
         this.validarSlt()
-      }
+      } else { this.form.scheduled = true }
       if (!this.$v.form.$error && this.val) {
         this.form.user_id = this.user._id
         this.form.empresa_id = this.user.empresa
