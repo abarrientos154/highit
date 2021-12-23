@@ -224,33 +224,22 @@ class UploadController {
           text: body.name
         },
         {
+          border: [false, false, false, false],
+          style: 'tableDescription',
           table: {
-            body: [
-              [
-                {
-                  border: [false, false, false, false],
-                  style: 'tableDescription',
-                  table: {
-                    widths: widths,
-                    body: info
-                  },
-                  layout: {
-                    hLineColor: function (i, node) {
-                      return (i !== 1) ? '#636363' : 'black'
-                    },
-                    vLineColor: function (i, node) {
-                      return (i === 0 || i === node.table.widths.length) ? '#636363' : 'black'
-                    },
-                    fillColor: function (rowIndex, node, columnIndex) {
-                      return (rowIndex % 2 === 0) ? '#CCC9C8' : '#999999'
-                    }
-                  }
-                }
-              ]
-            ]
+            widths: widths,
+            body: info
           },
           layout: {
-            fillColor: '#CCC9C8'
+            hLineColor: function (i, node) {
+              return (i !== 1) ? '#636363' : 'black'
+            },
+            vLineColor: function (i, node) {
+              return (i === 0 || i === node.table.widths.length) ? '#636363' : 'black'
+            },
+            fillColor: function (rowIndex, node, columnIndex) {
+              return (rowIndex % 2 === 0) ? '#CCC9C8' : '#999999'
+            }
           }
         }
       ],
