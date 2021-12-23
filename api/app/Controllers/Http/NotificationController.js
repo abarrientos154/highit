@@ -32,24 +32,27 @@ class NotificationController {
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else {
+      const template = `
+        <center>
+          <img src="https://highit.eiche.cl/header.png" style="width: 100%"/>
+          <h3>
+            <b>
+              ${body.description}
+            </b>
+          </h3>
+          <img src="https://highit.eiche.cl/footer.png" style="width: 100%"/>
+        </center>
+      `
       const categoria = await Categoria.query().where({ _id: body.user_id }).first()
       if (categoria) {
         let users = (await User.query().where({ departamento: categoria.departamento, area: categoria.area, cargo: categoria.cargo }).fetch()).toJSON()
         for (const i of users) {
-          await Email.sendMail(i.email, body.name, `
-            <center>
-              ${body.description}
-            </center>
-          `)
+          await Email.sendMail(i.email, body.name, template)
         }
       } else {
         let user = await User.query().where({ _id: body.user_id }).first()
         if (user) {
-          await Email.sendMail(user.email, body.name, `
-            <center>
-              ${body.description}
-            </center>
-          `)
+          await Email.sendMail(user.email, body.name, template)
         }
       }
       const nuevo = await Notification.create(body)
