@@ -107,6 +107,14 @@ class UploadController {
           style: 'textbold',
           margin: [0, 5, 0, 5],
           text: [
+            { style: '', text: 'EMPRESA' }
+          ]
+        },
+        {
+          alignment: 'center',
+          style: 'textbold',
+          margin: [0, 5, 0, 5],
+          text: [
             { style: '', text: 'CLIENTE' }
           ]
         }
@@ -136,6 +144,14 @@ class UploadController {
           margin: [0, 5, 0, 0],
           text: [
             { style: '', text: `${i.status === 0 ? 'Sin iniciar' : i.status === 1 ? 'En ejecución' : i.status === 2 ? 'En pausa' : i.status === 3 ? 'Checkout' : i.status === 4 ? 'Por confirmar' : i.status === 5 ? 'Finalizada' : 'Reabierta'}` }
+          ]
+        },
+        {
+          alignment: 'center',
+          style: 'textblack',
+          margin: [0, 5, 0, 0],
+          text: [
+            { style: '', text: `${i.empresa.name}` }
           ]
         },
         {

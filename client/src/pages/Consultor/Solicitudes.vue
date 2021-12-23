@@ -32,10 +32,7 @@
               <div>
                 <div class="text-subtitle1 text-bold">{{solicitud.empresa ? solicitud.empresa.name : 'Empresa'}}</div>
                 <div>
-                  <div class="row justify-between items-center">
-                    <div class="text-bold text-caption text-grey-7">Descripcion del servicio:</div>
-                    <div v-if="solicitud.scheduled" class="text-bold text-grey-7" style="font-size: 10px;">Solicitud agendada</div>
-                  </div>
+                  <div class="text-bold text-caption text-grey-7">Descripcion del servicio:</div>
                   <q-scroll-area style="height: 60px;">
                     <div class="text-grey-7" style="font-size: 10px;">{{solicitud.description}}</div>
                   </q-scroll-area>
@@ -48,15 +45,14 @@
                 </div>
                 <div class="row">
                   <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
-                  <div class="text-grey-7 text-caption">{{solicitud.time}}hrs</div>
+                  <div class="text-grey-7 text-caption">{{solicitud.time}}hr</div>
                 </div>
               </div>
             </div>
           </div>
           <div class="q-px-sm">
-            <div class="row justify-center" v-if="solicitud.equipo">
-              <div class="text-subtitle1 text-bold text-grey-7 q-mr-xs">Equipo:</div>
-              <div class="text-subtitle1 text-grey-7">{{solicitud.equipo ? solicitud.equipo.name : ''}}</div>
+            <div v-if="solicitud.scheduled" class="row justify-center q-mb-sm">
+              <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">Solicitud agendada</div>
             </div>
             <div class="row">
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -67,6 +63,10 @@
                 <div class="text-bold text-grey-7">Usuario asignado</div>
                 <div class="text-grey-7">{{user.name + ' ' + user.last_name}}</div>
               </div>
+              <div v-if="solicitud.equipment" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <div class="text-bold text-grey-7">Equipo</div>
+                <div class="text-grey-7">{{solicitud.equipo ? solicitud.equipo.name : ''}}</div>
+              </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <div class="text-bold text-grey-7">Categoria</div>
                 <div class="text-grey-7">{{solicitud.categoria ? solicitud.categoria.nombre : ''}}</div>
@@ -74,6 +74,10 @@
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <div class="text-bold text-grey-7">Departamento</div>
                 <div class="text-grey-7">{{solicitud.department}}</div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <div class="text-bold text-grey-7">Fecha y hora de expiración</div>
+                <div class="text-grey-7">{{solicitud.expirationDate}}hr</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status > 0">
                 <div class="text-bold text-grey-7">Fecha de inicio</div>

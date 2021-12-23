@@ -119,10 +119,7 @@
                 <div>
                   <div class="text-subtitle1 text-bold">{{ver.empresa}}</div>
                   <div>
-                    <div class="row justify-between items-center">
-                      <div class="text-bold text-caption text-grey-7">Descripcion del servicio:</div>
-                      <div v-if="ver.scheduled" class="text-bold text-grey-7" style="font-size: 10px;">Solicitud agendada</div>
-                    </div>
+                    <div class="text-bold text-caption text-grey-7">Descripcion del servicio:</div>
                     <q-scroll-area style="height: 60px;">
                       <div class="text-grey-7" style="font-size: 10px;">{{ver.description}}</div>
                     </q-scroll-area>
@@ -135,15 +132,14 @@
                   </div>
                   <div class="row">
                     <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
-                    <div class="text-grey-7 text-caption">{{ver.timeSlt}}hrs</div>
+                    <div class="text-grey-7 text-caption">{{ver.timeSlt}}hr</div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="q-px-sm q-mb-sm">
-              <div v-if="ver.equipment" class="row justify-center q-mb-sm">
-                <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">Equipo:</div>
-                <div class="text-grey-7 text-subtitle1">{{ver.equipo}}</div>
+              <div v-if="ver.scheduled" class="row justify-center q-mb-sm">
+                <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">Solicitud agendada</div>
               </div>
               <div class="row">
                 <div v-if="route === 'solicitudes' || (route === 'solicitudes_history' && rol === 3)" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -154,9 +150,17 @@
                   <div class="text-bold text-grey-7">Consultor asignado</div>
                   <div class="text-grey-7">{{ver.consultor}}</div>
                 </div>
+                <div v-if="ver.equipment" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                  <div class="text-bold text-grey-7">Equipo</div>
+                  <div class="text-grey-7">{{ver.equipo}}</div>
+                </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                   <div class="text-bold text-grey-7">Categoria</div>
                   <div class="text-grey-7">{{ver.categoria}}</div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                  <div class="text-bold text-grey-7">Fecha y hora de expiración</div>
+                  <div class="text-grey-7">{{ver.expirationDate}}hr</div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="ver.status > 0">
                   <div class="text-bold text-grey-7">Fecha de inicio</div>

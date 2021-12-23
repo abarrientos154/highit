@@ -166,6 +166,7 @@ export default {
         if (this.equipment) {
           this.form.equipment = this.equipment
         }
+        this.form.expirationDate = moment(this.form.dateSlt + ' ' + this.form.timeSlt).add(this.slas.find(v => v._id === this.form.priority).tiempo, 'minutes').format('YYYY-MM-DD HH:mm')
         this.form.expiration = false
         this.form.status = 0
         this.form.date = moment().format('YYYY-MM-DD')

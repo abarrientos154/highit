@@ -97,7 +97,7 @@ class SolicitudController {
   
   async solicitudesCompany ({ params, request, response, view }) {
     let solicitudes = []
-    let slts = (await Solicitud.query().where('company_id', params.id).with('cliente').with('consultor').with('prioridad').with('categoria.Departamento').fetch()).toJSON()
+    let slts = (await Solicitud.query().where('company_id', params.id).with('empresa').with('cliente').with('consultor').with('prioridad').with('categoria.Departamento').fetch()).toJSON()
     for (let j of slts.filter(v => v.status === 0 && !v.expiration)) {
       if (moment().diff(moment(j.dateSlt + ' ' + j.timeSlt), 'minutes') > j.prioridad.tiempo) {
         j.expiration = true
