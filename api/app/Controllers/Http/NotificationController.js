@@ -34,7 +34,7 @@ class NotificationController {
     } else {
       const template = `
         <center>
-          <img src="https://highit.eiche.cl/header.png" style="width: 100%"/>
+          <img src="https://highit.eiche.cl/header.jpg" style="width: 100%"/>
           <h3>
             <b>
               ${body.description}
