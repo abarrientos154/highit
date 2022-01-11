@@ -95,7 +95,7 @@
             </div>
           </div>
           <div v-else class="q-mb-md">
-            <div v-if="datos.id === 14 || datos.id === 15" class="q-mb-md">
+            <div v-if="datos.id === 1 || datos.id === 2 || datos.id === 3 || datos.id === 4 || datos.id === 5 || datos.id === 6 || datos.id === 7 || datos.id === 14 || datos.id === 15" class="q-mb-md">
               <div class="text-bold text-subtitle1 q-mb-sm">Selecciona un Cliente</div>
               <q-select dense filled v-model="cliente" :options="clientes" map-options option-label="name" emit-value option-value="_id" @input="filtrar(5)">
                 <template v-slot:option="scope">
@@ -321,6 +321,7 @@ export default {
       this.depart = null
       this.fecha = null
       this.consultor = null
+      this.cliente = null
       this.categoria = null
       this.status = null
       this.gtn = !this.gtn
