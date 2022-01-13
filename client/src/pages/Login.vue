@@ -10,8 +10,8 @@
 
         <div style="min-width: 300px">
           <div>
-            <div class="q-pl-lg q-mb-sm text-caption">Correo electronico</div>
-            <q-input dense autofocus filled type="email" v-model="form.email" placeholder="Correo electrónico" @input="getUserEmail()" :error="$v.form.email.$error" error-message="Este campo es requerido" @blur="$v.form.email.$touch()" >
+            <div class="q-pl-lg q-mb-sm text-caption">{{ $t('correo') }}</div>
+            <q-input dense autofocus filled type="email" v-model="form.email" :placeholder="$t('correo')" @input="getUserEmail()" :error="$v.form.email.$error" error-message="Este campo es requerido" @blur="$v.form.email.$touch()" >
               <template v-slot:before>
                 <q-icon name="mail_outline" color= "secondary" />
               </template>
@@ -19,8 +19,8 @@
           </div>
 
           <div class="q-mb-md">
-            <div class="q-pl-lg q-mb-sm text-caption">Contraseña</div>
-            <q-input dense filled type="password" v-model="form.password" placeholder="Contraseña" :error="$v.form.password.$error" error-message="Este campo es requerido" @blur="$v.form.password.$touch()" >
+            <div class="q-pl-lg q-mb-sm text-caption">{{ $t('contraseña') }}</div>
+            <q-input dense filled type="password" v-model="form.password" :placeholder="$t('contraseña')" :error="$v.form.password.$error" error-message="Este campo es requerido" @blur="$v.form.password.$touch()" >
               <template v-slot:before>
                 <q-icon name="vpn_key" color= "secondary" />
               </template>
@@ -28,16 +28,16 @@
           </div>
 
           <q-btn class="full-width q-py-xs q-mb-md" color="primary" :loading="loading" @click="rol ? onSubmit() : getUserEmail()" no-caps>
-            Ingresar
+            {{ $t('ingresar') }}
             <template v-slot:loading>
               <q-spinner-hourglass class="on-center" />
-              Loading...
+              {{ $t('cargando') }}
             </template>
           </q-btn>
 
           <div class="row justify-center">
-            <div class="text-grey q-mr-xs">¿Has olvidado tu contraseña?</div>
-            <div class="text-bold text-primary cursor-pointer" @click="recoveryPassword()">Recuperar</div>
+            <div class="text-grey q-mr-xs">{{ $t('recuperarContraseña') }}</div>
+            <div class="text-bold text-primary cursor-pointer" @click="recoveryPassword()">{{ $t('recuperar') }}</div>
           </div>
         </div>
       </div>
@@ -103,9 +103,13 @@
 
 <script>
 import env from '../env'
+import { useI18n } from 'vue-i18n'
 import { mapMutations } from 'vuex'
 import { required, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
+  mounted () {
+    useI18n({ useScope: 'global' })
+  },
   data () {
     return {
       slide: 0,
