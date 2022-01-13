@@ -10,6 +10,20 @@
 
         <div style="min-width: 300px">
           <div>
+            <q-select
+              v-model="locale"
+              :options="localeOptions"
+              label="Idioma"
+              dense
+              filled
+              emit-value
+              map-options
+              options-dense
+              style="min-width: 150px"
+            />
+          </div>
+
+          <div>
             <div class="q-pl-lg q-mb-sm text-caption">{{ $t('correo') }}</div>
             <q-input dense autofocus filled type="email" v-model="form.email" :placeholder="$t('correo')" @input="getUserEmail()" :error="$v.form.email.$error" error-message="Este campo es requerido" @blur="$v.form.email.$touch()" >
               <template v-slot:before>
@@ -107,11 +121,14 @@ import { useI18n } from 'vue-i18n'
 import { mapMutations } from 'vuex'
 import { required, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
-  mounted () {
-    useI18n({ useScope: 'global' })
-  },
   data () {
+    const { locale } = useI18n({ useScope: 'global' })
     return {
+      locale,
+      localeOptions: [
+        { value: 'en-us', label: 'English' },
+        { value: 'es', label: 'Español' }
+      ],
       slide: 0,
       baseu: 'Desk.jpg',
       loading: false,
