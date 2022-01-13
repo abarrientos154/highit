@@ -11,7 +11,7 @@
         <div style="min-width: 300px">
           <div>
             <q-select
-              v-model="locale"
+              v-model="lang"
               :options="localeOptions"
               label="Idioma"
               dense
@@ -117,17 +117,17 @@
 
 <script>
 import env from '../env'
-import { useI18n } from 'vue-i18n'
+// import { useI18n } from 'vue-i18n'
 import { mapMutations } from 'vuex'
 import { required, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
   data () {
-    const { locale } = useI18n({ useScope: 'global' })
+    // const { locale } = useI18n({ useScope: 'global' })
     return {
-      locale,
+      lang: 'eS',
       localeOptions: [
         { value: 'en-us', label: 'English' },
-        { value: 'es', label: 'Español' }
+        { value: 'eS', label: 'Español' }
       ],
       slide: 0,
       baseu: 'Desk.jpg',
@@ -159,6 +159,14 @@ export default {
     },
     newPassword: { required, maxLength: maxLength(256), minLength: minLength(6) },
     repeatNewPassword: { sameAsPassword: sameAs('newPassword') }
+  },
+  mounted () {
+    this.$i18n.locale = this.lang
+  },
+  watch: {
+    lang (lang) {
+      this.$i18n.locale = lang
+    }
   },
   methods: {
     ...mapMutations('generals', ['login']),
