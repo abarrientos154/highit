@@ -24,8 +24,8 @@
           </div>
 
           <div>
-            <div class="q-pl-lg q-mb-sm text-caption">{{ $t('correo') }}</div>
-            <q-input dense autofocus filled type="email" v-model="form.email" :placeholder="$t('correo')" @input="getUserEmail()" :error="$v.form.email.$error" error-message="Este campo es requerido" @blur="$v.form.email.$touch()" >
+            <div class="q-pl-lg q-mb-sm text-caption">{{ $t('form_correo') }}</div>
+            <q-input dense autofocus filled type="email" v-model="form.email" :placeholder="$t('form_correo')" @input="getUserEmail()" :error="$v.form.email.$error" :error-message="$t('formError_campo')" @blur="$v.form.email.$touch()" >
               <template v-slot:before>
                 <q-icon name="mail_outline" color= "secondary" />
               </template>
@@ -33,8 +33,8 @@
           </div>
 
           <div class="q-mb-md">
-            <div class="q-pl-lg q-mb-sm text-caption">{{ $t('contraseña') }}</div>
-            <q-input dense filled type="password" v-model="form.password" :placeholder="$t('contraseña')" :error="$v.form.password.$error" error-message="Este campo es requerido" @blur="$v.form.password.$touch()" >
+            <div class="q-pl-lg q-mb-sm text-caption">{{ $t('form_contraseña') }}</div>
+            <q-input dense filled type="password" v-model="form.password" :placeholder="$t('form_contraseña')" :error="$v.form.password.$error" :error-message="$t('formError_campo')" @blur="$v.form.password.$touch()" >
               <template v-slot:before>
                 <q-icon name="vpn_key" color= "secondary" />
               </template>
@@ -42,16 +42,16 @@
           </div>
 
           <q-btn class="full-width q-py-xs q-mb-md" color="primary" :loading="loading" @click="rol ? onSubmit() : getUserEmail()" no-caps>
-            {{ $t('ingresar') }}
+            {{ $t('accion_ingresar') }}
             <template v-slot:loading>
               <q-spinner-hourglass class="on-center" />
-              {{ $t('cargando') }}
+              {{ $t('accion_cargando') }}
             </template>
           </q-btn>
 
           <div class="row justify-center">
-            <div class="text-grey q-mr-xs">{{ $t('recuperarContraseña') }}</div>
-            <div class="text-bold text-primary cursor-pointer" @click="recoveryPassword()">{{ $t('recuperar') }}</div>
+            <div class="text-grey q-mr-xs">{{ $t('text_recuperarContraseña') }}</div>
+            <div class="text-bold text-primary cursor-pointer" @click="recoveryPassword()">{{ $t('accion_recuperarContraseña') }}</div>
           </div>
         </div>
       </div>
@@ -61,12 +61,12 @@
       <q-card class="q-pa-md column" style="width: 475px; border-radius: 10px;">
         <q-carousel animated class="col-auto" v-model="slide" transition-prev="slide-right" transition-next="slide-left">
           <q-carousel-slide :name="0" class="q-pa-none">
-            <div class="text-center text-h6 text-bold">Responde las preguntas</div>
-            <div class="text-center text-subtitle1 text-bold">de seguridad para confirmar que es tu cuenta</div>
+            <div class="text-center text-h6 text-bold">{{ $t('tituloPart1_recuperarContraseña1') }}</div>
+            <div class="text-center text-subtitle1 text-bold">{{ $t('tituloPart2_recuperarContraseña1') }}</div>
 
             <div class="q-mt-lg">
               <div>{{question}}</div>
-              <q-input filled :readonly="question === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer" :placeholder="question === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : 'Respuesta'" error-message="Este campo es requerido" :error="$v.form2.answer.$error" @blur="$v.form2.answer.$touch()" @click="question === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+              <q-input filled :readonly="question === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer" :placeholder="question === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form2.answer.$error" @blur="$v.form2.answer.$touch()" @click="question === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
                 <template v-if="question === 'Fecha de nacimiento:'" v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -79,7 +79,7 @@
 
             <div class="q-my-sm">
               <div>{{question2}}</div>
-              <q-input filled :readonly="question2 === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer2" :placeholder="question2 === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : 'Respuesta'" error-message="Este campo es requerido" :error="$v.form2.answer2.$error" @blur="$v.form2.answer2.$touch()" @click="question2 === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+              <q-input filled :readonly="question2 === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer2" :placeholder="question2 === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form2.answer2.$error" @blur="$v.form2.answer2.$touch()" @click="question2 === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
                 <template v-if="question2 === 'Fecha de nacimiento:'" v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -92,23 +92,23 @@
           </q-carousel-slide>
 
           <q-carousel-slide :name="1" class="q-pa-none">
-            <div class="text-center text-h6 text-bold">Establece tu nueva</div>
-            <div class="text-center text-subtitle1 text-bold">contraseña y repitela para confirmar</div>
+            <div class="text-center text-h6 text-bold">{{ $t('tituloPart1_recuperarContraseña2') }}</div>
+            <div class="text-center text-subtitle1 text-bold">{{ $t('tituloPart2_recuperarContraseña2') }}</div>
 
-            <div class="q-mt-sm text-subtitle1">Contraseña</div>
-            <q-input :type="isPwd ? 'password' : 'text'" v-model="newPassword" filled error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.newPassword.$error" @blur="$v.newPassword.$touch()">
+            <div class="q-mt-sm text-subtitle1">{{ $t('form_contraseña') }}</div>
+            <q-input :type="isPwd ? 'password' : 'text'" v-model="newPassword" filled :error-message="$t('formError_validacionContraseña')" :error="$v.newPassword.$error" @blur="$v.newPassword.$touch()">
               <template v-slot:append>
                 <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd = !isPwd" />
               </template>
             </q-input>
 
-            <div class="q-mt-sm text-subtitle1">Repite contraseña</div>
-            <q-input :type="isPwd ? 'password' : 'text'" v-model="repeatNewPassword" filled error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.repeatNewPassword.$error" @blur="$v.repeatNewPassword.$touch()"/>
+            <div class="q-mt-sm text-subtitle1">{{ $t('form_confirContraseña') }}</div>
+            <q-input :type="isPwd ? 'password' : 'text'" v-model="repeatNewPassword" filled :error-message="$t('formError_validacionContraseña')" :error="$v.repeatNewPassword.$error" @blur="$v.repeatNewPassword.$touch()"/>
           </q-carousel-slide>
         </q-carousel>
 
         <div class="row justify-center">
-          <q-btn dense class="text-white q-py-xs" color="primary" :label="slide === 0 ? 'Siguiente' : 'Guardar'" @click="slide === 0 ? siguiente() : changePassword()" style="width: 70%; border-radius: 5px;" no-caps/>
+          <q-btn dense class="text-white q-py-xs" color="primary" :label="slide === 0 ? $t('accion_siguiente') : $t('accion_guardar')" @click="slide === 0 ? siguiente() : changePassword()" style="width: 70%; border-radius: 5px;" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -187,7 +187,7 @@ export default {
       if (this.rol && this.rol !== 1 ? !this.$v.form.$error && this.empresaEnable : !this.$v.form.$error) {
         this.loading = true
         this.$q.loading.show({
-          message: 'Iniciando sesión'
+          message: this.$t('accion_cargando')
         })
         this.$api.post('login', this.form).then(res => {
           if (res) {
@@ -214,7 +214,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: !this.empresaEnable ? 'La empresa a la que perteneces ha sido deshabilitada' : 'Debes llenar los campos correspondientes',
+          message: !this.empresaEnable ? this.$t('formError_empresaDeshabilitada') : this.$t('formError_datos'),
           color: 'negative'
         })
       }
@@ -235,7 +235,7 @@ export default {
         this.recovery = true
       } else {
         this.$q.notify({
-          message: this.$v.form.email.$error ? 'Debe ingresar el correo para hacer la recuperación' : 'Este usuario no tiene configuracion de seguridad aun',
+          message: this.$v.form.email.$error ? this.$t('formError_cuentaRecuperarContraseña') : this.$t('formError_configSeguridad'),
           color: 'negative'
         })
       }
@@ -246,7 +246,7 @@ export default {
         this.slide = 1
       } else {
         this.$q.notify({
-          message: 'Respuestas incorrectas',
+          message: this.$t('formError_respuestas'),
           color: 'negative'
         })
       }
@@ -262,14 +262,14 @@ export default {
           newPassword: this.newPassword
         }
         await this.$api.put('password_edit/' + this.userEmail._id, send).then(res => {
+          this.$q.loading.hide()
           if (res) {
             this.$q.notify({
-              message: 'Informacion actualizada con exito.',
+              message: this.$t('formNotif_actualizacion'),
               color: 'positive'
             })
             this.recovery = false
           }
-          this.$q.loading.hide()
         })
       }
     }
