@@ -1,11 +1,11 @@
 <template>
   <div class="q-pa-md">
     <div class="q-pb-md">
-      <div class="text-h4 text-bold">PAGINA PRINCIPAL</div>
-      <div class="text-grey text-h6">Pagina de inicio del sitio</div>
-      <q-select filled v-model="empresa" :options="empresas" label="Selecciona una empresa" map-options emit-value option-label="name" @input="filtrar()"/>
+      <div class="text-h4 text-bold">{{ $t('titulo_moduloInicio') }}</div>
+      <div class="text-grey text-h6">{{ $t('subtitulo_moduloInicio') }}</div>
+      <q-select filled v-model="empresa" :options="empresas" :label="$t('form_empresa')" map-options emit-value option-label="name" @input="filtrar()"/>
     </div>
-    <div class="text-center text-h5 text-bold q-mb-sm">Estadisticas de usuarios por empresa</div>
+    <div class="text-center text-h5 text-bold q-mb-sm">{{ $t('text_estadisticas') }}</div>
     <div>
       <GChart v-if="info && chartData.length > 1" type="ColumnChart" :data="chartData" :options="chartOptions"/>
     </div>
@@ -28,7 +28,7 @@ export default {
           0: { targetAxisIndex: 0 }
         },
         vAxes: {
-          0: { title: 'Cantidad de usuarios' }
+          0: { title: this.$t('text_cantUsuarios') }
         }
       }
     }

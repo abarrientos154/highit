@@ -3,9 +3,24 @@
     <q-header class="bg-primary">
       <q-toolbar class="justify-between">
         <q-btn flat round dense @click="drawer1 = !drawer1" icon="menu" color="white"/>
-        <q-btn flat round dense color="white" icon="notifications_none" @click="visto = true, $router.push('/notificaciones')">
-          <q-badge v-if="notifications.length && !visto" color="red" rounded floating transparent/>
-        </q-btn>
+        <div class="row items-center q-gutter-sm">
+          <q-select
+            v-model="lang"
+            :options="localeOptions"
+            :prefix="$t('form_idioma') + ' ('"
+            suffix=")"
+            rounded
+            dark
+            dense
+            standout
+            emit-value
+            map-options
+            options-dense
+          />
+          <q-btn flat round dense color="white" icon="notifications_none" @click="visto = true, $router.push('/notificaciones')">
+            <q-badge v-if="notifications.length && !visto" color="red" rounded floating transparent/>
+          </q-btn>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -17,11 +32,11 @@
           </q-avatar>
         </div>
         <div v-if="rol !== 1" class="text-center text-bold text-h6 text-white">{{user.name}} {{user.last_name}}</div>
-        <div class="text-center text-caption text-white">{{rol === 1 ? 'Administrador' : rol === 2 ? 'Highit' : rol === 3 ? 'Consultor' : rol === 4 ? 'Cliente final' : rol === 5 ? 'Consultor administrador' : rol === 6 ? 'Cliente administrador' : 'Gerente'}}</div>
+        <div class="text-center text-caption text-white">{{rol === 1 ? $t('rol1'): rol === 2 ? $t('rol2') : rol === 3 ? $t('rol3') : rol === 4 ? $t('rol4') : rol === 5 ? $t('rol5') : rol === 6 ? $t('rol6') : $t('rol7')}}</div>
 
         <q-list class="q-pt-md q-pb-lg" dark>
-          <div class="text-center text-subtitle1 q-mb-xs">Barra de navegación</div>
-          <q-expansion-item v-for="(item, index) in menu" :key="index" :expand-icon="!item.items ? 'm' : 'expand_more'" :expanded-icon="!item.items ? 'l' : 'expand_less'" @click="item.items ? '' : item.label === 'Cerrar sesión' ? cerrarSesion() : $router.push(item.ruta)">
+          <div class="text-bold text-center text-subtitle1 q-mb-xs">{{ $t('text_navegacion') }}</div>
+          <q-expansion-item v-for="(item, index) in menu" :key="index" :expand-icon="!item.items ? 'm' : 'expand_more'" :expanded-icon="!item.items ? 'l' : 'expand_less'" @click="item.items ? '' : item.icon === 'logout' ? cerrarSesion() : $router.push(item.ruta)">
             <template v-slot:header>
               <q-item-section avatar>
                 <q-icon :name="item.icon"/>
@@ -51,13 +66,13 @@
 
     <q-dialog v-model="security" persistent>
       <q-card class="q-pa-md" style="width: 475px; border-radius: 10px;">
-        <div class="text-center text-h6 text-bold">Configura las preguntas</div>
-        <div class="text-center text-subtitle1 text-bold">de seguridad de tu cuenta</div>
+        <div class="text-center text-h6 text-bold">{{ $t('titulo_configSeguridad') }}</div>
+        <div class="text-center text-subtitle1 text-bold">{{ $t('subtitulo_configSeguridad') }}</div>
 
         <div class="q-mt-lg">
-          <div>Selecciona la primera pregunta y responde:</div>
-          <q-select filled v-model="form.question_id" :options="options.filter(v => v._id !== form.question2_id)" map-options option-label="name" emit-value option-value="_id" error-message="Este campo es requerido" :error="$v.form.question_id.$error" @blur="$v.form.question_id.$touch()"/>
-          <q-input v-if="form.question_id" filled :readonly="questions.find(v => v._id === form.question_id).name === 'Fecha de nacimiento:' ? true : false" v-model="form.answer" :placeholder="questions.find(v => v._id === form.question_id).name === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : 'Respuesta'" error-message="Este campo es requerido" :error="$v.form.answer.$error" @blur="$v.form.answer.$touch()" @click="questions.find(v => v._id === form.question_id).name === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+          <div>{{ $t('form_preguntaSeguridad') }}</div>
+          <q-select filled v-model="form.question_id" :options="options.filter(v => v._id !== form.question2_id)" map-options option-label="name" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.question_id.$error" @blur="$v.form.question_id.$touch()"/>
+          <q-input v-if="form.question_id" filled :readonly="questions.find(v => v._id === form.question_id).name === 'Fecha de nacimiento:' ? true : false" v-model="form.answer" :placeholder="questions.find(v => v._id === form.question_id).name === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form.answer.$error" @blur="$v.form.answer.$touch()" @click="questions.find(v => v._id === form.question_id).name === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
             <template v-if="questions.find(v => v._id === form.question_id).name === 'Fecha de nacimiento:'" v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -69,9 +84,9 @@
         </div>
 
         <div class="q-my-sm">
-          <div>Selecciona la segunda pregunta y responde:</div>
-          <q-select filled v-model="form.question2_id" :options="options.filter(v => v._id !== form.question_id)" map-options option-label="name" emit-value option-value="_id" error-message="Este campo es requerido" :error="$v.form.question2_id.$error" @blur="$v.form.question2_id.$touch()"/>
-          <q-input v-if="form.question2_id" filled :readonly="questions.find(v => v._id === form.question2_id).name === 'Fecha de nacimiento:' ? true : false" v-model="form.answer2" :placeholder="questions.find(v => v._id === form.question2_id).name === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : 'Respuesta'" error-message="Este campo es requerido" :error="$v.form.answer2.$error" @blur="$v.form.answer2.$touch()" @click="questions.find(v => v._id === form.question2_id).name === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+          <div>{{ $t('form_preguntaSeguridad') }}</div>
+          <q-select filled v-model="form.question2_id" :options="options.filter(v => v._id !== form.question_id)" map-options option-label="name" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.question2_id.$error" @blur="$v.form.question2_id.$touch()"/>
+          <q-input v-if="form.question2_id" filled :readonly="questions.find(v => v._id === form.question2_id).name === 'Fecha de nacimiento:' ? true : false" v-model="form.answer2" :placeholder="questions.find(v => v._id === form.question2_id).name === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form.answer2.$error" @blur="$v.form.answer2.$touch()" @click="questions.find(v => v._id === form.question2_id).name === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
             <template v-if="questions.find(v => v._id === form.question2_id).name === 'Fecha de nacimiento:'" v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -83,7 +98,7 @@
         </div>
 
         <div class="row justify-center">
-          <q-btn class="text-white q-py-xs" color="primary" label="Guardar configuración" @click="configurar()" style="width: 70%; border-radius: 5px;" no-caps/>
+          <q-btn class="text-white q-py-xs" color="primary" :label="$t('accion_guardar')" @click="configurar()" style="width: 70%; border-radius: 5px;" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -98,6 +113,11 @@ export default {
   name: 'MainLayout',
   data () {
     return {
+      lang: 'eS',
+      localeOptions: [
+        { value: 'en-us', label: 'English' },
+        { value: 'eS', label: 'Español' }
+      ],
       baseu: '',
       rol: 0,
       user: {},
@@ -114,230 +134,230 @@ export default {
       menuUser01: [
         {
           icon: 'home',
-          label: 'Inicio',
+          label: this.$t('ruta_inicio'),
           ruta: '/inicio_user01'
         },
         {
           icon: 'settings',
-          label: 'Configuración',
+          label: this.$t('ruta_config'),
           items: [
             {
               icon: 'assignment_turned_in',
-              label: 'Contratos',
+              label: this.$t('ruta_contratos'),
               ruta: '/contratos'
             },
             {
               icon: 'business',
-              label: 'Empresas',
+              label: this.$t('ruta_empresas'),
               ruta: '/empresas'
             },
             {
               icon: 'person',
-              label: 'Usuarios',
+              label: this.$t('ruta_usuarios'),
               ruta: '/usuarios'
             }
           ]
         },
         {
           icon: 'logout',
-          label: 'Cerrar sesión',
+          label: this.$t('ruta_salir'),
           ruta: ''
         }
       ],
       menuUser02: [
         {
           icon: 'home',
-          label: 'Inicio',
+          label: this.$t('ruta_inicio'),
           ruta: '/inicio_user02'
         },
         {
           icon: 'settings',
-          label: 'Configuración',
+          label: this.$t('ruta_config'),
           items: [
             {
               icon: 'assignment_turned_in',
-              label: 'Contratos',
+              label: this.$t('ruta_contratos'),
               ruta: '/contratos'
             },
             {
               icon: 'schema',
-              label: 'Organigrama',
+              label: this.$t('ruta_organigrama'),
               ruta: '/organigrama'
             },
             {
               icon: 'category',
-              label: 'Categorias',
+              label: this.$t('ruta_categorias'),
               ruta: '/categorias'
             },
             {
               icon: 'business',
-              label: 'Empresas',
+              label: this.$t('ruta_empresas'),
               ruta: '/empresas'
             },
             {
               icon: 'person',
-              label: 'Usuarios',
+              label: this.$t('ruta_usuarios'),
               ruta: '/usuarios'
             }
           ]
         },
         {
           icon: 'devices_other',
-          label: 'Inventario',
+          label: this.$t('ruta_inventario'),
           ruta: '/equipos'
         },
         {
           icon: 'lightbulb',
-          label: 'Bases de conocimiento',
+          label: this.$t('ruta_conocimientos'),
           ruta: '/conocimientos'
         },
         {
           icon: 'logout',
-          label: 'Cerrar sesión',
+          label: this.$t('ruta_salir'),
           ruta: ''
         }
       ],
       menuConsultor: [
         {
           icon: 'home',
-          label: 'Inicio',
+          label: this.$t('ruta_inicio'),
           ruta: '/inicio_consultor'
         },
         {
           icon: 'wysiwyg',
-          label: 'Solicitudes',
+          label: this.$t('ruta_solicitudes'),
           items: [
             {
               icon: 'view_list',
-              label: 'Listado de solicitudes',
+              label: this.$t('ruta_solicitudes'),
               ruta: '/solicitudes_consultor'
             },
             {
               icon: 'assignment',
-              label: 'Historial de solicitudes',
+              label: this.$t('ruta_historialSlt'),
               ruta: '/historial_solicitudes'
             }
           ]
         },
         {
           icon: 'lightbulb',
-          label: 'Bases de conocimiento',
+          label: this.$t('ruta_conocimientos'),
           ruta: '/conocimientos'
         },
         {
           icon: 'logout',
-          label: 'Cerrar sesión',
+          label: this.$t('ruta_salir'),
           ruta: ''
         }
       ],
       menuCliente: [
         {
           icon: 'home',
-          label: 'Inicio',
+          label: this.$t('ruta_inicio'),
           ruta: '/inicio_cliente'
         },
         {
           icon: 'wysiwyg',
-          label: 'Solicitudes',
+          label: this.$t('ruta_solicitudes'),
           items: [
             {
               icon: 'view_list',
-              label: 'Listado de solicitudes',
+              label: this.$t('ruta_solicitudes'),
               ruta: '/solicitudes'
             },
             {
               icon: 'assignment',
-              label: 'Historial de solicitudes',
+              label: this.$t('ruta_historialSlt'),
               ruta: '/historial_solicitudes'
             }
           ]
         },
         {
           icon: 'devices_other',
-          label: 'Inventario',
+          label: this.$t('ruta_inventario'),
           ruta: '/equipos'
         },
         {
           icon: 'logout',
-          label: 'Cerrar sesión',
+          label: this.$t('ruta_salir'),
           ruta: ''
         }
       ],
       menuConsultorAdmin: [
         {
           icon: 'home',
-          label: 'Inicio',
+          label: this.$t('ruta_inicio'),
           ruta: '/inicio_consultor_admin'
         },
         {
           icon: 'support_agent',
-          label: 'Consultores',
+          label: this.$t('ruta_consultores'),
           items: [
             {
               icon: 'assignment_ind',
-              label: 'Listado de consultores',
+              label: this.$t('ruta_consultores'),
               ruta: '/consultores'
             },
             {
               icon: 'manage_accounts',
-              label: 'Actividades por consultor',
+              label: this.$t('ruta_consultoresSlt'),
               ruta: '/atividades_consultor'
             }
           ]
         },
         {
           icon: 'logout',
-          label: 'Cerrar sesión',
+          label: this.$t('ruta_salir'),
           ruta: ''
         }
       ],
       menuClienteAdmin: [
         {
           icon: 'home',
-          label: 'Inicio',
+          label: this.$t('ruta_inicio'),
           ruta: '/inicio_cliente_admin'
         },
         {
           icon: 'wysiwyg',
-          label: 'Solicitudes',
+          label: this.$t('ruta_solicitudes'),
           items: [
             {
               icon: 'view_list',
-              label: 'Listado de solicitudes',
+              label: this.$t('ruta_solicitudes'),
               ruta: '/solicitudes'
             },
             {
               icon: 'assignment',
-              label: 'Historial de solicitudes',
+              label: this.$t('ruta_historialSlt'),
               ruta: '/historial_solicitudes'
             }
           ]
         },
         {
           icon: 'devices_other',
-          label: 'Inventario',
+          label: this.$t('ruta_inventario'),
           ruta: '/equipos'
         },
         {
           icon: 'logout',
-          label: 'Cerrar sesión',
+          label: this.$t('ruta_salir'),
           ruta: ''
         }
       ],
       menuGerente: [
         {
           icon: 'home',
-          label: 'Inicio',
+          label: this.$t('ruta_inicio'),
           ruta: '/inicio_gerente'
         },
         {
           icon: 'list',
-          label: 'Indicadores',
+          label: this.$t('ruta_indicadores'),
           ruta: '/indicadores'
         },
         {
           icon: 'logout',
-          label: 'Cerrar sesión',
+          label: this.$t('ruta_salir'),
           ruta: ''
         }
       ]
@@ -352,7 +372,13 @@ export default {
     }
   },
   mounted () {
+    this.$i18n.locale = this.lang
     this.userLogueado()
+  },
+  watch: {
+    lang (lang) {
+      this.$i18n.locale = lang
+    }
   },
   methods: {
     ...mapMutations('generals', ['logout']),
@@ -418,7 +444,7 @@ export default {
         await this.$api.put('datos_edit/' + this.user._id, this.user).then(res => {
           if (res) {
             this.$q.notify({
-              message: 'Configuración guardada con exito.',
+              message: this.$t('formNotif_actualizacion'),
               color: 'positive'
             })
             this.security = false
@@ -427,7 +453,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Faltan campos por llenar',
+          message: this.$t('formError_datos'),
           color: 'negative'
         })
       }

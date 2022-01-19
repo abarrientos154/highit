@@ -1,8 +1,9 @@
 export default {
   form_correo: 'Mail',
   form_contraseña: 'Password',
-  form_confirContraseña: '',
-  form_respuesta: '',
+  form_confirContraseña: 'Repeat password',
+  form_respuesta: 'Answer',
+  form_idioma: 'Language',
 
   formError_campo: '',
   formError_validacionContraseña: '',
@@ -20,7 +21,7 @@ export default {
   accion_guardar: '',
   accion_recuperarContraseña: 'Recover',
 
-  text_recuperarContraseña: '¿have you forgotten your password?',
+  text_recuperarContraseña: '¿Have you forgotten your password?',
 
   tituloPart1_recuperarContraseña1: '',
   tituloPart2_recuperarContraseña1: '',

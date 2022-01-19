@@ -10,20 +10,6 @@
 
         <div style="min-width: 300px">
           <div>
-            <q-select
-              v-model="lang"
-              :options="localeOptions"
-              label="Idioma"
-              dense
-              filled
-              emit-value
-              map-options
-              options-dense
-              style="min-width: 150px"
-            />
-          </div>
-
-          <div>
             <div class="q-pl-lg q-mb-sm text-caption">{{ $t('form_correo') }}</div>
             <q-input dense autofocus filled type="email" v-model="form.email" :placeholder="$t('form_correo')" @input="getUserEmail()" :error="$v.form.email.$error" :error-message="$t('formError_campo')" @blur="$v.form.email.$touch()" >
               <template v-slot:before>
@@ -41,7 +27,7 @@
             </q-input>
           </div>
 
-          <q-btn class="full-width q-py-xs q-mb-md" color="primary" :loading="loading" @click="rol ? onSubmit() : getUserEmail()" no-caps>
+          <q-btn class="full-width q-py-xs q-mb-md" color="primary" :loading="loading" @click="onSubmit()" no-caps>
             {{ $t('accion_ingresar') }}
             <template v-slot:loading>
               <q-spinner-hourglass class="on-center" />
@@ -50,8 +36,23 @@
           </q-btn>
 
           <div class="row justify-center">
-            <div class="text-grey q-mr-xs">{{ $t('text_recuperarContraseña') }}</div>
+            <div class="text-grey-7 q-mr-xs">{{ $t('text_recuperarContraseña') }}</div>
             <div class="text-bold text-primary cursor-pointer" @click="recoveryPassword()">{{ $t('accion_recuperarContraseña') }}</div>
+          </div>
+
+          <div class="row justify-center">
+            <q-select
+              v-model="lang"
+              :options="localeOptions"
+              :prefix="$t('form_idioma') + ' ('"
+              suffix=")"
+              dense
+              borderless
+              emit-value
+              map-options
+              options-dense
+              style="font-size: 11px"
+            />
           </div>
         </div>
       </div>
@@ -61,8 +62,8 @@
       <q-card class="q-pa-md column" style="width: 475px; border-radius: 10px;">
         <q-carousel animated class="col-auto" v-model="slide" transition-prev="slide-right" transition-next="slide-left">
           <q-carousel-slide :name="0" class="q-pa-none">
-            <div class="text-center text-h6 text-bold">{{ $t('tituloPart1_recuperarContraseña1') }}</div>
-            <div class="text-center text-subtitle1 text-bold">{{ $t('tituloPart2_recuperarContraseña1') }}</div>
+            <div class="text-center text-h6 text-bold">{{ $t('titulo_recuperarContraseña1') }}</div>
+            <div class="text-center text-subtitle1 text-bold">{{ $t('subtitulo_recuperarContraseña1') }}</div>
 
             <div class="q-mt-lg">
               <div>{{question}}</div>
@@ -92,8 +93,8 @@
           </q-carousel-slide>
 
           <q-carousel-slide :name="1" class="q-pa-none">
-            <div class="text-center text-h6 text-bold">{{ $t('tituloPart1_recuperarContraseña2') }}</div>
-            <div class="text-center text-subtitle1 text-bold">{{ $t('tituloPart2_recuperarContraseña2') }}</div>
+            <div class="text-center text-h6 text-bold">{{ $t('titulo_recuperarContraseña2') }}</div>
+            <div class="text-center text-subtitle1 text-bold">{{ $t('subtitulo_recuperarContraseña2') }}</div>
 
             <div class="q-mt-sm text-subtitle1">{{ $t('form_contraseña') }}</div>
             <q-input :type="isPwd ? 'password' : 'text'" v-model="newPassword" filled :error-message="$t('formError_validacionContraseña')" :error="$v.newPassword.$error" @blur="$v.newPassword.$touch()">
@@ -117,12 +118,10 @@
 
 <script>
 import env from '../env'
-// import { useI18n } from 'vue-i18n'
 import { mapMutations } from 'vuex'
 import { required, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
   data () {
-    // const { locale } = useI18n({ useScope: 'global' })
     return {
       lang: 'eS',
       localeOptions: [

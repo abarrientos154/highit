@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla v-if="rol" titulo="EMPRESAS" subtitulo="Listado de empresas con sus respectivos datos" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : null" :habilitarBtn="true" :eliminarBtn="false" :btnNew="true" :verBtn="true"/>
+    <Tabla v-if="rol" :titulo="$t('titulo_moduloEmpresa')" :subtitulo="$t('subtitulo_moduloEmpresa')" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : null" :habilitarBtn="true" :eliminarBtn="false" :btnNew="true" :verBtn="true"/>
   </div>
 </template>
 
@@ -14,12 +14,12 @@ export default {
       user: {},
       empresas: [],
       column: [
-        { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
-        { name: 'email', field: 'email', label: 'Correo', align: 'left' },
-        { name: 'phone', field: 'phone', label: 'Telefono', align: 'left' },
-        { name: 'contrato', field: 'contrato', label: 'Contrato', align: 'left' },
-        { name: 'Profile', label: 'Perfil', field: 'Profile', filter_type: 'false', align: 'center' },
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
+        { name: 'Profile', label: this.$t('form_ prefil'), field: 'Profile', filter_type: 'false', align: 'center' },
+        { name: 'name', field: 'name', label: this.$t('form_nombre'), align: 'left' },
+        { name: 'email', field: 'email', label: this.$t('form_correo'), align: 'left' },
+        { name: 'phone', field: 'phone', label: this.$t('form_telefono'), align: 'left' },
+        { name: 'contrato', field: 'contrato', label: this.$t('form_contrato'), align: 'left' },
+        { name: 'Action', label: this.$t('text_acciones'), field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
       ]
     }
   },
@@ -35,13 +35,13 @@ export default {
           this.rol = res.roles[0]
           if (this.rol === 1) {
             this.column = [
-              { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
-              { name: 'email', field: 'email', label: 'Correo', align: 'left' },
-              { name: 'phone', field: 'phone', label: 'Telefono', align: 'left' },
-              { name: 'contrato', field: 'contrato', label: 'Contrato', align: 'left' },
-              { name: 'totalContrato', field: 'totalContrato', label: 'Costo de contrato', align: 'left' },
-              { name: 'Profile', label: 'Perfil', field: 'Profile', filter_type: 'false', align: 'center' },
-              { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
+              { name: 'Profile', label: this.$t('form_ prefil'), field: 'Profile', filter_type: 'false', align: 'center' },
+              { name: 'name', field: 'name', label: this.$t('form_nombre'), align: 'left' },
+              { name: 'email', field: 'email', label: this.$t('form_correo'), align: 'left' },
+              { name: 'phone', field: 'phone', label: this.$t('form_telefono'), align: 'left' },
+              { name: 'contrato', field: 'contrato', label: this.$t('form_contrato'), align: 'left' },
+              { name: 'totalContrato', field: 'totalContrato', label: this.$t('text_costoContrato'), align: 'left' },
+              { name: 'Action', label: this.$t('text_acciones'), field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
             ]
           }
         }
