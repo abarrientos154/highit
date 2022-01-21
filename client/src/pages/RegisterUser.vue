@@ -1,44 +1,47 @@
 <template>
   <div>
     <div class="q-pa-md">
-      <div class="text-h4 text-bold">{{!edit ? 'NUEVO USUARIO' : 'EDITAR USUARIO'}}</div>
-      <div class="text-grey text-h6">{{!edit ? 'Creacion de nuevos usuarios para el sistema' : 'Edicion de datos de usuarios en el sistema'}}</div>
+      <div class="text-h4 text-bold">{{!edit ? $t('titulo_moduloCrearUsuario') : $t('titulo_moduloEditarUsuario')}}</div>
+      <div class="text-grey text-h6">{{!edit ? $t('subtitulo_moduloCrearUsuario') : $t('subtitulo_moduloEditarUsuario')}}</div>
     </div>
 
     <div class="q-pa-md column items-center">
       <div class="full-width">
-        <div class="text-h6">Datos del usuario</div>
-
-        <div class="q-mt-sm text-subtitle1">Foto de perfil</div>
-        <q-avatar rounded style="height: 200px; width: 100%;">
-          <q-img :src="perfilfile || edit ? perfilImg : 'nopublicidad.jpg'" style="height: 100%;" >
-            <q-file  borderless v-model="perfilfile" @input="changeperfilfile()" accept=".jpg, image/*" style="z-index:1; font-size: 0px; width: 100%; height: 100%; cursor: pointer;">
-              <div class="column items-center justify-center absolute-full" style="height: 150px;">
-                <q-icon name="backup" class="q-mt-xl" size="75px" :color="!$v.perfilfile.$error ? 'white' : 'negative'"/>
-                <div :class="!$v.perfilfile.$error ? 'text-white' : 'text-negative'" class="text-caption">Toca para seleccionar la foto de perfil del usuario</div>
-              </div>
-            </q-file>
-          </q-img>
-        </q-avatar>
-
-        <div class="q-mt-md text-subtitle1">Nombres</div>
-        <q-input filled v-model="form.name" placeholder="Demo Nombre" error-message="Requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
-
-        <div class="q-mt-sm text-subtitle1">Apellidos</div>
-        <q-input filled v-model="form.last_name" placeholder="Demo Apellido" error-message="Requerido" :error="$v.form.last_name.$error" @blur="$v.form.last_name.$touch()"/>
-
-        <div class="q-mt-sm text-subtitle1">Numero de documento</div>
-        <q-input filled v-model="form.Dni" placeholder="j3246o235" error-message="Requerido" :error="$v.form.Dni.$error" @blur="$v.form.Dni.$touch()"/>
-
-        <div class="q-mt-sm text-subtitle1">Telefono</div>
-        <q-input filled v-model="form.phone" placeholder="+52 1 55 8403 5917" error-message="Requerido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
-
         <div>
-          <div class="q-mt-sm text-h6">Datos de la cuenta</div>
+          <div class="text-h6 text-bold">{{$t('text_datosUsuario')}}</div>
+          <div class="text-grey-8">{{$t('text_infoUsuario')}}</div>
+
+          <q-avatar rounded class="q-mt-md" style="height: 200px; width: 100%;">
+            <q-img :src="perfilfile || edit ? perfilImg : 'nopublicidad.jpg'" style="height: 100%;" >
+              <q-file  borderless v-model="perfilfile" @input="changeperfilfile()" accept=".jpg, image/*" style="z-index:1; font-size: 0px; width: 100%; height: 100%; cursor: pointer;">
+                <div class="column items-center justify-center absolute-full" style="height: 150px;">
+                  <q-icon name="backup" class="q-mt-xl" size="75px" :color="!$v.perfilfile.$error ? 'white' : 'negative'"/>
+                  <div :class="!$v.perfilfile.$error ? 'text-white' : 'text-negative'" class="text-caption">{{$t('formError_perfil')}}</div>
+                </div>
+              </q-file>
+            </q-img>
+          </q-avatar>
+
+          <div class="q-mt-md text-subtitle1">{{$t('form_nombre')}}</div>
+          <q-input filled v-model="form.name" :placeholder="$t('form_nombre')" :error-message="$t('formError_campo')" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
+
+          <div class="q-mt-sm text-subtitle1">{{$t('form_apellido')}}</div>
+          <q-input filled v-model="form.last_name" :placeholder="$t('form_apellido')" :error-message="$t('formError_campo')" :error="$v.form.last_name.$error" @blur="$v.form.last_name.$touch()"/>
+
+          <div class="q-mt-sm text-subtitle1">{{$t('form_numDocumento')}}</div>
+          <q-input filled v-model="form.Dni" :placeholder="$t('formFormat_codigoPostal')" :error-message="$t('formError_campo')" :error="$v.form.Dni.$error" @blur="$v.form.Dni.$touch()"/>
+
+          <div class="q-mt-sm text-subtitle1">{{$t('form_telefono')}}</div>
+          <q-input filled v-model="form.phone" :placeholder="$t('formFormat_telefono')" :error-message="$t('formError_campo')" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
+        </div>
+
+        <div class="q-mt-sm">
+          <div class="text-h6 text-bold">{{$t('text_datosCuenta')}}</div>
+          <div class="text-grey-8">{{$t('text_infoCuenta')}}</div>
 
           <div v-if="rol === 2 && !edit">
-            <div class="q-mt-sm text-subtitle1">Tipo de cuenta</div>
-            <q-select filled v-model="form.roles" :options="roles" map-options option-label="name" emit-value option-value="value" :error="$v.form.roles.$error" @blur="$v.form.roles.$touch()">
+            <div class="q-mt-sm text-subtitle1">{{$t('form_tipoCuenta')}}</div>
+            <q-select filled v-model="form.roles" :options="roles" map-options option-label="name" emit-value option-value="value" :error-message="$t('formError_campo')" :error="$v.form.roles.$error" @blur="$v.form.roles.$touch()">
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                   <q-item-section>
@@ -51,8 +54,8 @@
           </div>
 
           <div v-if="!edit ? rol === 1 || form.roles === 4 || form.roles === 6 : rol === 1 || form.roles[0] === 4 || form.roles[0] === 6">
-            <div class="q-mt-sm text-subtitle1">Seleccione empresa</div>
-            <q-select filled v-model="form.empresa" use-input behavior="menu" input-debounce="0" :options="empresas" map-options option-label="name" emit-value option-value="_id" @filter="filterFn" :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()">
+            <div class="q-mt-sm text-subtitle1">{{$t('form_empresa')}}</div>
+            <q-select filled v-model="form.empresa" use-input behavior="menu" input-debounce="0" :options="empresas" map-options option-label="name" emit-value option-value="_id" @filter="filterFn" :error-message="$t('formError_campo')" :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()">
               <template v-slot:no-option>
                 <q-item>
                   <q-item-section class="text-grey">
@@ -64,48 +67,48 @@
           </div>
 
           <div v-if="!edit ? form.roles === 3 || form.roles === 5 : form.roles[0] === 3 || form.roles[0] === 5">
-            <div class="q-mt-sm text-subtitle1">Seleccione departamento</div>
-            <q-select @input="areasOpt(form.departamento)" filled v-model="form.departamento" :options="departamentos" map-options option-label="name" emit-value option-value="_id" error-message="Requerido" :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()" />
+            <div class="q-mt-sm text-subtitle1">{{$t('form_departamento')}}</div>
+            <q-select @input="areasOpt(form.departamento)" filled v-model="form.departamento" :options="departamentos" map-options option-label="name" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()" />
 
             <div v-if="!edit ? form.roles === 3 : form.roles[0] === 3">
-              <div class="q-mt-sm text-subtitle1">Seleccione area</div>
-              <q-select @input="cargosOpt(form.area)" filled v-model="form.area" :options="areas" map-options option-label="name" emit-value option-value="_id" error-message="Requerido" :error="$v.form.area.$error" @blur="$v.form.area.$touch()" />
+              <div class="q-mt-sm text-subtitle1">{{$t('form_area')}}</div>
+              <q-select @input="cargosOpt(form.area)" filled v-model="form.area" :options="areas" map-options option-label="name" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.area.$error" @blur="$v.form.area.$touch()" />
 
-              <div class="q-mt-sm text-subtitle1">Seleccione cargo</div>
-              <q-select filled v-model="form.cargo" :options="cargos" map-options option-label="name" emit-value option-value="_id" error-message="Requerido" :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
+              <div class="q-mt-sm text-subtitle1">{{$t('form_cargo')}}</div>
+              <q-select filled v-model="form.cargo" :options="cargos" map-options option-label="name" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()" />
             </div>
           </div>
 
-          <div class="q-mt-sm text-subtitle1">Correo</div>
-          <q-input v-model="form.email" filled type="email" placeholder="micorreo@highitservice.com" error-message="Requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
+          <div class="q-mt-sm text-subtitle1">{{$t('form_correo')}}</div>
+          <q-input v-model="form.email" filled type="email" :placeholder="$t('formFormat_correo')" :error-message="$t('formError_campo')" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
 
           <div v-if="edit">
             <div class="q-pa-md q-mb-md column items-center justify-center">
-              <q-btn no-caps color="primary" class="q-py-xs" text-color="white" label="Editar Usuario" @click="editar_usuario()" style="width:40%" />
+              <q-btn no-caps color="primary" class="q-py-xs" text-color="white" :label="$t('accion_guardar') + ' ' + $t('form_usuario').toLowerCase()" @click="editar_usuario()" style="width:40%" />
             </div>
 
-            <div class="q-mt-sm text-h6">Actualización de contraseña</div>
-            <div class="q-mt-sm text-subtitle1">Contraseña Actual</div>
-            <q-input :type="isPwd2 ? 'password' : 'text'" v-model="oldpassword" filled error-message="Requerido" :error="$v.oldpassword.$error" @blur="$v.oldpassword.$touch()">
+            <div class="q-mt-sm text-h6">{{$t('text_nuevaContraseña')}}</div>
+            <div class="q-mt-sm text-subtitle1">{{$t('form_contraseñaActual')}}</div>
+            <q-input :type="isPwd2 ? 'password' : 'text'" v-model="oldpassword" filled :error-message="$t('formError_campo')" :error="$v.oldpassword.$error" @blur="$v.oldpassword.$touch()">
               <template v-slot:append>
                 <q-icon :name="isPwd2 ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd2 = !isPwd2" />
               </template>
             </q-input>
           </div>
 
-          <div class="q-mt-sm text-subtitle1">Contraseña</div>
-          <q-input :type="isPwd ? 'password' : 'text'" v-model="password" filled error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.password.$error" @blur="$v.password.$touch()">
+          <div class="q-mt-sm text-subtitle1">{{$t('form_contraseña')}}</div>
+          <q-input :type="isPwd ? 'password' : 'text'" v-model="password" filled :error-message="$t('formError_validacionContraseña')" :error="$v.password.$error" @blur="$v.password.$touch()">
             <template v-slot:append>
               <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd = !isPwd" />
             </template>
           </q-input>
 
-          <div class="q-mt-sm text-subtitle1">Repite contraseña</div>
-          <q-input :type="isPwd ? 'password' : 'text'" v-model="repeatPassword" filled error-message="ingrese una contraseña valida, minimo 6 caracteres" :error="$v.repeatPassword.$error" @blur="$v.repeatPassword.$touch()"/>
+          <div class="q-mt-sm text-subtitle1">{{$t('form_confirContraseña')}}</div>
+          <q-input filled :type="isPwd ? 'password' : 'text'" v-model="repeatPassword" :error-message="$t('formError_validacionContraseña')" :error="$v.repeatPassword.$error" @blur="$v.repeatPassword.$touch()"/>
         </div>
       </div>
 
-      <q-btn color="primary" class="q-py-xs" text-color="white" :label="!edit ? 'Crear Usuario' : 'Actualizar contraseña'" @click="!edit ? registrar_usuario() : editar_contrasena()" style="width:40%" no-caps/>
+      <q-btn color="primary" class="q-py-xs" text-color="white" :label="!edit ? $t('accion_crear') + ' ' + $t('form_usuario').toLowerCase() : $t('accion_guardar') + ' ' + $t('form_contraseña').toLowerCase()" @click="!edit ? registrar_usuario() : editar_contrasena()" style="width:40%" no-caps/>
     </div>
   </div>
 </template>
@@ -134,28 +137,28 @@ export default {
       cargos: [],
       roles: [
         {
-          name: 'Gerente',
-          description: 'Se encarga de gestionar las actividades realizadas por los clientes y consultores, segun el estado de las mismas.',
+          name: this.$t('rol7'),
+          description: this.$t('rol7_descripcion'),
           value: 7
         },
         {
-          name: 'Consultor Administrador',
-          description: 'Asegura el buen manejo y distribución de las actividades y consultores.',
+          name: this.$t('rol5'),
+          description: this.$t('rol5_descripcion'),
           value: 5
         },
         {
-          name: 'Cliente Administrador',
-          description: 'Distrubuye los equipos pertenecientes a su empresa entre los clientes finales de la misma y a su vez, cumple con la función de un cliente final.',
+          name: this.$t('rol6'),
+          description: this.$t('rol6_descripcion'),
           value: 6
         },
         {
-          name: 'Consultor',
-          description: 'Son los usuarios capacitados para llevar a cavo las diversas solicitudes hechas por los clientes finales.',
+          name: this.$t('rol3'),
+          description: this.$t('rol3_descripcion'),
           value: 3
         },
         {
-          name: 'Cliente Final',
-          description: 'Estos usuarios son los encargados de hacer saber las necesidades de su empresa y que sean solventadas segun su urgencia.',
+          name: this.$t('rol4'),
+          description: this.$t('rol4_descripcion'),
           value: 4
         }
       ]
@@ -299,7 +302,7 @@ export default {
       } else { this.form.roles = 2 }
       if (!this.$v.perfilfile.$error && !this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
         this.$q.loading.show({
-          message: 'Guardando usuario...'
+          message: this.$t('accion_cargando')
         })
         this.form.password = this.password
         const formData = new FormData()
@@ -322,7 +325,7 @@ export default {
               })
             }
             this.$q.notify({
-              message: 'Usuario agregado con exito',
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
             this.form = {}
@@ -333,7 +336,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Faltan campos por llenar',
+          message: this.$t('formError_datos'),
           color: 'negative'
         })
       }
@@ -341,19 +344,21 @@ export default {
     async editar_usuario () {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
-        this.$q.loading.show()
+        this.$q.loading.show({
+          message: this.$t('accion_cargando')
+        })
         await this.$api.put('datos_edit/' + this.id, this.form).then(res => {
           this.$q.loading.hide()
           if (res) {
             this.$q.notify({
-              message: 'Informacion actualizada con exito.',
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
           }
         })
       } else {
         this.$q.notify({
-          message: 'Faltan campos por llenar',
+          message: this.$t('formError_datos'),
           color: 'negative'
         })
       }
@@ -363,7 +368,9 @@ export default {
       this.$v.password.$touch()
       this.$v.repeatPassword.$touch()
       if (!this.$v.oldpassword.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
-        this.$q.loading.show()
+        this.$q.loading.show({
+          message: this.$t('accion_cargando')
+        })
         const send = {
           password: this.oldpassword,
           newPassword: this.password
@@ -371,7 +378,7 @@ export default {
         await this.$api.put('password_edit/' + this.id, send).then(res => {
           if (res) {
             this.$q.notify({
-              message: 'Informacion actualizada con exito.',
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
             this.oldpassword = ''

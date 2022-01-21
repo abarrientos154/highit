@@ -11,7 +11,7 @@
         <div style="min-width: 300px">
           <div>
             <div class="q-pl-lg q-mb-sm text-caption">{{ $t('form_correo') }}</div>
-            <q-input dense autofocus filled type="email" v-model="form.email" :placeholder="$t('form_correo')" @input="getUserEmail()" :error="$v.form.email.$error" :error-message="$t('formError_campo')" @blur="$v.form.email.$touch()" >
+            <q-input dense autofocus filled type="email" v-model="form.email" :placeholder="$t('formFormat_correo')" @input="getUserEmail()" :error="$v.form.email.$error" :error-message="$t('formError_campo')" @blur="$v.form.email.$touch()" >
               <template v-slot:before>
                 <q-icon name="mail_outline" color= "secondary" />
               </template>
@@ -272,7 +272,7 @@ export default {
           this.$q.loading.hide()
           if (res) {
             this.$q.notify({
-              message: this.$t('formNotif_actualizacion'),
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
             this.recovery = false

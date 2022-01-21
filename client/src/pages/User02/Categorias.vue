@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="q-pa-md">
-      <div class="text-h4 text-bold">CATEGORIAS</div>
-      <div class="text-grey text-h6">Crea las categorias de las solicitudes de tus clientes</div>
+      <div class="text-h4 text-bold">{{ $t('titulo_moduloCategorias') }}</div>
+      <div class="text-grey text-h6">{{ $t('subtitulo_moduloCategorias') }}</div>
     </div>
 
     <div>

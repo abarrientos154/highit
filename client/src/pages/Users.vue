@@ -12,7 +12,7 @@ export default {
       rol: null,
       user: {},
       column: [
-        { name: 'Profile', label: this.$t('form_ prefil'), field: 'Profile', filter_type: 'false', align: 'center' },
+        { name: 'Profile', label: this.$t('form_perfil'), field: 'Profile', filter_type: 'false', align: 'center' },
         { name: 'name', field: 'name', label: this.$t('form_nombre'), align: 'left' },
         { name: 'last_name', field: 'last_name', label: this.$t('form_apellido'), align: 'left' },
         { name: 'email', field: 'email', label: this.$t('form_correo'), align: 'left' },
@@ -32,7 +32,7 @@ export default {
           this.user = res
           if (this.rol !== 1) {
             this.column = [
-              { name: 'Profile', label: this.$t('form_ prefil'), field: 'Profile', filter_type: 'false', align: 'center' },
+              { name: 'Profile', label: this.$t('form_perfil'), field: 'Profile', filter_type: 'false', align: 'center' },
               { name: 'name', field: 'name', label: this.$t('form_nombre'), align: 'left' },
               { name: 'last_name', field: 'last_name', label: this.$t('form_apellido'), align: 'left' },
               { name: 'tipo_usuario', field: 'tipo_usuario', label: this.$t('form_tipoUsuario'), align: 'left' },

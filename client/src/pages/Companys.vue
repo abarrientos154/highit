@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla v-if="rol" :titulo="$t('titulo_moduloEmpresa')" :subtitulo="$t('subtitulo_moduloEmpresa')" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : null" :habilitarBtn="true" :eliminarBtn="false" :btnNew="true" :verBtn="true"/>
+    <Tabla v-if="rol" :titulo="$t('titulo_moduloEmpresas')" :subtitulo="$t('subtitulo_moduloEmpresa')" :columns="column" route="companys" :route_id="rol === 2 ? user.empresa : null" :habilitarBtn="true" :eliminarBtn="false" :btnNew="true" :verBtn="true"/>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
       user: {},
       empresas: [],
       column: [
-        { name: 'Profile', label: this.$t('form_ prefil'), field: 'Profile', filter_type: 'false', align: 'center' },
+        { name: 'Profile', label: this.$t('form_perfil'), field: 'Profile', filter_type: 'false', align: 'center' },
         { name: 'name', field: 'name', label: this.$t('form_nombre'), align: 'left' },
         { name: 'email', field: 'email', label: this.$t('form_correo'), align: 'left' },
         { name: 'phone', field: 'phone', label: this.$t('form_telefono'), align: 'left' },
@@ -35,7 +35,7 @@ export default {
           this.rol = res.roles[0]
           if (this.rol === 1) {
             this.column = [
-              { name: 'Profile', label: this.$t('form_ prefil'), field: 'Profile', filter_type: 'false', align: 'center' },
+              { name: 'Profile', label: this.$t('form_perfil'), field: 'Profile', filter_type: 'false', align: 'center' },
               { name: 'name', field: 'name', label: this.$t('form_nombre'), align: 'left' },
               { name: 'email', field: 'email', label: this.$t('form_correo'), align: 'left' },
               { name: 'phone', field: 'phone', label: this.$t('form_telefono'), align: 'left' },

@@ -1,30 +1,30 @@
 <template>
   <div>
     <div class="q-pa-md">
-      <div class="text-h4 text-bold">{{edit ? 'ACTUALIZA EMPRESA' : 'NUEVA EMPRESA'}}</div>
-      <div class="text-grey text-h6">{{edit ? 'Modificar datos de la empresa' : 'Creacion de nuevas empresas'}}</div>
+      <div class="text-h4 text-bold">{{edit ? $t('titulo_moduloEditarEmpresa') : $t('titulo_moduloCrearEmpresa')}}</div>
+      <div class="text-grey text-h6">{{edit ? $t('subtitulo_moduloEditarEmpresa') : $t('subtitulo_moduloCrearEmpresa')}}</div>
     </div>
     <div class="q-my-lg q-px-md">
       <div class="q-mb-md">
-        <div class="text-h6 text-bold">Datos de la empresa</div>
-        <div class="text-grey-8">Informacion oficial de la empresa</div>
+        <div class="text-h6 text-bold">{{$t('text_datosEmpresa')}}</div>
+        <div class="text-grey-8">{{$t('text_infoEmpresa')}}</div>
       </div>
       <q-list>
         <div>
-          <div>Nombre comercial</div>
-          <q-input outlined filled v-model="form.name" placeholder="Highit Service" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
+          <div>{{$t('form_nombreComercial')}}</div>
+          <q-input outlined filled v-model="form.name" :placeholder="$t('formFormat_nombreComercial')" :error-message="$t('formError_campo')" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
         </div>
         <div>
-          <div>Razón social</div>
-          <q-input outlined filled v-model="form.businessName" placeholder="Highit Service SpA" error-message="Este campo es requerido" :error="$v.form.businessName.$error" @blur="$v.form.businessName.$touch()"/>
+          <div>{{$t('form_razonSocial')}}</div>
+          <q-input outlined filled v-model="form.businessName" :placeholder="$t('formFormat_razonSocial')" :error-message="$t('formError_campo')" :error="$v.form.businessName.$error" @blur="$v.form.businessName.$touch()"/>
         </div>
         <div>
-          <div>Numero de documento</div>
-          <q-input outlined filled v-model="form.numIdet" placeholder="J30583h375" error-message="Este campo es requerido" :error="$v.form.numIdet.$error" @blur="$v.form.numIdet.$touch()"/>
+          <div>{{$t('form_numDocumento')}}</div>
+          <q-input outlined filled v-model="form.numIdet" :placeholder="$t('formFormat_numDocumento')" :error-message="$t('formError_campo')" :error="$v.form.numIdet.$error" @blur="$v.form.numIdet.$touch()"/>
         </div>
         <div>
-          <div>Tipo de contrato</div>
-          <q-select outlined filled v-model="form.typeContract" use-input behavior="menu" input-debounce="0" :options="contratos" map-options option-label="contrato" emit-value option-value="_id" @filter="filterFn" error-message="Este campo es requerido" :error="$v.form.typeContract.$error" @blur="$v.form.typeContract.$touch()">
+          <div>{{$t('form_contrato')}}</div>
+          <q-select outlined filled v-model="form.typeContract" use-input behavior="menu" input-debounce="0" :options="contratos" map-options option-label="contrato" emit-value option-value="_id" @filter="filterFn" :error-message="$t('formError_campo')" :error="$v.form.typeContract.$error" @blur="$v.form.typeContract.$touch()">
             <template v-slot:no-option>
               <q-item>
                 <q-item-section class="text-grey">
@@ -35,24 +35,24 @@
           </q-select>
         </div>
         <div>
-          <div>Fecha inicio de contrato</div>
-          <q-input outlined filled readonly v-model="form.dateBegin" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateBegin.$error" @blur="$v.form.dateBegin.$touch()" @click="$refs.qDateProxy.show()">
+          <div>{{$t('form_inicioContrato')}}</div>
+          <q-input outlined filled readonly v-model="form.dateBegin" :placeholder="$t('formFormat_fecha')" :error-message="$t('formError_campo')" :error="$v.form.dateBegin.$error" @blur="$v.form.dateBegin.$touch()" @click="$refs.qDateProxy.show()">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date v-model="form.dateBegin" mask="DD/MM/YYYY"/>
+                  <q-date v-model="form.dateBegin" mask="YYYY-MM-DD"/>
                 </q-popup-proxy>
               </q-icon>
             </template>
           </q-input>
         </div>
         <div>
-          <div>Fecha termino de contrato</div>
-          <q-input outlined filled readonly v-model="form.dateEnd" placeholder="dd/mm/aaaa" error-message="Este campo es requerido" :error="$v.form.dateEnd.$error" @blur="$v.form.dateEnd.$touch()" @click="$refs.qDateProxy2.show()">
+          <div>{{$t('form_finalContrato')}}</div>
+          <q-input outlined filled readonly v-model="form.dateEnd" :placeholder="$t('formFormat_fecha')" :error-message="$t('formError_campo')" :error="$v.form.dateEnd.$error" @blur="$v.form.dateEnd.$touch()" @click="$refs.qDateProxy2.show()">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy2" transition-show="scale" transition-hide="scale">
-                  <q-date v-model="form.dateEnd" mask="DD/MM/YYYY"/>
+                  <q-date v-model="form.dateEnd" mask="YYYY-MM-DD"/>
                 </q-popup-proxy>
               </q-icon>
             </template>
@@ -60,64 +60,63 @@
         </div>
         <div v-if="rol === 1">
           <div>
-            <div>Numero de usuarios</div>
-            <q-input type="number" outlined filled v-model.number="form.users" placeholder="Cantidad de usuarios de la empresa" :rules="[ v => v > 0 ]" error-message="Requerido" :error="$v.form.users.$error" @blur="$v.form.users.$touch()"/>
+            <div>{{$t('form_numUsuarios')}}</div>
+            <q-input type="number" outlined filled v-model.number="form.users" :rules="[ v => v > 0 ]" :error-message="$t('formError_campo')" :error="$v.form.users.$error" @blur="$v.form.users.$touch()"/>
           </div>
         </div>
       </q-list>
     </div>
     <div class="q-px-md q-mb-lg">
       <div class="q-mb-sm">
-        <div class="text-h6 text-bold">Infomacion demografica</div>
-        <div class="text-grey-8">Dirección de la empresa</div>
+        <div class="text-h6 text-bold">{{$t('text_ubicacionEmpresa')}}</div>
+        <div class="text-grey-8">{{$t('text_direccionEmpresa')}}</div>
       </div>
       <q-list>
         <div>
-          <div>País</div>
-          <q-select outlined filled v-model="form.pais_id" :options="paises" @input="getEstados(paises.find(v => v._id === form.pais_id).id), form.estado_id = null, form.ciudad_id = null" option-label="name" map-options emit-value option-value="_id" error-message="Este campo es requerido" :error="$v.form.pais_id.$error" @blur="$v.form.pais_id.$touch()"/>
+          <div>{{$t('form_pais')}}</div>
+          <q-select outlined filled v-model="form.pais_id" :options="paises" @input="getEstados(paises.find(v => v._id === form.pais_id).id), form.estado_id = null, form.ciudad_id = null" option-label="name" map-options emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.pais_id.$error" @blur="$v.form.pais_id.$touch()"/>
         </div>
         <div>
-          <div>Estado</div>
-          <q-select outlined filled v-model="form.estado_id" :options="estados" @input="getCiudades(estados.find(v => v._id === form.estado_id).id), form.ciudad_id = null" option-label="name" map-options emit-value option-value="_id" error-message="Este campo es requerido" :error="$v.form.estado_id.$error" @blur="$v.form.estado_id.$touch()"/>
+          <div>{{$t('form_estado')}}</div>
+          <q-select outlined filled v-model="form.estado_id" :options="estados" @input="getCiudades(estados.find(v => v._id === form.estado_id).id), form.ciudad_id = null" option-label="name" map-options emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.estado_id.$error" @blur="$v.form.estado_id.$touch()"/>
         </div>
         <div>
-          <div>Ciudad</div>
-          <q-select outlined filled v-model="form.ciudad_id" :options="ciudades" option-label="name" map-options emit-value option-value="_id" error-message="Este campo es requerido" :error="$v.form.ciudad_id.$error" @blur="$v.form.ciudad_id.$touch()"/>
+          <div>{{$t('form_ciudad')}}</div>
+          <q-select outlined filled v-model="form.ciudad_id" :options="ciudades" option-label="name" map-options emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.ciudad_id.$error" @blur="$v.form.ciudad_id.$touch()"/>
         </div>
         <div>
-          <div>Dirección</div>
-          <q-input outlined filled v-model="form.direction" placeholder="Mi direccion #12123" error-message="Este campo es requerido" :error="$v.form.direction.$error" @blur="$v.form.direction.$touch()"/>
+          <div>{{$t('form_direccion')}}</div>
+          <q-input outlined filled v-model="form.direction" :placeholder="$t('formFormat_direccion')" :error-message="$t('formError_campo')" :error="$v.form.direction.$error" @blur="$v.form.direction.$touch()"/>
         </div>
         <div>
-          <div>Código postal</div>
-          <q-input outlined filled v-model="form.postalCode" placeholder="1023400" error-message="Este campo es requerido" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
+          <div>{{$t('form_codigoPostal')}}</div>
+          <q-input outlined filled v-model="form.postalCode" :placeholder="$t('formFormat_codigoPostal')" :error-message="$t('formError_campo')" :error="$v.form.postalCode.$error" @blur="$v.form.postalCode.$touch()"/>
         </div>
       </q-list>
     </div>
     <div class="q-px-md">
       <div class="q-mb-md">
-        <div class="text-h6 text-bold">Datos de contacto</div>
-        <div class="text-grey-8">Vias de contacto con la empresa</div>
+        <div class="text-h6 text-bold">{{$t('text_contactoEmpresa')}}</div>
+        <div class="text-grey-8">{{$t('text_contactarEmpresa')}}</div>
       </div>
       <q-list>
         <div>
-          <div>Correo de contacto</div>
-          <q-input outlined filled v-model="form.email" placeholder="micorreo@highitservice.com" error-message="Este campo es requerido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
+          <div>{{$t('form_correo')}}</div>
+          <q-input outlined filled v-model="form.email" :placeholder="$t('formFormat_correo')" :error-message="$t('formError_campo')" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
         </div>
         <div>
-          <div>Telefono de contacto</div>
-          <q-input outlined filled v-model="form.phone" placeholder="+52 1 55 8403 5917" error-message="Este campo es requerido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
+          <div>{{$t('form_telefono')}}</div>
+          <q-input outlined filled v-model="form.phone" :placeholder="$t('formFormat_telefono')" :error-message="$t('formError_campo')" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
         </div>
       </q-list>
       <div>
-        <div>Foto de perfil</div>
         <div class="column items-center">
           <q-avatar rounded style="height: 200px; width: 100%;" class="q-mb-sm">
             <q-img style="height: 100%;" :src="perfilImg || edit ? perfilImg : 'nopublicidad.jpg'">
               <q-file  borderless v-model="PImg" @input="perfil_img()" accept=".jpg, image/*" style="z-index: 1; font-size: 0px; width: 100%; height: 100%; cursor: pointer;">
                 <div class="column items-center justify-center absolute-full" style="height: 150px;">
                   <q-icon name="backup" class="q-mt-xl" size="75px" :color="!$v.PImg.$error ? 'white' : 'negative'"/>
-                  <div :class="!$v.PImg.$error ? 'text-white' : 'text-negative'" class="text-center text-caption">Toca para seleccionar la foto de perfil de la empresa</div>
+                  <div :class="!$v.PImg.$error ? 'text-white' : 'text-negative'" class="text-center text-caption">{{$t('formError_perfil')}}</div>
                 </div>
               </q-file>
             </q-img>
@@ -126,7 +125,7 @@
       </div>
     </div>
     <div class="column items-center q-pa-lg">
-      <q-btn class="q-py-sm" :label="edit ? 'Actualizar empresa' : 'Crear empresa'" color="primary" style="width: 40%;" @click="edit ? updateCompany() : saveCompany()" no-caps/>
+      <q-btn class="q-py-sm" :label="edit ? $t('accion_guardar') + ' ' + $t('form_empresa').toLowerCase() : $t('accion_crear') + ' ' + $t('form_empresa').toLowerCase()" color="primary" style="width: 40%;" @click="edit ? updateCompany() : saveCompany()" no-caps/>
     </div>
   </div>
 </template>
@@ -273,7 +272,7 @@ export default {
       this.$v.$touch()
       if (!this.$v.PImg.$error && !this.$v.form.$error) {
         this.$q.loading.show({
-          message: 'Guardando empresa...'
+          message: this.$t('accion_cargando')
         })
         this.form.status = this.rol
         this.form.enable = true
@@ -292,7 +291,7 @@ export default {
         }).then(res => {
           if (res) {
             this.$q.notify({
-              message: 'Empresa guardada correctamente',
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
             this.$router.push('/empresas')
@@ -301,7 +300,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Debe ingresar todos los datos correspondientes',
+          message: this.$t('formError_datos'),
           color: 'negative'
         })
       }
@@ -310,12 +309,12 @@ export default {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
         this.$q.loading.show({
-          message: 'Actualizando empresa...'
+          message: this.$t('accion_cargando')
         })
         this.$api.put('update_company/' + this.id, this.form).then(res => {
           if (res) {
             this.$q.notify({
-              message: 'La empresa se actualizo correctamente',
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
             this.$router.push('/empresas')
@@ -324,7 +323,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Debe ingresar todos los datos correspondientes',
+          message: this.$t('formError_datos'),
           color: 'negative'
         })
       }

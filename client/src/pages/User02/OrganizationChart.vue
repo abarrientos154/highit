@@ -1,37 +1,37 @@
 <template>
   <div>
     <div class="q-pa-md">
-      <div class="text-h4 text-bold">ORGANIGRAMA</div>
-      <div class="text-grey text-h6">Crea los departamentos y areas de tu empreza</div>
+      <div class="text-h4 text-bold">{{ $t('titulo_moduloOrganigrama') }}</div>
+      <div class="text-grey text-h6">{{ $t('subtitulo_moduloOrganigrama') }}</div>
     </div>
 
     <div class="q-py-lg">
       <div class="q-mb-lg">
         <div class="q-mb-md q-px-md">
-          <div class="text-bold text-h6">Creación de departamentos</div>
+          <div class="text-bold text-h6">{{$t('text_crearDepartamentos')}}</div>
 
           <div>
-            <div class="text-grey-8">Agregar nuevo departamento</div>
-            <q-input outlined filled v-model="formDepartment.name" placeholder="Ingresa el nombre de tu departamento" error-message="Este campo es requerido" :error="$v.formDepartment.name.$error" @blur="$v.formDepartment.name.$touch()"/>
+            <div>{{$t('form_nombre')}}</div>
+            <q-input outlined filled v-model="formDepartment.name" :error-message="$t('formError_campo')" :error="$v.formDepartment.name.$error" @blur="$v.formDepartment.name.$touch()"/>
           </div>
 
           <div class="q-mt-sm column items-center">
-            <q-btn color="primary" class="q-py-xs" text-color="white" label="Crear nuevo departamento" style="width: 40%; border-radius: 5px;" @click="save(1)" no-caps/>
+            <q-btn color="primary" class="q-py-xs" text-color="white" :label="$t('accion_crear') + ' ' + $t('form_departamento').toLowerCase()" style="width: 40%; border-radius: 5px;" @click="save(1)" no-caps/>
           </div>
         </div>
 
         <div>
-          <Tabla subtitulo="Listado de departamentos" @actualizarPadre="getDepartamentos()" ref="listaDepartamentos" :columns="column" route="departments" :editarBtn="false"/>
+          <Tabla :subtitulo="$t('subtitulo_listadoDepartamentos')" @actualizarPadre="getDepartamentos()" ref="listaDepartamentos" :columns="column" route="departments" :editarBtn="false"/>
         </div>
       </div>
 
       <div class="q-mb-lg" v-if="departamentos.length">
         <div class="q-mb-md q-px-md">
-          <div class="text-bold text-h6">Creación de areas</div>
+          <div class="text-bold text-h6">{{$t('text_crearAreas')}}</div>
 
           <div>
-            <div class="text-grey-8">Selecciona el departamento disponible</div>
-            <q-select filled v-model="formArea.department_id" use-input behavior="menu" input-debounce="0" :options="departamentos2" map-options option-label="name" emit-value option-value="_id" @filter="filterDepartments" @input="$refs.listaAreas.selectChange(formArea.department_id) && $refs.listaAreas.filterData()" :error="$v.formArea.department_id.$error" @blur="$v.formArea.department_id.$touch()">
+            <div>{{$t('form_departamento')}}</div>
+            <q-select filled v-model="formArea.department_id" use-input behavior="menu" input-debounce="0" :options="departamentos2" map-options option-label="name" emit-value option-value="_id" @filter="filterDepartments" @input="$refs.listaAreas.selectChange(formArea.department_id) && $refs.listaAreas.filterData()" :error-message="$t('formError_campo')" :error="$v.formArea.department_id.$error" @blur="$v.formArea.department_id.$touch()">
               <template v-slot:no-option>
                 <q-item>
                   <q-item-section class="text-grey">
@@ -43,27 +43,27 @@
           </div>
 
           <div>
-            <div class="text-grey-8">Agregar nueva area</div>
-            <q-input outlined filled v-model="formArea.name" placeholder="Ingresa el nombre de tu nueva area" error-message="Este campo es requerido" :error="$v.formArea.name.$error" @blur="$v.formArea.name.$touch()"/>
+            <div>{{$t('form_nombre')}}</div>
+            <q-input outlined filled v-model="formArea.name" :error-message="$t('formError_campo')" :error="$v.formArea.name.$error" @blur="$v.formArea.name.$touch()"/>
           </div>
 
           <div class="q-mt-sm column items-center">
-            <q-btn color="primary" class="q-py-xs" text-color="white" label="Crear nueva area" style="width: 40%; border-radius: 5px;" @click="save(2)" no-caps/>
+            <q-btn color="primary" class="q-py-xs" text-color="white" :label="$t('accion_crear') + ' ' + $t('form_area').toLowerCase()" style="width: 40%; border-radius: 5px;" @click="save(2)" no-caps/>
           </div>
         </div>
 
         <div>
-          <Tabla subtitulo="Listado de areas" @actualizarPadre="getAreas()" ref="listaAreas" :columns="column" route="areas" :editarBtn="false" :selectFlt="false"/>
+          <Tabla :subtitulo="$t('subtitulo_listadoAreas')" @actualizarPadre="getAreas()" ref="listaAreas" :columns="column" route="areas" :editarBtn="false" :selectFlt="false"/>
         </div>
       </div>
 
       <div v-if="areas.length">
         <div class="q-mb-md q-px-md">
-          <div class="text-bold text-h6">Creación de cargos</div>
+          <div class="text-bold text-h6">{{$t('text_crearCargos')}}</div>
 
           <div>
-            <div class="text-grey-8">Selecciona el area disponible</div>
-            <q-select filled v-model="formCharge.area_id" use-input behavior="menu" input-debounce="0" :options="areas2" map-options option-label="name" emit-value option-value="_id" @filter="filterAreas" @input="$refs.listaCargos.selectChange(formCharge.area_id) && $refs.listaCargos.filterData()" :error="$v.formCharge.area_id.$error" @blur="$v.formCharge.area_id.$touch()">
+            <div>{{$t('form_area')}}</div>
+            <q-select filled v-model="formCharge.area_id" use-input behavior="menu" input-debounce="0" :options="areas2" map-options option-label="name" emit-value option-value="_id" @filter="filterAreas" @input="$refs.listaCargos.selectChange(formCharge.area_id) && $refs.listaCargos.filterData()" :error-message="$t('formError_campo')" :error="$v.formCharge.area_id.$error" @blur="$v.formCharge.area_id.$touch()">
               <template v-slot:no-option>
                 <q-item>
                   <q-item-section class="text-grey">
@@ -75,17 +75,17 @@
           </div>
 
           <div>
-            <div class="text-grey-8">Agregar nuevo cargo</div>
-            <q-input outlined filled v-model="formCharge.name" placeholder="Ingresa el nombre del cargo" error-message="Este campo es requerido" :error="$v.formCharge.name.$error" @blur="$v.formCharge.name.$touch()"/>
+            <div>{{$t('form_nombre')}}</div>
+            <q-input outlined filled v-model="formCharge.name" :error-message="$t('formError_campo')" :error="$v.formCharge.name.$error" @blur="$v.formCharge.name.$touch()"/>
           </div>
 
           <div class="q-mt-sm column items-center">
-            <q-btn color="primary" class="q-py-xs" text-color="white" label="Crear nuevo cargo" style="width: 40%; border-radius: 5px;" @click="save(3)" no-caps/>
+            <q-btn color="primary" class="q-py-xs" text-color="white" :label="$t('accion_crear') + ' ' + $t('form_cargo').toLowerCase()" style="width: 40%; border-radius: 5px;" @click="save(3)" no-caps/>
           </div>
         </div>
 
         <div>
-          <Tabla subtitulo="Listado de cargos" @actualizarPadre="getCargos()" ref="listaCargos" :columns="column" route="charges" :editarBtn="false" :selectFlt="false"/>
+          <Tabla :subtitulo="$t('subtitulo_listadoCargos')" @actualizarPadre="getCargos()" ref="listaCargos" :columns="column" route="charges" :editarBtn="false" :selectFlt="false"/>
         </div>
       </div>
     </div>
@@ -109,9 +109,9 @@ export default {
       formArea: {},
       formCharge: {},
       column: [
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' },
-        { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
-        { name: 'cantUser', field: 'cantUser', label: 'Cantidad de Usuarios', filter_type: 'false', align: 'right', text: 'end' }
+        { name: 'Action', label: this.$t('text_acciones'), field: 'Action', sortable: false, filter_type: 'false', align: 'center' },
+        { name: 'name', field: 'name', label: this.$t('form_nombre'), align: 'left' },
+        { name: 'cantUser', field: 'cantUser', label: this.$t('form_numUsuarios'), filter_type: 'false', align: 'right', text: 'end' }
       ]
     }
   },
@@ -191,7 +191,7 @@ export default {
           this.$api.post('register_department', this.formDepartment).then(res => {
             if (res) {
               this.$q.notify({
-                message: 'Departamento creado correctamente',
+                message: this.$t('formNotif_guardado'),
                 color: 'positive'
               })
               this.getDepartamentos()
@@ -202,7 +202,7 @@ export default {
           })
         } else {
           this.$q.notify({
-            message: !val.length ? 'Debe ingresar los datos requeridos para el registro de departamentos' : 'Este departamento ya esta registrado en el sistema',
+            message: !val.length ? this.$t('formError_datos') : this.$t('formError_datosRegistrados'),
             color: 'negative'
           })
         }
@@ -215,7 +215,7 @@ export default {
           this.$api.post('register_area', this.formArea).then(res => {
             if (res) {
               this.$q.notify({
-                message: 'Area creada correctamente',
+                message: this.$t('formNotif_guardado'),
                 color: 'positive'
               })
               this.getAreas()
@@ -227,7 +227,7 @@ export default {
           })
         } else {
           this.$q.notify({
-            message: !val.length ? 'Debe ingresar los datos requeridos para el registro de areas' : 'Esta area ya esta registrada en el departamento seleccionado',
+            message: !val.length ? this.$t('formError_datos') : this.$t('formError_datosRegistrados'),
             color: 'negative'
           })
         }
@@ -240,7 +240,7 @@ export default {
           this.$api.post('register_charge', this.formCharge).then(res => {
             if (res) {
               this.$q.notify({
-                message: 'Cargo creado correctamente',
+                message: this.$t('formNotif_guardado'),
                 color: 'positive'
               })
               this.getCargos()
@@ -252,7 +252,7 @@ export default {
           })
         } else {
           this.$q.notify({
-            message: !val.length ? 'Debe ingresar los datos requeridos para el registro de cargos' : 'Este cargo ya esta registrado en el area seleccionada',
+            message: !val.length ? this.$t('formError_datos') : this.$t('formError_datosRegistrados'),
             color: 'negative'
           })
         }

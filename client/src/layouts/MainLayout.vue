@@ -444,7 +444,7 @@ export default {
         await this.$api.put('datos_edit/' + this.user._id, this.user).then(res => {
           if (res) {
             this.$q.notify({
-              message: this.$t('formNotif_actualizacion'),
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
             this.security = false
