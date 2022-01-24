@@ -34,9 +34,15 @@ export default {
   form_departamento: 'Departamento',
   form_area: 'Area',
   form_cargo: 'Cargo',
+  form_categoria: 'Categoria',
+  form_cliente: 'Selecciona cliente',
+  form_descripcion: 'Descripcion',
+  form_producto: 'Producto',
+  form_pdf: 'Ingresa archivo PDF',
 
   formFormat_nombreComercial: 'Highit Service',
   formFormat_razonSocial: 'Highit Service SpA',
+  formFormat_descripcion: 'Mi descripcion...',
   formFormat_fecha: 'AAAA-MM-DD',
   formFormat_correo: 'micorreo@highitservice.com',
   formFormat_direccion: 'Mi direccion #12123',
@@ -55,6 +61,7 @@ export default {
   formError_respuestas: 'Respuestas incorrectas',
 
   formNotif_guardado: 'Informacion guardada con exito',
+  formNotif_noResultados: 'No hay resultados',
 
   accion_ingresar: 'Ingresar',
   accion_cargando: 'Cargando...',
@@ -103,6 +110,7 @@ export default {
   text_crearDepartamentos: 'Creación de departamentos',
   text_crearAreas: 'Creación de areas',
   text_crearCargos: 'Creación de cargos',
+  text_crearCategorias: 'Creación de categorias',
   text_añadirPrioridad: 'Añadir prioridad',
   text_datosEmpresa: 'Datos de la empresa',
   text_infoEmpresa: 'Informacion oficial de la empresa',
@@ -115,6 +123,11 @@ export default {
   text_datosCuenta: 'Datos de la cuenta',
   text_infoCuenta: 'Configuracion del tipo de cuenta',
   text_nuevaContraseña: 'Modificacion de contraseña',
+  text_datosEquipo: 'Datos del equipo',
+  text_datosConocimiento: 'Datos del conocimiento',
+  text_infoPrincipal: 'Información principal',
+  text_intruccionPdf: 'Puedes presionar 2 veces para subir 2 archivos',
+  text_archivos: '',
 
   titulo_recuperarContraseña1: 'Responde las preguntas',
   titulo_recuperarContraseña2: 'Establece tu nueva',
@@ -129,6 +142,12 @@ export default {
   titulo_moduloEditarUsuario: 'ACTUALIZAR USUARIO',
   titulo_moduloOrganigrama: 'ORGANIGRAMA',
   titulo_moduloCategorias: 'CATEGORIAS',
+  titulo_moduloInventario: 'PRODUCTOS',
+  titulo_moduloCrearProducto: 'NUEVO PRODUCTO',
+  titulo_moduloEditarProducto: 'ACTUALIZAR PRODUCTO',
+  titulo_moduloConocimientos: ' CONOCIMIENTOS',
+  titulo_moduloCrearConocimiento: 'NUEVO CONOCIMIENTO',
+  titulo_moduloEditarConocimiento: 'ACTUALIZAR CONOCIMIENTO',
 
   subtitulo_recuperarContraseña1: 'de seguridad para confirmar que es tu cuenta',
   subtitulo_recuperarContraseña2: 'contraseña y repitela para confirmar',
@@ -147,5 +166,12 @@ export default {
   subtitulo_moduloCategorias: 'Crea las categorias de las solicitudes de tus clientes',
   subtitulo_listadoDepartamentos: 'Listado de departamentos',
   subtitulo_listadoAreas: 'Listado de areas',
-  subtitulo_listadoCargos: 'Listado de cargos'
+  subtitulo_listadoCargos: 'Listado de cargos',
+  subtitulo_listadoCategorias: 'Listado de categorias',
+  subtitulo_moduloInventario: 'listado de equipos',
+  subtitulo_moduloCrearProducto: 'Añadir nuevo equipo al sistema',
+  subtitulo_moduloEditarProducto: 'Modificacion de los equipos registrados',
+  subtitulo_moduloConocimientos: '',
+  subtitulo_moduloCrearConocimiento: '',
+  subtitulo_moduloEditarConocimiento: ''
 }

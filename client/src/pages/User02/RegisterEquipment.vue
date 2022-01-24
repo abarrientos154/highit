@@ -1,25 +1,25 @@
 <template>
   <div>
     <div class="q-pa-md">
-      <div class="text-h4 text-bold">{{!edit ? 'NUEVO PRODUCTO' : 'EDITAR PRODUCTO'}}</div>
-      <div class="text-grey text-h6">Administra los equipos de tus clientes</div>
+      <div class="text-h4 text-bold">{{!edit ? $t('titulo_moduloCrearProducto') : $t('titulo_moduloEditarProducto')}}</div>
+      <div class="text-grey text-h6">{{!edit ? $t('subtitulo_moduloCrearProducto') : $t('subtitulo_moduloEditarProducto')}}</div>
     </div>
 
     <div class="q-pa-md">
       <div>
-        <div class="text-h6 text-bold">Informacion del Equipo</div>
-        <div class="text-subtitle1">Nombre del equipo</div>
-        <q-input filled v-model="form.name" placeholder="Nombre del equipo" error-message="Requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
+        <div class="text-h6 text-bold">{{$t('text_datosEquipo')}}</div>
+        <div class="text-subtitle1">{{$t('form_nombre')}}</div>
+        <q-input filled v-model="form.name" :error-message="$t('formError_campo')" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
 
-        <div class="q-mt-sm text-subtitle1">Descripcion</div>
-        <q-input v-model="form.descripcion" filled type="textarea" placeholder="Mi descripcion..." error-message="Requerido" :error="$v.form.descripcion.$error" @blur="$v.form.descripcion.$touch()" />
+        <div class="q-mt-sm text-subtitle1">{{$t('form_descripcion')}}</div>
+        <q-input v-model="form.descripcion" filled type="textarea" :placeholder="$t('formFormat_descripcion')" :error-message="$t('formError_campo')" :error="$v.form.descripcion.$error" @blur="$v.form.descripcion.$touch()" />
 
-        <div class="q-mt-sm text-subtitle1">Selecciona empresa</div>
-        <q-select filled v-model="form.empresa" use-input behavior="menu" input-debounce="0" :options="empresas" map-options option-label="name" emit-value option-value="_id" @filter="filterFn" :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()">
+        <div class="q-mt-sm text-subtitle1">{{$t('form_empresa')}}</div>
+        <q-select filled v-model="form.empresa" use-input behavior="menu" input-debounce="0" :options="empresas" map-options option-label="name" emit-value option-value="_id" @filter="filterFn" :error-message="$t('formError_campo')" :error="$v.form.empresa.$error" @blur="$v.form.empresa.$touch()">
           <template v-slot:no-option>
             <q-item>
               <q-item-section class="text-grey">
-                No results
+                {{ $t('formNotif_noResultados') }}
               </q-item-section>
             </q-item>
           </template>
@@ -27,7 +27,7 @@
       </div>
 
       <div class="q-mt-sm row justify-center">
-        <q-btn no-caps class="q-py-xs" color="primary" text-color="white" :label="!edit ? 'Crear producto' : 'Actualizar producto'" @click="!edit ? registrar_equipo() : editar_equipo()" style="width:40%" />
+        <q-btn no-caps class="q-py-xs" color="primary" text-color="white" :label="!edit ? $t('accion_crear') + ' ' + $t('form_producto').toLowerCase() : $t('accion_guardar') + ' ' + $t('form_producto').toLowerCase()" @click="!edit ? registrar_equipo() : editar_equipo()" style="width:40%" />
       </div>
     </div>
   </div>
@@ -107,7 +107,7 @@ export default {
           this.$q.loading.hide()
           if (res) {
             this.$q.notify({
-              message: 'Equipo Guardado con Exito',
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
             this.form = {}
@@ -117,7 +117,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Faltan campos por llenar',
+          message: this.$t('formError_datos'),
           color: 'negative'
         })
       }
@@ -130,11 +130,16 @@ export default {
           this.$q.loading.hide()
           if (res) {
             this.$q.notify({
-              message: 'Informacion actualizada con exito.',
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
             this.$router.go(-1)
           }
+        })
+      } else {
+        this.$q.notify({
+          message: this.$t('formError_datos'),
+          color: 'negative'
         })
       }
     }

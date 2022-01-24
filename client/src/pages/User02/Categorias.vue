@@ -7,49 +7,49 @@
 
     <div>
       <div class="q-pa-md">
-        <div class="text-h5 text-bold">Creación de categorias</div>
-        <div class="q-mt-md text-subtitle1">Selecciona un departamento</div>
-        <q-select filled v-model="form.departamento" use-input behavior="menu" input-debounce="0" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="areasOpt(form.departamento)" @filter="filterDepartments" error-message="Requerido" :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()">
+        <div class="text-h5 text-bold">{{ $t('text_crearCategorias') }}</div>
+        <div class="q-mt-md text-subtitle1">{{ $t('form_departamento') }}</div>
+        <q-select filled v-model="form.departamento" use-input behavior="menu" input-debounce="0" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="areasOpt(form.departamento)" @filter="filterDepartments" :error-message="$t('formError_campo')" :error="$v.form.departamento.$error" @blur="$v.form.departamento.$touch()">
           <template v-slot:no-option>
             <q-item>
               <q-item-section class="text-grey">
-                No results
+                {{ $t('formNotif_noResultados') }}
               </q-item-section>
             </q-item>
           </template>
         </q-select>
 
-        <div class="q-mt-sm text-subtitle1">Selecciona un Area</div>
-        <q-select filled v-model="form.area" use-input behavior="menu" input-debounce="0" :options="areas" map-options option-label="name" emit-value option-value="_id" @input="cargosOpt(form.area)" @filter="filterAreas" error-message="Requerido" :error="$v.form.area.$error" @blur="$v.form.area.$touch()">
+        <div class="q-mt-sm text-subtitle1">{{ $t('form_area') }}</div>
+        <q-select filled v-model="form.area" use-input behavior="menu" input-debounce="0" :options="areas" map-options option-label="name" emit-value option-value="_id" @input="cargosOpt(form.area)" @filter="filterAreas" :error-message="$t('formError_campo')" :error="$v.form.area.$error" @blur="$v.form.area.$touch()">
           <template v-slot:no-option>
             <q-item>
               <q-item-section class="text-grey">
-                No results
+                {{ $t('formNotif_noResultados') }}
               </q-item-section>
             </q-item>
           </template>
         </q-select>
 
-        <div class="q-mt-sm text-subtitle1">Selecciona un Cargo</div>
-        <q-select filled v-model="form.cargo" use-input behavior="menu" input-debounce="0" :options="cargos" map-options option-label="name" emit-value option-value="_id" @filter="filterCharges" error-message="Requerido" :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()">
+        <div class="q-mt-sm text-subtitle1">{{ $t('form_cargo') }}</div>
+        <q-select filled v-model="form.cargo" use-input behavior="menu" input-debounce="0" :options="cargos" map-options option-label="name" emit-value option-value="_id" @filter="filterCharges" :error-message="$t('formError_campo')" :error="$v.form.cargo.$error" @blur="$v.form.cargo.$touch()">
           <template v-slot:no-option>
             <q-item>
               <q-item-section class="text-grey">
-                No results
+                {{ $t('formNotif_noResultados') }}
               </q-item-section>
             </q-item>
           </template>
         </q-select>
 
-        <div class="q-mt-md text-subtitle1">Nombre de categoria</div>
-        <q-input filled v-model="form.nombre" placeholder="Ingresa el nombre de la categoria" error-message="Requerido" :error="$v.form.nombre.$error" @blur="$v.form.nombre.$touch()"/>
+        <div class="q-mt-md text-subtitle1">{{ $t('form_nombre') }}</div>
+        <q-input filled v-model="form.nombre" :error-message="$t('formError_campo')" :error="$v.form.nombre.$error" @blur="$v.form.nombre.$touch()"/>
 
         <div class="row justify-center">
-          <q-btn no-caps class="q-py-xs" color="primary" text-color="white" label="Crear nueva categoria" @click="guardar_categoria()" style="width:40%" />
+          <q-btn no-caps class="q-py-xs" color="primary" text-color="white" :label="$t('accion_crear') + ' ' + $t('form_categoria').toLowerCase()" @click="guardar_categoria()" style="width:40%" />
         </div>
       </div>
 
-      <Tabla subtitulo="Listado de categorias" ref="latabla3" :editarBtn="false" :columns="column" route="categorias" :btnNew="false" />
+      <Tabla :subtitulo="$t('subtitulo_listadoCategorias')" ref="latabla3" :editarBtn="false" :columns="column" route="categorias" :btnNew="false" />
     </div>
   </div>
 </template>
@@ -70,9 +70,9 @@ export default {
       cargos: [],
       cargos2: [],
       column: [
-        { name: 'Action', label: 'Acciones', field: 'Action', filter_type: 'false', sortable: false, align: 'center' },
-        { name: 'nombre', field: 'nombre', label: 'Nombre', align: 'left' },
-        { name: 'departamentoName', field: 'departamentoName', label: 'Departamento Asociado', align: 'left' }
+        { name: 'Action', label: this.$t('text_acciones'), field: 'Action', filter_type: 'false', sortable: false, align: 'center' },
+        { name: 'nombre', field: this.$t('form_nombre'), label: 'Nombre', align: 'left' },
+        { name: 'departamentoName', field: 'departamentoName', label: this.$t('form_departamento'), align: 'left' }
       ]
     }
   },
@@ -155,11 +155,12 @@ export default {
     guardar_categoria () {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
+        this.$q.loading.show()
         this.form.company_id = this.user.empresa
         this.$api.post('categoria', this.form).then(res => {
           if (res) {
             this.$q.notify({
-              message: 'Categoria Guardada con Exito',
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
             this.form.departamento = ''
@@ -173,10 +174,11 @@ export default {
             this.obtener_categorias()
             this.$refs.latabla3.getRecord()
           }
+          this.$q.loading.hide()
         })
       } else {
         this.$q.notify({
-          message: 'Faltan campos por llenar',
+          message: this.$t('formError_datos'),
           color: 'negative'
         })
       }

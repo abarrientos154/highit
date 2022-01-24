@@ -1,33 +1,33 @@
 <template>
   <div>
     <div class="q-pa-md">
-      <div class="text-h4 text-bold">{{edit ? 'EDICIÓN DE CONOCIMIENTO' : 'NUEVO CONOCIMIENTO'}}</div>
-      <div class="text-grey text-h6">{{edit ? 'Modificar datos del conocimiento' : 'Ingresa la informacion del contenido'}}</div>
+      <div class="text-h4 text-bold">{{edit ? $t('titulo_moduloEditarConocimiento') : $t('titulo_moduloCrearConocimiento')}}</div>
+      <div class="text-grey text-h6">{{edit ? $t('subtitulo_moduloEditarConocimiento') : $t('subtitulo_moduloCrearConocimiento')}}</div>
     </div>
 
     <div>
       <div class="q-mt-md q-pa-md">
-        <div class="text-h6">Informacion general</div>
+        <div class="text-h6">{{$t('text_datosConocimiento')}}</div>
 
-        <div class="text-subtitle1">Nombre de conocimiento</div>
-        <q-input filled v-model="form.name" placeholder="Nombre del conocimiento" error-message="Requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
+        <div class="text-subtitle1">{{$t('form_nombre')}}</div>
+        <q-input filled v-model="form.name" :error-message="$t('formError_campo')" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
 
-        <div class="q-mt-sm text-subtitle1">Descripcion</div>
-        <q-input v-model="form.descripcion" filled type="textarea" placeholder="Mi descripcion" error-message="Requerido" :error="$v.form.descripcion.$error" @blur="$v.form.descripcion.$touch()"/>
+        <div class="q-mt-sm text-subtitle1">{{$t('form_descripcion')}}</div>
+        <q-input v-model="form.descripcion" filled type="textarea" :placeholder="$t('formFormat_descripcion')" :error-message="$t('formError_campo')" :error="$v.form.descripcion.$error" @blur="$v.form.descripcion.$touch()"/>
 
         <div v-if="edit" class="q-pa-md row justify-center">
-          <q-btn class="q-py-xs" color="primary" text-color="white" label="Actualizar conocimiento" @click="editar_conocimiento()" style="width:40%"  no-caps/>
+          <q-btn class="q-py-xs" color="primary" text-color="white" :label="$t('accion_guardar') + ' ' + $t('form_conocimiento').toLowerCase()" @click="editar_conocimiento()" style="width:40%"  no-caps/>
         </div>
 
-        <div class="text-h6">Informacion principal</div>
+        <div class="text-h6">{{$t('text_infoPricipal')}}</div>
         <div v-if="!edit || editar">
-          <div class="text-subtitle1">Ingresar archivo PDF</div>
+          <div class="text-subtitle1">{{$t('form_pdf')}}</div>
           <q-avatar rounded style="height: 200px; width: 100%;">
             <q-img src="nopublicidad.jpg" style="height: 100%;" >
               <q-file borderless v-model="Files" multiple append max-files="2" :disable="Files.length >= 2" @input="archivo" accept=".pdf" style="z-index:1; font-size: 0px; width: 100%; height: 100%; cursor: pointer;">
                 <div class="column items-center justify-center absolute-full" style="height: 150px;">
                   <q-icon name="backup" class="q-mt-xl" size="75px" :color="!$v.Files.$error ? 'white' : 'negative'"/>
-                  <div :class="!$v.Files.$error ? 'text-white' : 'text-negative'" class="text-caption">Puedes presionar 2 veces para subir 2 archivos </div>
+                  <div :class="!$v.Files.$error ? 'text-white' : 'text-negative'" class="text-caption">{{$t('text_intruccionPdf')}}</div>
                 </div>
               </q-file>
             </q-img>
@@ -35,7 +35,7 @@
         </div>
 
         <div>
-          <div class="q-mt-md text-subtitle1">Archivos cargados</div>
+          <div class="q-mt-md text-subtitle1">{{$t('form_archivosPdf')}}</div>
           <div class="q-mt-sm" v-if="!edit || editar">
             <div v-for="(item, index) in Files" :key="index" class="q-pa-sm row">
               <q-btn class="q-pr-md q-mt-sm" @click="deleteArc(index)" color="black" icon="delete" style="" flat round />
