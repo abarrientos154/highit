@@ -34,22 +34,21 @@
           </q-avatar>
         </div>
 
-        <div>
-          <div class="q-mt-md text-subtitle1">{{$t('form_archivosPdf')}}</div>
-          <div class="q-mt-sm" v-if="!edit || editar">
+        <div class="q-mt-sm">
+          <div v-if="!edit || editar">
             <div v-for="(item, index) in Files" :key="index" class="q-pa-sm row">
               <q-btn class="q-pr-md q-mt-sm" @click="deleteArc(index)" color="black" icon="delete" style="" flat round />
               <div class="q-mt-md text-subtitle1">{{item.name}}</div>
             </div>
           </div>
           <div v-else class="q-mt-sm column">
-            Tienes {{form.archivos.length}} archivos.
+            {{$t('text_archivos') + ': ' + form.archivos.length}}
           </div>
         </div>
       </div>
 
       <div class="q-pa-md row justify-center">
-        <q-btn class="q-py-xs" color="primary" text-color="white" :label="edit ? editar ? 'Actualizar archivos' : 'Editar archivos' : 'Crear conocimiento'" @click="edit ? editar_archivos() : registrar_conocimiento()" style="width:40%" no-caps/>
+        <q-btn class="q-py-xs" color="primary" text-color="white" :label="edit ? editar ?  $t('accion_guardar') + ' ' + $t('form_archivo').toLowerCase() :  $t('accion_editar') + ' ' + $t('form_archivo').toLowerCase() : $t('accion_crear') + ' ' + $t('form_conocimiento').toLowerCase()" @click="edit ? editar_archivos() : registrar_conocimiento()" style="width:40%" no-caps/>
       </div>
     </div>
   </div>
@@ -122,7 +121,7 @@ export default {
           this.$q.loading.hide()
           if (res) {
             this.$q.notify({
-              message: 'Conocimiento agregado con exito',
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
             this.form = {}
@@ -134,7 +133,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Faltan campos por llenar',
+          message: this.$t('formError_datos'),
           color: 'negative'
         })
       }
@@ -147,15 +146,15 @@ export default {
           this.$q.loading.hide()
           if (res) {
             this.$q.notify({
-              message: 'Informacion actualizada con exito.',
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
-          } else {
-            this.$q.notify({
-              message: 'Ocurrio un error al actualizar',
-              color: 'negative'
-            })
           }
+        })
+      } else {
+        this.$q.notify({
+          message: this.$t('formError_datos'),
+          color: 'negative'
         })
       }
     },
@@ -175,7 +174,7 @@ export default {
           this.$q.loading.hide()
           if (res) {
             this.$q.notify({
-              message: 'documentos actualizados con exito',
+              message: this.$t('formNotif_guardado'),
               color: 'positive'
             })
             // this.form = {}
@@ -186,7 +185,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Faltan archivos por subir',
+          message: this.$t('formError_datos'),
           color: 'negative'
         })
       }
@@ -196,8 +195,8 @@ export default {
         this.confirmarEdicion()
       } else {
         this.$q.dialog({
-          title: '¡Atención!',
-          message: '¿Esta seguro editar tus archivos, al aceptar se eliminaran los actuales?',
+          title: this.$t('titulo_dialogConfir'),
+          message: this.$t('text_dialogConfirPdf'),
           cancel: true,
           persistent: true
         }).onOk(() => {

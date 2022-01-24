@@ -39,6 +39,7 @@ export default {
   form_descripcion: 'Descripcion',
   form_producto: 'Producto',
   form_pdf: 'Ingresa archivo PDF',
+  form_archivo: 'Archivo',
 
   formFormat_nombreComercial: 'Highit Service',
   formFormat_razonSocial: 'Highit Service SpA',
@@ -69,6 +70,7 @@ export default {
   accion_guardar: 'Guardar',
   accion_crear: 'Crear',
   accion_recuperarContraseña: 'Recuperar',
+  accion_editar: 'Editar',
 
   ruta_inicio: 'Inicio',
   ruta_salir: 'Cerrar sesión',
@@ -127,11 +129,13 @@ export default {
   text_datosConocimiento: 'Datos del conocimiento',
   text_infoPrincipal: 'Información principal',
   text_intruccionPdf: 'Puedes presionar 2 veces para subir 2 archivos',
-  text_archivos: '',
+  text_archivos: 'Archivos cargados',
+  text_dialogConfirPdf: '¿Esta seguro editar tus archivos?, al aceptar se eliminaran los actuales',
 
   titulo_recuperarContraseña1: 'Responde las preguntas',
   titulo_recuperarContraseña2: 'Establece tu nueva',
   titulo_configSeguridad: 'Configura las preguntas',
+  titulo_dialogConfir: 'Confirmación',
   titulo_moduloInicio: 'PAGINA PRINCIPAL',
   titulo_moduloContratos: 'CONTRATOS',
   titulo_moduloEmpresas: 'EMPRESAS',
@@ -145,7 +149,7 @@ export default {
   titulo_moduloInventario: 'PRODUCTOS',
   titulo_moduloCrearProducto: 'NUEVO PRODUCTO',
   titulo_moduloEditarProducto: 'ACTUALIZAR PRODUCTO',
-  titulo_moduloConocimientos: ' CONOCIMIENTOS',
+  titulo_moduloConocimientos: 'BASES DE CONOCIMIENTO',
   titulo_moduloCrearConocimiento: 'NUEVO CONOCIMIENTO',
   titulo_moduloEditarConocimiento: 'ACTUALIZAR CONOCIMIENTO',
 
@@ -171,7 +175,7 @@ export default {
   subtitulo_moduloInventario: 'listado de equipos',
   subtitulo_moduloCrearProducto: 'Añadir nuevo equipo al sistema',
   subtitulo_moduloEditarProducto: 'Modificacion de los equipos registrados',
-  subtitulo_moduloConocimientos: '',
-  subtitulo_moduloCrearConocimiento: '',
-  subtitulo_moduloEditarConocimiento: ''
+  subtitulo_moduloConocimientos: 'Listado de conocimientos registrados',
+  subtitulo_moduloCrearConocimiento: 'Añadir nuevo conocimiento',
+  subtitulo_moduloEditarConocimiento: 'Modificar conocimiento ya registrado'
 }

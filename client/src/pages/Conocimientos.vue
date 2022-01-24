@@ -1,18 +1,18 @@
 <template>
   <div>
-    <Tabla v-if="rol" titulo="BASES DE CONOCIMIENTO" subtitulo="Listado de conocimientos registrados" @mostrar="datos_vista" :columns="column" route="conocimientos" :btnNew="rol === 3 ? true : false" :editarBtn="rol === 3 ? true : false" :eliminarBtn="false" :verBtn="true" />
+    <Tabla v-if="rol" :titulo="$t('titulo_moduloConocimientos')" :subtitulo="$t('subtitulo_moduloConocimientos')" @mostrar="datos_vista" :columns="column" route="conocimientos" :btnNew="rol === 3 ? true : false" :editarBtn="rol === 3 ? true : false" :eliminarBtn="false" :verBtn="true" />
     <q-dialog v-model="dialogo">
       <q-card class="" style="width:450px">
       <div class="q-pa-xl">
         <div class="column items-center justify-center">
-          <div class="text-h6 text-bold">Informacion del conocimiento</div>
+          <div class="text-h6 text-bold">{{$t('text_datosConocimiento')}}</div>
         </div>
-          <div class="q-mt-md text-subtitle1">Nombre de conocimiento</div>
+          <div class="q-mt-md text-subtitle1">{{$t('form_nombre')}}</div>
           <q-input filled v-model="form.name" disable/>
-          <div class="q-mt-md text-subtitle1">Descripcion</div>
+          <div class="q-mt-md text-subtitle1">{{$t('form_descripcion')}}</div>
           <q-input v-model="form.descripcion" disable filled type="textarea"/>
           <div class="row justify-center items-center">
-            <q-btn class="q-mx-md q-mt-md" :label="'Archivo ' + (index + 1)" color="primary" v-for="(item, index) in form.archivos" :key="index" push>
+            <q-btn class="q-mx-md q-mt-md" :label="$t('form_archivo') + ' ' + (index + 1)" color="primary" v-for="(item, index) in form.archivos" :key="index" push>
               <a :href="baseApi + form._id + '/' + index" style="position:absolute;width:100%; height:100%" ></a>
             </q-btn>
           </div>
@@ -30,8 +30,8 @@ export default {
     return {
       rol: null,
       column: [
-        { name: 'name', field: 'name', label: 'Nombre', align: 'left' },
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
+        { name: 'name', field: 'name', label: this.$t('form_nombre'), align: 'left' },
+        { name: 'Action', label: this.$t('text_acciones'), field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
       ],
       dialogo: false,
       form: {},
