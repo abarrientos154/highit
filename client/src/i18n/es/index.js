@@ -39,11 +39,19 @@ export default {
   form_area: 'Area',
   form_cargo: 'Cargo',
   form_categoria: 'Categoria',
-  form_cliente: 'Selecciona cliente',
+  form_cliente: 'Cliente',
   form_descripcion: 'Descripcion',
   form_producto: 'Producto',
   form_pdf: 'Ingresa archivo PDF',
   form_archivo: 'Archivo',
+  form_equipo: 'Equipo',
+  form_fecha: 'Fecha',
+  form_fechaSlt: 'Fecha de solicitud',
+  form_HoraSlt: 'Hora de solicitud',
+  form_fechaInicio: 'Fecha de inicio',
+  form_HoraInicio: 'Hora de inicio',
+  form_fechaFin: 'Fecha de termino',
+  form_HoraFin: 'Hora de termino',
 
   formFormat_nombreComercial: 'Highit Service',
   formFormat_razonSocial: 'Highit Service SpA',
@@ -73,6 +81,7 @@ export default {
   accion_siguiente: 'Siguiente',
   accion_guardar: 'Guardar',
   accion_crear: 'Crear',
+  accion_cerrarVentana: 'Cerrar ventana',
   accion_recuperarContraseña: 'Recuperar',
   accion_editar: 'Editar',
 
@@ -106,6 +115,14 @@ export default {
   rol7_descripcion: 'Se encarga de gestionar las actividades realizadas por los clientes y consultores, segun el estado de las mismas.',
 
   text_opcion_select: 'Todas las empresas',
+  statusSlt_0: 'Sin iniciar',
+  statusSlt_1: 'Ejecución',
+  statusSlt_2: 'En pausa',
+  statusSlt_3: 'Checkout',
+  statusSlt_4: 'Por confirmar',
+  statusSlt_5: 'Finalizado',
+  statusSlt_6: 'Reabierta',
+
   text_recuperarContraseña: '¿Has olvidado tu contraseña?',
   text_navegacion: 'Barra de navegación',
   text_estadisticas: 'Estadisticas de usuarios por empresa',
@@ -136,6 +153,10 @@ export default {
   text_intruccionPdf: 'Puedes presionar 2 veces para subir 2 archivos',
   text_archivos: 'Archivos cargados',
   text_dialogConfirPdf: '¿Esta seguro editar tus archivos?, al aceptar se eliminaran los actuales',
+  text_datosSolicitud: 'Datos solicitud',
+  text_descripcionSlt: 'Descripcion de la solicitud',
+  text_historialHitos: 'Historial de actividades',
+  text_descripcionComent: 'Descripcion de los comentarios realisados',
 
   titulo_recuperarContraseña1: 'Responde las preguntas',
   titulo_recuperarContraseña2: 'Establece tu nueva',
@@ -157,6 +178,7 @@ export default {
   titulo_moduloConocimientos: 'BASES DE CONOCIMIENTO',
   titulo_moduloCrearConocimiento: 'NUEVO CONOCIMIENTO',
   titulo_moduloEditarConocimiento: 'ACTUALIZAR CONOCIMIENTO',
+  titulo_moduloNotificaciones: 'NOTIFICACIONES',
 
   subtitulo_recuperarContraseña1: 'de seguridad para confirmar que es tu cuenta',
   subtitulo_recuperarContraseña2: 'contraseña y repitela para confirmar',
@@ -183,5 +205,9 @@ export default {
   subtitulo_moduloEditarProducto: 'Modificacion de los equipos registrados',
   subtitulo_moduloConocimientos: 'Listado de conocimientos registrados',
   subtitulo_moduloCrearConocimiento: 'Añadir nuevo conocimiento',
-  subtitulo_moduloEditarConocimiento: 'Modificar conocimiento ya registrado'
+  subtitulo_moduloEditarConocimiento: 'Modificar conocimiento ya registrado',
+  subtitulo_moduloHistorialSlt: 'Listado de solicitudes finalizadas',
+  subtitulo_moduloConsultoresSlt: 'Historial de actividades por consultor asignado',
+  subtitulo_moduloConsultores: 'Listado de usuarios consultores',
+  subtitulo_moduloNotificaciones: 'Historial de notificaciones, donde te matenemos informado'
 }

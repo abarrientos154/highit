@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabla v-if="info" titulo="LISTADO DE ACTIVIDADES" subtitulo="Historial de actividades por consultor asignado" :columns="column" route="solicitudes" :route_id="user.empresa" :verBtn="true" :editarBtn="false" :selectBtn="true" :selectFlt="false" :eliminarBtn="false"/>
+    <Tabla v-if="info" :titulo="$t('ruta_consultoresSlt').toUpperCase()" :subtitulo="$t('subtitulo_moduloConsultoresSlt')" :columns="column" route="solicitudes" :route_id="user.empresa" :verBtn="true" :editarBtn="false" :selectBtn="true" :selectFlt="false" :eliminarBtn="false"/>
   </div>
 </template>
 
@@ -13,12 +13,12 @@ export default {
       user: {},
       info: false,
       column: [
-        { name: 'description', field: 'description', label: 'Actividad', align: 'left' },
-        { name: 'prioridad', field: 'prioridad', label: 'Prioridad', align: 'left' },
-        { name: 'categoria', field: 'categoria', label: 'Categoria', align: 'left' },
-        { name: 'empresa', field: 'empresa', label: 'Cliente', align: 'left' },
-        { name: 'consultor', field: 'consultor', label: 'Consultor', align: 'left' },
-        { name: 'Action', label: 'Acciones', field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
+        { name: 'description', field: 'description', label: this.$t('form_descripcion'), align: 'left' },
+        { name: 'prioridad', field: 'prioridad', label: this.$t('form_prioridad'), align: 'left' },
+        { name: 'categoria', field: 'categoria', label: this.$t('form_categoria'), align: 'left' },
+        { name: 'empresa', field: 'empresa', label: this.$t('form_cliente'), align: 'left' },
+        { name: 'consultor', field: 'consultor', label: this.$t('rol3'), align: 'left' },
+        { name: 'Action', label: this.$t('text_acciones'), field: 'Action', sortable: false, filter_type: 'false', align: 'center' }
       ]
     }
   },
