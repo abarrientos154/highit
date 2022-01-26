@@ -101,11 +101,11 @@
       </div>
       <q-list>
         <div>
-          <div>{{$t('form_correo')}}</div>
+          <div>{{$t('form_correoContacto')}}</div>
           <q-input outlined filled v-model="form.email" :placeholder="$t('formFormat_correo')" :error-message="$t('formError_campo')" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"/>
         </div>
         <div>
-          <div>{{$t('form_telefono')}}</div>
+          <div>{{$t('form_telefonoContacto')}}</div>
           <q-input outlined filled v-model="form.phone" :placeholder="$t('formFormat_telefono')" :error-message="$t('formError_campo')" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
         </div>
       </q-list>

@@ -142,7 +142,7 @@ export default {
           if (this.rol === 1) {
             this.column = [
               { name: 'contrato', field: 'contrato', label: this.$t('form_nombre'), align: 'left' },
-              { name: 'costo', field: 'costo', label: this.$t('form_costoUsuarios'), align: 'right', text: 'end' },
+              { name: 'costo', field: 'costo', label: this.$t('form_costo'), align: 'right', text: 'end' },
               { name: 'Action', label: this.$t('text_acciones'), field: 'Action', filter_type: 'false', sortable: false, align: 'center' }
             ]
           }

@@ -80,14 +80,14 @@
       <q-card v-if="edit">
         <q-card-section>
           <div class="row">
-            <div class="text-h6">Modifica el contrato</div>
+            <div class="text-h6">{{ $t('subtitulo_moduloEditarContrato') }}</div>
             <q-space />
             <q-btn color="red" icon="close" flat round dense v-close-popup />
           </div>
           <q-input v-model="iEditContrato" outlined dense class="q-mt-sm" style="width: 300px" error-message="Requerido" :error="$v.iEditContrato.$error" @blur="$v.iEditContrato.$touch()"/>
         </q-card-section>
         <q-card-actions align="center">
-          <q-btn color="blue" icon="edit" label="Modificar" push @click="modificar_contrato()" v-close-popup />
+          <q-btn color="blue" icon="edit" :label="$t('accion_editar')" push @click="modificar_contrato()" v-close-popup />
         </q-card-actions>
       </q-card>
 

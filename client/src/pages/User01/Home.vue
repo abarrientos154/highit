@@ -3,7 +3,7 @@
     <div class="q-pb-md">
       <div class="text-h4 text-bold">{{ $t('titulo_moduloInicio') }}</div>
       <div class="text-grey text-h6">{{ $t('subtitulo_moduloInicio') }}</div>
-      <q-select filled v-model="empresa" :options="empresas" :label="$t('form_empresa')" map-options emit-value option-label="name" @input="filtrar()"/>
+      <q-select filled v-model="empresa" :options="empresas" :label="$t('form_select_empresa')" map-options emit-value option-label="name" @input="filtrar()"/>
     </div>
     <div class="text-center text-h5 text-bold q-mb-sm">{{ $t('text_estadisticas') }}</div>
     <div>
@@ -45,14 +45,14 @@ export default {
           ]
           for (const i of res) { this.chartData.push([i.name, i.cantUsers, 'color: gray']) }
           this.empresas = res
-          this.empresas.push({ name: 'Todas las empresas' })
+          this.empresas.push({ name: this.$t('text_opcion_select') })
         }
         this.info = true
       })
     },
     filtrar () {
       if (this.empresa) {
-        if (this.empresa.name === 'Todas las empresas') {
+        if (this.empresa.name === this.$t('text_opcion_select')) {
           this.getEmpresas()
         } else {
           this.chartData = [
