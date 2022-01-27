@@ -17,7 +17,7 @@
           <div class="q-mt-sm text-subtitle1">{{ $t('form_tipoMoneda') }}</div>
           <q-select filled v-model="form.moneda" :options="['CLP', 'USD', 'EUR', 'MXN', 'BRL', 'COP']" :error-message="$t('formError_campo')" :error="$v.form.moneda.$error" @blur="$v.form.moneda.$touch()"/>
 
-          <div class="q-mt-sm text-subtitle1">{{ $t('form_costoUsuarios') }}</div>
+          <div class="q-mt-sm text-subtitle1">{{ $t('form_costoUsuario') }}</div>
           <q-field filled :suffix="form.moneda" :error-message="$t('formError_campo')" :error="$v.form.costo.$error" @blur="$v.form.costo.$touch()">
             <template v-slot:control>
               <money class="q-field__input text-right" v-model="form.costo"/>

@@ -5,7 +5,7 @@
         <q-btn flat round dense @click="drawer1 = !drawer1" icon="menu" color="white"/>
         <div class="row items-center q-gutter-sm">
           <q-select
-            v-model="lang"
+            v-model="langmodel"
             :options="localeOptions"
             :prefix="$t('form_idioma') + ' ('"
             suffix=")"
@@ -16,6 +16,7 @@
             emit-value
             map-options
             options-dense
+            @input="changee()"
           />
           <q-btn flat round dense color="white" icon="notifications_none" @click="visto = true, $router.push('/notificaciones')">
             <q-badge v-if="notifications.length && !visto" color="red" rounded floating transparent/>
@@ -107,16 +108,17 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import env from '../env'
 export default {
   name: 'MainLayout',
   data () {
     return {
-      lang: 'eS',
+      langmodel: '',
       localeOptions: [
         { value: 'en-us', label: 'English' },
-        { value: 'eS', label: 'Español' }
+        { value: 'eS', label: 'Español' },
+        { value: 'portg', label: 'Português' }
       ],
       baseu: '',
       rol: 0,
@@ -372,16 +374,24 @@ export default {
     }
   },
   mounted () {
-    this.$i18n.locale = this.lang
+    this.langmodel = this.lang
     this.userLogueado()
   },
-  watch: {
+  /* watch: {
     lang (lang) {
       this.$i18n.locale = lang
     }
+  }, */
+  computed: {
+    ...mapState('generals', ['lang'])
   },
   methods: {
-    ...mapMutations('generals', ['logout']),
+    changee () {
+      this.$i18n.locale = this.langmodel
+      this.changeLang(this.langmodel)
+      location.reload()
+    },
+    ...mapMutations('generals', ['logout', 'changeLang']),
     cerrarSesion () {
       this.logout()
       this.$router.push('/login')

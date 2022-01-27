@@ -42,7 +42,7 @@
 
           <div class="row justify-center">
             <q-select
-              v-model="lang"
+              v-model="langmodel"
               :options="localeOptions"
               :prefix="$t('form_idioma') + ' ('"
               suffix=")"
@@ -52,6 +52,7 @@
               map-options
               options-dense
               style="font-size: 11px"
+              @input="changee()"
             />
           </div>
         </div>
@@ -118,15 +119,16 @@
 
 <script>
 import env from '../env'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { required, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
-      lang: 'eS',
+      langmodel: 'eS',
       localeOptions: [
         { value: 'en-us', label: 'English' },
-        { value: 'eS', label: 'Español' }
+        { value: 'eS', label: 'Español' },
+        { value: 'portg', label: 'Português' }
       ],
       slide: 0,
       baseu: 'Desk.jpg',
@@ -160,15 +162,24 @@ export default {
     repeatNewPassword: { sameAsPassword: sameAs('newPassword') }
   },
   mounted () {
-    this.$i18n.locale = this.lang
+    this.langmodel = this.lang
+    // this.$i18n.locale = this.lang
   },
-  watch: {
+  /* watch: {
     lang (lang) {
       this.$i18n.locale = lang
     }
+  }, */
+  computed: {
+    ...mapState('generals', ['lang'])
   },
   methods: {
-    ...mapMutations('generals', ['login']),
+    changee () {
+      this.$i18n.locale = this.langmodel
+      this.changeLang(this.langmodel)
+      location.reload()
+    },
+    ...mapMutations('generals', ['login', 'changeLang']),
     getUserEmail () {
       if (this.form.email && !this.$v.form.email.$error) {
         this.$api.get('user_email/' + this.form.email).then(res => {
@@ -199,6 +210,7 @@ export default {
         this.$api.post('login', this.form).then(res => {
           if (res) {
             this.user = res.HIGHIT_SESSION_INFO
+            res.lang = this.lang
             this.login(res)
             if (this.user.roles[0] === 1) {
               this.$router.push('/inicio_user01')

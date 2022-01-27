@@ -1,6 +1,10 @@
 export function loginStart (state) {
   state.loggingIn = true
 }
+export function changeLang (state, data) {
+  localStorage.setItem('HIGHIT_LANG', JSON.stringify(data))
+  state.lang = data
+}
 export function loginStop (state, errorMessage) {
   state.loggingIn = false
   state.loginError = errorMessage
@@ -47,8 +51,10 @@ export function showCurrentMonth (state) {
 }
 export function login (state, data) {
   localStorage.setItem('HIGHIT_SESSION_INFO', JSON.stringify(data.HIGHIT_SESSION_INFO))
+  localStorage.setItem('HIGHIT_LANG', JSON.stringify(data.lang))
   state.HIGHIT_SESSION_INFO = data.HIGHIT_SESSION_INFO
   state.user = data.user
+  state.lang = data.lang
 }
 export function dataUser (state, data) {
   state.user = data

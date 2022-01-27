@@ -541,7 +541,7 @@ export default {
         await this.$api.put('contrato/' + this.id, { contrato: this.iEditContrato }).then(res => {
           if (res) {
             this.$q.notify({
-              message: 'Contrato Modificada con exito',
+              message: this.$t('formNotif_editado'),
               color: 'positive'
             })
             this.iEditContrato = ''

@@ -74,6 +74,7 @@ export default {
   formError_respuestas: 'Respuestas incorrectas',
 
   formNotif_guardado: 'Informacion guardada con exito',
+  formNotif_editado: 'Informacion actualizada con exito',
   formNotif_noResultados: 'No hay resultados',
 
   accion_ingresar: 'Ingresar',
