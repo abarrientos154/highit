@@ -117,8 +117,8 @@ export default {
       langmodel: '',
       localeOptions: [
         { value: 'en-us', label: 'English' },
-        { value: 'eS', label: 'Español' },
-        { value: 'portg', label: 'Português' }
+        { value: 'es', label: 'Español' },
+        { value: 'pt', label: 'Português' }
       ],
       baseu: '',
       rol: 0,

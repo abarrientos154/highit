@@ -1,9 +1,9 @@
 import enUS from './en-us'
-import eS from './es'
-import portg from './portg'
+import es from './es'
+import pt from './pt'
 
 export default {
   'en-us': enUS,
-  eS: eS,
-  portg: portg
+  es: es,
+  pt: pt
 }

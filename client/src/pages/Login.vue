@@ -124,11 +124,11 @@ import { required, sameAs, maxLength, minLength } from 'vuelidate/lib/validators
 export default {
   data () {
     return {
-      langmodel: 'eS',
+      langmodel: 'es',
       localeOptions: [
         { value: 'en-us', label: 'English' },
-        { value: 'eS', label: 'Español' },
-        { value: 'portg', label: 'Português' }
+        { value: 'es', label: 'Español' },
+        { value: 'pt', label: 'Português' }
       ],
       slide: 0,
       baseu: 'Desk.jpg',
