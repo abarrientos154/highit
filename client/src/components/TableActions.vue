@@ -505,7 +505,7 @@ export default {
     eliminarConfirm (id) {
       this.$q.dialog({
         title: this.$t('titulo_dialogConfir'),
-        message: this.$t('text_dialogConfirEli') ,
+        message: this.$t('text_dialogConfirEli'),
         cancel: {
           flat: true,
           label: 'Cancelar'
