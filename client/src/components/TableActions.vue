@@ -103,12 +103,12 @@
             <div class="row">
               <div v-if="ver.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
               <div v-if="ver.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
-              <div :class="`text-caption q-px-lg text-center text-white bg-${ver.color} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{ver.prioridad}}<br>Estado: {{ver.status === 0 ? 'Sin iniciar' : ver.status === 1 ? 'Ejecución' : ver.status === 2 ? 'En espera' : ver.status === 3 ? 'Checkout' : ver.status === 4 ? 'Confirmar' : ver.status === 5 ? 'Finalizado' : ''}}</div>
+              <div :class="`text-caption q-px-lg text-center text-white bg-${ver.color} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{ver.prioridad}}<br>{{$t('form_estado')}}: {{ver.status === 0 ? $t('statusSlt_0') : ver.status === 1 ? $t('statusSlt_1') : ver.status === 2 ? $t('statusSlt_2') : ver.status === 3 ? $t('statusSlt_3') : ver.status === 4 ? $t('statusSlt_4') : ver.status === 5 ? $t('statusSlt_5') : ''}}</div>
             </div>
           </div>
           <div class="q-mb-lg q-mt-md">
-            <div class="text-center text-h6 text-bold">Datos solicitud</div>
-            <div class="text-center text-grey-8">Descripcion de la solicitud</div>
+            <div class="text-center text-h6 text-bold">{{$t('text_datosSolicitud')}}</div>
+            <div class="text-center text-grey-8">{{$t('text_descripcionSlt')}}</div>
           </div>
           <div class="q-px-sm q-mb-md full-width">
             <div class="row">
@@ -119,7 +119,7 @@
                 <div>
                   <div class="text-subtitle1 text-bold">{{ver.empresa}}</div>
                   <div>
-                    <div class="text-bold text-caption text-grey-7">Descripcion del servicio:</div>
+                    <div class="text-bold text-caption text-grey-7">{{$t('text_servicioDescription')}}:</div>
                     <q-scroll-area style="height: 60px;">
                       <div class="text-grey-7" style="font-size: 10px;">{{ver.description}}</div>
                     </q-scroll-area>
@@ -127,11 +127,11 @@
                 </div>
                 <div>
                   <div class="row">
-                    <div class="text-bold q-mr-xs text-grey-7 text-caption">Fecha de solicitud:</div>
+                    <div class="text-bold q-mr-xs text-grey-7 text-caption">{{$t('text_servicioDescription')}}:</div>
                     <div class="text-grey-7 text-caption">{{ver.dateSlt}}</div>
                   </div>
                   <div class="row">
-                    <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
+                    <div class="text-bold q-mr-xs text-grey-7 text-caption">{{$t('form_HoraSlt')}}:</div>
                     <div class="text-grey-7 text-caption">{{ver.timeSlt}}hr</div>
                   </div>
                 </div>
@@ -139,58 +139,58 @@
             </div>
             <div class="q-px-sm q-mb-sm">
               <div v-if="ver.scheduled" class="row justify-center q-mb-sm">
-                <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">Solicitud agendada</div>
+                <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">{{$t('text_agendadaSlt')}}</div>
               </div>
               <div class="row">
                 <div v-if="route === 'solicitudes' || (route === 'solicitudes_history' && rol === 3)" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                  <div class="text-bold text-grey-7">Usuario cliente</div>
+                  <div class="text-bold text-grey-7">{{$t('titulo_userClient')}}</div>
                   <div class="text-grey-7">{{ver.cliente}}</div>
                 </div>
                 <div v-if="route === 'solicitudes' || (route === 'solicitudes_history' && rol !== 3)" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                  <div class="text-bold text-grey-7">Consultor asignado</div>
+                  <div class="text-bold text-grey-7">{{$t('titulo_consultorAsignado')}}</div>
                   <div class="text-grey-7">{{ver.consultor}}</div>
                 </div>
                 <div v-if="ver.equipment" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                  <div class="text-bold text-grey-7">Equipo</div>
+                  <div class="text-bold text-grey-7">{{$t('form_equipo')}}</div>
                   <div class="text-grey-7">{{ver.equipo}}</div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                  <div class="text-bold text-grey-7">Categoria</div>
+                  <div class="text-bold text-grey-7">{{$t('form_categoria')}}</div>
                   <div class="text-grey-7">{{ver.categoria}}</div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                  <div class="text-bold text-grey-7">Fecha y hora de expiración</div>
+                  <div class="text-bold text-grey-7">{{$t('Fecha y hora de expiración')}}</div>
                   <div class="text-grey-7">{{ver.expirationDate}}hr</div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="ver.status > 0">
-                  <div class="text-bold text-grey-7">Fecha de inicio</div>
+                  <div class="text-bold text-grey-7">{{$t('form_fechaInicio')}}</div>
                   <div class="text-grey-7">{{ver.dateBegin}}</div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="ver.status > 0">
-                  <div class="text-bold text-grey-7">Hora de inicio</div>
+                  <div class="text-bold text-grey-7">{{$t('form_HoraInicio')}}</div>
                   <div class="text-grey-7">{{ver.timeBegin}}hr</div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="ver.status === 5">
-                  <div class="text-bold text-grey-7">Fecha estimada de termino</div>
+                  <div class="text-bold text-grey-7">{{$t('titulo_fechaEstimadaTermino')}}</div>
                   <div class="text-grey-7">{{ver.dateEnd}}</div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="ver.status === 5">
-                  <div class="text-bold text-grey-7">Hora estimada de termino</div>
+                  <div class="text-bold text-grey-7">{{$t('titulo_horaEstimadaTermino')}}</div>
                   <div class="text-grey-7">{{ver.timeEnd}}hr</div>
                 </div>
               </div>
             </div>
             <div v-if="hitos.length" class="full-width q-px-sm q-mb-md">
               <div class="q-mb-sm">
-                <div class="text-subtitle1 text-bold">Historial de actividades</div>
-                <div class="text-grey-8">Descripcion de los comentarios realizados</div>
+                <div class="text-subtitle1 text-bold">{{$t('text_historialHitos')}}</div>
+                <div class="text-grey-8">{{$t('text_descripcionComent')}}</div>
               </div>
               <q-list>
                 <div v-for="(item, index) in hitos" :key="index">
                   <div class="row justify-between">
                     <div class="text-grey-8 text-bold">{{item.name}}</div>
                     <div class="row">
-                      <div class="text-grey-8 q-mr-xs text-bold">Fecha</div>
+                      <div class="text-grey-8 q-mr-xs text-bold">{{$t('form_fecha')}}</div>
                       <div class="text-grey-8">{{item.date + ' ' + item.time + 'hr'}}</div>
                     </div>
                   </div>
@@ -201,13 +201,13 @@
             <div v-if="ver.rating" class="column items-center text-grey-8 q-px-sm">
               <q-rating readonly v-model="ver.rating.number" size="3.5em" color="yellow" icon="star_border" icon-selected="star"/>
               <div v-if="ver.rating.comment">
-                <div class="text-bold">Comentario</div>
+                <div class="text-bold">{{$t('text_coment')}}</div>
                 <div>{{ver.rating.comment}}</div>
               </div>
             </div>
           </div>
           <div class="full-width column items-center q-mb-lg">
-            <q-btn class="text-white q-py-xs" color="primary" label="Cerrar Ventana" @click="showModalEditar = !showModalEditar" style="width: 70%; border-radius: 5px;" no-caps/>
+            <q-btn class="text-white q-py-xs" color="primary" :label="$t('accion_cerrarVentana')" @click="showModalEditar = !showModalEditar" style="width: 70%; border-radius: 5px;" no-caps/>
           </div>
         </div>
         <div v-else class="q-pa-lg full-width">
@@ -224,41 +224,41 @@
           <div class="q-px-sm">
             <div class="row q-mb-sm" v-if="route === 'companys'">
               <div class="col">
-                <div class="text-bold text-grey-7">Tipo de contrato</div>
+                <div class="text-bold text-grey-7">{{$t('form_tipoContrato')}}</div>
                 <div class="text-grey-7">{{ver.contrato}}</div>
               </div>
               <div class="col">
-                <div class="text-bold text-grey-7">Inicio y termino de contrato:</div>
+                <div class="text-bold text-grey-7">{{$t('titulo_inicioTerminoContract')}}:</div>
                 <div class="text-grey-7">{{ver.dateBegin}}  {{ver.dateEnd}}</div>
               </div>
             </div>
             <div class="row q-mb-sm" v-if="route === 'companys'">
               <div class="col">
-                <div class="text-bold text-grey-7">Pais</div>
+                <div class="text-bold text-grey-7">{{$t('form_pais')}}</div>
                 <div class="text-grey-7">{{ver.pais}}</div>
               </div>
               <div class="col">
-                <div class="text-bold text-grey-7">Estado</div>
+                <div class="text-bold text-grey-7">{{$t('form_estado')}}</div>
                 <div class="text-grey-7">{{ver.estado}}</div>
               </div>
             </div>
             <div class="row q-mb-sm" v-if="route === 'companys'">
               <div class="col">
-                <div class="text-bold text-grey-7">Ciudad</div>
+                <div class="text-bold text-grey-7">{{$t('form_ciudad')}}</div>
                 <div class="text-grey-7">{{ver.ciudad}}</div>
               </div>
               <div class="col">
-                <div class="text-bold text-grey-7">Direccion</div>
+                <div class="text-bold text-grey-7">{{$t('form_direccion')}}</div>
                 <div class="text-grey-7">{{ver.direction}}</div>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <div class="text-bold text-grey-7">{{route === 'companys' ? 'Codigo postal' : 'Tipo de usuario'}}</div>
+                <div class="text-bold text-grey-7">{{route === 'companys' ? $t('form_codigoPostal') : $t('form_tipoUsuario')}}</div>
                 <div class="text-grey-7">{{route === 'companys' ? ver.postalCode : rol === 2 ? ver.tipo_usuario : 'Highit'}}</div>
               </div>
               <div class="col">
-                <div class="text-bold text-grey-7">Nº de documento</div>
+                <div class="text-bold text-grey-7">{{$t('form_numDocumento')}}</div>
                 <div class="text-grey-7">{{route === 'companys' ? ver.numIdet : ver.Dni}}</div>
               </div>
             </div>
@@ -411,7 +411,7 @@ export default {
       } else {
         if (fch.from && fch.to) {
           this.$q.notify({
-            message: 'La fecha final debe ser posterior a la fecha inicial',
+            message: this.$t('formNotif_validarFecha'),
             color: 'negative'
           })
         }
@@ -449,7 +449,7 @@ export default {
     verItem (itm) {
       const vm = this
       this.$q.loading.show({
-        message: 'Cargando datos...'
+        message: this.$t('accion_cargandoDatos')
       })
       if (this.route === 'conocimientos') {
         setTimeout(function () {
@@ -508,10 +508,10 @@ export default {
         message: this.$t('text_dialogConfirEli'),
         cancel: {
           flat: true,
-          label: 'Cancelar'
+          label: this.$t('accion_cancelar')
         },
         ok: {
-          label: 'Si',
+          label: this.$t('accion_si'),
           flat: true
         }
       }).onOk(() => {
@@ -526,7 +526,7 @@ export default {
       this.$api.delete(this.route + '/' + id).then(res => {
         if (res) {
           this.$q.notify({
-            message: 'Eliminado Correctamente',
+            message: this.$t('formNotif_eliminado'),
             color: 'positive'
           })
           this.getRecord()
@@ -551,7 +551,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: `${val.length ? 'El nombre de este contrato ya esta registrado' : 'Faltan campos por llenar'}`,
+          message: `${val.length ? this.$t('formNotif_contratoRegistrado') : this.$t('formError_datos')}`,
           color: 'negative'
         })
       }
@@ -581,21 +581,21 @@ export default {
     },
     enable (itm) {
       this.$q.dialog({
-        title: '¡Confirmación!',
-        message: `esta seguro que desea ${itm.enable ? 'habilitar' : 'deshabilitar'} este registro.`,
+        title: `¡ ${this.$t('titulo_dialogConfir')} !`,
+        message: `${this.$t('formNotif_seguroDesea')} ${itm.enable ? this.$t('text_habilitar') : this.$t('text_deshabilitar')} ${this.$t('formNotif_esteRegistro')}.`,
         cancel: {
           flat: true,
-          label: 'Cancelar'
+          label: this.$t('accion_cancelar')
         },
         ok: {
-          label: 'Si',
+          label: this.$t('accion_si'),
           flat: true
         }
       }).onOk(() => {
         this.$api.put('update_enable/' + itm._id, { enable: itm.enable }).then(res => {
           if (res) {
             this.$q.notify({
-              message: `${itm.enable ? 'Habilitado' : 'Deshabilitado'} Correctamente`,
+              message: itm.enable ? this.$t('formNotif_habilitado') : this.$t('formNotif_deshabilitado'),
               color: 'positive'
             })
             this.getRecord()
