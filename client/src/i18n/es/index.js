@@ -127,7 +127,6 @@ export default {
   text_recuperarContraseña: '¿Has olvidado tu contraseña?',
   text_navegacion: 'Barra de navegación',
   text_estadisticas: 'Estadisticas de usuarios por empresa',
-  text_cantUsuarios: 'Cantidad de usuarios',
   text_costoContrato: 'Costo de contrato',
   text_acciones: 'Acciones',
   text_minutos: 'Minutos',

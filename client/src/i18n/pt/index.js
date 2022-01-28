@@ -110,7 +110,6 @@ export default {
   text_recuperarContraseña: 'Esqueceu sua senha?',
   text_navegacion: 'Barra de navegação',
   text_estadisticas: 'Estatísticas de usuários por empresa',
-  text_cantUsuarios: 'Quantidade de usuários',
   text_costoContrato: 'Valor de contrato',
   text_acciones: 'Ações',
   text_minutos: 'Minutos',

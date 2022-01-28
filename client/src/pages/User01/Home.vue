@@ -28,7 +28,7 @@ export default {
           0: { targetAxisIndex: 0 }
         },
         vAxes: {
-          0: { title: this.$t('text_cantUsuarios') }
+          0: { title: this.$t('form_numUsuarios') }
         }
       }
     }
