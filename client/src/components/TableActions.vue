@@ -504,8 +504,8 @@ export default {
     },
     eliminarConfirm (id) {
       this.$q.dialog({
-        title: '¡Confirmación!',
-        message: 'esta seguro que desea eliminar el registro.',
+        title: this.$t('titulo_dialogConfir'),
+        message: this.$t('text_dialogConfirEli') ,
         cancel: {
           flat: true,
           label: 'Cancelar'
