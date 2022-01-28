@@ -65,6 +65,7 @@ export default {
   form_ragoSelec: 'Seleccione un rango de 7 días o menos',
   form_descripcionTrabajo: 'Descripción del trabajo realizado',
   form_comenta: 'Comenta aquí...',
+  form_cambiaEstadoSlt: 'Cambia el estado de Solicitud',
 
   formFormat_nombreComercial: 'Highit Service',
   formFormat_razonSocial: 'Highit Service SpA',
@@ -106,6 +107,7 @@ export default {
   formNotif_ingresarCalificacion: 'Debe ingresar la calificación',
   formNotif_superadoRango: 'Has superado el rango de días que tiene una semana',
   formNotif_estadoSltActualizado: 'Estado de solicitud actualizado',
+  formNotif_estadoInvalido: 'Estado invalido ya tiene una solicitud en curso',
 
   accion_ingresar: 'Ingresar',
   accion_cargando: 'Cargando...',
@@ -124,6 +126,7 @@ export default {
   accion_confirmar: 'Confirmar',
   accion_confirmarFin: 'Confirmar finalización',
   accion_reabrirActivi: 'Reabrir actividad',
+  accion_iniciarAtencion: 'Iniciar Atención',
 
   ruta_inicio: 'Inicio',
   ruta_salir: 'Cerrar sesión',
@@ -161,6 +164,7 @@ export default {
   statusSlt_4: 'Por confirmar',
   statusSlt_5: 'Finalizado',
   statusSlt_6: 'Reabierta',
+  statusSlt_iniciada: 'Iniciada',
 
   option_diaria: 'Diaria',
   option_semanal: 'Semanal',
@@ -201,6 +205,8 @@ export default {
   text_archivos: 'Archivos cargados',
   text_dialogConfirPdf: '¿Esta seguro editar tus archivos?, al aceptar se eliminaran los actuales',
   text_datosSolicitud: 'Datos solicitud',
+  text_tomarSlt: 'Tomar solicitud',
+  text_cambiarEstado: 'Cambiar estado',
   text_descripcionSlt: 'Descripción de la solicitud',
   text_historialHitos: 'Historial de actividades',
   text_descripcionComent: 'Descripción de los comentarios realizados',
@@ -211,6 +217,7 @@ export default {
   text_habilitar: 'habilitar',
   text_deshabilitar: 'deshabilitar',
   text_numSlt: 'Número de solicitud',
+  text_modificaEstadoSlt: 'Modifica el estado de la solicitud',
 
   titulo_recuperarContraseña1: 'Responde las preguntas',
   titulo_recuperarContraseña2: 'Establece tu nueva',

@@ -17,7 +17,7 @@
           <div class="row">
             <div v-if="solicitud.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
             <div v-if="solicitud.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
-            <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : 'Prioridad'}}<br>{{$t('form_estado')}}: {{solicitud.status === 0 ? $t('statusSlt_0') : solicitud.status === 1 ? $t('statusSlt_1') : solicitud.status === 2 ? $t('statusSlt_2') : solicitud.status === 3 ? $t('statusSlt_3') : solicitud.status === 4 ? $t('statusSlt_4') : solicitud.status === 5 ? $t('statusSlt_5') : $t('statusSlt_6')}}</div>
+            <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : $t('form_prioridad')}}<br>{{$t('form_estado')}}: {{solicitud.status === 0 ? $t('statusSlt_0') : solicitud.status === 1 ? $t('statusSlt_1') : solicitud.status === 2 ? $t('statusSlt_2') : solicitud.status === 3 ? $t('statusSlt_3') : solicitud.status === 4 ? $t('statusSlt_4') : solicitud.status === 5 ? $t('statusSlt_5') : $t('statusSlt_6')}}</div>
           </div>
         </div>
         <div class="q-mb-lg q-mt-md">

@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="q-pa-md q-mb-lg">
-      <div class="text-h4 text-bold">SOLICITUDES</div>
-      <div class="text-grey text-h6">Listados de solicitudes segun su estado</div>
+      <div class="text-h4 text-bold">{{$t('titulo_moduloSolicitudes')}}</div>
+      <div class="text-grey text-h6">{{$t('subtitulo_listSltEstado')}}</div>
     </div>
     <ListaSlt ref="lista" @ver="verSlt($event)"/>
 
@@ -10,18 +10,18 @@
       <q-card class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
         <div class="row q-px-lg items-center justify-between full-width">
           <div class="row">
-            <div class="q-mr-xs">Nº de solicitud:</div>
+            <div class="q-mr-xs">{{$t('text_numSlt')}}:</div>
             <div class="text-bold">{{solicitud.num}}</div>
           </div>
           <div class="row">
             <div v-if="solicitud.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
             <div v-if="solicitud.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
-            <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : 'Prioridad'}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En espera' : solicitud.status === 3 ? 'Checkout' : solicitud.status === 4 ? 'Confirmar' : solicitud.status === 5 ? 'Finalizado' : 'Reabierta'}}</div>
+            <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : $t('form_prioridad')}}<br>{{$t('form_estado')}}: {{solicitud.status === 0 ? $t('statusSlt_0') : solicitud.status === 1 ? $t('statusSlt_1') : solicitud.status === 2 ? $t('statusSlt_2') : solicitud.status === 3 ? $t('statusSlt_3') : solicitud.status === 4 ? $t('statusSlt_4') : solicitud.status === 5 ? $t('statusSlt_5') : $t('statusSlt_6')}}</div>
           </div>
         </div>
         <div class="q-mb-lg q-mt-md">
-          <div class="text-center text-h6 text-bold">{{solicitud.status === 0 && solicitud.sltBegin === 0 ? 'Tomar solicitud' : solicitud.status === 1 || solicitud.status === 2 ||solicitud.status === 3 ? 'Cambiar estado' : 'Datos solicitud'}}</div>
-          <div class="text-center text-grey-8">Modifica el estado de la solicitud</div>
+          <div class="text-center text-h6 text-bold">{{solicitud.status === 0 && solicitud.sltBegin === 0 ? $t('text_tomarSlt') : solicitud.status === 1 || solicitud.status === 2 ||solicitud.status === 3 ? $t('text_cambiarEstado') : $t('text_datosSolicitud')}}</div>
+          <div class="text-center text-grey-8">{{$t('text_modificaEstadoSlt')}}</div>
         </div>
         <div class="q-px-sm q-mb-md full-width">
           <div class="row">
@@ -30,9 +30,9 @@
             </q-avatar>
             <div class="q-px-sm q-py-md col column justify-between">
               <div>
-                <div class="text-subtitle1 text-bold">{{solicitud.empresa ? solicitud.empresa.name : 'Empresa'}}</div>
+                <div class="text-subtitle1 text-bold">{{solicitud.empresa ? solicitud.empresa.name : $t('form_empresa')}}</div>
                 <div>
-                  <div class="text-bold text-caption text-grey-7">Descripcion del servicio:</div>
+                  <div class="text-bold text-caption text-grey-7">{{$t('text_servicioDescription')}}:</div>
                   <q-scroll-area style="height: 60px;">
                     <div class="text-grey-7" style="font-size: 10px;">{{solicitud.description}}</div>
                   </q-scroll-area>
@@ -40,11 +40,11 @@
               </div>
               <div>
                 <div class="row">
-                  <div class="text-bold q-mr-xs text-grey-7 text-caption">Fecha de solicitud:</div>
+                  <div class="text-bold q-mr-xs text-grey-7 text-caption">{{$t('form_fechaSlt')}}:</div>
                   <div class="text-grey-7 text-caption">{{solicitud.date}}</div>
                 </div>
                 <div class="row">
-                  <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
+                  <div class="text-bold q-mr-xs text-grey-7 text-caption">{{$t('form_HoraSlt')}}:</div>
                   <div class="text-grey-7 text-caption">{{solicitud.time}}hr</div>
                 </div>
               </div>
@@ -52,62 +52,62 @@
           </div>
           <div class="q-px-sm">
             <div v-if="solicitud.scheduled" class="row justify-center q-mb-sm">
-              <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">Solicitud agendada</div>
+              <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">{{$t('text_agendadaSlt')}}</div>
             </div>
             <div class="row">
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="text-bold text-grey-7">Tipo de contrato</div>
+                <div class="text-bold text-grey-7">{{$t('form_tipoContrato')}}</div>
                 <div class="text-grey-7">{{solicitud.contrato}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status > 0">
-                <div class="text-bold text-grey-7">Usuario asignado</div>
+                <div class="text-bold text-grey-7">{{$t('titulo_userAsignado')}}</div>
                 <div class="text-grey-7">{{user.name + ' ' + user.last_name}}</div>
               </div>
               <div v-if="solicitud.equipment" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="text-bold text-grey-7">Equipo</div>
+                <div class="text-bold text-grey-7">{{$t('form_equipo')}}</div>
                 <div class="text-grey-7">{{solicitud.equipo ? solicitud.equipo.name : ''}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="text-bold text-grey-7">Categoria</div>
+                <div class="text-bold text-grey-7">{{$t('form_categoria')}}</div>
                 <div class="text-grey-7">{{solicitud.categoria ? solicitud.categoria.nombre : ''}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="text-bold text-grey-7">Departamento</div>
+                <div class="text-bold text-grey-7">{{$t('form_departamento')}}</div>
                 <div class="text-grey-7">{{solicitud.department}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="text-bold text-grey-7">Fecha y hora de expiración</div>
+                <div class="text-bold text-grey-7">{{$t('titulo_fechaHoraExp')}}</div>
                 <div class="text-grey-7">{{solicitud.expirationDate}}hr</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status > 0">
-                <div class="text-bold text-grey-7">Fecha de inicio</div>
+                <div class="text-bold text-grey-7">{{$t('form_fechaInicio')}}</div>
                 <div class="text-grey-7">{{solicitud.dateBegin}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status > 0">
-                <div class="text-bold text-grey-7">Hora de inicio</div>
+                <div class="text-bold text-grey-7">{{$t('form_HoraInicio')}}</div>
                 <div class="text-grey-7">{{solicitud.timeBegin}}hr</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status === 5">
-                <div class="text-bold text-grey-7">Fecha estimada de termino</div>
+                <div class="text-bold text-grey-7">{{$t('titulo_fechaEstimadaTermino')}}</div>
                 <div class="text-grey-7">{{solicitud.dateEnd}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status === 5">
-                <div class="text-bold text-grey-7">Hora estimada de termino</div>
+                <div class="text-bold text-grey-7">{{$t('titulo_horaEstimadaTermino')}}</div>
                 <div class="text-grey-7">{{solicitud.timeEnd}}</div>
               </div>
             </div>
           </div>
           <div v-if="solicitud.hitos.length" class="full-width q-px-sm q-mb-md">
             <div class="q-mb-sm">
-              <div class="text-subtitle1 text-bold">Historial de actividades</div>
-              <div class="text-grey-8">Descripcion de los comentarios realizados</div>
+              <div class="text-subtitle1 text-bold">{{$t('text_historialHitos')}}</div>
+              <div class="text-grey-8">{{$t('text_descripcionComent')}}</div>
             </div>
             <q-list>
               <div v-for="(item, index) in solicitud.hitos" :key="index">
                 <div class="row justify-between">
                   <div class="text-grey-8 text-bold">{{item.name}}</div>
                   <div class="row">
-                    <div class="text-grey-8 q-mr-xs text-bold">Fecha</div>
+                    <div class="text-grey-8 q-mr-xs text-bold">{{$t('form_fecha')}}</div>
                     <div class="text-grey-8">{{item.date + ' ' + item.time + 'hr'}}</div>
                   </div>
                 </div>
@@ -117,21 +117,21 @@
           </div>
           <div class="q-px-sm q-mb-md" v-if="(solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6">
             <div>
-              <div class="text-caption text-grey-8">Cambia el estado de Solicitud</div>
+              <div class="text-caption text-grey-8">{{$t('form_cambiaEstadoSlt')}}</div>
               <q-select dense filled v-model="form.status" :options="solicitud.estados" map-options option-label="name" emit-value option-value="status" :error="$v.form.status.$error" @blur="$v.form.status.$touch()"/>
             </div>
             <div>
-              <div class="text-caption text-grey-8">Nombre de la actividad</div>
-              <q-input dense v-model="form.name" filled placeholder="Nombre" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
+              <div class="text-caption text-grey-8">{{$t('form_nombreActivi')}}</div>
+              <q-input dense v-model="form.name" filled :placeholder="$t('form_nombre')" :error-message="$t('formError_campo')" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
             </div>
             <div>
-              <div class="text-caption text-grey-8">Descripción del trabajo realizado</div>
-              <q-input dense v-model="form.description" filled type="textarea" placeholder="Hasta 500 caracteres" error-message="Este campo es requerido" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
+              <div class="text-caption text-grey-8">{{$t('form_descripcionTrabajo')}}</div>
+              <q-input dense v-model="form.description" filled type="textarea" :placeholder="$t('form_numCaracteres')" :error-message="$t('formError_campo')" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
             </div>
           </div>
         </div>
         <div class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 0 && solicitud.sltBegin === 0 ? 'Iniciar Atención' : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? 'Cambiar estado' : 'Cerrar Ventana'" style="width: 70%; border-radius: 5px;" @click="solicitud.status === 0 && solicitud.sltBegin === 0 ? statusRequest(1) : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? saveHito() : slt = !slt" no-caps/>
+          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 0 && solicitud.sltBegin === 0 ? $t('accion_iniciarAtencion') : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? $t('text_cambiarEstado') : $t('accion_cerrarVentana')" style="width: 70%; border-radius: 5px;" @click="solicitud.status === 0 && solicitud.sltBegin === 0 ? statusRequest(1) : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? saveHito() : slt = !slt" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -155,10 +155,10 @@ export default {
       contratos: [],
       hitos: [],
       estados: [
-        { name: 'Iniciada', status: 1 },
-        { name: 'En pausa', status: 2 },
-        { name: 'Checkout', status: 3 },
-        { name: 'Finalizado', status: 4 }
+        { name: this.$t('statusSlt_iniciada'), status: 1 },
+        { name: this.$t('statusSlt_2'), status: 2 },
+        { name: this.$t('statusSlt_3'), status: 3 },
+        { name: this.$t('statusSlt_5'), status: 4 }
       ],
       slt: false,
       estado: false
@@ -244,7 +244,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: this.$v.form.$error ? 'Debe ingresar todos los datos correspondientes' : 'Estado invalido ya tiene una solicitud en curso',
+          message: this.$v.form.$error ? this.$t('formError_allDatosCorrectos') : this.$t('formNotif_estadoInvalido'),
           color: 'negative'
         })
       }
@@ -267,7 +267,7 @@ export default {
             description: `El consultor ${this.user.name} ${this.user.last_name}, ha ${this.solicitud.status === 0 ? 'aceptado llevar a cabo' : `modificado el estado a ${idx === 1 ? '"Iniciada"' : idx === 2 ? '"En pausa"' : idx === 3 ? '"Checkout"' : '"Confirmar"'}, de`} la actividad en la que solicitas: ${this.solicitud.description}`
           })
           this.$q.notify({
-            message: 'Estado de solicitud actualizado',
+            message: this.$t('formNotif_estadoSltActualizado'),
             color: 'positive'
           })
           this.solicitud = { hitos: [] }
