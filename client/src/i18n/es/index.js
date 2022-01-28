@@ -154,6 +154,7 @@ export default {
   text_intruccionPdf: 'Puedes presionar 2 veces para subir 2 archivos',
   text_archivos: 'Archivos cargados',
   text_dialogConfirPdf: '¿Esta seguro editar tus archivos?, al aceptar se eliminaran los actuales',
+  
   text_datosSolicitud: 'Datos solicitud',
   text_descripcionSlt: 'Descripcion de la solicitud',
   text_historialHitos: 'Historial de actividades',

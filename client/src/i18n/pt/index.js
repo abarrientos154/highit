@@ -137,6 +137,7 @@ export default {
   text_intruccionPdf: 'Puedes presionar 2 veces para subir 2 archivos',
   text_archivos: 'Archivos cargados',
   text_dialogConfirPdf: '¿Esta seguro editar tus archivos?, al aceptar se eliminaran los actuales',
+  text_dialogConfirEli: 'Está seguro de que deseja eliminar o registro? ',
 
   titulo_recuperarContraseña1: 'Responde las preguntas',
   titulo_recuperarContraseña2: 'Establece tu nueva',
