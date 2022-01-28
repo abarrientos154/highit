@@ -4,17 +4,17 @@
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pb-sm q-mb-md">
         <div class="q-px-lg q-mb-sm">
           <div class="row items-center justify-between">
-            <div class="text-h6 text-bold">Solicitudes sin comenzar</div>
+            <div class="text-h6 text-bold">{{$t('titulo_sltSinComenzar')}}</div>
             <q-btn v-if="solicitudes.length > 2" dense flat round icon="pending" @click="gestionar(solicitudes)"/>
           </div>
-          <div class="text-grey-8">{{rol === 3 ? 'Listado de actividades de tu departamento sin trabajar' : 'Estas son tus solicitudes aun no tomadas'}}</div>
+          <div class="text-grey-8">{{rol === 3 ? $t('subtitulo_actividadesSinTrabajar') : $t('subtitulo_sltNoTomadas')}}</div>
         </div>
         <q-scroll-area v-if="solicitudes.length" :style="solicitudes.length === 1 ? 'height: 210px;' : 'height: 405px;'">
           <q-list class="q-px-lg q-pt-md">
             <q-card class="q-mb-md full-width cursor-pointer" v-for="(item, index) in solicitudes" :key="index" @click="verSlt(item, index)">
               <div class="row q-px-lg items-center justify-between">
                 <div class="row text-caption">
-                  <div class="q-mr-xs">Nº de solicitud:</div>
+                  <div class="q-mr-xs">{{$t('text_numSlt')}}:</div>
                   <div class="text-bold">{{index + 1}}</div>
                 </div>
                 <div class="row">
@@ -29,12 +29,12 @@
                 </q-avatar>
                 <div class="q-px-sm q-py-md col">
                   <div class="row">
-                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">{{$t('form_fechaSlt')}}:</div>
                     <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                   </div>
                   <div class="text-subtitle1 text-bold">{{item.empresa.name}}</div>
                   <div>
-                    <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                    <div class="text-bold text-caption text-grey">{{$t('text_servicioDescription')}}</div>
                     <div class="text-grey ellipsis-3-lines" style="font-size: 10px;">{{item.description}}</div>
                   </div>
                 </div>
@@ -47,17 +47,17 @@
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pb-md q-mb-md">
         <div class="q-px-lg q-mb-sm">
           <div class="row items-center justify-between">
-            <div class="text-h6 text-bold">{{rol === 3 ? 'Solicitud activa' : 'Solicitudes pendientes'}}</div>
+            <div class="text-h6 text-bold">{{rol === 3 ? $t('subtitulo_sltActiva') : $t('subtitulo_sltPendientes')}}</div>
             <q-btn v-if="rol !== 3 && sltBegin.length > 2" dense flat round icon="pending" @click="gestionar(sltBegin)"/>
           </div>
-          <div class="text-grey-8">{{rol === 3 ? 'Actividad en curso' : 'Estas son tus solicitudes que no están resueltas'}}</div>
+          <div class="text-grey-8">{{rol === 3 ? this.$t('subtitulo_activiCursi') : $t('subtitulo_sltNoResueltas')}}</div>
         </div>
         <q-scroll-area v-if="sltBegin.length" :style="sltBegin.length === 1 && rol !== 3 ? 'height: 210px;' : 'height: 405px;'">
           <q-list class="q-px-lg q-pt-md">
             <q-card :class="`${rol !== 3 ? 'q-mb-md' : ''} full-width cursor-pointer`" v-for="(item, index) in sltBegin" :key="index" @click="verSlt(item, index)" :style="rol === 3 ? 'height: 370px;' : ''">
               <div class="row q-px-lg items-center justify-between">
                 <div class="row text-caption">
-                  <div class="q-mr-xs">Nº de solicitud:</div>
+                  <div class="q-mr-xs">{{$t('text_numSlt')}}:</div>
                   <div class="text-bold">{{index + 1}}</div>
                 </div>
                 <div class="row">
@@ -72,24 +72,24 @@
                 </q-avatar>
                 <div class="text-h6 text-bold">{{item.empresa.name}}</div>
                 <div class="text-caption text-grey-7">
-                  <div class="ellipsis-3-lines q-mb-sm"><b>Descripcion del servicio:</b> {{item.description}}</div>
+                  <div class="ellipsis-3-lines q-mb-sm"><b>{{$t('text_servicioDescription')}}:</b> {{item.description}}</div>
                   <div class="row">
                     <div class="col">
-                      <div class="text-bold">Fecha de solicitud:</div>
+                      <div class="text-bold">{{$t('form_fechaSlt')}}:</div>
                       <div>{{item.dateSlt}}</div>
                     </div>
                     <div class="col">
-                      <div class="text-bold">Hora de solicitud:</div>
+                      <div class="text-bold">{{$t('form_HoraSlt')}}:</div>
                       <div>{{item.timeSlt}}hr</div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col">
-                      <div class="text-bold">Fecha de inicio</div>
+                      <div class="text-bold">{{$t('form_fechaInicio')}}</div>
                       <div>{{item.dateBegin}}</div>
                     </div>
                     <div class="col">
-                      <div class="text-bold">Hora de inicio</div>
+                      <div class="text-bold">{{$t('form_HoraInicio')}}</div>
                       <div>{{item.timeBegin}}hr</div>
                     </div>
                   </div>
@@ -101,12 +101,12 @@
                 </q-avatar>
                 <div class="q-px-sm q-py-md col">
                   <div class="row">
-                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">{{$t('form_fechaSlt')}}:</div>
                     <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                   </div>
                   <div class="text-subtitle1 text-bold">{{item.empresa.name}}</div>
                   <div>
-                    <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                    <div class="text-bold text-caption text-grey">{{$t('text_servicioDescription')}}</div>
                     <div class="text-grey ellipsis-3-lines" style="font-size: 10px;">{{item.description}}</div>
                   </div>
                 </div>
@@ -119,17 +119,17 @@
       <div v-if="sltReopen.length" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pb-sm q-mb-md">
         <div class="q-px-lg q-mb-sm">
           <div class="row items-center justify-between">
-            <div class="text-h6 text-bold">Solicitudes Reabiertas</div>
+            <div class="text-h6 text-bold">{{$t('subtitulo_sltReabiertas')}}</div>
             <q-btn v-if="sltReopen.length > 2" dense flat round icon="pending" @click="gestionar(sltReopen)"/>
           </div>
-          <div class="text-grey-8">{{rol === 3 ? 'Listado de actividades reabiertas' : 'Estas son las solicitudes que has reabierto'}}</div>
+          <div class="text-grey-8">{{rol === 3 ? $t('subtitulo_listActiviReabiertas') : $t('subtitulo_sltReabiertasPorTi')}}</div>
         </div>
         <q-scroll-area :style="sltReopen.length === 1 ? 'height: 210px;' : 'height: 405px;'">
           <q-list class="q-px-lg q-pt-md">
             <q-card class="q-mb-md full-width cursor-pointer" v-for="(item, index) in sltReopen" :key="index" @click="verSlt(item, index)">
               <div class="row q-px-lg items-center justify-between">
                 <div class="row text-caption">
-                  <div class="q-mr-xs">Nº de solicitud:</div>
+                  <div class="q-mr-xs">{{$t('text_numSlt')}}:</div>
                   <div class="text-bold">{{index + 1}}</div>
                 </div>
                 <div class="row">
@@ -144,12 +144,12 @@
                 </q-avatar>
                 <div class="q-px-sm q-py-md col">
                   <div class="row">
-                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">{{$t('form_fechaSlt')}}:</div>
                     <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                   </div>
                   <div class="text-subtitle1 text-bold">{{item.empresa.name}}</div>
                   <div>
-                    <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                    <div class="text-bold text-caption text-grey">{{$t('text_servicioDescription')}}</div>
                     <div class="text-grey ellipsis-3-lines" style="font-size: 10px;">{{item.description}}</div>
                   </div>
                 </div>
@@ -162,17 +162,17 @@
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pb-md q-mb-md">
         <div class="q-px-lg q-mb-sm">
           <div class="row items-center justify-between">
-            <div class="text-h6 text-bold">Solicitudes pausadas</div>
+            <div class="text-h6 text-bold">{{$t('subtitulo_sltPausadas')}}</div>
             <q-btn v-if="sltProgress.length > 2" dense flat round icon="pending" @click="gestionar(sltProgress)"/>
           </div>
-          <div class="text-grey-8">{{rol === 3 ? 'Listado de actividades por finalizar' : 'Estas son tus solicitudes que no han sido finalizadas'}}</div>
+          <div class="text-grey-8">{{rol === 3 ? $t('subtitulo_listActiviPorFin') : $t('subtitulo_tusSltNoFin')}}</div>
         </div>
         <q-scroll-area v-if="sltProgress.length" :style="sltProgress.length === 1 ? 'height: 210px;' : 'height: 405px;'">
           <q-list class="q-px-lg q-pt-md">
             <q-card class="q-mb-md full-width cursor-pointer" v-for="(item, index) in sltProgress" :key="index" @click="verSlt(item, index)">
               <div class="row q-px-lg items-center justify-between">
                 <div class="row text-caption">
-                  <div class="q-mr-xs">Nº de solicitud:</div>
+                  <div class="q-mr-xs">{{$t('text_numSlt')}}:</div>
                   <div class="text-bold">{{index + 1}}</div>
                 </div>
                 <div class="row">
@@ -187,12 +187,12 @@
                 </q-avatar>
                 <div class="q-px-sm q-py-md col">
                   <div class="row">
-                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">{{$t('form_fechaSlt')}}:</div>
                     <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                   </div>
                   <div class="text-subtitle1 text-bold">{{item.empresa.name}}</div>
                   <div>
-                    <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                    <div class="text-bold text-caption text-grey">{{$t('text_servicioDescription')}}</div>
                     <div class="text-grey ellipsis-3-lines" style="font-size: 10px;">{{item.description}}</div>
                   </div>
                 </div>
@@ -205,17 +205,17 @@
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pb-md q-mb-md">
         <div class="q-px-lg q-mb-sm">
           <div class="row items-center justify-between">
-            <div class="text-h6 text-bold">Solicitudes en checkout</div>
+            <div class="text-h6 text-bold">{{$t('subtitulo_sltCheck')}}</div>
             <q-btn v-if="sltCheckout.length > 2" dense flat round icon="pending" @click="gestionar(sltCheckout)"/>
           </div>
-          <div class="text-grey-8">{{rol === 3 ? 'Listado de actividades por verificar' : 'Estas son tus solicitudes por verificar'}}</div>
+          <div class="text-grey-8">{{rol === 3 ? $t('subtitulo_listActiviPorVerify') : $t('subtitulo_tusSltPorVerify')}}</div>
         </div>
         <q-scroll-area v-if="sltCheckout.length" :style="sltCheckout.length === 1 ? 'height: 210px;' : 'height: 405px;'">
           <q-list class="q-px-lg q-pt-md">
             <q-card class="q-mb-md full-width cursor-pointer" v-for="(item, index) in sltCheckout" :key="index" @click="verSlt(item, index)">
               <div class="row q-px-lg items-center justify-between">
                 <div class="row text-caption">
-                  <div class="q-mr-xs">Nº de solicitud:</div>
+                  <div class="q-mr-xs">{{$t('text_numSlt')}}:</div>
                   <div class="text-bold">{{index + 1}}</div>
                 </div>
                 <div class="row">
@@ -230,12 +230,12 @@
                 </q-avatar>
                 <div class="q-px-sm q-py-md col">
                   <div class="row">
-                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                    <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">{{$t('form_fechaSlt')}}:</div>
                     <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                   </div>
                   <div class="text-subtitle1 text-bold">{{item.empresa.name}}</div>
                   <div>
-                    <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                    <div class="text-bold text-caption text-grey">{{$t('text_servicioDescription')}}</div>
                     <div class="text-grey ellipsis-3-lines" style="font-size: 10px;">{{item.description}}</div>
                   </div>
                 </div>
@@ -248,10 +248,10 @@
       <div :class="`${sltReopen.length ? 'col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6' : 'full-width'} q-pb-md`">
         <div class="q-px-lg q-mb-sm">
           <div class="row items-center justify-between">
-            <div class="text-h6 text-bold">Solicitudes por confirmar</div>
+            <div class="text-h6 text-bold">{{$t('subtitulo_sltPorConfirmar')}}</div>
             <q-btn v-if="sltReopen.length ? sltConfirm.length > 2 : sltConfirm.length > 4" dense flat round icon="pending" @click="gestionar(sltConfirm)"/>
           </div>
-          <div class="text-grey-8">{{rol === 3 ? 'Listado de actividades en espera de confirmacion' : 'Confirma que tus solicitudes han sido finalizadas'}}</div>
+          <div class="text-grey-8">{{rol === 3 ? $t('subtitulo_listEsperaConfirm') : $t('subtitulo_confirmaSltFinalizadas')}}</div>
         </div>
         <q-scroll-area v-if="sltConfirm.length" :style="!sltReopen.length ? sltConfirm.length < 3 ? 'height: 210px;' : 'height: 405px;' : sltConfirm.length === 1 ? 'height: 210px;' : 'height: 405px;'">
           <q-list :class="`${!sltReopen.length ? 'row' : 'q-px-lg'} q-pt-md`">
@@ -259,7 +259,7 @@
               <q-card class="full-width cursor-pointer" @click="verSlt(item, index)">
                 <div class="row q-px-lg items-center justify-between">
                   <div class="row text-caption">
-                    <div class="q-mr-xs">Nº de solicitud:</div>
+                    <div class="q-mr-xs">{{$t('text_numSlt')}}:</div>
                     <div class="text-bold">{{index + 1}}</div>
                   </div>
                   <div class="row">
@@ -274,12 +274,12 @@
                   </q-avatar>
                   <div class="q-px-sm q-py-md col">
                     <div class="row">
-                      <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                      <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">{{$t('form_fechaSlt')}}:</div>
                       <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                     </div>
                     <div class="text-subtitle1 text-bold">{{item.empresa.name}}</div>
                     <div>
-                      <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                      <div class="text-bold text-caption text-grey">{{$t('text_servicioDescription')}}</div>
                       <div class="text-grey ellipsis-3-lines" style="font-size: 10px;">{{item.description}}</div>
                     </div>
                   </div>
@@ -296,21 +296,21 @@
         <div class="row items-center full-width">
           <div class="q-py-lg q-pl-lg col">
             <div class="q-mb-md">
-              <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un departamento</div>
+              <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecDepart')}}</div>
               <q-select dense filled v-model="depart" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="filtrarSlts(1)"/>
             </div>
             <div class="q-mb-md">
-              <div class="text-bold text-subtitle1">Tipo de gestion</div>
+              <div class="text-bold text-subtitle1">{{$t('form_tipoGestion')}}</div>
               <div class="row justify-between">
-                <q-radio v-model="type" :val="1" label="Diaria" @input="selecType()"/>
-                <q-radio v-model="type" :val="2" label="Semanal" @input="selecType()"/>
-                <q-radio v-model="type" :val="3" label="Mensual" @input="selecType()"/>
-                <q-radio v-model="type" :val="4" label="Anual" @input="selecType()"/>
+                <q-radio v-model="type" :val="1" :label="$t('option_diaria')" @input="selecType()"/>
+                <q-radio v-model="type" :val="2" :label="$t('option_semanal')" @input="selecType()"/>
+                <q-radio v-model="type" :val="3" :label="$t('option_mensual')" @input="selecType()"/>
+                <q-radio v-model="type" :val="4" :label="$t('option_anual')" @input="selecType()"/>
               </div>
             </div>
             <div v-if="type === 1" class="q-mb-md">
-              <div class="text-bold text-subtitle1 q-mb-sm">Ingresar fecha</div>
-              <q-input dense filled readonly v-model="fecha" placeholder="AAAA-MM-DD" @click="$refs.qDateProxy.show()">
+              <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_ingresaFecha')}}</div>
+              <q-input dense filled readonly v-model="fecha" :placeholder="$t('formFormat_fecha')" @click="$refs.qDateProxy.show()">
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -321,8 +321,8 @@
               </q-input>
             </div>
             <div v-if="type === 2" class="q-mb-md">
-              <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un rango de 7 dias o menos</div>
-              <q-input  dense filled readonly v-model="semana" placeholder="AAAA-MM-DD ... AAAA-MM-DD" @click="$refs.qDateProxy.show()">
+              <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_ragoSelec')}}</div>
+              <q-input  dense filled readonly v-model="semana" :placeholder="$t('formFormat_fecha') + '...' + $t('formFormat_fecha')" @click="$refs.qDateProxy.show()">
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -333,8 +333,8 @@
               </q-input>
             </div>
             <div v-if="type === 3 || type === 4" class="q-mb-md">
-              <div class="text-bold text-subtitle1 q-mb-sm">{{type === 4 ? 'Seleccione un año' : 'Seleccione un mes'}}</div>
-              <q-input dense filled readonly v-model="fecha" :placeholder="type == 4 ? 'AAAA' : 'MM'" :mask="type == 4 ? '####' : '##'"  @click="$refs.qDateProxy.show()">
+              <div class="text-bold text-subtitle1 q-mb-sm">{{type === 4 ? $t('option_selecA') : $t('option_selecMes')}}</div>
+              <q-input dense filled readonly v-model="fecha" :placeholder="type == 4 ? St('formFormat_year') : $t('formFormat_mes')" :mask="type == 4 ? '####' : '##'"  @click="$refs.qDateProxy.show()">
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -348,11 +348,11 @@
           <div class="col">
             <q-scroll-area style="height:275px;">
               <q-list class="q-px-lg full-height column justify-center">
-                <div v-if="!slts.length" class="text-center text-grey text-italic text-blod text-h6">No hay resultados</div>
+                <div v-if="!slts.length" class="text-center text-grey text-italic text-blod text-h6">{{$t('formNotif_noResultados')}}</div>
                 <q-card class="q-mb-md full-width" v-for="(item, index) in slts" :key="index" @click="verSlt(item, index)">
                   <div class="row q-px-lg items-center justify-between">
                     <div class="row text-caption">
-                      <div class="q-mr-xs">Nº de solicitud:</div>
+                      <div class="q-mr-xs">{{$t('text_numSlt')}}:</div>
                       <div class="text-bold">{{index + 1}}</div>
                     </div>
                     <div class="row">
@@ -367,12 +367,12 @@
                     </q-avatar>
                     <div class="q-px-sm q-py-md col">
                       <div class="row">
-                        <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">Fecha de solicitud:</div>
+                        <div class="text-bold q-mr-xs text-grey" style="font-size: 10px;">{{$t('form_fechaSlt')}}:</div>
                         <div class="text-grey" style="font-size: 10px;">{{item.dateSlt}}</div>
                       </div>
                       <div class="text-subtitle1 text-bold">{{item.empresa.name}}</div>
                       <div>
-                        <div class="text-bold text-caption text-grey">Descripcion del servicio</div>
+                        <div class="text-bold text-caption text-grey">{{$t('text_servicioDescription')}}</div>
                         <div class="text-grey ellipsis-3-lines" style="font-size: 10px;">{{item.description}}</div>
                       </div>
                     </div>
@@ -494,7 +494,7 @@ export default {
       } else { this.val = true }
       if (!this.val) {
         this.$q.notify({
-          message: 'Has superado el rango de dias que tiene una semana',
+          message: this.$t('formNotif_superadoRango'),
           color: 'negative'
         })
         this.semana = ''

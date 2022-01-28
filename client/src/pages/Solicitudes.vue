@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="q-pa-md q-mb-lg">
-      <div class="text-h4 text-bold">SOLICITUDES</div>
-      <div class="text-grey text-h6">Listados de solicitudes segun su estado</div>
+      <div class="text-h4 text-bold">{{$t('titulo_moduloSolicitudes')}}</div>
+      <div class="text-grey text-h6">{{$t('subtitulo_listSltEstado')}}</div>
       <NewSlt @actualizarPadre="$refs.lista.getSltUser()"/>
     </div>
     <ListaSlt ref="lista" @ver="verSlt($event)"/>
@@ -11,13 +11,13 @@
       <q-card class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
         <div class="row q-px-lg items-center justify-between full-width">
           <div class="row">
-            <div class="q-mr-xs">Nº de solicitud:</div>
+            <div class="q-mr-xs">{{$t('text_numSlt')}}:</div>
             <div class="text-bold">{{solicitud.num}}</div>
           </div>
           <div class="row">
             <div v-if="solicitud.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
             <div v-if="solicitud.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
-            <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : 'Prioridad'}}<br>Estado: {{solicitud.status === 0 ? 'Sin iniciar' : solicitud.status === 1 ? 'Ejecución' : solicitud.status === 2 ? 'En espera' : solicitud.status === 3 ? 'Checkout' : solicitud.status === 4 ? 'Confirmar' : solicitud.status === 5 ? 'Finalizado' : 'Reabierta'}}</div>
+            <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">{{solicitud.prioridad ? solicitud.prioridad.nombre : 'Prioridad'}}<br>{{$t('form_estado')}}: {{solicitud.status === 0 ? $t('statusSlt_0') : solicitud.status === 1 ? $t('statusSlt_1') : solicitud.status === 2 ? $t('statusSlt_2') : solicitud.status === 3 ? $t('statusSlt_3') : solicitud.status === 4 ? $t('statusSlt_4') : solicitud.status === 5 ? $t('statusSlt_5') : $t('statusSlt_6')}}</div>
           </div>
         </div>
         <div class="q-mb-lg q-mt-md">

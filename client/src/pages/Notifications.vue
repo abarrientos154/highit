@@ -38,7 +38,7 @@
               </q-avatar>
               <div class="q-px-sm q-py-md col column justify-between">
                 <div>
-                  <div class="text-subtitle1 text-bold">{{datos.empresa ? datos.empresa.name : 'Empresa'}}</div>
+                  <div class="text-subtitle1 text-bold">{{datos.empresa ? datos.empresa.name : $t('form_empresa')}}</div>
                   <div>
                     <div class="text-bold text-caption text-grey-7">{{$t('form_descripcion')}}</div>
                     <q-scroll-area style="height: 60px;">
