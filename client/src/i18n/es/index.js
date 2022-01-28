@@ -65,7 +65,7 @@ export default {
 
   formError_campo: 'Este campo es requerido',
   formError_perfil: 'Toca para seleccionar la foto de perfil',
-  formError_validacionContraseña: 'ingrese una contraseña valida, minimo 6 caracteres',
+  formError_validacionContraseña: 'Ingrese una contraseña valida, minimo 6 caracteres',
   formError_datos: 'Faltan campos por llenar',
   formError_datosRegistrados: 'Datos ya registrados en el sistema',
   formError_empresaDeshabilitada: 'La empresa a la que perteneces ha sido deshabilitada',
@@ -115,7 +115,6 @@ export default {
   rol7: 'Gerente',
   rol7_descripcion: 'Se encarga de gestionar las actividades realizadas por los clientes y consultores, segun el estado de las mismas.',
 
-  text_opcion_select: 'Todas las empresas',
   statusSlt_0: 'Sin iniciar',
   statusSlt_1: 'Ejecución',
   statusSlt_2: 'En pausa',
@@ -124,6 +123,7 @@ export default {
   statusSlt_5: 'Finalizado',
   statusSlt_6: 'Reabierta',
 
+  text_opcion_select: 'Todas las empresas',
   text_recuperarContraseña: '¿Has olvidado tu contraseña?',
   text_navegacion: 'Barra de navegación',
   text_estadisticas: 'Estadisticas de usuarios por empresa',
@@ -210,5 +210,12 @@ export default {
   subtitulo_moduloHistorialSlt: 'Listado de solicitudes finalizadas',
   subtitulo_moduloConsultoresSlt: 'Historial de actividades por consultor asignado',
   subtitulo_moduloConsultores: 'Listado de usuarios consultores',
-  subtitulo_moduloNotificaciones: 'Historial de notificaciones, donde te matenemos informado'
+  subtitulo_moduloNotificaciones: 'Historial de notificaciones, donde te matenemos informado',
+
+  form_selecListado: 'Selecciona una opción para ver el respectivo listado',
+  form_fechaInicial: 'Fecha inicial',
+  form_fechaFinal: 'Fecha final',
+  accion_asignarEquipo: 'Asignar equipo',
+  text_selecOptionRegister: 'Debes seleccionar una opción en la parte superior para ver los registros',
+  formError_requerido: 'Requerido'
 }

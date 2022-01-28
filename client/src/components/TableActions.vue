@@ -4,17 +4,17 @@
       <div class="q-pb-md">
         <div class="text-h4 text-bold">{{titulo}}</div>
         <div class="text-grey text-h6">{{subtitulo}}</div>
-        <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" use-input behavior="menu" input-debounce="0" label="Selecciona una opción para ver el respectivo listado" :options="options" map-options :option-label="route === 'sla' ? 'contrato' : route === 'solicitudes' ? 'nombre' : 'name'" emit-value option-value="_id" @input="select ? flt = true : flt = false" @filter="filterFn">
+        <q-select v-if="selectBtn" class="q-mt-md" filled v-model="select" use-input behavior="menu" input-debounce="0" :label="$t('form_selecListado')" :options="options" map-options :option-label="route === 'sla' ? 'contrato' : route === 'solicitudes' ? 'nombre' : 'name'" emit-value option-value="_id" @input="select ? flt = true : flt = false" @filter="filterFn">
           <template v-slot:no-option>
             <q-item>
               <q-item-section class="text-grey">
-                No results
+                {{$t('formNotif_noResultados')}}
               </q-item-section>
             </q-item>
           </template>
         </q-select>
         <div class="row q-mt-md">
-          <q-input class="col" v-if="inputBtn" filled readonly v-model="select.from" label="Fecha inicial" placeholder="AAAA-MM-DD" @click="$refs.qDateProxy.show()">
+          <q-input class="col" v-if="inputBtn" filled readonly v-model="select.from" :label="$t('form_fechaInicial')" :placeholder="$t('formFormat_fecha')" @click="$refs.qDateProxy.show()">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -24,7 +24,7 @@
             </template>
           </q-input>
           <q-space class="q-px-sm"/>
-          <q-input class="col" v-if="inputBtn" filled readonly v-model="select.to" label="Fecha final" placeholder="AAAA-MM-DD" @click="$refs.qDateProxy2.show()">
+          <q-input class="col" v-if="inputBtn" filled readonly v-model="select.to" :label="$t('form_fechaFinal')" :placeholder="$t('formFormat_fecha')" @click="$refs.qDateProxy2.show()">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy2" transition-show="scale" transition-hide="scale">
@@ -46,7 +46,7 @@
                   <q-btn v-if="editarBtn" icon="edit" size="sm" class="q-mx-sm" flat dense @click="editar(props.row._id)" />
                   <q-btn v-if="eliminarBtn" icon="delete" size="sm" class="q-mx-sm" flat dense @click="eliminarConfirm(props.row._id)"/>
                   <NewSlt v-if="crearBtn" :equipment="props.row._id"/>
-                  <q-btn v-if="asignarBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" label="Asignar equipo" @click="mostrardialogo(props.row._id)" no-caps/>
+                  <q-btn v-if="asignarBtn" class="q-mx-sm" style="width:130px" color="primary" text-color="white" :label="$T('accion_asignarEquipo')" @click="mostrardialogo(props.row._id)" no-caps/>
                   <q-toggle v-if="habilitarBtn" v-model="props.row.enable" @input="enable(props.row)" color="positive" checked-icon="lock_open" unchecked-icon="lock"/>
                 </div>
 
@@ -69,7 +69,7 @@
         </template>
       </q-grid>
 
-      <div v-if="(selectBtn || inputBtn) && !select && data.length" class="full-width q-mt-md text-center text-h5 text-italic text-grey">Debes seleccionar una opción en la parte superior para ver los registros</div>
+      <div v-if="(selectBtn || inputBtn) && !select && data.length" class="full-width q-mt-md text-center text-h5 text-italic text-grey">{{$t('text_selecOptionRegister')}}</div>
     </div>
 
     <q-page-sticky v-if="btnNew" position="bottom-right" :offset="[18, 18]">
@@ -84,7 +84,7 @@
             <q-space />
             <q-btn color="red" icon="close" flat round dense v-close-popup />
           </div>
-          <q-input v-model="iEditContrato" outlined dense class="q-mt-sm" style="width: 300px" error-message="Requerido" :error="$v.iEditContrato.$error" @blur="$v.iEditContrato.$touch()"/>
+          <q-input v-model="iEditContrato" outlined dense class="q-mt-sm" style="width: 300px" :error-message="$t('formError_requerido')" :error="$v.iEditContrato.$error" @blur="$v.iEditContrato.$touch()"/>
         </q-card-section>
         <q-card-actions align="center">
           <q-btn color="blue" icon="edit" :label="$t('accion_editar')" push @click="modificar_contrato()" v-close-popup />
@@ -96,7 +96,7 @@
           <div class="row q-px-lg items-center justify-between full-width">
             <div>
               <div v-if="ver.equipo" class="row">
-                <div class="text-bold q-mr-xs text-grey-7">Equipo: </div>
+                <div class="text-bold q-mr-xs text-grey-7">{{$t('form_equipo')}}: </div>
                 <div class="text-grey-7">{{ver.equipo ? ver.equipo.name : ''}}</div>
               </div>
             </div>
