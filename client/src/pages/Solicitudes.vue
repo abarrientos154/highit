@@ -21,8 +21,8 @@
           </div>
         </div>
         <div class="q-mb-lg q-mt-md">
-          <div class="text-center text-h6 text-bold">Datos solicitud</div>
-          <div class="text-center text-grey-8">Descripcion de la solicitud</div>
+          <div class="text-center text-h6 text-bold">{{$t('text_datosSolicitud')}}</div>
+          <div class="text-center text-grey-8">{{$t('text_descripcionSlt')}}</div>
         </div>
         <div class="q-px-sm q-mb-md full-width">
           <div class="row">
@@ -31,9 +31,9 @@
             </q-avatar>
             <div class="q-px-sm q-py-md col column justify-between">
               <div>
-                <div class="text-subtitle1 text-bold">{{solicitud.empresa ? solicitud.empresa.name : 'Empresa'}}</div>
+                <div class="text-subtitle1 text-bold">{{solicitud.empresa ? solicitud.empresa.name : $t('form_empresa')}}</div>
                 <div>
-                  <div class="text-bold text-caption text-grey-7">Descripcion del servicio:</div>
+                  <div class="text-bold text-caption text-grey-7">{{$t('text_servicioDescription')}}:</div>
                   <q-scroll-area style="height: 60px;">
                     <div class="text-grey-7" style="font-size: 10px;">{{solicitud.description}}</div>
                   </q-scroll-area>
@@ -41,11 +41,11 @@
               </div>
               <div>
                 <div class="row">
-                  <div class="text-bold q-mr-xs text-grey-7 text-caption">Fecha de solicitud:</div>
+                  <div class="text-bold q-mr-xs text-grey-7 text-caption">{{$t('form_fechaSlt')}}:</div>
                   <div class="text-grey-7 text-caption">{{solicitud.dateSlt}}</div>
                 </div>
                 <div class="row">
-                  <div class="text-bold q-mr-xs text-grey-7 text-caption">Hora de solicitud:</div>
+                  <div class="text-bold q-mr-xs text-grey-7 text-caption">{{$t('form_HoraSlt')}}:</div>
                   <div class="text-grey-7 text-caption">{{solicitud.timeSlt}}hr</div>
                 </div>
               </div>
@@ -53,62 +53,62 @@
           </div>
           <div class="q-px-sm">
             <div v-if="solicitud.scheduled" class="row justify-center q-mb-sm">
-              <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">Solicitud agendada</div>
+              <div class="text-bold text-grey-7 text-subtitle1 q-mr-xs">{{$t('text_agendadaSlt')}}</div>
             </div>
             <div class="row">
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="text-bold text-grey-7">Tipo de contrato</div>
+                <div class="text-bold text-grey-7">{{$t('form_tipoContrato')}}</div>
                 <div class="text-grey-7">{{solicitud.contrato}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.consultor">
-                <div class="text-bold text-grey-7">Usuario asignado</div>
+                <div class="text-bold text-grey-7">{{$t('titulo_userAsignado')}}</div>
                 <div class="text-grey-7">{{solicitud.consultor ? solicitud.consultor.name + ' ' + solicitud.consultor.last_name  : ''}}</div>
               </div>
               <div v-if="solicitud.equipment" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="text-bold text-grey-7">Equipo</div>
+                <div class="text-bold text-grey-7">{{$t('form_equipo')}}</div>
                 <div class="text-grey-7">{{solicitud.equipo ? solicitud.equipo.name : ''}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="text-bold text-grey-7">Categoria</div>
+                <div class="text-bold text-grey-7">{{$t('form_categoria')}}</div>
                 <div class="text-grey-7">{{solicitud.categoria ? solicitud.categoria.nombre : ''}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="text-bold text-grey-7">Departamento</div>
+                <div class="text-bold text-grey-7">{{$t('form_departamento')}}</div>
                 <div class="text-grey-7">{{solicitud.department}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="text-bold text-grey-7">Fecha y hora de expiración</div>
+                <div class="text-bold text-grey-7">{{$t('titulo_fechaHoraExp')}}</div>
                 <div class="text-grey-7">{{solicitud.expirationDate}}hr</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status > 0">
-                <div class="text-bold text-grey-7">Fecha de inicio</div>
+                <div class="text-bold text-grey-7">{{$t('form_fechaInicio')}}</div>
                 <div class="text-grey-7">{{solicitud.dateBegin}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status > 0">
-                <div class="text-bold text-grey-7">Hora de inicio</div>
+                <div class="text-bold text-grey-7">{{$t('form_HoraInicio')}}</div>
                 <div class="text-grey-7">{{solicitud.timeBegin}}hr</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status === 5">
-                <div class="text-bold text-grey-7">Fecha estimada de termino</div>
+                <div class="text-bold text-grey-7">{{$t('titulo_fechaEstimadaTermino')}}</div>
                 <div class="text-grey-7">{{solicitud.dateEnd}}</div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" v-if="solicitud.status === 5">
-                <div class="text-bold text-grey-7">Hora estimada de termino</div>
+                <div class="text-bold text-grey-7">{{$t('titulo_horaEstimadaTermino')}}</div>
                 <div class="text-grey-7">{{solicitud.timeEnd}}hr</div>
               </div>
             </div>
           </div>
           <div v-if="solicitud.hitos.length" class="full-width q-px-sm q-mb-md">
             <div class="q-mb-sm">
-              <div class="text-subtitle1 text-bold">Historial de actividades</div>
-              <div class="text-grey-8">Descripcion de los comentarios realisados</div>
+              <div class="text-subtitle1 text-bold">{{$t('text_historialHitos')}}</div>
+              <div class="text-grey-8">{{$t('text_descripcionComent')}}</div>
             </div>
             <q-list>
               <div v-for="(item, index) in solicitud.hitos" :key="index">
                 <div class="row justify-between">
                   <div class="text-grey-8 text-bold">{{item.name}}</div>
                   <div class="row">
-                    <div class="text-grey-8 q-mr-xs text-bold">Fecha</div>
+                    <div class="text-grey-8 q-mr-xs text-bold">{{$t('form_fecha')}}</div>
                     <div class="text-grey-8">{{item.date + ' ' + item.time}}hr</div>
                   </div>
                 </div>
@@ -118,33 +118,33 @@
           </div>
           <div class="q-px-sm q-mb-md" v-if="action === 6">
             <div>
-              <div class="text-caption text-grey-8">Nombre de la actividad</div>
-              <q-input dense v-model="form.name" filled placeholder="Nombre" error-message="Este campo es requerido" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
+              <div class="text-caption text-grey-8">{{$t('form_nombreActivi')}}</div>
+              <q-input dense v-model="form.name" filled :placeholder="$t('form_nombre')" :error-message="$t('formError_campo')" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
             </div>
             <div>
-              <div class="text-caption text-grey-8">Descripción del trabajo realizado</div>
-              <q-input dense v-model="form.description" filled type="textarea" placeholder="Hasta 500 caracteres" error-message="Este campo es requerido" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
+              <div class="text-caption text-grey-8">{{$t('form_descripcionTrabajo')}}</div>
+              <q-input dense v-model="form.description" filled type="textarea" :placeholder="$t('form_numCaracteres')" :error-message="$t('formError_campo')" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
             </div>
             <div class="full-width column items-center">
-              <q-btn class="text-white q-py-xs" color="primary" label="Reabrir" @click="saveHito()" style="width: 80%; border-radius: 5px;" no-caps/>
+              <q-btn class="text-white q-py-xs" color="primary" :label="$t('accion_reabrir')" @click="saveHito()" style="width: 80%; border-radius: 5px;" no-caps/>
             </div>
           </div>
           <div class="q-px-sm q-mb-md" v-if="action === 5">
             <div class="column items-center q-gutter-y-md q-pb-lg">
               <q-rating v-model="rating" size="3.5em" :color="$v.rating.$error ? 'red' : 'yellow'" icon="star_border" icon-selected="star"/>
-              <q-input dense class="full-width" v-model="comment" filled type="textarea" placeholder="Comenta aquí..."/>
+              <q-input dense class="full-width" v-model="comment" filled type="textarea" :placeholder="$t('form_comenta')"/>
             </div>
             <div class="full-width column items-center">
-              <q-btn class="text-white q-py-xs" color="primary" label="Confirmar" @click="saveRating()" style="width: 80%; border-radius: 5px;" no-caps/>
+              <q-btn class="text-white q-py-xs" color="primary" :label="$t('accion_confirmar')" @click="saveRating()" style="width: 80%; border-radius: 5px;" no-caps/>
             </div>
           </div>
         </div>
         <div class="full-width row items-center q-px-lg q-mb-lg" v-if="solicitud.status === 4 && action === null">
-          <q-btn class="col text-white q-py-xs q-mr-lg" color="primary" label="Reabrir actividad" @click="optionStatus(6)" style="border-radius: 5px;" no-caps/>
-          <q-btn class="col text-white q-py-xs" color="primary" label="Confirmar finalizacion" @click="optionStatus(5)" style="border-radius: 5px;" no-caps/>
+          <q-btn class="col text-white q-py-xs q-mr-lg" color="primary" :label="$t('accion_reabrirActivi')" @click="optionStatus(6)" style="border-radius: 5px;" no-caps/>
+          <q-btn class="col text-white q-py-xs" color="primary" :label="$t('accion_confirmarFin')" @click="optionStatus(5)" style="border-radius: 5px;" no-caps/>
         </div>
         <div v-else-if="solicitud.status !== 4" class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" label="Cerrar Ventana" @click="slt = !slt" style="width: 70%; border-radius: 5px;" no-caps/>
+          <q-btn class="text-white q-py-xs" color="primary" :label="$t('accion_cerrarVentana')" @click="slt = !slt" style="width: 70%; border-radius: 5px;" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -274,7 +274,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Debe ingresar la calificación',
+          message: this.$t('formNotif_ingresarCalificacion'),
           color: 'negative'
         })
       }
@@ -294,7 +294,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Debe ingresar todos los datos correspondientes',
+          message: this.$t('formError_allDatosCorrectos'),
           color: 'negative'
         })
       }
@@ -334,7 +334,7 @@ export default {
             description: `${this.action === 5 ? 'Felicidades ha finalizado con exito' : 'Se ha reabierto'} el servicio prestado al cliente ${this.user.name} ${this.user.last_name}, en el que solicita: ${this.solicitud.description}`
           })
           this.$q.notify({
-            message: 'Estado de solicitud actualizado',
+            message: this.$t('formNotif_estadoSltActualizado'),
             color: 'positive'
           })
           this.solicitud = { hitos: [] }
