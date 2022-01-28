@@ -42,7 +42,7 @@
           <template v-slot:no-option>
             <q-item>
               <q-item-section class="text-grey">
-                No results
+                {{$t('formNotif_noResultados')}}
               </q-item-section>
             </q-item>
           </template>

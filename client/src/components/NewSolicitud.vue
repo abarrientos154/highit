@@ -1,7 +1,7 @@
 <template>
   <div class="full-width">
     <div class="column items-center">
-      <q-btn class="text-white full-width q-py-xs" color="primary" label="Nueva solicitud" style="border-radius: 5px;" @click="newRequest()" no-caps/>
+      <q-btn class="text-white full-width q-py-xs" color="primary" :label="$t('accion_nuevaSlt')" style="border-radius: 5px;" @click="newRequest()" no-caps/>
     </div>
     <q-dialog v-model="slt">
       <q-card class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
@@ -9,16 +9,16 @@
           <div class="bg-red q-mr-xl" style="width: 60px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
         </div>
         <div class="q-mb-lg q-mt-md">
-          <div class="text-center text-h6 text-bold">Nueva solicitud</div>
-          <div class="text-center text-grey-8">Crea una nueva solicitud para tu cliente</div>
+          <div class="text-center text-h6 text-bold">{{$t('accion_nuevaSlt')}}</div>
+          <div class="text-center text-grey-8">{{$t('subtitulo_crearSltCliente')}}</div>
         </div>
         <div style="width: 80%">
           <div>
-            <div class="text-caption text-grey-8">Descripción de la solicitud</div>
-            <q-input dense v-model="form.description" filled type="textarea" placeholder="Hasta 500 caracteres" error-message="Este campo es requerido" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
+            <div class="text-caption text-grey-8">{{$t('text_descripcionSlt')}}</div>
+            <q-input dense v-model="form.description" filled type="textarea" :placeholder="$t('form_numCaracteres')" :error-message="$t('formError_campo')" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
           </div>
           <div>
-            <div class="text-caption text-grey-8">Selecciona prioridad</div>
+            <div class="text-caption text-grey-8">{{$t('text_selecPrioridad')}}</div>
             <q-select dense filled v-model="form.priority" :options="slas" map-options option-label="nombre" emit-value option-value="_id" :error="$v.form.priority.$error" @blur="$v.form.priority.$touch()">
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
@@ -34,14 +34,14 @@
             </q-select>
           </div>
           <div>
-            <div class="text-caption text-grey-8">Categoria</div>
+            <div class="text-caption text-grey-8">{{$t('form_categoria')}}</div>
             <q-select dense filled v-model="form.category" :options="categorias" map-options option-label="nombre" emit-value option-value="_id" :error="$v.form.category.$error" @blur="$v.form.category.$touch()"/>
           </div>
           <div class="column items-center justify-center q-mb-md">
-            <q-checkbox v-model="fchHr" size="xs" label="Agendar la atención."/>
+            <q-checkbox v-model="fchHr" size="xs" :label="$t('form_agendarAtencion')"/>
           </div>
           <div v-if="fchHr" class="q-mb-md">
-            <q-input dense filled readonly v-model="form.dateSlt" placeholder="aaaa-mm-dd" error-message="Este campo es requerido" :error="$v.form.dateSlt.$error" @blur="$v.form.dateSlt.$touch()" @click="$refs.qDateProxy.show()">
+            <q-input dense filled readonly v-model="form.dateSlt" :placeholder="$t('formFormat_fecha')" :error-message="$t('formError_campo')" :error="$v.form.dateSlt.$error" @blur="$v.form.dateSlt.$touch()" @click="$refs.qDateProxy.show()">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -50,7 +50,7 @@
                 </q-icon>
               </template>
             </q-input>
-            <q-input dense filled readonly v-model="form.timeSlt" placeholder="--:--" error-message="Este campo es requerido" :error="$v.form.timeSlt.$error" @blur="$v.form.timeSlt.$touch()" @click="$refs.qTimeProxy.show()">
+            <q-input dense filled readonly v-model="form.timeSlt" placeholder="--:--" :error-message="$t('formError_campo')" :error="$v.form.timeSlt.$error" @blur="$v.form.timeSlt.$touch()" @click="$refs.qTimeProxy.show()">
               <template v-slot:append>
                 <q-icon name="access_time" class="cursor-pointer">
                   <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" label="Crear solicitud" style="width: 70%; border-radius: 5px;" @click="saveRequest()" no-caps/>
+          <q-btn class="text-white q-py-xs" color="primary" :label="$t('accion_crearSlt')" style="width: 70%; border-radius: 5px;" @click="saveRequest()" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -146,7 +146,7 @@ export default {
       this.val = moment(moment().format(`${this.form.dateSlt ? 'YYYY-MM-DD' : ''} ${this.form.timeSlt ? 'HH:mm' : ''}`)).isSameOrBefore(`${this.form.dateSlt ? this.form.dateSlt : ''} ${this.form.timeSlt ? this.form.timeSlt : ''}`)
       if (!this.val) {
         this.$q.notify({
-          message: 'Debe ingresar fecha y hora valida',
+          message: this.$t('formNotif_fechaHoraValida'),
           color: 'negative'
         })
       }
@@ -183,7 +183,7 @@ export default {
               description: `El cliente ${this.user.name} ${this.user.last_name} ha hecho una nueva solicitud compatible con tu departamento, area y cargo, en la que solicita: ${res.description}`
             })
             this.$q.notify({
-              message: 'Solicitud creada correctamente',
+              message: this.$t('formNotif_creadaSlt'),
               color: 'positive'
             })
             this.slt = false
@@ -194,7 +194,7 @@ export default {
         })
       } else {
         this.$q.notify({
-          message: 'Debe ingresar todos los datos correspondientes',
+          message: this.$t('formError_allDatosCorrectos'),
           color: 'negative'
         })
       }

@@ -449,7 +449,7 @@ export default {
     verItem (itm) {
       const vm = this
       this.$q.loading.show({
-        message: this.$t('accion_cargandoDatos')
+        message: this.$t('accion_cargando')
       })
       if (this.route === 'conocimientos') {
         setTimeout(function () {
