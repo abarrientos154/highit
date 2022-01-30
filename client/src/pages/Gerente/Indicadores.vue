@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="q-pa-md">
-      <div class="text-h4 text-bold">INDICADORES</div>
-      <div class="text-grey text-h6">Gestión de las actividades realizadas por otros usuarios</div>
-      <q-select class="full-width" filled v-model="gestionar" :options="gestion" label="Selecciona los indicadores que deseas gestionar" multiple map-options emit-value option-label="name" @input="getActividades()">
+      <div class="text-h4 text-bold">{{$t('titulo_moduloIndicadores')}}</div>
+      <div class="text-grey text-h6">{{$t('subtitulo_gestionActividades')}}</div>
+      <q-select class="full-width" filled v-model="gestionar" :options="gestion" :label="$t('form_selecIndicadores')" multiple map-options emit-value option-label="name" @input="getActividades()">
         <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
           <q-item v-bind="itemProps" v-on="opt.id !== 16 ? itemEvents : ''">
             <q-item-section avatar v-if="opt.id !== 16">
@@ -22,8 +22,8 @@
 
     <div class="q-mb-lg" v-if="info">
       <div class="q-mb-sm q-px-md">
-        <div class="text-h5 text-bold">Listado de gestión</div>
-        <div class="text-subtitle1 text-grey-8">Gestión de los indicadores selecionados</div>
+        <div class="text-h5 text-bold">{{$t('titulo_listGestion')}}</div>
+        <div class="text-subtitle1 text-grey-8">{{$t('subtitulo_gestionIndicadores')}}</div>
       </div>
       <q-list class="row q-pa-sm">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pa-sm" v-for="(item, index) in gestionar" :key="index">
@@ -33,13 +33,13 @@
                 <q-icon :name="item.icon" size="75px"/>
                 <div v-if="item.actividades && item.actividades.length" class="column q-gutter-xs">
                   <q-btn dense outline rounded icon="description" label="PDF" @click="pdfGenerate(item)" no-caps/>
-                  <q-btn dense outline rounded icon="pending" label="Opciones" @click="gestionarDatos(item)" no-caps/>
+                  <q-btn dense outline rounded icon="pending" :label="$t('accion_options')" @click="gestionarDatos(item)" no-caps/>
                 </div>
               </q-item-section>
               <q-item-section class="column justify-between">
                 <q-item-label class="text-bold text-h6">{{item.name}}</q-item-label>
                 <div>
-                  <q-item-label class="text-subtitle1">Actividades realizadas:</q-item-label>
+                  <q-item-label class="text-subtitle1">{{$t('text_activiRealizadas')}}:</q-item-label>
                   <money v-if="item.id === 15" readonly class="q-field__input text-h4 text-grey-7 q-mt-sm" v-model="item.cantidad" suffix=" %"/>
                   <div v-else class="text-h4 text-grey-7">{{item.cantidad}}</div>
                 </div>
@@ -60,7 +60,7 @@
               </q-item-section>
               <q-item-section>
                 <q-item-label class="text-bold text-h6">{{datos.name}}</q-item-label>
-                <q-item-label class="text-subtitle1">Actividades realizadas:</q-item-label>
+                <q-item-label class="text-subtitle1">{{$t('text_activiRealizadas')}}:</q-item-label>
                 <money v-if="datos.id === 15" readonly class="q-field__input text-h3 text-grey-7 q-mt-sm" v-model="datos.cantidad" suffix=" %" style="height: auto"/>
                 <q-item-label v-else class="text-h3 text-grey-7">{{datos.cantidad}}</q-item-label>
               </q-item-section>
@@ -68,7 +68,7 @@
           </div>
           <div v-if="datos.id === 10 || datos.id === 11 || datos.id === 12 || datos.id === 13">
             <div v-if="datos.id === 10 || datos.id === 11" class="q-mb-md">
-              <div class="text-bold text-subtitle1 q-mb-sm">Selecciona un Consultor</div>
+              <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecConsultor')}}</div>
               <q-select dense filled v-model="consultor" :options="consultores" map-options option-label="name" emit-value option-value="_id" @input="filtrar(3)">
                 <template v-slot:option="scope">
                   <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
@@ -86,17 +86,17 @@
               </q-select>
             </div>
             <div v-else-if="datos.id === 12 || datos.id === 13" class="q-mb-md">
-              <div class="text-bold text-subtitle1 q-mb-sm">Seleccione una categoria</div>
+              <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecCat')}}</div>
               <q-select dense filled v-model="categoria" :options="categorias" map-options option-label="nombre" emit-value option-value="_id" @input="filtrar(4)"/>
             </div>
             <div v-if="datos.id === 10 || datos.id === 12" class="q-mb-md">
-              <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un estado de solicitudes</div>
+              <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecEstadoSlt')}}</div>
               <q-select dense filled v-model="status" :options="datos.status" map-options option-label="name" emit-value option-value="id" @input="filtrar(2)"/>
             </div>
           </div>
           <div v-else class="q-mb-md">
             <div v-if="datos.id === 1 || datos.id === 2 || datos.id === 3 || datos.id === 4 || datos.id === 5 || datos.id === 6 || datos.id === 7 || datos.id === 14 || datos.id === 15" class="q-mb-md">
-              <div class="text-bold text-subtitle1 q-mb-sm">Selecciona un Cliente</div>
+              <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecClient')}}</div>
               <q-select dense filled v-model="cliente" :options="clientes" map-options option-label="name" emit-value option-value="_id" @input="filtrar(5)">
                 <template v-slot:option="scope">
                   <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
@@ -114,22 +114,22 @@
               </q-select>
             </div>
             <div>
-              <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un departamento</div>
+              <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecDepart')}}</div>
               <q-select dense filled v-model="depart" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="filtrar(1)"/>
             </div>
           </div>
           <div class="q-mb-md">
-            <div class="text-bold text-subtitle1">Tipo de gestion</div>
+            <div class="text-bold text-subtitle1">{{$t('form_tipoGestion')}}</div>
             <div class="row justify-between">
-              <q-radio v-model="type" :val="1" label="Diaria" @input="selecType()"/>
-              <q-radio v-model="type" :val="2" label="Semanal" @input="selecType()"/>
-              <q-radio v-model="type" :val="3" label="Mensual" @input="selecType()"/>
-              <q-radio v-model="type" :val="4" label="Anual" @input="selecType()"/>
+              <q-radio v-model="type" :val="1" :label="$t('option_diaria')" @input="selecType()"/>
+              <q-radio v-model="type" :val="2" :label="$t('option_semanal')" @input="selecType()"/>
+              <q-radio v-model="type" :val="3" :label="$t('option_mensual')" @input="selecType()"/>
+              <q-radio v-model="type" :val="4" :label="$t('option_anual')" @input="selecType()"/>
             </div>
           </div>
           <div v-if="type === 1">
-            <div class="text-bold text-subtitle1 q-mb-sm">Ingresar fecha</div>
-            <q-input dense filled readonly v-model="fecha" placeholder="AAAA-MM-DD" @click="$refs.qDateProxy.show()">
+            <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_ingresaFecha')}}</div>
+            <q-input dense filled readonly v-model="fecha" :placeholder="$t('formFormat_fecha')" @click="$refs.qDateProxy.show()">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -140,8 +140,8 @@
             </q-input>
           </div>
           <div v-if="type === 2">
-            <div class="text-bold text-subtitle1 q-mb-sm">Seleccione un rango de 7 dias o menos</div>
-            <q-input  dense filled readonly v-model="semana" placeholder="AAAA-MM-DD ... AAAA-MM-DD" @click="$refs.qDateProxy.show()">
+            <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_ragoSelec')}}</div>
+            <q-input  dense filled readonly v-model="semana" :placeholder="$t('formFormat_fecha') + '...' + $t('formFormat_fecha')" @click="$refs.qDateProxy.show()">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -152,8 +152,8 @@
             </q-input>
           </div>
           <div v-if="type === 3 || type === 4">
-            <div class="text-bold text-subtitle1 q-mb-sm">{{type === 4 ? 'Seleccione un año' : 'Seleccione un mes'}}</div>
-            <q-input dense filled readonly v-model="fecha" :placeholder="type == 4 ? 'AAAA' : 'MM'" :mask="type == 4 ? '####' : '##'"  @click="$refs.qDateProxy.show()">
+            <div class="text-bold text-subtitle1 q-mb-sm">{{type === 4 ? $t('option_selecA') : $t('option_selecMes')}}</div>
+            <q-input dense filled readonly v-model="fecha" :placeholder="type == 4 ? $t('formFormat_year') : $t('formFormat_mes')" :mask="type == 4 ? '####' : '##'"  @click="$refs.qDateProxy.show()">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -227,7 +227,7 @@ export default {
           this.gestion.push({
             id: 16,
             icon: '',
-            name: 'Seleccionar todo',
+            name: this.$t('option_selecAll'),
             actividades: []
           })
         }
@@ -332,7 +332,7 @@ export default {
     },
     pdfGenerate (itm) {
       this.$q.loading.show({
-        message: 'Generando archivo'
+        message: this.$t('accion_generandoPdf')
       })
       this.$api.post('generate_pdf', itm).then(res => {
         if (res) {
@@ -449,7 +449,7 @@ export default {
             }
           } else {
             this.$q.notify({
-              message: 'Has superado el rango de dias que tiene una semana',
+              message: this.$t('formNotif_superadoRango'),
               color: 'negative'
             })
             this.semana = ''

@@ -66,6 +66,11 @@ export default {
   form_descripcionTrabajo: 'Descripción del trabajo realizado',
   form_comenta: 'Comenta aquí...',
   form_cambiaEstadoSlt: 'Cambia el estado de Solicitud',
+  form_selecIndicadores: 'Selecciona los indicadores que deseas gestionar',
+  form_selecConsultor: 'Selecciona un Consultor',
+  form_selecCat: 'Seleccione una categoria',
+  form_selecEstadoSlt: 'Seleccione un estado de solicitudes',
+  form_selecClient: 'Selecciona un Cliente',
 
   formFormat_nombreComercial: 'Highit Service',
   formFormat_razonSocial: 'Highit Service SpA',
@@ -111,6 +116,7 @@ export default {
 
   accion_ingresar: 'Ingresar',
   accion_cargando: 'Cargando...',
+  accion_generandoPdf: 'Generando archivo',
   accion_siguiente: 'Siguiente',
   accion_guardar: 'Guardar',
   accion_crear: 'Crear',
@@ -127,6 +133,7 @@ export default {
   accion_confirmarFin: 'Confirmar finalización',
   accion_reabrirActivi: 'Reabrir actividad',
   accion_iniciarAtencion: 'Iniciar Atención',
+  accion_options: 'Opciones',
 
   ruta_inicio: 'Inicio',
   ruta_salir: 'Cerrar sesión',
@@ -172,8 +179,10 @@ export default {
   option_anual: 'Anual',
   option_selecA: 'Seleccione un año',
   option_selecMes: 'Seleccione un mes',
+  option_selecAll: 'Seleccionar todo',
 
   text_opcion_select: 'Todas las empresas',
+  text_activiRealizadas: 'Actividades realizadas',
   text_selecPrioridad: 'Selecciona prioridad',
   text_recuperarContraseña: '¿Has olvidado tu contraseña?',
   text_navegacion: 'Barra de navegación',
@@ -225,6 +234,7 @@ export default {
   titulo_sltSinComenzar: 'Solicitudes sin comenzar',
   titulo_dialogConfir: 'Confirmación',
   titulo_moduloSolicitudes: 'SOLICITUDES',
+  titulo_moduloIndicadores: 'INDICADORES',
   titulo_moduloInicio: 'PAGINA PRINCIPAL',
   titulo_moduloContratos: 'CONTRATOS',
   titulo_moduloEmpresas: 'EMPRESAS',
@@ -249,6 +259,7 @@ export default {
   titulo_fechaEstimadaTermino: 'Fecha estimada de término',
   titulo_horaEstimadaTermino: 'Hora estimada de término',
   titulo_inicioTerminoContract: 'Inicio y término de contrato',
+  titulo_listGestion: 'Listado de gestión',
 
   subtitulo_recuperarContraseña1: 'de seguridad para confirmar que es tu cuenta',
   subtitulo_actividadesSinTrabajar: 'Listado de actividades de tu departamento sin trabajar',
@@ -299,6 +310,8 @@ export default {
   subtitulo_moduloHistorialSlt: 'Listado de solicitudes finalizadas',
   subtitulo_moduloConsultoresSlt: 'Historial de actividades por consultor asignado',
   subtitulo_moduloConsultores: 'Listado de usuarios consultores',
-  subtitulo_moduloNotificaciones: 'Historial de notificaciones, donde te matenemos informado'
+  subtitulo_moduloNotificaciones: 'Historial de notificaciones, donde te matenemos informado',
+  subtitulo_gestionActividades: 'Gestión de las actividades realizadas por otros usuarios',
+  subtitulo_gestionIndicadores: 'Gestión de los indicadores selecionados'
 
 }
