@@ -31,9 +31,9 @@ class UserController {
   async updateUser ({ params, response, request }) {
     let body = request.only(User.fillable)
     if (((await User.where({ $and: [{ $or: [{ email: body.email }, { phone: body.phone }, { Dni: body.Dni }] }] }).fetch()).toJSON()).filter(v => v._id !== params.id).length) {
-      response.unprocessableEntity([{
-        message: 'Datos ya registrados en el sistema!'
-      }])
+      response.send({
+        code: 'Datos ya registrados en el sistema!'
+      })
     } else {
       await User.query().where({ _id: params.id }).update(body)
       response.send(body)
@@ -165,9 +165,9 @@ class UserController {
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else if (((await User.where({ $and: [{ $or: [{ email: dat.email }, { phone: dat.phone }, { Dni: dat.Dni }] }] }).fetch()).toJSON()).length) {
-      response.unprocessableEntity([{
-        message: 'Datos ya registrados en el sistema!'
-      }])
+      response.send({
+        code: 'Datos ya registrados en el sistema!'
+      })
     } else {
       let body = dat
       const rol = body.roles

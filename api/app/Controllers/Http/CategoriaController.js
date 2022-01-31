@@ -119,9 +119,9 @@ class CategoriaController {
    */
   async destroy ({ params, request, response }) {
     if (((await Solicitud.where({ category: params.id }).fetch()).toJSON()).length) {
-      response.unprocessableEntity([{
-        message: 'Eliminación fallida, esta categoria esta en uso'
-      }])
+      response.send({
+        code: 'Eliminación fallida, esta categoria esta en uso'
+      })
     } else {
       let eliminar = (await Categoria.find(params.id)).delete()
       response.send(eliminar)

@@ -453,11 +453,18 @@ export default {
         this.user.security = this.form
         await this.$api.put('datos_edit/' + this.user._id, this.user).then(res => {
           if (res) {
-            this.$q.notify({
-              message: this.$t('formNotif_guardado'),
-              color: 'positive'
-            })
-            this.security = false
+            if (res.code) {
+              this.$q.notify({
+                message: this.$t('formError_uso'),
+                color: 'negative'
+              })
+            } else {
+              this.$q.notify({
+                message: this.$t('formNotif_guardado'),
+                color: 'positive'
+              })
+              this.security = false
+            }
           }
           this.$q.loading.hide()
         })

@@ -290,11 +290,18 @@ export default {
           }
         }).then(res => {
           if (res) {
-            this.$q.notify({
-              message: this.$t('formNotif_guardado'),
-              color: 'positive'
-            })
-            this.$router.push('/empresas')
+            if (res.code) {
+              this.$q.notify({
+                message: this.$t('formError_datosRegistrados'),
+                color: 'negative'
+              })
+            } else {
+              this.$q.notify({
+                message: this.$t('formNotif_guardado'),
+                color: 'positive'
+              })
+              this.$router.push('/empresas')
+            }
           }
           this.$q.loading.hide()
         })
@@ -313,11 +320,18 @@ export default {
         })
         this.$api.put('update_company/' + this.id, this.form).then(res => {
           if (res) {
-            this.$q.notify({
-              message: this.$t('formNotif_guardado'),
-              color: 'positive'
-            })
-            this.$router.push('/empresas')
+            if (res.code) {
+              this.$q.notify({
+                message: this.$t('formError_datosRegistrados'),
+                color: 'negative'
+              })
+            } else {
+              this.$q.notify({
+                message: this.$t('formNotif_guardado'),
+                color: 'positive'
+              })
+              this.$router.push('/empresas')
+            }
           }
           this.$q.loading.hide()
         })

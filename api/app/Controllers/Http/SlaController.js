@@ -156,9 +156,9 @@ class SlaController {
    */
    async destroy ({ params, request, response }) {
     if (((await Solicitud.where({ priority: params.id }).fetch()).toJSON()).length) {
-      response.unprocessableEntity([{
-        message: 'Eliminación fallida, esta prioridad esta en uso'
-      }])
+      response.send({
+        code: 'Eliminación fallida, esta prioridad esta en uso'
+      })
     } else {
       let sla = (await Sla.find(params.id)).delete()
       response.send(sla)

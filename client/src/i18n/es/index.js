@@ -96,6 +96,7 @@ export default {
   formError_requerido: 'Requerido',
   formError_allDatosCorrectos: 'Debe ingresar todos los datos correspondientes',
   formError_uso: 'Error al eliminar, este dato se encuentra en uso',
+  formError_datosU: 'Problemas con los datos ingresados, por favor verifique e intente nuevamente',
 
   formNotif_guardado: 'Informacion guardada con exito',
   formNotif_editado: 'Informacion actualizada con exito',

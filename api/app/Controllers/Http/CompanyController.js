@@ -83,9 +83,9 @@ class CompanyController {
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else if (((await Company.query().where({ $and: [{ $or: [{ email: dat.email }, { phone: dat.phone }, { name: dat.name }, { businessName: dat.businessName }, { numIdet: dat.numIdet }] }] }).fetch()).toJSON()).length) {
-      response.unprocessableEntity([{
-        message: 'Datos ya registrados en el sistema!'
-      }])
+      response.send({
+        code: 'Datos ya registrados en el sistema!'
+      })
     } else {
       let body = dat
       let company = await Company.create(body)
@@ -144,9 +144,9 @@ class CompanyController {
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else if (((await Company.query().where({ $and: [{ $or: [{ email: dat.email }, { phone: dat.phone }, { name: dat.name }, { businessName: dat.businessName }, { numIdet: dat.numIdet }] }] }).fetch()).toJSON()).filter(v => v._id !== params.id).length) {
-      response.unprocessableEntity([{
-        message: 'Datos ya registrados en el sistema!'
-      }])
+      response.send({
+        code: 'Datos ya registrados en el sistema!'
+      })
     } else {
       let modificar = await Company.where({_id: params.id}).update(dat)
       response.send(modificar)

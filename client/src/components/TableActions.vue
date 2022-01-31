@@ -525,12 +525,19 @@ export default {
     eliminar (id) {
       this.$api.delete(this.route + '/' + id).then(res => {
         if (res) {
-          this.$q.notify({
-            message: this.$t('formNotif_eliminado'),
-            color: 'positive'
-          })
-          this.getRecord()
-          this.$emit('actualizarPadre')
+          if (res.code) {
+            this.$q.notify({
+              message: this.$t('formError_uso'),
+              color: 'negative'
+            })
+          } else {
+            this.$q.notify({
+              message: this.$t('formNotif_eliminado'),
+              color: 'positive'
+            })
+            this.getRecord()
+            this.$emit('actualizarPadre')
+          }
         }
       })
     },

@@ -112,9 +112,9 @@ class ChargeController {
    */
   async destroy ({ params, request, response }) {
     if (((await User.where({ cargo: params.id }).fetch()).toJSON()).length || ((await Categoria.where({ cargo: params.id }).fetch()).toJSON()).length) {
-      response.unprocessableEntity([{
-        message: 'Eliminación fallida, este cargo esta en uso'
-      }])
+      response.send({
+        code: 'Eliminación fallida, este cargo esta en uso'
+      })
     } else {
       let eliminar = (await Charge.find(params.id)).delete()
       response.send(eliminar)

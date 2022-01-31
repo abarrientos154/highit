@@ -113,9 +113,9 @@ class AreaController {
    */
   async destroy ({ params, request, response }) {
     if (((await User.where({ area: params.id }).fetch()).toJSON()).length || ((await Categoria.where({ area: params.id }).fetch()).toJSON()).length) {
-      response.unprocessableEntity([{
-        message: 'Eliminación fallida, esta area esta en uso'
-      }])
+      response.send({
+        code: 'Eliminación fallida, esta area esta en uso'
+      })
     } else {
       const chargesByArea = (await Charge.query().where({area_id: params.id}).fetch()).toJSON()
       for (let i of chargesByArea) {

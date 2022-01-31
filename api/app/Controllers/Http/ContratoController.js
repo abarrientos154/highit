@@ -132,9 +132,9 @@ class ContratoController {
    */
    async destroy ({ params, request, response }) {
     if (((await Company.where({ typeContract: params.id }).fetch()).toJSON()).length) {
-      response.unprocessableEntity([{
-        message: 'Eliminación fallida, este contrato esta en uso'
-      }])
+      response.send({
+        code: 'Eliminación fallida, este contrato esta en uso'
+      })
     } else {
       /* let eliminar = true
       const slasByContrato = (await Sla.query().where({ contrato: params.id }).fetch()).toJSON()

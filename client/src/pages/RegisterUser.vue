@@ -313,25 +313,32 @@ export default {
         }).then(res => {
           this.$q.loading.hide()
           if (res) {
-            if (this.rol !== 1) {
-              this.$api.post('register_notification', {
-                user_id: '5e90d6e6f75366526a680091',
-                emit_id: this.user._id,
-                status: false,
-                userAdd_id: res._id,
-                icon: 'person_add',
-                name: 'Nuevo usuario',
-                description: `El usuario highit ${this.user.name} ${this.user.last_name} ha añadido un nuevo usuario ${res.roles[0] === 3 ? 'Consultor' : res.roles[0] === 4 ? 'Cliente Final' : res.roles[0] === 5 ? 'Consultor Administrador' : res.roles[0] === 6 ? 'Cliente Administrador' : 'Gerente'} al sistema llamado ${res.name} ${res.last_name}`
+            if (res.code) {
+              this.$q.notify({
+                message: this.$t('formError_uso'),
+                color: 'negative'
               })
+            } else {
+              if (this.rol !== 1) {
+                this.$api.post('register_notification', {
+                  user_id: '5e90d6e6f75366526a680091',
+                  emit_id: this.user._id,
+                  status: false,
+                  userAdd_id: res._id,
+                  icon: 'person_add',
+                  name: 'Nuevo usuario',
+                  description: `El usuario highit ${this.user.name} ${this.user.last_name} ha añadido un nuevo usuario ${res.roles[0] === 3 ? 'Consultor' : res.roles[0] === 4 ? 'Cliente Final' : res.roles[0] === 5 ? 'Consultor Administrador' : res.roles[0] === 6 ? 'Cliente Administrador' : 'Gerente'} al sistema llamado ${res.name} ${res.last_name}`
+                })
+              }
+              this.$q.notify({
+                message: this.$t('formNotif_guardado'),
+                color: 'positive'
+              })
+              this.form = {}
+              this.$v.form.$reset()
+              this.perfilfile = null
+              this.$router.go(-1)
             }
-            this.$q.notify({
-              message: this.$t('formNotif_guardado'),
-              color: 'positive'
-            })
-            this.form = {}
-            this.$v.form.$reset()
-            this.perfilfile = null
-            this.$router.go(-1)
           }
         })
       } else {
@@ -350,10 +357,17 @@ export default {
         await this.$api.put('datos_edit/' + this.id, this.form).then(res => {
           this.$q.loading.hide()
           if (res) {
-            this.$q.notify({
-              message: this.$t('formNotif_guardado'),
-              color: 'positive'
-            })
+            if (res.code) {
+              this.$q.notify({
+                message: this.$t('formError_uso'),
+                color: 'negative'
+              })
+            } else {
+              this.$q.notify({
+                message: this.$t('formNotif_guardado'),
+                color: 'positive'
+              })
+            }
           }
         })
       } else {

@@ -117,9 +117,9 @@ class DepartmentController {
    */
   async destroy ({ params, request, response }) {
     if (((await User.where({ departamento: params.id }).fetch()).toJSON()).length || ((await Categoria.where({ departamento: params.id }).fetch()).toJSON()).length) {
-      response.unprocessableEntity([{
-        message: 'Eliminación fallida, este departamento esta en uso'
-      }])
+      response.send({
+        code: 'Eliminación fallida, este departamento esta en uso'
+      })
     } else {
       const areasByDepartment = (await Area.query().where({department_id: params.id}).fetch()).toJSON()
       for (let i of areasByDepartment) {

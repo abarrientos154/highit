@@ -74,10 +74,13 @@ export default {
   formError_cuentaRecuperarContraseña: 'Debe ingresar el correo para hacer la recuperación',
   formError_configSeguridad: 'Este usuario no tiene configuracion de seguridad aun',
   formError_respuestas: 'Respuestas incorrectas',
+  formError_uso: 'Erro ao excluir, estes dados estão em uso',
+  formError_datosU: 'Problemas com os dados inseridos, verifique e tente novamente',
 
   formNotif_guardado: 'Informações salvas com sucesso',
   formNotif_editado: 'Informações atualizadas com sucesso',
   formNotif_noResultados: 'Não há resultados',
+  formNotif_eliminado: 'Apagado com sucesso',
 
   accion_ingresar: 'Entrar',
   accion_cargando: 'Carregando dados',

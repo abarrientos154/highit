@@ -139,9 +139,9 @@ class EquipoController {
    */
    async destroy ({ params, request, response }) {
     if (((await Solicitud.where({ equipment: params.id }).fetch()).toJSON()).length) {
-      response.unprocessableEntity([{
-        message: 'Eliminación fallida, este equipo esta en uso'
-      }])
+      response.send({
+        code: 'Eliminación fallida, este equipo esta en uso'
+      })
     } else {
       let datos = (await Equipo.find(params.id)).delete()
       response.send(datos)
