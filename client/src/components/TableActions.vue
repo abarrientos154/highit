@@ -588,7 +588,7 @@ export default {
     },
     enable (itm) {
       this.$q.dialog({
-        title: `¡ ${this.$t('titulo_dialogConfir')} !`,
+        title: this.$t('titulo_dialogConfir'),
         message: itm.enable ? this.$t('formNotif_deseaHabilitar') : this.$t('formNotif_deseaDeshabilitar'),
         cancel: {
           flat: true,
