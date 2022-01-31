@@ -589,7 +589,7 @@ export default {
     enable (itm) {
       this.$q.dialog({
         title: `¡ ${this.$t('titulo_dialogConfir')} !`,
-        message: `${this.$t('formNotif_seguroDesea')} ${itm.enable ? this.$t('text_habilitar') : this.$t('text_deshabilitar')} ${this.$t('formNotif_esteRegistro')}.`,
+        message: itm.enable ? this.$t('formNotif_deseaHabilitar') : this.$t('formNotif_deseaDeshabilitar'),
         cancel: {
           flat: true,
           label: this.$t('accion_cancelar')
