@@ -283,11 +283,18 @@ export default {
         await this.$api.put('password_edit/' + this.userEmail._id, send).then(res => {
           this.$q.loading.hide()
           if (res) {
-            this.$q.notify({
-              message: this.$t('formNotif_guardado'),
-              color: 'positive'
-            })
-            this.recovery = false
+            if (res.code) {
+              this.$q.notify({
+                message: this.$t('formError_datosU'),
+                color: 'negative'
+              })
+            } else {
+              this.$q.notify({
+                message: this.$t('formNotif_guardado'),
+                color: 'positive'
+              })
+              this.recovery = false
+            }
           }
         })
       }

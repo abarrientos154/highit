@@ -455,7 +455,7 @@ export default {
           if (res) {
             if (res.code) {
               this.$q.notify({
-                message: this.$t('formError_uso'),
+                message: this.$t('formError_datosRegistrados'),
                 color: 'negative'
               })
             } else {

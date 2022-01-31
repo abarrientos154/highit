@@ -315,7 +315,7 @@ export default {
           if (res) {
             if (res.code) {
               this.$q.notify({
-                message: this.$t('formError_uso'),
+                message: this.$t('formError_datosRegistrados'),
                 color: 'negative'
               })
             } else {
@@ -359,7 +359,7 @@ export default {
           if (res) {
             if (res.code) {
               this.$q.notify({
-                message: this.$t('formError_uso'),
+                message: this.$t('formError_datosRegistrados'),
                 color: 'negative'
               })
             } else {
@@ -391,16 +391,23 @@ export default {
         }
         await this.$api.put('password_edit/' + this.id, send).then(res => {
           if (res) {
-            this.$q.notify({
-              message: this.$t('formNotif_guardado'),
-              color: 'positive'
-            })
-            this.oldpassword = ''
-            this.password = ''
-            this.repeatPassword = ''
-            this.$v.oldpassword.$reset()
-            this.$v.password.$reset()
-            this.$v.repeatPassword.$reset()
+            if (res.code) {
+              this.$q.notify({
+                message: this.$t('formError_datosU'),
+                color: 'negative'
+              })
+            } else {
+              this.$q.notify({
+                message: this.$t('formNotif_guardado'),
+                color: 'positive'
+              })
+              this.oldpassword = ''
+              this.password = ''
+              this.repeatPassword = ''
+              this.$v.oldpassword.$reset()
+              this.$v.password.$reset()
+              this.$v.repeatPassword.$reset()
+            }
           }
           this.$q.loading.hide()
         })

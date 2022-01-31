@@ -205,9 +205,9 @@ class UserController {
 
     // display appropriate message
     if (!verifyPassword) {
-      response.unprocessableEntity([{
-        message: request.input('password') ? 'Contraseña actual incorrecta' : 'Respuestas invalidas'
-      }])
+      response.send({
+        code: request.input('password') ? 'Contraseña actual incorrecta' : 'Respuestas invalidas'
+      })
     } else {
       user.password = request.input('newPassword')
       await user.save()
