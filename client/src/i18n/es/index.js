@@ -54,8 +54,6 @@ export default {
   form_fechaFin: 'Fecha de termino',
   form_HoraFin: 'Hora de termino',
   form_selecListado: 'Selecciona una opción para ver el respectivo listado',
-  form_fechaInicial: 'Fecha inicial',
-  form_fechaFinal: 'Fecha final',
   form_tipoContrato: 'Tipo de contrato',
   form_numCaracteres: 'Hasta 500 caracteres',
   form_agendarAtencion: 'Agendar la atención.',

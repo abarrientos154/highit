@@ -14,7 +14,7 @@
           </template>
         </q-select>
         <div class="row q-mt-md">
-          <q-input class="col" v-if="inputBtn" filled readonly v-model="select.from" :label="$t('form_fechaInicial')" :placeholder="$t('formFormat_fecha')" @click="$refs.qDateProxy.show()">
+          <q-input class="col" v-if="inputBtn" filled readonly v-model="select.from" :label="$t('form_fechaInicio')" :placeholder="$t('formFormat_fecha')" @click="$refs.qDateProxy.show()">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -24,7 +24,7 @@
             </template>
           </q-input>
           <q-space class="q-px-sm"/>
-          <q-input class="col" v-if="inputBtn" filled readonly v-model="select.to" :label="$t('form_fechaFinal')" :placeholder="$t('formFormat_fecha')" @click="$refs.qDateProxy2.show()">
+          <q-input class="col" v-if="inputBtn" filled readonly v-model="select.to" :label="$t('form_fechaFin')" :placeholder="$t('formFormat_fecha')" @click="$refs.qDateProxy2.show()">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy2" transition-show="scale" transition-hide="scale">
