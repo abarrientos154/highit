@@ -263,8 +263,8 @@ export default {
             status: false,
             solicitud_id: this.solicitud._id,
             icon: idx === 1 ? 'cached' : idx === 2 ? 'schedule' : idx === 3 ? 'published_with_changes' : 'done',
-            name: `Estado de solicitud modificado a ${idx === 1 ? '"Iniciada"' : idx === 2 ? '"En pausa"' : idx === 3 ? '"Checkout"' : '"Confirmar"'}`,
-            description: `El consultor ${this.user.name} ${this.user.last_name}, ha ${this.solicitud.status === 0 ? 'aceptado llevar a cabo' : `modificado el estado a ${idx === 1 ? '"Iniciada"' : idx === 2 ? '"En pausa"' : idx === 3 ? '"Checkout"' : '"Confirmar"'}, de`} la actividad en la que solicitas: ${this.solicitud.description}`
+            name: this.$t('tituloNotif_statusSlt') + '"' + (idx === 1 ? this.$t('statusSlt_1') : idx === 2 ? this.$t('statusSlt_2') : idx === 3 ? this.$t('statusSlt_3') : this.$t('statusSlt_4')) + '"',
+            description: this.$t('textNotif_statusSlt1') + this.user.name + ' ' + this.user.last_name + this.$t('textNotif_statusSlt2') + (this.solicitud.status === 0 ? this.$t('textNotif_statusSlt3') : this.$t('textNotif_statusSlt4') + '"' + (idx === 1 ? this.$t('statusSlt_1') : idx === 2 ? this.$t('statusSlt_2') : idx === 3 ? this.$t('statusSlt_3') : this.$t('statusSlt_4')) + '"' + this.$t('textNotif_statusSlt5')) + this.$t('textNotif_statusSlt6') + this.solicitud.description
           })
           this.$q.notify({
             message: this.$t('formNotif_estadoSltActualizado'),

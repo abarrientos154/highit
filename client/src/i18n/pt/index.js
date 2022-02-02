@@ -310,5 +310,26 @@ export default {
   subtitulo_moduloConsultores: 'Lista de usuários de consultoria',
   subtitulo_moduloNotificaciones: 'Histórico de notificações, onde te mantemos informado',
   subtitulo_gestionActividades: 'Gerenciamento de atividades realizadas por outros usuários',
-  subtitulo_gestionIndicadores: 'Gestão de indicadores selecionados'
+  subtitulo_gestionIndicadores: 'Gestão de indicadores selecionados',
+
+  tituloNotif_nuevoUsr: 'Novo usuário',
+  tituloNotif_finSlt: 'Serviço finalizado',
+  tituloNotif_reabrirSlt: 'Serviço reaberto',
+  tituloNotif_statusSlt: 'Estado de solicitação modificado para ',
+
+  textNotif_nuevaSlt1: 'O cliente ',
+  textNotif_nuevaSlt2: ' fe uma nova solicitação compatível com seu departamento, área e cargo, na qual solicita: ',
+  textNotif_nuevoUsr1: 'O usuario highit ',
+  textNotif_nuevoUsr2: ' incluiu um novo usuario ',
+  textNotif_nuevoUsr3: ' ao sistema chamado ',
+  textNotif_statusSlt1: 'O consultor ',
+  textNotif_statusSlt2: ', ',
+  textNotif_statusSlt3: 'deu inicio a',
+  textNotif_statusSlt4: 'alterou estado para ',
+  textNotif_statusSlt5: ', da',
+  textNotif_statusSlt6: ' atividade na qual foi solicitado: ',
+  textNotif_finSlt: 'Parabéns! Foi finalizado com êxito',
+  textNotif_reabrirSlt: 'Foi reaberto',
+  textNotif_finbReabrirSlt1: ' o serviço prestado ao cliente ',
+  textNotif_finbReabrirSlt2: ', no qual se solicita: '
 }

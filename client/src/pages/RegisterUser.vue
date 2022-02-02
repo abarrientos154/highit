@@ -326,8 +326,8 @@ export default {
                   status: false,
                   userAdd_id: res._id,
                   icon: 'person_add',
-                  name: 'Nuevo usuario',
-                  description: `El usuario highit ${this.user.name} ${this.user.last_name} ha añadido un nuevo usuario ${res.roles[0] === 3 ? 'Consultor' : res.roles[0] === 4 ? 'Cliente Final' : res.roles[0] === 5 ? 'Consultor Administrador' : res.roles[0] === 6 ? 'Cliente Administrador' : 'Gerente'} al sistema llamado ${res.name} ${res.last_name}`
+                  name: this.$t('tituloNotif_nuevoUsr'),
+                  description: this.$t('textNotif_nuevoUsr1') + this.user.name + ' ' + this.user.last_name + this.$t('textNotif_nuevoUsr2') + (res.roles[0] === 3 ? this.$t('rol3') : res.roles[0] === 4 ? this.$t('rol4') : res.roles[0] === 5 ? this.$t('rol5') : res.roles[0] === 6 ? this.$t('rol6') : this.$t('rol7')) + this.$t('textNotif_nuevoUsr3') + res.name + ' ' + res.last_name
                 })
               }
               this.$q.notify({

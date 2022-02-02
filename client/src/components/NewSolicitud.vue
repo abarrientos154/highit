@@ -179,8 +179,8 @@ export default {
               status: false,
               solicitud_id: res._id,
               icon: 'note_add',
-              name: 'Nueva solicitud',
-              description: `El cliente ${this.user.name} ${this.user.last_name} ha hecho una nueva solicitud compatible con tu departamento, area y cargo, en la que solicita: ${res.description}`
+              name: this.$t('accion_nuevaSlt'),
+              description: this.$t('textNotif_nuevaSlt1') + this.user.name + ' ' + this.user.last_name + this.$t('textNotif_nuevaSlt2') + res.description
             })
             this.$q.notify({
               message: this.$t('formNotif_creadaSlt'),

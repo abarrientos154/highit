@@ -310,6 +310,27 @@ export default {
   subtitulo_moduloConsultores: 'List of consultants',
   subtitulo_moduloNotificaciones: 'Notification history, where we keep you informed',
   subtitulo_gestionActividades: 'Management of activities carried out by others users',
-  subtitulo_gestionIndicadores: ' Management of selected indicators'
+  subtitulo_gestionIndicadores: ' Management of selected indicators',
+
+  tituloNotif_nuevoUsr: 'New user',
+  tituloNotif_finSlt: 'Finished service',
+  tituloNotif_reabrirSlt: 'Reopened service',
+  tituloNotif_statusSlt: 'Request status changed to ',
+
+  textNotif_nuevaSlt1: 'The client ',
+  textNotif_nuevaSlt2: ' has made a new request compatible with your department, área and position, in which it´s requested: ',
+  textNotif_nuevoUsr1: 'The user highit ',
+  textNotif_nuevoUsr2: ' has added a new ',
+  textNotif_nuevoUsr3: ' user to the system called ',
+  textNotif_statusSlt1: 'The consultant ',
+  textNotif_statusSlt2: ', has ',
+  textNotif_statusSlt3: 'started',
+  textNotif_statusSlt4: 'modified the status to ',
+  textNotif_statusSlt5: ', of',
+  textNotif_statusSlt6: ' the activity in which it was requested: ',
+  textNotif_finSlt: 'Congratulations! Has been successfully completed',
+  textNotif_reabrirSlt: 'Has been reopened',
+  textNotif_finbReabrirSlt1: ' the service provided to the customer ',
+  textNotif_finbReabrirSlt2: ', in wich it´s been requested: '
 
 }

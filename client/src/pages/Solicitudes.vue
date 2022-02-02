@@ -331,7 +331,7 @@ export default {
             solicitud_id: this.solicitud._id,
             icon: this.action === 5 ? 'done_all' : 'open_in_browser',
             name: this.action === 5 ? 'Servicio finalizado' : 'Servicio reabierto',
-            description: `${this.action === 5 ? 'Felicidades ha finalizado con exito' : 'Se ha reabierto'} el servicio prestado al cliente ${this.user.name} ${this.user.last_name}, en el que solicita: ${this.solicitud.description}`
+            description: (this.action === 5 ? this.$t('textNotif_finSlt') : this.$t('textNotif_reabrirSlt')) + this.$t('textNotif_finbReabrirSlt1') + this.user.name + ' ' + this.user.last_name + this.$t('textNotif_finbReabrirSlt2') + this.solicitud.description
           })
           this.$q.notify({
             message: this.$t('formNotif_estadoSltActualizado'),
