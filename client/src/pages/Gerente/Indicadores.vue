@@ -334,6 +334,98 @@ export default {
       this.$q.loading.show({
         message: this.$t('accion_generandoPdf')
       })
+      itm.table = [
+        [
+          {
+            alignment: 'center',
+            style: 'textbold',
+            margin: [0, 5, 0, 5],
+            text: this.$t('form_fecha').toUpperCase()
+          },
+          {
+            alignment: 'center',
+            style: 'textbold',
+            margin: [0, 5, 0, 5],
+            text: this.$t('form_descripcion').toUpperCase()
+          },
+          {
+            alignment: 'center',
+            style: 'textbold',
+            margin: [0, 5, 0, 5],
+            text: this.$t('form_estado').toUpperCase()
+          },
+          {
+            alignment: 'center',
+            style: 'textbold',
+            margin: [0, 5, 0, 5],
+            text: this.$t('form_empresa').toUpperCase()
+          },
+          {
+            alignment: 'center',
+            style: 'textbold',
+            margin: [0, 5, 0, 5],
+            text: this.$t('form_cliente').toUpperCase()
+          }
+        ]
+      ]
+      for (const i of itm.actividades) {
+        itm.table.push([
+          {
+            alignment: 'center',
+            style: 'textblack',
+            margin: [0, 5, 0, 5],
+            text: `${i.dateSlt}`
+          },
+          {
+            alignment: 'center',
+            style: 'textDescription',
+            margin: [0, 2, 0, 2],
+            text: `${i.description}`
+          },
+          {
+            alignment: 'center',
+            style: 'textblack',
+            margin: [0, 5, 0, 5],
+            text: `${i.status === 0 ? this.$t('statusSlt_0') : i.status === 1 ? this.$t('statusSlt_1') : i.status === 2 ? this.$t('statusSlt_2') : i.status === 3 ? this.$t('statusSlt_3') : i.status === 4 ? this.$t('statusSlt_4') : i.status === 5 ? this.$t('statusSlt_5') : this.$t('statusSlt_6')}`
+          },
+          {
+            alignment: 'center',
+            style: 'textblack',
+            margin: [0, 5, 0, 5],
+            text: `${i.empresa.name}`
+          },
+          {
+            alignment: 'center',
+            style: 'textblack',
+            margin: [0, 5, 0, 5],
+            text: `${i.cliente.name + ' ' + i.cliente.last_name}`
+          }
+        ])
+      }
+      if (itm.actividades.filter(v => v.consultor).length) {
+        for (const i in itm.table) {
+          itm.table[i].push(
+            {
+              alignment: 'center',
+              style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
+              margin: [0, 5, 0, 5],
+              text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].consultor ? itm.actividades[i - 1].consultor.name + ' ' + itm.actividades[i - 1].consultor.last_name : '' : this.$t('titulo_consultorAsignado').toUpperCase()}`
+            }
+          )
+        }
+      }
+      if (itm.id === 11 || itm.id === 12 || itm.id === 13 || itm.id === 14 || itm.id === 15) {
+        for (const i in itm.table) {
+          itm.table[i].push(
+            {
+              alignment: 'center',
+              style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
+              margin: [0, 5, 0, 5],
+              text: `${itm.actividades[i - 1] ? itm.id === 11 || itm.id === 13 ? itm.actividades[i - 1].duration : itm.id === 12 ? itm.actividades[i - 1].categoria.nombre : itm.actividades[i - 1].categoria.Departamento.name : itm.id === 11 || itm.id === 13 ? this.$t('form_tiempo').toUpperCase() : itm.id === 12 ? this.$t('form_categoria').toUpperCase() : this.$t('form_departamento').toUpperCase()}`
+            }
+          )
+        }
+      }
       this.$api.post('generate_pdf', itm).then(res => {
         if (res) {
           console.log(res)

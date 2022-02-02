@@ -75,125 +75,6 @@ class UploadController {
     response
   }) {
     var body = request.body
-    var actividades = body.actividades
-    var info = [
-      [
-        {
-          alignment: 'center',
-          style: 'textbold',
-          margin: [0, 5, 0, 5],
-          text: [
-            { style: '', text: 'FECHA' }
-          ]
-        },
-        {
-          alignment: 'center',
-          style: 'textbold',
-          margin: [0, 5, 0, 5],
-          text: [
-            { style: '', text: 'DESCRIPCIÓN' }
-          ]
-        },
-        {
-          alignment: 'center',
-          style: 'textbold',
-          margin: [0, 5, 0, 5],
-          text: [
-            { style: '', text: 'SITUACIÓN' }
-          ]
-        },
-        {
-          alignment: 'center',
-          style: 'textbold',
-          margin: [0, 5, 0, 5],
-          text: [
-            { style: '', text: 'EMPRESA' }
-          ]
-        },
-        {
-          alignment: 'center',
-          style: 'textbold',
-          margin: [0, 5, 0, 5],
-          text: [
-            { style: '', text: 'CLIENTE' }
-          ]
-        }
-      ]
-    ]
-    for (const i of actividades) {
-      info.push([
-        {
-          alignment: 'center',
-          style: 'textblack',
-          margin: [0, 5, 0, 0],
-          text: [
-            { style: '', text: `${i.dateSlt}` }
-          ]
-        },
-        {
-          alignment: 'center',
-          style: 'textDescription',
-          margin: [0, 2, 0, 2],
-          text: [
-            { style: '', text: `${i.description}` }
-          ]
-        },
-        {
-          alignment: 'center',
-          style: 'textblack',
-          margin: [0, 5, 0, 0],
-          text: [
-            { style: '', text: `${i.status === 0 ? 'Sin iniciar' : i.status === 1 ? 'En ejecución' : i.status === 2 ? 'En pausa' : i.status === 3 ? 'Checkout' : i.status === 4 ? 'Por confirmar' : i.status === 5 ? 'Finalizada' : 'Reabierta'}` }
-          ]
-        },
-        {
-          alignment: 'center',
-          style: 'textblack',
-          margin: [0, 5, 0, 0],
-          text: [
-            { style: '', text: `${i.empresa.name}` }
-          ]
-        },
-        {
-          alignment: 'center',
-          style: 'textblack',
-          margin: [0, 5, 0, 0],
-          text: [
-            { style: '', text: `${i.cliente.name + ' ' + i.cliente.last_name}` }
-          ]
-        }
-      ])
-    }
-    if (actividades.filter(v => v.consultor).length) {
-      for (let i in info) {
-        info[i].push(
-          {
-            alignment: 'center',
-            style: `${actividades[i - 1] ? 'textblack' : 'textbold'}`,
-            margin: [0, 5, 0, 5],
-            text: `${actividades[i - 1] ? actividades[i - 1].consultor ? actividades[i - 1].consultor.name + ' ' + actividades[i - 1].consultor.last_name : '' : 'CONSULTOR'}`
-          }
-        )
-      }
-    }
-    if (body.id === 11 || body.id === 12 || body.id === 13 || body.id === 14 || body.id === 15) {
-      for (let i in info) {
-        info[i].push(
-          {
-            alignment: 'center',
-            style: `${actividades[i - 1] ? 'textblack' : 'textbold'}`,
-            margin: [0, 5, 0, 5],
-            text: [
-              { style: '', text: `${actividades[i - 1] ? body.id === 11 || body.id === 13 ? actividades[i - 1].duration : body.id === 12 ? actividades[i - 1].categoria.nombre : actividades[i - 1].categoria.Departamento.name : body.id === 11 || body.id === 13 ? 'TIEMPO' : body.id === 12 ? 'CATEGORIA' : 'DEPARTAMENTO'}` }
-            ]
-          }
-        )
-      }
-    }
-    let widths = []
-    for (let i in info[0]) {
-      if (i === 1) { widths.push(200) } else { widths.push('auto') }
-    }
     let logo = Helpers.appRoot("public") + `/Desk.jpg`
     logo = await imageToBase64(logo).then(res => {
       return "data:image/jpeg;base64, " + res
@@ -224,29 +105,31 @@ class UploadController {
           text: body.name
         },
         {
-          border: [false, false, false, false],
-          style: 'tableDescription',
-          table: {
-            widths: widths,
-            body: info
-          },
-          layout: {
-            hLineColor: function (i, node) {
-              return (i !== 1) ? '#636363' : 'black'
+          columns: [
+            { width: '*', text: '' },
+            {
+              width: 'auto',
+              border: [false, false, false, false],
+              table: {
+                body: body.table
+              },
+              layout: {
+                hLineColor: function (i, node) {
+                  return (i !== 1) ? '#636363' : 'black'
+                },
+                vLineColor: function (i, node) {
+                  return (i === 0 || i === node.table.widths.length) ? '#636363' : 'black'
+                },
+                fillColor: function (rowIndex, node, columnIndex) {
+                  return (rowIndex % 2 === 0) ? '#CCC9C8' : '#999999'
+                }
+              }
             },
-            vLineColor: function (i, node) {
-              return (i === 0 || i === node.table.widths.length) ? '#636363' : 'black'
-            },
-            fillColor: function (rowIndex, node, columnIndex) {
-              return (rowIndex % 2 === 0) ? '#CCC9C8' : '#999999'
-            }
-          }
+            { width: '*', text: '' }
+          ]
         }
       ],
       styles: {
-        tableDescription: {
-          margin: [4, 4, 50, 4],
-        },
         textDescription: {
           fontSize: 7,
           margin: [0, 0, 0, 0],
