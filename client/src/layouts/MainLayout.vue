@@ -72,9 +72,9 @@
 
         <div class="q-mt-lg">
           <div>{{ $t('form_preguntaSeguridad') }}</div>
-          <q-select filled v-model="form.question_id" :options="options.filter(v => v._id !== form.question2_id)" map-options option-label="name" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.question_id.$error" @blur="$v.form.question_id.$touch()"/>
-          <q-input v-if="form.question_id" filled :readonly="questions.find(v => v._id === form.question_id).name === 'Fecha de nacimiento:' ? true : false" v-model="form.answer" :placeholder="questions.find(v => v._id === form.question_id).name === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form.answer.$error" @blur="$v.form.answer.$touch()" @click="questions.find(v => v._id === form.question_id).name === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
-            <template v-if="questions.find(v => v._id === form.question_id).name === 'Fecha de nacimiento:'" v-slot:append>
+          <q-select filled v-model="form.question_id" :options="options.filter(v => v._id !== form.question2_id)" map-options :option-label="langmodel === 'es' ? 'name_es' : langmodel === 'en-us' ? 'name_en' : 'name_pt'" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.question_id.$error" @blur="$v.form.question_id.$touch()"/>
+          <q-input v-if="form.question_id" filled :readonly="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:' ? true : false" v-model="form.answer" :placeholder="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form.answer.$error" @blur="$v.form.answer.$touch()" @click="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+            <template v-if="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:'" v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                   <q-date v-model="form.answer" mask="DD/MM/YYYY"/>
@@ -86,9 +86,9 @@
 
         <div class="q-my-sm">
           <div>{{ $t('form_preguntaSeguridad') }}</div>
-          <q-select filled v-model="form.question2_id" :options="options.filter(v => v._id !== form.question_id)" map-options option-label="name" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.question2_id.$error" @blur="$v.form.question2_id.$touch()"/>
-          <q-input v-if="form.question2_id" filled :readonly="questions.find(v => v._id === form.question2_id).name === 'Fecha de nacimiento:' ? true : false" v-model="form.answer2" :placeholder="questions.find(v => v._id === form.question2_id).name === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form.answer2.$error" @blur="$v.form.answer2.$touch()" @click="questions.find(v => v._id === form.question2_id).name === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
-            <template v-if="questions.find(v => v._id === form.question2_id).name === 'Fecha de nacimiento:'" v-slot:append>
+          <q-select filled v-model="form.question2_id" :options="options.filter(v => v._id !== form.question_id)" map-options :option-label="langmodel === 'es' ? 'name_es' : langmodel === 'en-us' ? 'name_en' : 'name_pt'" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.question2_id.$error" @blur="$v.form.question2_id.$touch()"/>
+          <q-input v-if="form.question2_id" filled :readonly="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:' ? true : false" v-model="form.answer2" :placeholder="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form.answer2.$error" @blur="$v.form.answer2.$touch()" @click="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+            <template v-if="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:'" v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                   <q-date v-model="form.answer2" mask="DD/MM/YYYY"/>

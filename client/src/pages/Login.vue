@@ -67,9 +67,9 @@
             <div class="text-center text-subtitle1 text-bold">{{ $t('subtitulo_recuperarContraseña1') }}</div>
 
             <div class="q-mt-lg">
-              <div>{{question}}</div>
-              <q-input filled :readonly="question === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer" :placeholder="question === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form2.answer.$error" @blur="$v.form2.answer.$touch()" @click="question === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
-                <template v-if="question === 'Fecha de nacimiento:'" v-slot:append>
+              <div>{{langmodel === 'es' ? question.name_es : langmodel === 'en-us' ? question.name_en : question.name_pt}}</div>
+              <q-input filled :readonly="question.name_es === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer" :placeholder="question.name_es === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form2.answer.$error" @blur="$v.form2.answer.$touch()" @click="question.name_es === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+                <template v-if="question.name_es === 'Fecha de nacimiento:'" v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                       <q-date v-model="form2.answer" mask="DD/MM/YYYY"/>
@@ -80,9 +80,9 @@
             </div>
 
             <div class="q-my-sm">
-              <div>{{question2}}</div>
-              <q-input filled :readonly="question2 === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer2" :placeholder="question2 === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form2.answer2.$error" @blur="$v.form2.answer2.$touch()" @click="question2 === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
-                <template v-if="question2 === 'Fecha de nacimiento:'" v-slot:append>
+              <div>{{langmodel === 'es' ? question2.name_es : langmodel === 'en-us' ? question2.name_en : question2.name_pt}}</div>
+              <q-input filled :readonly="question2.name_es === 'Fecha de nacimiento:' ? true : false" v-model="form2.answer2" :placeholder="question2.name_es === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form2.answer2.$error" @blur="$v.form2.answer2.$touch()" @click="question2.name_es === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+                <template v-if="question2.name_es === 'Fecha de nacimiento:'" v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                       <q-date v-model="form2.answer2" mask="DD/MM/YYYY"/>
@@ -242,8 +242,8 @@ export default {
       this.$v.form.email.$touch()
       if (!this.$v.form.email.$error && this.userEmail.security) {
         this.security = this.userEmail.security
-        this.$api.get('question_security/' + this.security.question_id).then(res => { if (res) { this.question = res.name } })
-        this.$api.get('question_security/' + this.security.question2_id).then(res => { if (res) { this.question2 = res.name } })
+        this.$api.get('question_security/' + this.security.question_id).then(res => { if (res) { this.question = res } })
+        this.$api.get('question_security/' + this.security.question2_id).then(res => { if (res) { this.question2 = res } })
         this.slide = 0
         this.form2 = {}
         this.newPassword = ''
@@ -251,7 +251,10 @@ export default {
         this.$v.form2.$reset()
         this.$v.newPassword.$reset()
         this.$v.repeatNewPassword.$reset()
-        this.recovery = true
+        const vm = this
+        setTimeout(function () {
+          vm.recovery = true
+        }, 5000)
       } else {
         this.$q.notify({
           message: this.$v.form.email.$error ? this.$t('formError_cuentaRecuperarContraseña') : this.$t('formError_configSeguridad'),
