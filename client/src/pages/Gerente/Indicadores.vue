@@ -74,7 +74,7 @@
                   <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                     <q-item-section avatar>
                       <q-avatar size="35px">
-                        <q-img :src="baseu + scope.opt._id" class="full-height"/>
+                        <q-img :src="baseu + 'perfil_img/' + scope.opt._id" class="full-height"/>
                       </q-avatar>
                     </q-item-section>
                     <q-item-section>
@@ -89,7 +89,7 @@
               <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecCat')}}</div>
               <q-select dense filled v-model="categoria" :options="categorias" map-options option-label="nombre" emit-value option-value="_id" @input="filtrar(4)"/>
             </div>
-            <div v-if="datos.id === 10 || datos.id === 12" class="q-mb-md">
+            <div v-if="datos.id === 10 || datos.id === 12 || datos.id === 11" class="q-mb-md">
               <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecEstadoSlt')}}</div>
               <q-select dense filled v-model="status" :options="datos.status" map-options option-label="name" emit-value option-value="id" @input="filtrar(2)"/>
             </div>
@@ -102,7 +102,7 @@
                   <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                     <q-item-section avatar>
                       <q-avatar size="35px">
-                        <q-img :src="baseu + scope.opt._id" class="full-height"/>
+                        <q-img :src="baseu + 'company_img/' + scope.opt._id" class="full-height"/>
                       </q-avatar>
                     </q-item-section>
                     <q-item-section>
@@ -163,6 +163,7 @@
               </template>
             </q-input>
           </div>
+          <q-btn dense outline rounded v-if="datos.cantidad > 0 || datos.cantidad !== '0min'" class="full-width q-mt-md" icon="description" label="PDF" @click="pdfFilter()" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -201,7 +202,7 @@ export default {
     }
   },
   mounted () {
-    this.baseu = env.apiUrl + 'perfil_img/'
+    this.baseu = env.apiUrl
     this.baseuPdf = env.apiUrl + 'file_pdf/'
     this.userLogueado()
   },
@@ -255,7 +256,7 @@ export default {
       })
     },
     getClientes () {
-      this.$api.get('users_clientes/' + this.user.empresa).then(res => {
+      this.$api.get('companys_by_company/' + this.user.empresa).then(res => {
         if (res) {
           this.clientes = res
         }
@@ -329,6 +330,32 @@ export default {
     selecType () {
       this.semana = ''
       this.fecha = null
+    },
+    pdfFilter () {
+      const item = { ...this.datos }
+      if (this.depart !== null) {
+        item.actividades = this.datos.actividades.filter(v => v.categoria.departamento === this.depart)
+      }
+      if (this.status !== null) {
+        item.actividades = this.datos.actividades.filter(v => v.status === this.status)
+      }
+      if (this.consultor !== null) {
+        item.actividades = this.datos.actividades.filter(v => v.consultor_id === this.consultor)
+      }
+      if (this.categoria !== null) {
+        item.actividades = this.datos.actividades.filter(v => v.category === this.categoria)
+      }
+      if (this.cliente !== null) {
+        item.actividades = this.datos.actividades.filter(v => v.empresa_id === this.cliente)
+      }
+      if (this.fecha !== null) {
+        if (this.type === 2) {
+          item.actividades = this.datos.actividades.filter(v => moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to))
+        } else {
+          item.actividades = this.datos.actividades.filter(v => moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
+        }
+      }
+      this.pdfGenerate(item)
     },
     pdfGenerate (itm) {
       this.$q.loading.show({
@@ -440,7 +467,7 @@ export default {
     filtrar (filtro) {
       let actividades = []
       if (filtro === 1) {
-        this.datos.aux = this.datos.actividades.filter(v => this.cliente === null ? v.categoria.departamento === this.depart : v.categoria.departamento === this.depart && v.user_id === this.cliente)
+        this.datos.aux = this.datos.actividades.filter(v => this.cliente === null ? v.categoria.departamento === this.depart : v.categoria.departamento === this.depart && v.empresa_id === this.cliente)
         if (this.datos.id === 9) {
           this.datos.cantidad = this.datos.aux.filter(v => v.status !== 5).length + ' / ' + actividades.filter(v => v.status === 5).length
         } else if (this.datos.id === 15) {
@@ -452,7 +479,25 @@ export default {
         this.fecha = null
       } else if (filtro === 2) {
         this.datos.aux = this.datos.actividades.filter(v => this.consultor === null ? v.status === this.status : v.status === this.status && v.consultor_id === this.consultor)
-        this.datos.cantidad = this.datos.aux.length
+        if (this.datos.id === 11) {
+          let dias = 0
+          let horas = 0
+          let minutos = 0
+          for (const j of this.datos.aux) {
+            minutos = minutos + moment(j.dateEnd + ' ' + j.timeEnd).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'minutes')
+          }
+          while (minutos >= 60) {
+            minutos = minutos - 60
+            horas = horas + 1
+            while (horas >= 24) {
+              horas = horas - 24
+              dias = dias + 1
+            }
+          }
+          this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
+        } else {
+          this.datos.cantidad = this.datos.aux.length
+        }
         this.fecha = null
         this.semana = ''
       } else if (filtro === 3) {
@@ -502,7 +547,7 @@ export default {
         this.fecha = null
         this.semana = ''
       } else if (filtro === 5) {
-        this.datos.aux = this.datos.actividades.filter(v => this.depart === null ? v.user_id === this.cliente : v.user_id === this.cliente && v.categoria.departamento === this.depart)
+        this.datos.aux = this.datos.actividades.filter(v => this.depart === null ? v.empresa_id === this.cliente : v.empresa_id === this.cliente && v.categoria.departamento === this.depart)
         if (this.datos.id === 15) {
           this.datos.cantidad = (this.datos.aux.filter(v => !v.expiration).length / this.datos.aux.length) * 100
         } else {

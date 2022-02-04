@@ -115,15 +115,6 @@ class UserController {
     }
   }
 
-  async usersClientes({ request, params, response }) {
-    try {
-      const user = (await User.query().where({ $and: [{ $or: [{ roles: 4 }, { roles: 6 }] }, { company: params.id }] }).fetch()).toJSON()
-      response.send(user)
-    } catch (error) {
-      console.error('user by rol: ' + error.name + ':' + error.message)
-    }
-  }
-
   async update({ request, response, params }) {
   }
 

@@ -64,7 +64,6 @@ addPrefixToGroup(
     Route.get("user", "UserController.index")
     Route.get("user_consultor/:id", "UserController.userConsultor")
     Route.get("user_cliente/:id", "UserController.userCliente")
-    Route.get("users_clientes/:id", "UserController.usersClientes")
     Route.get('datauser/:id', 'UserController.userById')
     Route.post("register_user", "UserController.registerUser")
     Route.put("datos_edit/:id", "UserController.updateUser")
