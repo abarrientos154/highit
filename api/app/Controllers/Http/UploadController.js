@@ -95,14 +95,20 @@ class UploadController {
         {
           image: logo,
           alignment: 'center',
-          width: 200,
+          width: 150,
           margin: [0, 0, 0, 0],
         },
         {
           alignment: 'center',
           style: 'title',
-          margin: [0, 0, 0, 10],
+          margin: [0, -10, 0, 0],
           text: body.name
+        },
+        {
+          alignment: 'center',
+          style: 'textFiltro',
+          margin: [0, 0, 0, 10],
+          text: body.filtro
         },
         {
           columns: [
@@ -130,26 +136,24 @@ class UploadController {
         }
       ],
       styles: {
+        textFiltro: {
+          bold: true,
+          fontSize: 11
+        },
         textDescription: {
-          fontSize: 7,
-          margin: [0, 0, 0, 0],
-          color: '#000000'
+          fontSize: 7
         },
         textblack: {
           noWrap: true,
-          fontSize: 8,
-          margin: [0, 0, 0, 0],
-          color: '#000000'
+          fontSize: 8
         },
         textbold: {
           bold: true,
-          fontSize: 9,
-          margin: [0, 0, 0, 0],
-          color: '#000000'
+          fontSize: 9
         },
         title: {
           bold: true,
-          fontSize: 20
+          fontSize: 18
         }
       }
     }

@@ -331,6 +331,10 @@ export default {
   textNotif_finSlt: '¡Felicidades! Ha finalizado con exito',
   textNotif_reabrirSlt: 'Se ha reabierto',
   textNotif_finbReabrirSlt1: ' el servicio prestado al cliente ',
-  textNotif_finbReabrirSlt2: ', en el que solicita: '
+  textNotif_finbReabrirSlt2: ', en el que solicita: ',
 
+  text_consultor: 'Consultor',
+  form_año: 'Año',
+  text_mes: 'Mes',
+  text_semana: 'Semana'
 }

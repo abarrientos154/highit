@@ -141,7 +141,7 @@
           </div>
           <div v-if="type === 2">
             <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_ragoSelec')}}</div>
-            <q-input  dense filled readonly v-model="semana" :placeholder="$t('formFormat_fecha') + '...' + $t('formFormat_fecha')" @click="$refs.qDateProxy.show()">
+            <q-input  dense filled readonly v-model="semana" :placeholder="$t('formFormat_fecha') + ' - ' + $t('formFormat_fecha')" @click="$refs.qDateProxy.show()">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -351,8 +351,10 @@ export default {
       if (this.fecha !== null) {
         if (this.type === 2) {
           item.actividades = this.datos.actividades.filter(v => moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to))
+          item.filtro = `${this.$t('text_semana')}: ${this.semana}`
         } else {
           item.actividades = this.datos.actividades.filter(v => moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
+          item.filtro = `${this.type === 1 ? this.$t('form_fecha') : this.type === 3 ? this.$t('form_mes') : this.$t('form_año')}: ${this.fecha}`
         }
       }
       this.pdfGenerate(item)
@@ -436,7 +438,7 @@ export default {
               alignment: 'center',
               style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
               margin: [0, 5, 0, 5],
-              text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].consultor ? itm.actividades[i - 1].consultor.name + ' ' + itm.actividades[i - 1].consultor.last_name : '' : this.$t('titulo_consultorAsignado').toUpperCase()}`
+              text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].consultor ? itm.actividades[i - 1].consultor.name + ' ' + itm.actividades[i - 1].consultor.last_name : '' : this.$t('text_consultor').toUpperCase()}`
             }
           )
         }
@@ -558,7 +560,7 @@ export default {
       } else {
         this.$refs.qDateProxy.hide()
         if (this.type === 2) {
-          this.semana = this.fecha.from + ' ... ' + this.fecha.to
+          this.semana = this.fecha.from + ' - ' + this.fecha.to
           if (moment(this.fecha.to).diff(this.fecha.from, 'days') + 1 <= 7) {
             actividades = this.datos.aux.filter(v => moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to))
             if (this.datos.id === 9) {
