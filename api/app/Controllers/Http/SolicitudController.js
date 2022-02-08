@@ -6,6 +6,7 @@ const Department = use("App/Models/Department")
 const Contrato = use("App/Models/Contrato")
 const Hito = use("App/Models/Hito")
 const Category = use("App/Models/Categoria")
+const Rating = use("App/Models/Rating")
 const moment = require('moment')
 // const mkdirp = use('mkdirp')
 const { validate } = use("Validator")
@@ -103,6 +104,9 @@ class SolicitudController {
         j.expiration = true
         await Solicitud.query().where({ _id: j._id }).update({ expiration: true })
       }
+    }
+    for (let i of slts.filter(v => v.status === 5)) {
+      i.rating = (await Rating.query().where({solicitud_id: i._id}).first()).toJSON()
     }
     for (let i = 0; i < 7; i++) {
       solicitudes.push(slts.filter(v => v.status === i))

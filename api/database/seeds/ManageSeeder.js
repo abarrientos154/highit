@@ -103,6 +103,12 @@ const manageData = [
     status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }, { id: 6, name: 'Reabiertas' }],
     icon: 'running_with_errors',
     name: 'Porcentaje de cumplimiento de las prioridades'
+  },
+  {
+    id: 16,
+    status: 5,
+    icon: 'star_half',
+    name: 'Procentaje de satisfacción'
   }
 ]
 class ManageSeeder {

@@ -336,5 +336,7 @@ export default {
   text_consultor: 'Consultant',
   form_año: 'Year',
   text_mes: 'Month',
-  text_semana: 'Week'
+  text_semana: 'Week',
+  text_estrellas: 'Stars',
+  text_satisfaccion: 'Satisfaction'
 }
