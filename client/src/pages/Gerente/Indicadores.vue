@@ -170,7 +170,7 @@
           </q-input>
         </div>
 
-        <q-btn dense outline rounded v-if="(datos.cantidad > 0) || datos.cantidad !== '0min'" class="full-width q-mt-md" icon="description" label="PDF" @click="pdfFilter()" no-caps/>
+        <q-btn dense outline rounded v-if="0 < datos.cantidad || datos.cantidad !== '0min'" class="full-width q-mt-md" icon="description" label="PDF" @click="pdfFilter()" no-caps/>
       </q-card>
     </q-dialog>
   </div>
@@ -340,8 +340,8 @@ export default {
       this.gtn = !this.gtn
     },
     selecType () {
-      this.semana = ''
       this.fecha = null
+      this.semana = ''
     },
     pdfFilter () {
       const item = { ...this.datos }
@@ -360,16 +360,24 @@ export default {
       if (this.cliente !== null) {
         item.actividades = this.datos.actividades.filter(v => v.empresa_id === this.cliente)
       }
-      if (this.fecha !== null) {
+      if (this.fecha) {
+        console.log('filtro fecha', this.fecha)
         if (this.type === 2) {
           item.actividades = this.datos.actividades.filter(v => moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to))
           item.filtro = `${this.$t('text_semana')}: ${this.semana}`
         } else {
           item.actividades = this.datos.actividades.filter(v => moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
-          item.filtro = `${this.type === 1 ? this.$t('form_fecha') : this.type === 3 ? this.$t('form_mes') : this.$t('form_año')}: ${this.fecha}`
+          item.filtro = `${this.type === 1 ? this.$t('form_fecha') : this.type === 3 ? this.$t('text_mes') : this.$t('text_año')}: ${this.fecha}`
         }
       }
-      this.pdfGenerate(item)
+      if (item.actividades.length) {
+        this.pdfGenerate(item)
+      } else {
+        this.$q.notify({
+          message: this.$t('formError_filtroPdf'),
+          color: 'negative'
+        })
+      }
     },
     pdfGenerate (itm) {
       this.$q.loading.show({

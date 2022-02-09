@@ -60,7 +60,7 @@
                   <money readonly class="q-field__input text-right" v-model="props.row[item.name]" :suffix="` ${props.row.moneda}`"/>
                 </div>
 
-                <div v-else :class="item.text ? `row justify-${item.text} items-center` : ''">
+                <div v-else :class="item.text ? `row justify-${item.text} items-center` : 'ellipsis'" style="max-width: 300px">
                   <q-avatar v-if="props.row.color2 && item.name === 'nombre'" class="q-mr-sm" :color="props.row.color2" size="30px"/>{{ props.row.Cliente && item.name === 'name' ? props.row[item.name] + ' - ' + props.row.Cliente : props.row[item.name] }}
                 </div>
               </q-td>
@@ -186,15 +186,15 @@
                 <div class="text-grey-8">{{$t('text_descripcionComent')}}</div>
               </div>
               <q-list>
-                <div v-for="(item, index) in hitos" :key="index">
+                <div class="q-mb-xs" v-for="(item, index) in hitos" :key="index">
                   <div class="row justify-between">
                     <div class="text-grey-8 text-bold">{{item.name}}</div>
                     <div class="row">
                       <div class="text-grey-8 q-mr-xs text-bold">{{$t('form_fecha')}}</div>
-                      <div class="text-grey-8">{{item.date + ' ' + item.time + 'hr'}}</div>
+                      <div class="text-grey-8">{{item.date + ' ' + item.time}}</div>
                     </div>
                   </div>
-                  <div class="text-grey-8">{{item.description}}</div>
+                  <div class="text-grey-8 ellipsis-2-lines">{{item.description}}</div>
                 </div>
               </q-list>
             </div>

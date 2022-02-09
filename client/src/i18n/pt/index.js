@@ -334,9 +334,11 @@ export default {
   textNotif_finbReabrirSlt2: ', no qual se solicita: ',
 
   text_consultor: 'Consultor',
-  form_año: 'Ano',
+  text_año: 'Ano',
   text_mes: 'Mês',
   text_semana: 'Semana',
   text_estrellas: 'Estrelas',
-  text_satisfaccion: 'Satisfação'
+  text_satisfaccion: 'Satisfação',
+
+  formError_filtroPdf: 'Não há registros para gerar o arquivo'
 }

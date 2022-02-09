@@ -104,15 +104,15 @@
               <div class="text-grey-8">{{$t('text_descripcionComent')}}</div>
             </div>
             <q-list>
-              <div v-for="(item, index) in solicitud.hitos" :key="index">
+              <div class="q-mb-xs" v-for="(item, index) in solicitud.hitos" :key="index">
                 <div class="row justify-between">
                   <div class="text-grey-8 text-bold">{{item.name}}</div>
                   <div class="row">
                     <div class="text-grey-8 q-mr-xs text-bold">{{$t('form_fecha')}}</div>
-                    <div class="text-grey-8">{{item.date + ' ' + item.time}}hr</div>
+                    <div class="text-grey-8">{{item.date + ' ' + item.time}}</div>
                   </div>
                 </div>
-                <div class="text-grey-8">{{item.description}}</div>
+                <div class="text-grey-8 ellipsis-2-lines">{{item.description}}</div>
               </div>
             </q-list>
           </div>

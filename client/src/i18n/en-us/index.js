@@ -334,9 +334,11 @@ export default {
   textNotif_finbReabrirSlt2: ', in wich it´s been requested: ',
 
   text_consultor: 'Consultant',
-  form_año: 'Year',
+  text_año: 'Year',
   text_mes: 'Month',
   text_semana: 'Week',
   text_estrellas: 'Stars',
-  text_satisfaccion: 'Satisfaction'
+  text_satisfaccion: 'Satisfaction',
+
+  formError_filtroPdf: 'there are no records to generate the file'
 }
