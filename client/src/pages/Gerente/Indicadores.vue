@@ -54,10 +54,10 @@
       <q-circular-progress
         indeterminate
         size="50px"
-        color="primary"
+        color="grey"
         class="q-mt-md"
       />
-      <div class="text-primary">{{$t('accion_cargando')}}</div>
+      <div class="text-grey">{{$t('accion_cargando')}}</div>
     </div>
 
     <q-dialog v-model="gtn">

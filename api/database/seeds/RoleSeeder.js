@@ -18,43 +18,43 @@ const roleData = [
     id: 1,
     name: 'root',
     description: 'Rol de Administrador de HIGHIT',
-    permissions: [1]
+    permissions: [1, 8, 13]
   },
   {
     id: 2,
-    name: 'User',
+    name: 'Highit',
     description: 'Rol de Usuario de HIGHIT',
-    permissions: [1]
+    permissions: [2, 8, 9, 10, 13]
   },
   {
     id: 3,
-    name: 'consultor',
+    name: 'Consultor',
     description: 'Rol de Usuario consultor de HIGHIT',
-    permissions: [1]
+    permissions: [3, 10, 12, 13]
   },
   {
     id: 4,
-    name: 'Userend',
+    name: 'Cliente final',
     description: 'Rol de Cliente final de HIGHIT',
-    permissions: [1]
+    permissions: [4, 9, 11, 12, 13]
   },
   {
     id: 5,
-    name: 'consultor administrador',
+    name: 'Consultor administrador',
     description: 'Rol de Usuario consultor administrador de HIGHIT',
-    permissions: [1]
+    permissions: [5, 13]
   },
   {
     id: 6,
     name: 'Cliente administrador',
     description: 'Rol de Usuario cliente administrador de HIGHIT',
-    permissions: [1]
+    permissions: [6, 9, 11, 12, 13]
   },
   {
     id: 7,
     name: 'Gerente',
     description: 'Rol de Usuario gerente de HIGHIT',
-    permissions: [1]
+    permissions: [7, 13]
   }
 ]
 
