@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 import VueRouter from 'vue-router'
+import store from '../store/generals'
+import {
+  Notify
+} from 'quasar'
 
 import routes from './routes'
 
@@ -27,6 +31,21 @@ export default function (/* { store, ssrContext } */) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   })
-
+  Router.beforeEach((to, from, next) => {
+    if (to.meta.permission) {
+      const can = store.getters.can()(to.meta.permission)
+      if (!can) {
+        Notify.create({
+          message: 'Ruta no encontrada. Inicia sesión nuevamente',
+          color: 'black'
+        })
+        next('/')
+      } else {
+        next()
+      }
+    } else {
+      next()
+    }
+  })
   return Router
 }
