@@ -141,14 +141,17 @@ class UploadController {
           fontSize: 11
         },
         textDescription: {
+          margin: [0, 2, 0, 2],
           fontSize: 7
         },
         textblack: {
           noWrap: true,
+          margin: [0, 5, 0, 5],
           fontSize: 8
         },
         textbold: {
           bold: true,
+          margin: [0, 5, 0, 5],
           fontSize: 9
         },
         title: {

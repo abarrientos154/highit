@@ -27,27 +27,37 @@
       </div>
       <q-list class="row q-pa-sm">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 q-pa-sm" v-for="(item, index) in gestionar" :key="index">
-          <q-card style="border-radius: 20px;">
-            <q-item>
-              <q-item-section avatar class="column items-center justify-between">
+          <q-card class="full-height" style="border-radius: 20px;">
+            <q-item class="full-height">
+              <q-item-section avatar>
                 <q-icon :name="item.icon" size="75px"/>
-                <div v-if="item.actividades && item.actividades.length" class="column q-gutter-xs">
-                  <q-btn dense outline rounded icon="description" label="PDF" @click="pdfGenerate(item)" no-caps/>
-                  <q-btn dense outline rounded icon="pending" :label="$t('accion_options')" @click="gestionarDatos(item)" no-caps/>
-                </div>
               </q-item-section>
               <q-item-section class="column justify-between">
-                <q-item-label class="text-bold text-h6">{{item.name}}</q-item-label>
+                <q-item-label class="text-bold text-subtitle1">{{item.name}}</q-item-label>
                 <div>
-                  <q-item-label class="text-subtitle1">{{$t('text_activiRealizadas')}}:</q-item-label>
-                  <money v-if="item.id === 15 || item.id === 16" readonly class="q-field__input text-h4 text-grey-7 q-mt-sm" v-model="item.cantidad" suffix=" %"/>
-                  <div v-else class="text-h4 text-grey-7">{{item.cantidad}}</div>
+                  <q-item-label class="text-subtitle2 text-grey-7">{{$t('text_activiRealizadas')}}:</q-item-label>
+                  <money v-if="item.id === 15 || item.id === 16" readonly class="q-field__input text-h5 text-grey-7 q-mt-sm" v-model="item.cantidad" suffix=" %"/>
+                  <div v-else class="text-h5 text-grey-7">{{item.cantidad}}</div>
                 </div>
+              </q-item-section>
+              <q-item-section side v-if="item.actividades && item.actividades.length" class="column q-gutter-xs">
+                <q-btn dense outline rounded color="black" class="full-width" icon="description" :label="$q.platform.is.desktop ? 'PDF' : ''" @click="pdfGenerate(item)" no-caps/>
+                <q-btn dense outline rounded color="black" class="full-width" icon="pending" :label="$q.platform.is.desktop ? $t('accion_options') : ''" @click="gestionarDatos(item)" no-caps/>
               </q-item-section>
             </q-item>
           </q-card>
         </div>
       </q-list>
+    </div>
+
+    <div v-else-if="gestionar.length" class="column items-center">
+      <q-circular-progress
+        indeterminate
+        size="50px"
+        color="primary"
+        class="q-mt-md"
+      />
+      <div class="text-primary">{{$t('accion_cargando')}}</div>
     </div>
 
     <q-dialog v-model="gtn">
@@ -273,6 +283,7 @@ export default {
       this.getActividades()
     },
     getActividades () {
+      this.info = false
       this.$api.get('solicitudes_company/' + this.user.empresa).then(res => {
         if (res) {
           for (const i of this.gestionar) {
@@ -323,7 +334,10 @@ export default {
               i.cantidad = i.actividades.length
             }
           }
-          this.info = true
+          const vm = this
+          setTimeout(function () {
+            vm.info = true
+          }, 1500)
         }
       })
     },
@@ -361,13 +375,9 @@ export default {
         item.actividades = this.datos.actividades.filter(v => v.empresa_id === this.cliente)
       }
       if (this.fecha) {
-        console.log('filtro fecha', this.fecha)
-        if (this.type === 2) {
-          item.actividades = this.datos.actividades.filter(v => moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to))
-          item.filtro = `${this.$t('text_semana')}: ${this.semana}`
-        } else {
-          item.actividades = this.datos.actividades.filter(v => moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
-          item.filtro = `${this.type === 1 ? this.$t('form_fecha') : this.type === 3 ? this.$t('text_mes') : this.$t('text_año')}: ${this.fecha}`
+        item.actividades = this.datos.actividades.filter(v => this.type === 2 ? (moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to)) : moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
+        if (item.id !== 9) {
+          item.filtro = `${this.type === 1 ? this.$t('form_fecha') : this.type === 2 ? `${this.$t('text_semana')}: ${this.semana}` : this.type === 3 ? this.$t('text_mes') : this.$t('text_año')}: ${this.fecha}`
         }
       }
       if (item.actividades.length) {
@@ -383,114 +393,120 @@ export default {
       this.$q.loading.show({
         message: this.$t('accion_generandoPdf')
       })
-      itm.table = [
-        [
-          {
-            alignment: 'center',
-            style: 'textbold',
-            margin: [0, 5, 0, 5],
-            text: this.$t('form_fecha').toUpperCase()
-          },
-          {
-            alignment: 'center',
-            style: 'textbold',
-            margin: [0, 5, 0, 5],
-            text: this.$t('form_descripcion').toUpperCase()
-          },
-          {
-            alignment: 'center',
-            style: 'textbold',
-            margin: [0, 5, 0, 5],
-            text: this.$t('form_estado').toUpperCase()
-          },
-          {
-            alignment: 'center',
-            style: 'textbold',
-            margin: [0, 5, 0, 5],
-            text: this.$t('form_empresa').toUpperCase()
-          },
-          {
-            alignment: 'center',
-            style: 'textbold',
-            margin: [0, 5, 0, 5],
-            text: this.$t('form_cliente').toUpperCase()
-          }
-        ]
-      ]
-      for (const i of itm.actividades) {
-        itm.table.push([
-          {
-            alignment: 'center',
-            style: 'textblack',
-            margin: [0, 5, 0, 5],
-            text: `${i.dateSlt}`
-          },
-          {
-            alignment: 'center',
-            style: 'textDescription',
-            margin: [0, 2, 0, 2],
-            text: `${i.description}`
-          },
-          {
-            alignment: 'center',
-            style: 'textblack',
-            margin: [0, 5, 0, 5],
-            text: `${i.status === 0 ? this.$t('statusSlt_0') : i.status === 1 ? this.$t('statusSlt_1') : i.status === 2 ? this.$t('statusSlt_2') : i.status === 3 ? this.$t('statusSlt_3') : i.status === 4 ? this.$t('statusSlt_4') : i.status === 5 ? this.$t('statusSlt_5') : this.$t('statusSlt_6')}`
-          },
-          {
-            alignment: 'center',
-            style: 'textblack',
-            margin: [0, 5, 0, 5],
-            text: `${i.empresa.name}`
-          },
-          {
-            alignment: 'center',
-            style: 'textblack',
-            margin: [0, 5, 0, 5],
-            text: `${i.cliente.name + ' ' + i.cliente.last_name}`
-          }
-        ])
-      }
-      if (itm.actividades.filter(v => v.consultor).length) {
-        for (const i in itm.table) {
-          itm.table[i].push(
-            {
-              alignment: 'center',
-              style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
-              margin: [0, 5, 0, 5],
-              text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].consultor ? itm.actividades[i - 1].consultor.name + ' ' + itm.actividades[i - 1].consultor.last_name : '' : this.$t('text_consultor').toUpperCase()}`
-            }
-          )
+      itm.table = []
+      if (itm.id !== 9) {
+        for (const i of itm.actividades) {
+          do {
+            itm.table.push([
+              {
+                alignment: 'center',
+                style: itm.table.length ? 'textblack' : 'textbold',
+                text: `${itm.table.length ? i.dateSlt : this.$t('form_fecha').toUpperCase()}`
+              },
+              {
+                alignment: 'center',
+                style: itm.table.length ? 'textDescription' : 'textbold',
+                text: `${itm.table.length ? i.description : this.$t('form_descripcion').toUpperCase()}`
+              },
+              {
+                alignment: 'center',
+                style: itm.table.length ? 'textblack' : 'textbold',
+                text: `${itm.table.length ? i.status === 0 ? this.$t('statusSlt_0') : i.status === 1 ? this.$t('statusSlt_1') : i.status === 2 ? this.$t('statusSlt_2') : i.status === 3 ? this.$t('statusSlt_3') : i.status === 4 ? this.$t('statusSlt_4') : i.status === 5 ? this.$t('statusSlt_5') : this.$t('statusSlt_6') : this.$t('form_estado').toUpperCase()}`
+              },
+              {
+                alignment: 'center',
+                style: itm.table.length ? 'textblack' : 'textbold',
+                text: `${itm.table.length ? i.empresa.name : this.$t('form_empresa').toUpperCase()}`
+              },
+              {
+                alignment: 'center',
+                style: itm.table.length ? 'textblack' : 'textbold',
+                text: `${itm.table.length ? i.cliente.name + ' ' + i.cliente.last_name : this.$t('form_cliente').toUpperCase()}`
+              }
+            ])
+          } while (itm.table.length < 2)
         }
-      }
-      if (itm.id === 16) {
-        for (const i in itm.table) {
-          itm.table[i].push(
+        if (itm.actividades.filter(v => v.consultor).length) {
+          for (const i in itm.table) {
+            itm.table[i].push(
+              {
+                alignment: 'center',
+                style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
+                margin: [0, 5, 0, 5],
+                text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].consultor ? itm.actividades[i - 1].consultor.name + ' ' + itm.actividades[i - 1].consultor.last_name : '' : this.$t('text_consultor').toUpperCase()}`
+              }
+            )
+          }
+        }
+        if (itm.id === 16) {
+          for (const i in itm.table) {
+            itm.table[i].push(
+              {
+                alignment: 'center',
+                style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
+                margin: [0, 5, 0, 5],
+                text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].rating ? itm.actividades[i - 1].rating.number : '' : this.$t('text_estrellas').toUpperCase()}`
+              },
+              {
+                alignment: 'center',
+                style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
+                margin: [0, 5, 0, 5],
+                text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].rating ? ((itm.actividades[i - 1].rating.number * itm.actividades.filter(v => v.consultor_id === itm.actividades[i - 1].consultor_id).length) / 100) + ' %' : '' : this.$t('text_satisfaccion').toUpperCase()}`
+              }
+            )
+          }
+        }
+        if (itm.id === 11 || itm.id === 12 || itm.id === 13 || itm.id === 14 || itm.id === 15) {
+          for (const i in itm.table) {
+            itm.table[i].push(
+              {
+                alignment: 'center',
+                style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
+                margin: [0, 5, 0, 5],
+                text: `${itm.actividades[i - 1] ? itm.id === 11 || itm.id === 13 ? itm.actividades[i - 1].duration : itm.id === 12 ? itm.actividades[i - 1].categoria.nombre : itm.actividades[i - 1].categoria.Departamento.name : itm.id === 11 || itm.id === 13 ? this.$t('form_tiempo').toUpperCase() : itm.id === 12 ? this.$t('form_categoria').toUpperCase() : this.$t('form_departamento').toUpperCase()}`
+              }
+            )
+          }
+        }
+      } else {
+        for (let i = 0; i < 3; i++) {
+          itm.table.push([
             {
               alignment: 'center',
-              style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
-              margin: [0, 5, 0, 5],
-              text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].rating ? itm.actividades[i - 1].rating.number : '' : this.$t('text_estrellas').toUpperCase()}`
+              style: i === 0 ? 'textbold' : 'textblack',
+              text: i === 0 ? this.$t('text_año').toUpperCase() : this.fecha && this.type === 4 ? this.fecha : ''
             },
             {
               alignment: 'center',
-              style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
-              margin: [0, 5, 0, 5],
-              text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].rating ? ((itm.actividades[i - 1].rating.number * itm.actividades.filter(v => v.consultor_id === itm.actividades[i - 1].consultor_id).length) / 100) + ' %' : '' : this.$t('text_satisfaccion').toUpperCase()}`
-            }
-          )
-        }
-      }
-      if (itm.id === 11 || itm.id === 12 || itm.id === 13 || itm.id === 14 || itm.id === 15) {
-        for (const i in itm.table) {
-          itm.table[i].push(
+              style: i === 0 ? 'textbold' : 'textblack',
+              text: i === 0 ? this.$t('text_mes').toUpperCase() : this.fecha && this.type === 3 ? this.fecha : ''
+            },
             {
               alignment: 'center',
-              style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
-              margin: [0, 5, 0, 5],
-              text: `${itm.actividades[i - 1] ? itm.id === 11 || itm.id === 13 ? itm.actividades[i - 1].duration : itm.id === 12 ? itm.actividades[i - 1].categoria.nombre : itm.actividades[i - 1].categoria.Departamento.name : itm.id === 11 || itm.id === 13 ? this.$t('form_tiempo').toUpperCase() : itm.id === 12 ? this.$t('form_categoria').toUpperCase() : this.$t('form_departamento').toUpperCase()}`
+              style: i === 0 ? 'textbold' : 'textblack',
+              text: i === 0 ? this.$t('text_semana').toUpperCase() : this.fecha && this.type === 2 ? this.semana : ''
+            },
+            {
+              alignment: 'center',
+              style: i === 0 ? 'textbold' : 'textblack',
+              text: i === 0 ? this.$t('form_fecha').toUpperCase() : this.fecha && this.type === 1 ? this.fecha : ''
+            },
+            {
+              alignment: 'center',
+              style: i === 0 ? 'textbold' : 'textblack',
+              text: i === 0 ? this.$t('form_departamento').toUpperCase() : this.depart ? this.departamentos.find(v => v._id === this.depart).name : ''
+            },
+            {
+              alignment: 'center',
+              style: i === 0 ? 'textbold' : 'textblack',
+              text: i === 0 ? this.$t('form_estado').toUpperCase() : i === 1 ? this.$t('text_abiertas') : this.$t('text_cerradas')
+            },
+            {
+              alignment: 'center',
+              style: i === 0 ? 'textbold' : 'textblack',
+              text: i === 0 ? this.$t('text_cantidad').toUpperCase() : i === 1 ? itm.actividades.filter(v => v.status !== 5).length : itm.actividades.filter(v => v.status === 5).length
             }
-          )
+          ])
         }
       }
       this.$api.post('generate_pdf', itm).then(res => {
@@ -602,50 +618,8 @@ export default {
         this.fecha = null
         this.semana = ''
       } else {
-        this.$refs.qDateProxy.hide()
-        if (this.type === 2) {
-          this.semana = this.fecha.from + ' - ' + this.fecha.to
-          if (moment(this.fecha.to).diff(this.fecha.from, 'days') + 1 <= 7) {
-            actividades = this.datos.aux.filter(v => moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to))
-            if (this.datos.id === 9) {
-              this.datos.cantidad = actividades.filter(v => v.status !== 5).length + ' / ' + actividades.filter(v => v.status === 5).length
-            } else if (this.datos.id === 11 || this.datos.id === 13) {
-              let dias = 0
-              let horas = 0
-              let minutos = 0
-              for (const j of actividades) {
-                minutos = minutos + moment(j.dateEnd + ' ' + j.timeEnd).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'minutes')
-              }
-              while (minutos >= 60) {
-                minutos = minutos - 60
-                horas = horas + 1
-                while (horas >= 24) {
-                  horas = horas - 24
-                  dias = dias + 1
-                }
-              }
-              this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
-            } else if (this.datos.id === 15) {
-              this.datos.cantidad = (actividades.filter(v => !v.expiration).length / actividades.length) * 100
-            } else if (this.datos.id === 16) {
-              let stars = 0
-              for (const j of actividades) {
-                stars = stars + j.rating.number
-              }
-              this.datos.cantidad = (stars * actividades.length) / 100
-            } else {
-              this.datos.cantidad = actividades.length
-            }
-          } else {
-            this.$q.notify({
-              message: this.$t('formNotif_superadoRango'),
-              color: 'negative'
-            })
-            this.semana = ''
-            this.fecha = null
-          }
-        } else {
-          actividades = this.datos.aux.filter(v => moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
+        if (this.valFecha()) {
+          actividades = this.datos.aux.filter(v => this.type === 2 ? (moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to)) : moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
           if (this.datos.id === 9) {
             this.datos.cantidad = actividades.filter(v => v.status !== 5).length + ' / ' + actividades.filter(v => v.status === 5).length
           } else if (this.datos.id === 11 || this.datos.id === 13) {
@@ -676,6 +650,25 @@ export default {
             this.datos.cantidad = actividades.length
           }
         }
+      }
+    },
+    valFecha () {
+      this.$refs.qDateProxy.hide()
+      if (this.type === 2) {
+        if (moment(this.fecha.to).diff(this.fecha.from, 'days') + 1 <= 7) {
+          this.semana = this.fecha.from + ' - ' + this.fecha.to
+          return true
+        } else {
+          this.$q.notify({
+            message: this.$t('formNotif_superadoRango'),
+            color: 'negative'
+          })
+          this.semana = ''
+          this.fecha = null
+          return false
+        }
+      } else {
+        return true
       }
     }
   }

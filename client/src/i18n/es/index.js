@@ -339,6 +339,9 @@ export default {
   text_semana: 'Semana',
   text_estrellas: 'Estrellas',
   text_satisfaccion: 'Satisfacción',
+  text_cantidad: 'Cantidad',
+  text_abiertas: 'Abiertas',
+  text_cerradas: 'Cerradas',
 
   formError_filtroPdf: 'No hay registros para generar el archivo'
 }
