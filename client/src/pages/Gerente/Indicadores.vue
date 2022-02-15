@@ -60,7 +60,7 @@
       <div class="text-grey">{{$t('accion_cargando')}}</div>
     </div>
 
-    <q-dialog v-model="gtn">
+    <q-dialog v-model="gtn" @hide="finGestionarDatos()">
       <q-card class="q-pa-lg" style="width: 100%; border-radius: 10px;">
         <div class="row justify-center">
           <q-item>
@@ -79,7 +79,7 @@
         <div class="q-mb-md">
           <div v-if="datos.id === 10 || datos.id === 11 || datos.id === 16" class="q-mb-md">
             <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecConsultor')}}</div>
-            <q-select dense filled v-model="consultor" :options="consultores" map-options option-label="name" emit-value option-value="_id" @input="filtrar(3)">
+            <q-select dense filled v-model="consultor" :options="consultores" map-options option-label="name" emit-value option-value="_id" @input="filtrar(3, true), datos.aux = [...datos.actividades]">
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                   <q-item-section avatar>
@@ -98,17 +98,17 @@
 
           <div v-if="datos.id === 12 || datos.id === 13" class="q-mb-md">
             <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecCat')}}</div>
-            <q-select dense filled v-model="categoria" :options="categorias" map-options option-label="nombre" emit-value option-value="_id" @input="filtrar(4)"/>
+            <q-select dense filled v-model="categoria" :options="categorias" map-options option-label="nombre" emit-value option-value="_id" @input="filtrar(4, true), datos.aux = [...datos.actividades]"/>
           </div>
 
-          <div v-if="datos.id === 10 || datos.id === 12 || datos.id === 11" class="q-mb-md">
+          <div v-if="datos.id === 10 || datos.id === 12" class="q-mb-md">
             <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecEstadoSlt')}}</div>
-            <q-select dense filled v-model="status" :options="datos.status" map-options option-label="name" emit-value option-value="id" @input="filtrar(2)"/>
+            <q-select dense filled v-model="status" :options="datos.status" map-options option-label="name" emit-value option-value="id" @input="filtrar(2, true), datos.aux = [...datos.actividades]"/>
           </div>
 
           <div v-if="datos.id === 1 || datos.id === 2 || datos.id === 3 || datos.id === 4 || datos.id === 5 || datos.id === 6 || datos.id === 7 || datos.id === 14 || datos.id === 15" class="q-mb-md">
             <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecClient')}}</div>
-            <q-select dense filled v-model="cliente" :options="clientes" map-options option-label="name" emit-value option-value="_id" @input="filtrar(5)">
+            <q-select dense filled v-model="cliente" :options="clientes" map-options option-label="name" emit-value option-value="_id" @input="filtrar(5, true), datos.aux = [...datos.actividades]">
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                   <q-item-section avatar>
@@ -127,7 +127,7 @@
 
           <div v-if="datos.id !== 10 && datos.id !== 11 && datos.id !== 12 && datos.id !== 13 && datos.id !== 16">
             <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecDepart')}}</div>
-            <q-select dense filled v-model="depart" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="filtrar(1)"/>
+            <q-select dense filled v-model="depart" :options="departamentos" map-options option-label="name" emit-value option-value="_id" @input="filtrar(1, true), datos.aux = [...datos.actividades]"/>
           </div>
         </div>
 
@@ -147,7 +147,7 @@
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date v-model="fecha" mask="YYYY-MM-DD" @input="filtrar()"/>
+                  <q-date v-model="fecha" mask="YYYY-MM-DD" @input="filtrar(6, true), datos.aux = [...datos.actividades]"/>
                 </q-popup-proxy>
               </q-icon>
             </template>
@@ -160,7 +160,7 @@
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date v-model="fecha" mask="YYYY-MM-DD" range @input="filtrar()"/>
+                  <q-date v-model="fecha" mask="YYYY-MM-DD" range @input="filtrar(6, true), datos.aux = [...datos.actividades]"/>
                 </q-popup-proxy>
               </q-icon>
             </template>
@@ -173,7 +173,7 @@
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date v-model="fecha" :mask="type == 4 ? 'YYYY' : 'MM'" minimal emit-immediately :default-view="type == 4 ? 'Years' : 'Months'" @input="filtrar()"/>
+                  <q-date v-model="fecha" :mask="type == 4 ? 'YYYY' : 'MM'" minimal emit-immediately :default-view="type == 4 ? 'Years' : 'Months'" @input="filtrar(6, true), datos.aux = [...datos.actividades]"/>
                 </q-popup-proxy>
               </q-icon>
             </template>
@@ -344,6 +344,9 @@ export default {
     gestionarDatos (itm) {
       this.datos = { ...itm }
       this.type = 1
+      this.gtn = true
+    },
+    finGestionarDatos () {
       this.semana = ''
       this.depart = null
       this.fecha = null
@@ -351,31 +354,34 @@ export default {
       this.cliente = null
       this.categoria = null
       this.status = null
-      this.gtn = !this.gtn
     },
     selecType () {
       this.fecha = null
       this.semana = ''
+      this.datos.aux = [...this.datos.actividades]
+      for (let i = 1; i < 6; i++) {
+        this.filtrar(i, true)
+      }
     },
     pdfFilter () {
       const item = { ...this.datos }
       if (this.depart !== null) {
-        item.actividades = this.datos.actividades.filter(v => v.categoria.departamento === this.depart)
+        item.actividades = item.actividades.filter(v => v.categoria.departamento === this.depart)
       }
       if (this.status !== null) {
-        item.actividades = this.datos.actividades.filter(v => v.status === this.status)
+        item.actividades = item.actividades.filter(v => v.status === this.status)
       }
       if (this.consultor !== null) {
-        item.actividades = this.datos.actividades.filter(v => v.consultor_id === this.consultor)
+        item.actividades = item.actividades.filter(v => v.consultor_id === this.consultor)
       }
       if (this.categoria !== null) {
-        item.actividades = this.datos.actividades.filter(v => v.category === this.categoria)
+        item.actividades = item.actividades.filter(v => v.category === this.categoria)
       }
       if (this.cliente !== null) {
-        item.actividades = this.datos.actividades.filter(v => v.empresa_id === this.cliente)
+        item.actividades = item.actividades.filter(v => v.empresa_id === this.cliente)
       }
       if (this.fecha) {
-        item.actividades = this.datos.actividades.filter(v => this.type === 2 ? (moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to)) : moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
+        item.actividades = item.actividades.filter(v => this.type === 2 ? (moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to)) : moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
         if (item.id !== 9) {
           item.filtro = `${this.type === 1 ? this.$t('form_fecha') : this.type === 2 ? `${this.$t('text_semana')}: ${this.semana}` : this.type === 3 ? this.$t('text_mes') : this.$t('text_año')}: ${this.fecha}`
         }
@@ -520,136 +526,63 @@ export default {
         } else { this.$q.loading.hide() }
       })
     },
-    filtrar (filtro) {
-      let actividades = []
-      if (filtro === 1) {
-        this.datos.aux = this.datos.actividades.filter(v => this.cliente === null ? v.categoria.departamento === this.depart : v.categoria.departamento === this.depart && v.empresa_id === this.cliente)
-        if (this.datos.id === 9) {
-          this.datos.cantidad = this.datos.aux.filter(v => v.status !== 5).length + ' / ' + actividades.filter(v => v.status === 5).length
-        } else if (this.datos.id === 15) {
-          this.datos.cantidad = (this.datos.aux.filter(v => !v.expiration).length / this.datos.aux.length) * 100
+    filtrar (filtro, enable) {
+      if (filtro === 1 && this.depart) {
+        this.datos.aux = this.datos.aux.filter(v => v.categoria.departamento === this.depart)
+        if (enable) {
+          this.filtrar(5, false)
+          this.filtrar(6, false)
         } else {
-          this.datos.cantidad = this.datos.aux.length
+          this.mostrarFiltro()
         }
-        this.semana = ''
-        this.fecha = null
-      } else if (filtro === 2) {
-        this.datos.aux = this.datos.actividades.filter(v => this.consultor === null ? v.status === this.status : v.status === this.status && v.consultor_id === this.consultor)
-        if (this.datos.id === 11) {
-          let dias = 0
-          let horas = 0
-          let minutos = 0
-          for (const j of this.datos.aux) {
-            minutos = minutos + moment(j.dateEnd + ' ' + j.timeEnd).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'minutes')
-          }
-          while (minutos >= 60) {
-            minutos = minutos - 60
-            horas = horas + 1
-            while (horas >= 24) {
-              horas = horas - 24
-              dias = dias + 1
-            }
-          }
-          this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
+      } else if (filtro === 2 && this.status >= 0 && this.status !== null) {
+        this.datos.aux = this.datos.aux.filter(v => v.status === this.status)
+        if (enable) {
+          this.filtrar(3, false)
+          this.filtrar(4, false)
+          this.filtrar(6, false)
         } else {
-          this.datos.cantidad = this.datos.aux.length
+          this.mostrarFiltro()
         }
-        this.fecha = null
-        this.semana = ''
-      } else if (filtro === 3) {
-        this.datos.aux = this.datos.actividades.filter(v => this.status === null ? v.consultor_id === this.consultor : v.consultor_id === this.consultor && v.status === this.status)
-        if (this.datos.id === 11) {
-          let dias = 0
-          let horas = 0
-          let minutos = 0
-          for (const j of this.datos.aux) {
-            minutos = minutos + moment(j.dateEnd + ' ' + j.timeEnd).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'minutes')
-          }
-          while (minutos >= 60) {
-            minutos = minutos - 60
-            horas = horas + 1
-            while (horas >= 24) {
-              horas = horas - 24
-              dias = dias + 1
-            }
-          }
-          this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
-        } else if (this.datos.id === 16) {
-          let stars = 0
-          for (const j of this.datos.aux) {
-            stars = stars + j.rating.number
-          }
-          this.datos.cantidad = (stars * this.datos.aux.length) / 100
+      } else if (filtro === 3 && this.consultor) {
+        this.datos.aux = this.datos.aux.filter(v => v.consultor_id === this.consultor)
+        if (enable) {
+          this.filtrar(2, false)
+          this.filtrar(6, false)
         } else {
-          this.datos.cantidad = this.datos.aux.length
+          this.mostrarFiltro()
         }
-        this.fecha = null
-        this.semana = ''
-      } else if (filtro === 4) {
-        this.datos.aux = this.datos.actividades.filter(v => this.status === null ? v.category === this.categoria : v.category === this.categoria && v.status === this.status)
-        if (this.datos.id === 13) {
-          let dias = 0
-          let horas = 0
-          let minutos = 0
-          for (const j of this.datos.aux) {
-            minutos = minutos + moment(j.dateEnd + ' ' + j.timeEnd).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'minutes')
-          }
-          while (minutos >= 60) {
-            minutos = minutos - 60
-            horas = horas + 1
-            while (horas >= 24) {
-              horas = horas - 24
-              dias = dias + 1
-            }
-          }
-          this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
+      } else if (filtro === 4 && this.categoria) {
+        this.datos.aux = this.datos.aux.filter(v => v.category === this.categoria)
+        if (enable) {
+          this.filtrar(2, false)
+          this.filtrar(6, false)
         } else {
-          this.datos.cantidad = this.datos.aux.length
+          this.mostrarFiltro()
         }
-        this.fecha = null
-        this.semana = ''
-      } else if (filtro === 5) {
-        this.datos.aux = this.datos.actividades.filter(v => this.depart === null ? v.empresa_id === this.cliente : v.empresa_id === this.cliente && v.categoria.departamento === this.depart)
-        if (this.datos.id === 15) {
-          this.datos.cantidad = (this.datos.aux.filter(v => !v.expiration).length / this.datos.aux.length) * 100
+      } else if (filtro === 5 && this.cliente) {
+        this.datos.aux = this.datos.aux.filter(v => v.empresa_id === this.cliente)
+        if (enable) {
+          this.filtrar(1, false)
+          this.filtrar(6, false)
         } else {
-          this.datos.cantidad = this.datos.aux.length
+          this.mostrarFiltro()
         }
-        this.fecha = null
-        this.semana = ''
-      } else {
+      } else if (filtro === 6 && this.fecha) {
         if (this.valFecha()) {
-          actividades = this.datos.aux.filter(v => this.type === 2 ? (moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to)) : moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
-          if (this.datos.id === 9) {
-            this.datos.cantidad = actividades.filter(v => v.status !== 5).length + ' / ' + actividades.filter(v => v.status === 5).length
-          } else if (this.datos.id === 11 || this.datos.id === 13) {
-            let dias = 0
-            let horas = 0
-            let minutos = 0
-            for (const j of actividades) {
-              minutos = minutos + moment(j.dateEnd + ' ' + j.timeEnd).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'minutes')
-            }
-            while (minutos >= 60) {
-              minutos = minutos - 60
-              horas = horas + 1
-              while (horas >= 24) {
-                horas = horas - 24
-                dias = dias + 1
-              }
-            }
-            this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
-          } else if (this.datos.id === 15) {
-            this.datos.cantidad = (actividades.filter(v => !v.expiration).length / actividades.length) * 100
-          } else if (this.datos.id === 16) {
-            let stars = 0
-            for (const j of actividades) {
-              stars = stars + j.rating.number
-            }
-            this.datos.cantidad = (stars * actividades.length) / 100
+          this.datos.aux = this.datos.aux.filter(v => this.type === 2 ? (moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to)) : moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
+          if (enable) {
+            this.filtrar(1, false)
+            this.filtrar(2, false)
+            this.filtrar(3, false)
+            this.filtrar(4, false)
+            this.filtrar(5, false)
           } else {
-            this.datos.cantidad = actividades.length
+            this.mostrarFiltro()
           }
         }
+      } else {
+        this.mostrarFiltro()
       }
     },
     valFecha () {
@@ -669,6 +602,37 @@ export default {
         }
       } else {
         return true
+      }
+    },
+    mostrarFiltro () {
+      if (this.datos.id === 9) {
+        this.datos.cantidad = this.datos.aux.filter(v => v.status !== 5).length + ' / ' + this.datos.aux.filter(v => v.status === 5).length
+      } else if (this.datos.id === 11 || this.datos.id === 13) {
+        let dias = 0
+        let horas = 0
+        let minutos = 0
+        for (const j of this.datos.aux) {
+          minutos = minutos + moment(j.dateEnd + ' ' + j.timeEnd).diff(moment(j.dateBegin + ' ' + j.timeBegin), 'minutes')
+        }
+        while (minutos >= 60) {
+          minutos = minutos - 60
+          horas = horas + 1
+          while (horas >= 24) {
+            horas = horas - 24
+            dias = dias + 1
+          }
+        }
+        this.datos.cantidad = (dias > 0 ? dias + 'd : ' : '') + (horas > 0 ? horas + 'hr : ' : '') + minutos + 'min'
+      } else if (this.datos.id === 15) {
+        this.datos.cantidad = (this.datos.aux.filter(v => !v.expiration).length / this.datos.aux.length) * 100
+      } else if (this.datos.id === 16) {
+        let stars = 0
+        for (const j of this.datos.aux) {
+          stars = stars + j.rating.number
+        }
+        this.datos.cantidad = (stars * this.datos.aux.length) / 100
+      } else {
+        this.datos.cantidad = this.datos.aux.length
       }
     }
   }
