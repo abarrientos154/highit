@@ -21,6 +21,7 @@
           <q-btn flat round dense color="white" icon="notifications_none" @click="visto = true, $router.push('/notificaciones')">
             <q-badge v-if="notifications.length && !visto" color="red" rounded floating transparent/>
           </q-btn>
+          <q-btn flat round dense v-if="rol === 1" color="white" icon="lock" @click="security = true, editPassword = true"/>
         </div>
       </q-toolbar>
     </q-header>
@@ -65,41 +66,68 @@
       <router-view/>
     </q-page-container>
 
-    <q-dialog v-model="security" persistent>
+    <q-dialog v-model="security" @hide="editPassword = false" :persistent="!editPassword">
       <q-card class="q-pa-md" style="width: 475px; border-radius: 10px;">
-        <div class="text-center text-h6 text-bold">{{ $t('titulo_configSeguridad') }}</div>
-        <div class="text-center text-subtitle1 text-bold">{{ $t('subtitulo_configSeguridad') }}</div>
+        <div v-if="editPassword">
+          <div class="q-mt-sm text-h6 text-center">{{$t('text_nuevaContraseña')}}</div>
 
-        <div class="q-mt-lg">
-          <div>{{ $t('form_preguntaSeguridad') }}</div>
-          <q-select filled v-model="form.question_id" :options="options.filter(v => v._id !== form.question2_id)" map-options :option-label="langmodel === 'es' ? 'name_es' : langmodel === 'en-us' ? 'name_en' : 'name_pt'" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.question_id.$error" @blur="$v.form.question_id.$touch()"/>
-          <q-input v-if="form.question_id" filled :readonly="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:' ? true : false" v-model="form.answer" :placeholder="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form.answer.$error" @blur="$v.form.answer.$touch()" @click="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
-            <template v-if="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:'" v-slot:append>
-              <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date v-model="form.answer" mask="DD/MM/YYYY"/>
-                </q-popup-proxy>
-              </q-icon>
+          <div class="q-mt-sm text-subtitle1">{{$t('form_contraseñaActual')}}</div>
+          <q-input :type="isPwd2 ? 'password' : 'text'" v-model="oldpassword" filled :error-message="$t('formError_campo')" :error="$v.oldpassword.$error" @blur="$v.oldpassword.$touch()">
+            <template v-slot:append>
+              <q-icon :name="isPwd2 ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd2 = !isPwd2" />
             </template>
           </q-input>
-        </div>
 
-        <div class="q-my-sm">
-          <div>{{ $t('form_preguntaSeguridad') }}</div>
-          <q-select filled v-model="form.question2_id" :options="options.filter(v => v._id !== form.question_id)" map-options :option-label="langmodel === 'es' ? 'name_es' : langmodel === 'en-us' ? 'name_en' : 'name_pt'" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.question2_id.$error" @blur="$v.form.question2_id.$touch()"/>
-          <q-input v-if="form.question2_id" filled :readonly="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:' ? true : false" v-model="form.answer2" :placeholder="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form.answer2.$error" @blur="$v.form.answer2.$touch()" @click="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
-            <template v-if="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:'" v-slot:append>
-              <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date v-model="form.answer2" mask="DD/MM/YYYY"/>
-                </q-popup-proxy>
-              </q-icon>
+          <div class="q-mt-sm text-subtitle1">{{$t('form_contraseña')}}</div>
+          <q-input :type="isPwd ? 'password' : 'text'" v-model="password" filled :error-message="$t('formError_validacionContraseña')" :error="$v.password.$error" @blur="$v.password.$touch()">
+            <template v-slot:append>
+              <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd = !isPwd" />
             </template>
           </q-input>
+
+          <div class="q-mt-sm text-subtitle1">{{$t('form_confirContraseña')}}</div>
+          <q-input filled :type="isPwd ? 'password' : 'text'" v-model="repeatPassword" :error-message="$t('formError_validacionContraseña')" :error="$v.repeatPassword.$error" @blur="$v.repeatPassword.$touch()"/>
+
+          <div class="row justify-center">
+            <q-btn color="primary" class="q-py-xs" text-color="white" :label="$t('accion_guardar') + ' ' + $t('form_contraseña').toLowerCase()" @click="editar_contrasena()" style="width:40%" no-caps/>
+          </div>
         </div>
 
-        <div class="row justify-center">
-          <q-btn class="text-white q-py-xs" color="primary" :label="$t('accion_guardar')" @click="configurar()" style="width: 70%; border-radius: 5px;" no-caps/>
+        <div v-else>
+          <div class="text-center text-h6 text-bold">{{ $t('titulo_configSeguridad') }}</div>
+          <div class="text-center text-subtitle1 text-bold">{{ $t('subtitulo_configSeguridad') }}</div>
+
+          <div class="q-mt-lg">
+            <div>{{ $t('form_preguntaSeguridad') }}</div>
+            <q-select filled v-model="form.question_id" :options="options.filter(v => v._id !== form.question2_id)" map-options :option-label="langmodel === 'es' ? 'name_es' : langmodel === 'en-us' ? 'name_en' : 'name_pt'" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.question_id.$error" @blur="$v.form.question_id.$touch()"/>
+            <q-input v-if="form.question_id" filled :readonly="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:' ? true : false" v-model="form.answer" :placeholder="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form.answer.$error" @blur="$v.form.answer.$touch()" @click="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+              <template v-if="questions.find(v => v._id === form.question_id).name_es === 'Fecha de nacimiento:'" v-slot:append>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                    <q-date v-model="form.answer" mask="DD/MM/YYYY"/>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
+
+          <div class="q-my-sm">
+            <div>{{ $t('form_preguntaSeguridad') }}</div>
+            <q-select filled v-model="form.question2_id" :options="options.filter(v => v._id !== form.question_id)" map-options :option-label="langmodel === 'es' ? 'name_es' : langmodel === 'en-us' ? 'name_en' : 'name_pt'" emit-value option-value="_id" :error-message="$t('formError_campo')" :error="$v.form.question2_id.$error" @blur="$v.form.question2_id.$touch()"/>
+            <q-input v-if="form.question2_id" filled :readonly="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:' ? true : false" v-model="form.answer2" :placeholder="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:' ? 'DD/MM/AAAA' : $t('form_respuesta')" :error-message="$t('formError_campo')" :error="$v.form.answer2.$error" @blur="$v.form.answer2.$touch()" @click="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:' ? $refs.qDateProxy.show() : ''">
+              <template v-if="questions.find(v => v._id === form.question2_id).name_es === 'Fecha de nacimiento:'" v-slot:append>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                    <q-date v-model="form.answer2" mask="DD/MM/YYYY"/>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
+
+          <div class="row justify-center">
+            <q-btn class="text-white q-py-xs" color="primary" :label="$t('accion_guardar')" @click="configurar()" style="width: 70%; border-radius: 5px;" no-caps/>
+          </div>
         </div>
       </q-card>
     </q-dialog>
@@ -107,7 +135,7 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
 import { mapMutations, mapState } from 'vuex'
 import env from '../env'
 export default {
@@ -125,6 +153,12 @@ export default {
       user: {},
       drawer1: true,
       security: false,
+      editPassword: false,
+      oldpassword: '',
+      password: '',
+      repeatPassword: '',
+      isPwd: true,
+      isPwd2: true,
       visto: false,
       titulo: '',
       subtitulo: '',
@@ -371,7 +405,10 @@ export default {
       answer: { required },
       question2_id: { required },
       answer2: { required }
-    }
+    },
+    oldpassword: { required },
+    password: { required, maxLength: maxLength(256), minLength: minLength(6) },
+    repeatPassword: { sameAsPassword: sameAs('password') }
   },
   mounted () {
     this.langmodel = this.lang
@@ -472,6 +509,43 @@ export default {
         this.$q.notify({
           message: this.$t('formError_datos'),
           color: 'negative'
+        })
+      }
+    },
+    async editar_contrasena () {
+      this.$v.oldpassword.$touch()
+      this.$v.password.$touch()
+      this.$v.repeatPassword.$touch()
+      if (!this.$v.oldpassword.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
+        this.$q.loading.show({
+          message: this.$t('accion_cargando')
+        })
+        const send = {
+          password: this.oldpassword,
+          newPassword: this.password
+        }
+        await this.$api.put('password_edit/' + this.user._id, send).then(res => {
+          if (res) {
+            if (res.code) {
+              this.$q.notify({
+                message: this.$t('formError_datosU'),
+                color: 'negative'
+              })
+            } else {
+              this.$q.notify({
+                message: this.$t('formNotif_guardado'),
+                color: 'positive'
+              })
+              this.security = false
+              this.oldpassword = ''
+              this.password = ''
+              this.repeatPassword = ''
+              this.$v.oldpassword.$reset()
+              this.$v.password.$reset()
+              this.$v.repeatPassword.$reset()
+            }
+          }
+          this.$q.loading.hide()
         })
       }
     }
