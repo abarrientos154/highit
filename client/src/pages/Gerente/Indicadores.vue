@@ -381,9 +381,9 @@ export default {
         item.actividades = item.actividades.filter(v => v.empresa_id === this.cliente)
       }
       if (this.fecha) {
-        item.actividades = item.actividades.filter(v => this.type === 2 ? (moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to)) : moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
+        item.actividades = item.actividades.filter(v => this.type === 2 ? (moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || v.dateSlt === this.fecha.from || v.dateSlt === this.fecha.to) : moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY') === this.fecha)
         if (item.id !== 9) {
-          item.filtro = `${this.type === 1 ? this.$t('form_fecha') : this.type === 2 ? `${this.$t('text_semana')}: ${this.semana}` : this.type === 3 ? this.$t('text_mes') : this.$t('text_año')}: ${this.fecha}`
+          item.filtro = this.type === 1 ? `${this.$t('form_fecha')}: ${this.fecha}` : this.type === 2 ? `${this.$t('text_semana')}: ${this.semana}` : this.type === 3 ? `${this.$t('text_mes')}: ${this.fecha}` : `${this.$t('text_año')}: ${this.fecha}`
         }
       }
       if (item.actividades.length) {
@@ -570,7 +570,7 @@ export default {
         }
       } else if (filtro === 6 && this.fecha) {
         if (this.valFecha()) {
-          this.datos.aux = this.datos.aux.filter(v => this.type === 2 ? (moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || moment(v.dateSlt).isSame(this.fecha.from) || moment(v.dateSlt).isSame(this.fecha.to)) : moment(moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY')).isSame(this.fecha))
+          this.datos.aux = this.datos.aux.filter(v => this.type === 2 ? (moment(v.dateSlt).isBetween(this.fecha.from, this.fecha.to) || v.dateSlt === this.fecha.from || v.dateSlt === this.fecha.to) : moment(v.dateSlt).format(this.type === 1 ? 'YYYY-MM-DD' : this.type === 3 ? 'MM' : 'YYYY') === this.fecha)
           if (enable) {
             this.filtrar(1, false)
             this.filtrar(2, false)
