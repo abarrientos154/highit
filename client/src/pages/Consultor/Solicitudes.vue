@@ -4,7 +4,7 @@
       <div class="text-h4 text-bold">{{$t('titulo_moduloSolicitudes')}}</div>
       <div class="text-grey text-h6">{{$t('subtitulo_listSltEstado')}}</div>
     </div>
-    <ListaSlt ref="lista" @ver="verSlt($event)"/>
+    <ListaSlt ref="lista" @ver="verSlt($event), reasign = false" @reasignar="verSlt($event), reasign = true"/>
 
     <q-dialog v-model="slt">
       <q-card class="column items-center no-wrap" style="width: 475px; border-radius: 10px;">
@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="q-mb-lg q-mt-md">
-          <div class="text-center text-h6 text-bold">{{solicitud.status === 0 && solicitud.sltBegin === 0 ? $t('text_tomarSlt') : solicitud.status === 1 || solicitud.status === 2 ||solicitud.status === 3 ? $t('text_cambiarEstado') : $t('text_datosSolicitud')}}</div>
+          <div class="text-center text-h6 text-bold">{{reasign ? $t('Solicitar reasignación') : solicitud.status === 0 && solicitud.sltBegin === 0 ? $t('text_tomarSlt') : solicitud.status === 1 || solicitud.status === 2 ||solicitud.status === 3 ? $t('text_cambiarEstado') : $t('text_datosSolicitud')}}</div>
           <div class="text-center text-grey-8">{{$t('text_modificaEstadoSlt')}}</div>
         </div>
         <div class="q-px-sm q-mb-md full-width">
@@ -115,23 +115,32 @@
               </div>
             </q-list>
           </div>
-          <div class="q-px-sm q-mb-md" v-if="(solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6">
-            <div>
+
+          <div class="q-px-sm q-my-md" v-if="(solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6">
+            <div v-if="reasign === false">
               <div class="text-caption text-grey-8">{{$t('form_cambiaEstadoSlt')}}</div>
               <q-select dense filled v-model="form.status" :options="solicitud.estados" map-options option-label="name" emit-value option-value="status" :error="$v.form.status.$error" @blur="$v.form.status.$touch()"/>
             </div>
-            <div>
+            <div v-else>
+              <div class="text-caption text-grey-8">{{$t('Selecciona el consultor')}}</div>
+              <q-select dense filled v-model="form.consultor" :options="consultores" map-options option-label="name" emit-value option-value="_id" :error="$v.form.consultor.$error" @blur="$v.form.consultor.$touch()"/>
+            </div>
+            <div v-if="reasign === false">
               <div class="text-caption text-grey-8">{{$t('form_nombreActivi')}}</div>
               <q-input dense v-model="form.name" filled :placeholder="$t('form_nombre')" :error-message="$t('formError_campo')" :error="$v.form.name.$error" @blur="$v.form.name.$touch()"/>
             </div>
             <div>
-              <div class="text-caption text-grey-8">{{$t('form_descripcionTrabajo')}}</div>
+              <div class="text-caption text-grey-8">{{reasign === false ? $t('form_descripcionTrabajo') : $t('Motivo de solicitud')}}</div>
               <q-input dense v-model="form.description" filled type="textarea" :placeholder="$t('form_numCaracteres')" :error-message="$t('formError_campo')" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
             </div>
           </div>
         </div>
-        <div class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" :label="solicitud.status === 0 && solicitud.sltBegin === 0 ? $t('accion_iniciarAtencion') : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? $t('text_cambiarEstado') : $t('accion_cerrarVentana')" style="width: 70%; border-radius: 5px;" @click="solicitud.status === 0 && solicitud.sltBegin === 0 ? statusRequest(1) : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? saveHito() : slt = !slt" no-caps/>
+        <div class="full-width row items-center q-px-lg q-mb-lg" v-if="solicitud.status === 7 && solicitud.reasign && solicitud.reasign.consultor !== user._id">
+          <q-btn class="col text-white q-py-xs q-mr-lg" color="primary" :label="$t('Rechazar reasignación')" @click="statusRequest(solicitud.reasign.status, 1)" style="border-radius: 5px;" no-caps/>
+          <q-btn class="col text-white q-py-xs" color="primary" :label="$t('Aceptar reasignación')" @click="statusRequest(solicitud.reasign.status, 2)" style="border-radius: 5px;" no-caps/>
+        </div>
+        <div v-else class="full-width column items-center q-mb-lg">
+          <q-btn class="text-white q-py-xs" color="primary" :label="reasign ? $t('Solicitar') : solicitud.status === 0 && solicitud.sltBegin === 0 ? $t('accion_iniciarAtencion') : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? $t('text_cambiarEstado') : $t('accion_cerrarVentana')" style="width: 70%; border-radius: 5px;" @click="reasign ? reasignRequest() : solicitud.status === 0 && solicitud.sltBegin === 0 ? statusRequest(1) : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? saveHito() : slt = !slt" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -139,7 +148,7 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required, requiredIf } from 'vuelidate/lib/validators'
 import ListaSlt from '../../components/Solicitudes'
 import * as moment from 'moment'
 import env from '../../env'
@@ -154,6 +163,7 @@ export default {
       departamentos: [],
       contratos: [],
       hitos: [],
+      consultores: [],
       estados: [
         { name: this.$t('statusSlt_iniciada'), status: 1 },
         { name: this.$t('statusSlt_2'), status: 2 },
@@ -161,14 +171,28 @@ export default {
         { name: this.$t('statusSlt_5'), status: 4 }
       ],
       slt: false,
-      estado: false
+      estado: false,
+      reasign: false
     }
   },
   validations: {
     form: {
-      status: { required },
-      name: { required },
-      description: { required }
+      description: { required },
+      status: {
+        required: requiredIf(function () {
+          return !this.reasign
+        })
+      },
+      name: {
+        required: requiredIf(function () {
+          return !this.reasign
+        })
+      },
+      consultor: {
+        required: requiredIf(function () {
+          return this.reasign
+        })
+      }
     }
   },
   mounted () {
@@ -184,6 +208,7 @@ export default {
           this.getDepartamentos()
           this.getContratos()
           this.getHitos()
+          this.getConsultores()
         }
         this.$q.loading.hide()
       })
@@ -209,6 +234,13 @@ export default {
         }
       })
     },
+    getConsultores () {
+      this.$api.get(`user_consultor/${this.user.empresa}`).then(res => {
+        if (res) {
+          this.consultores = res.filter(v => v.departamento === this.user.departamento && v.area === this.user.area && v.cargo === this.user.cargo && v._id !== this.user._id)
+        }
+      })
+    },
     verSlt (itm) {
       this.solicitud = { ...itm }
       this.solicitud.department = this.departamentos.filter(v => v._id === itm.categoria.departamento)[0].name
@@ -218,6 +250,19 @@ export default {
       this.form = {}
       this.$v.form.$reset()
       this.slt = !this.slt
+    },
+    reasignRequest () {
+      this.$v.form.$touch()
+      if (!this.$v.form.$error) {
+        this.statusRequest(7)
+        this.form = {}
+        this.$v.form.$reset()
+      } else {
+        this.$q.notify({
+          message: this.$t('formError_allDatosCorrectos'),
+          color: 'negative'
+        })
+      }
     },
     saveHito () {
       this.$v.form.$touch()
@@ -249,23 +294,43 @@ export default {
         })
       }
     },
-    statusRequest (idx) {
-      const status = { status: idx, consultor_id: this.user._id }
+    statusRequest (idx, action) {
+      const status = {}
+      if (this.reasign) {
+        status.status = idx
+        status.consultor_id = this.form.consultor
+        status.reasign = {
+          consultor: this.user._id,
+          motivo: this.form.description,
+          status: this.solicitud.status
+        }
+      } else {
+        status.status = idx
+        if (action === 1) {
+          status.consultor_id = this.solicitud.reasign.consultor
+          status.reasign = null
+        } else {
+          status.consultor_id = this.user._id
+          status.reasign = null
+        }
+      }
       if (this.solicitud.status === 0) {
         status.dateBegin = moment().format('YYYY-MM-DD')
         status.timeBegin = moment().format('HH:mm')
       }
       this.$api.put('status_solicitud/' + this.solicitud._id, status).then(res => {
         if (res) {
-          this.$api.post('register_notification', {
-            user_id: this.solicitud.user_id,
-            emit_id: this.user._id,
-            status: false,
-            solicitud_id: this.solicitud._id,
-            icon: idx === 1 ? 'cached' : idx === 2 ? 'schedule' : idx === 3 ? 'published_with_changes' : 'done',
-            name: this.$t('tituloNotif_statusSlt') + '"' + (idx === 1 ? this.$t('statusSlt_1') : idx === 2 ? this.$t('statusSlt_2') : idx === 3 ? this.$t('statusSlt_3') : this.$t('statusSlt_4')) + '"',
-            description: this.$t('textNotif_statusSlt1') + this.user.name + ' ' + this.user.last_name + this.$t('textNotif_statusSlt2') + (this.solicitud.status === 0 ? this.$t('textNotif_statusSlt3') : this.$t('textNotif_statusSlt4') + '"' + (idx === 1 ? this.$t('statusSlt_1') : idx === 2 ? this.$t('statusSlt_2') : idx === 3 ? this.$t('statusSlt_3') : this.$t('statusSlt_4')) + '"' + this.$t('textNotif_statusSlt5')) + this.$t('textNotif_statusSlt6') + this.solicitud.description
-          })
+          if (!this.reasign) {
+            this.$api.post('register_notification', {
+              user_id: this.solicitud.user_id,
+              emit_id: this.user._id,
+              status: false,
+              solicitud_id: this.solicitud._id,
+              icon: idx === 1 ? 'cached' : idx === 2 ? 'schedule' : idx === 3 ? 'published_with_changes' : 'done',
+              name: this.$t('tituloNotif_statusSlt') + '"' + (idx === 1 ? this.$t('statusSlt_1') : idx === 2 ? this.$t('statusSlt_2') : idx === 3 ? this.$t('statusSlt_3') : this.$t('statusSlt_4')) + '"',
+              description: this.$t('textNotif_statusSlt1') + this.user.name + ' ' + this.user.last_name + this.$t('textNotif_statusSlt2') + (this.solicitud.status === 0 ? this.$t('textNotif_statusSlt3') : this.$t('textNotif_statusSlt4') + '"' + (idx === 1 ? this.$t('statusSlt_1') : idx === 2 ? this.$t('statusSlt_2') : idx === 3 ? this.$t('statusSlt_3') : this.$t('statusSlt_4')) + '"' + this.$t('textNotif_statusSlt5')) + this.$t('textNotif_statusSlt6') + this.solicitud.description
+            })
+          }
           this.$q.notify({
             message: this.$t('formNotif_estadoSltActualizado'),
             color: 'positive'
