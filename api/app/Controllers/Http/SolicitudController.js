@@ -125,33 +125,38 @@ class SolicitudController {
             [],
             [],
             [],
+            [],
             []
         ]
-        let categorias = (await Category.query().where({ departamento: user.departamento, area: user.area, cargo: user.cargo }).fetch()).toJSON()
-        for (let i of categorias) {
-            let slts = (await Solicitud.query().where({ category: i._id }).with('empresa').with('consultor').with('equipo').with('prioridad').with('categoria').fetch()).toJSON()
-            for (let j of slts.filter(v => v.status === 0 && !v.expiration)) {
-                if (moment().diff(moment(j.dateSlt + ' ' + j.timeSlt), 'minutes') > j.prioridad.tiempo) {
-                    j.expiration = true
-                    await Solicitud.query().where({ _id: j._id }).update({ expiration: true })
-                }
-            }
-            for (let j of slts) {
-                j.prioridad.color2 = j.prioridad.color === 'Azul' ? 'blue' : j.prioridad.color === 'Rojo' ? 'red' : j.prioridad.color === 'Verde' ? 'green' : j.prioridad.color === 'Amarillo' ? 'yellow' : j.prioridad.color === 'Rosado' ? 'pink' : j.prioridad.color === 'Gris' ? 'grey' : j.prioridad.color === 'Negro' ? 'black' : j.prioridad.color === 'Celeste' ? 'blue-3' : j.prioridad.color === 'Anaranjado' ? 'orange' : j.prioridad.color === 'Morado' ? 'purple' : 'brown'
-                if (j.status === 0) { solicitudes[0].push(j) } else if (j.consultor_id === user._id || (j.reasign && j.reasign.consultor === user._id)) {
-                    if (j.status === 1) { solicitudes[1].push(j) }
-                    if (j.status === 2) { solicitudes[2].push(j) }
-                    if (j.status === 3) { solicitudes[3].push(j) }
-                    if (j.status === 4) { solicitudes[4].push(j) }
-                    if (j.status === 5) { solicitudes[5].push(j) }
-                    if (j.status === 6) { solicitudes[6].push(j) }
-                    if (j.status === 7) {
-                        if (j.reasign && j.reasign.consultor === user._id) {
-                            solicitudes[7].push(j)
-                        } else {
-                            solicitudes[8].push(j)
+        for (let i = 0; i < solicitudes.length; i++) {
+            if (i === 0) {
+                let categorias = (await Category.query().where({ departamento: user.departamento, area: user.area, cargo: user.cargo }).fetch()).toJSON()
+                for (let j of categorias) {
+                    let slts = (await Solicitud.query().where({ status: i, category: j._id }).with('empresa.contrato').with('equipo').with('prioridad').with('categoria.Departamento').fetch()).toJSON()
+                    for (let v of slts) {
+                        if (moment().diff(moment(v.dateSlt + ' ' + v.timeSlt), 'minutes') > v.prioridad.tiempo) {
+                            v.expiration = true
+                            await Solicitud.query().where({ _id: v._id }).update({ expiration: true })
                         }
+                        solicitudes[i].push(v)
                     }
+                }
+            } else if (i === 7) {
+                solicitudes[i] = ((await Solicitud.query().where({ status: i, consultor_id: user._id }).with('empresa.contrato').with('consultor').with('equipo').with('prioridad').with('categoria.Departamento').fetch()).toJSON())
+                i = i + 1
+                solicitudes[i] = ((await Solicitud.query().where({ status: i }).where('reasign.consultor_id', user._id).with('empresa.contrato').with('consultor').with('equipo').with('prioridad').with('categoria.Departamento').fetch()).toJSON())
+            } else {
+                solicitudes[i] = (await Solicitud.query().where({ status: i, consultor_id: user._id }).with('empresa.contrato').with('consultor').with('equipo').with('prioridad').with('categoria.Departamento').fetch()).toJSON()
+            }
+            for (const j of solicitudes[i]) {
+                if (i === 7) {
+                    for (const v of j) {
+                        v.prioridad.color2 = v.prioridad.color === 'Azul' ? 'blue' : v.prioridad.color === 'Rojo' ? 'red' : v.prioridad.color === 'Verde' ? 'green' : v.prioridad.color === 'Amarillo' ? 'yellow' : v.prioridad.color === 'Rosado' ? 'pink' : v.prioridad.color === 'Gris' ? 'grey' : v.prioridad.color === 'Negro' ? 'black' : v.prioridad.color === 'Celeste' ? 'blue-3' : v.prioridad.color === 'Anaranjado' ? 'orange' : v.prioridad.color === 'Morado' ? 'purple' : 'brown'
+                        v.hitos = (await Hito.query().where({ solicitud_id: v._id }).fetch()).toJSON()
+                    }
+                } else {
+                    j.prioridad.color2 = j.prioridad.color === 'Azul' ? 'blue' : j.prioridad.color === 'Rojo' ? 'red' : j.prioridad.color === 'Verde' ? 'green' : j.prioridad.color === 'Amarillo' ? 'yellow' : j.prioridad.color === 'Rosado' ? 'pink' : j.prioridad.color === 'Gris' ? 'grey' : j.prioridad.color === 'Negro' ? 'black' : j.prioridad.color === 'Celeste' ? 'blue-3' : j.prioridad.color === 'Anaranjado' ? 'orange' : j.prioridad.color === 'Morado' ? 'purple' : 'brown'
+                    j.hitos = (await Hito.query().where({ solicitud_id: j._id }).fetch()).toJSON()
                 }
             }
         }
