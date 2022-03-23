@@ -343,5 +343,20 @@ export default {
   text_abiertas: 'Abertas',
   text_cerradas: 'Fechadas',
 
-  formError_filtroPdf: 'Não há registros para gerar o arquivo'
+  formError_filtroPdf: 'Não há registros para gerar o arquivo',
+
+  subtitulo_sltReasignar: 'Solicitações em processo de reatribuição',
+  subtitulo_sltConfirReasignar: 'Solicitações de confirmação de reatribuição',
+  subtitulo_sltRechazReasignar: 'Reatribuições de solicitações rejeitadas',
+  subtitulo_sltListReasignar: 'Lista de atividades aguardando reatribuição',
+  subtitulo_sltListConfirReasignar: 'Lista de atividades sem confirmação de reatribuição',
+  subtitulo_sltListRechazReasignar: 'Lista de atividades com reatribuição rejeitada',
+
+  text_motivo: 'Motivo do pedido',
+  text_reasignacion: 'Solicitar reatribuição',
+
+  accion_rechazar: 'Rejeitar',
+  accion_aceptar: 'Aceitar',
+  accion_solicitar: 'Solicitar',
+  accion_reanudar: 'Retomar o atendimento'
 }

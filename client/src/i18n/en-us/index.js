@@ -343,5 +343,20 @@ export default {
   text_abiertas: 'Open',
   text_cerradas: 'Closed',
 
-  formError_filtroPdf: 'there are no records to generate the file'
+  formError_filtroPdf: 'there are no records to generate the file',
+
+  subtitulo_sltReasignar: 'Requests in the process of reassignment',
+  subtitulo_sltConfirReasignar: 'Requests to confirm reassignment',
+  subtitulo_sltRechazReasignar: 'Reassignments of rejected requests',
+  subtitulo_sltListReasignar: 'List of activities awaiting reassignment',
+  subtitulo_sltListConfirReasignar: 'List of activities without reassignment confirmation',
+  subtitulo_sltListRechazReasignar: 'List of activities with rejected reassignment',
+
+  text_motivo: 'Reason for request',
+  text_reasignacion: 'Request reassignment',
+
+  accion_rechazar: 'Reject',
+  accion_aceptar: 'To accept',
+  accion_solicitar: 'Request',
+  accion_reanudar: 'Resume attention'
 }

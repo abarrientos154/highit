@@ -343,5 +343,20 @@ export default {
   text_abiertas: 'Abiertas',
   text_cerradas: 'Cerradas',
 
-  formError_filtroPdf: 'No hay registros para generar el archivo'
+  formError_filtroPdf: 'No hay registros para generar el archivo',
+
+  subtitulo_sltReasignar: 'Solicitudes en proceso de reasignación',
+  subtitulo_sltConfirReasignar: 'Solicitudes por confirmar reasignación',
+  subtitulo_sltRechazReasignar: 'Reasignaciones de solicitudes rechasadas',
+  subtitulo_sltListReasignar: 'Listado de actividades en espera de reasignación',
+  subtitulo_sltListConfirReasignar: 'Listado de actividades sin confirmacion de reasignación',
+  subtitulo_sltListRechazReasignar: 'Listado de actividades con reasignación rechasada',
+
+  text_motivo: 'Motivo de solicitud',
+  text_reasignacion: 'Solicitar reasignación',
+
+  accion_rechazar: 'Rechazar',
+  accion_aceptar: 'Aceptar',
+  accion_solicitar: 'Solicitar',
+  accion_reanudar: 'Reanudar atención'
 }

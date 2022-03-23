@@ -22,7 +22,7 @@
         </div>
 
         <div class="q-mb-lg q-mt-md">
-          <div class="text-center text-h6 text-bold">{{reasign ? $t('Solicitar reasignación') : solicitud.status === 0 && solicitud.sltBegin === 0 ? $t('text_tomarSlt') : solicitud.status === 1 || solicitud.status === 2 ||solicitud.status === 3 ? $t('text_cambiarEstado') : $t('text_datosSolicitud')}}</div>
+          <div class="text-center text-h6 text-bold">{{reasign ? $t('text_reasignacion') : solicitud.status === 0 && solicitud.sltBegin === 0 ? $t('text_tomarSlt') : solicitud.status === 1 || solicitud.status === 2 ||solicitud.status === 3 ? $t('text_cambiarEstado') : $t('text_datosSolicitud')}}</div>
           <div class="text-center text-grey-8">{{$t('text_modificaEstadoSlt')}}</div>
         </div>
 
@@ -138,18 +138,18 @@
             </q-list>
           </div>
 
-          <div class="q-px-sm q-my-md" v-if="(solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6">
+          <div class="q-px-sm q-my-md" v-if="(solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 || (solicitud.status === 8 && reasign)">
             <div v-if="reasign === false">
               <div class="text-caption text-grey-8">{{$t('form_cambiaEstadoSlt')}}</div>
               <q-select dense filled v-model="form.status" :options="solicitud.estados" map-options option-label="name" emit-value option-value="status" :error="$v.form.status.$error" @blur="$v.form.status.$touch()"/>
             </div>
 
             <div v-else>
-              <div class="text-caption text-grey-8">{{$t('Selecciona la categoria')}}</div>
+              <div class="text-caption text-grey-8">{{$t('form_selecCat')}}</div>
               <q-select dense filled v-model="form.category" :options="categorias" map-options option-label="nombre" emit-value option-value="_id" :error="$v.form.category.$error" @blur="$v.form.category.$touch()"/>
 
-              <div class="text-caption text-grey-8">{{$t('Selecciona el consultor')}}</div>
-              <q-select dense filled v-model="form.consultor_id" :options="consultores" map-options option-label="name" emit-value option-value="_id" :error="$v.form.consultor_id.$error" @blur="$v.form.consultor_id.$touch()"/>
+              <div class="text-caption text-grey-8">{{$t('form_selecConsultor')}}</div>
+              <q-select dense filled v-model="form.consultor_id" :options="consultores.filter(v => v.departamento === categorias.find(v => v._id === form.category).departamento && v.area === categorias.find(v => v._id === form.category).area && v.cargo === categorias.find(v => v._id === form.category).cargo)" map-options option-label="name" emit-value option-value="_id" :error="$v.form.consultor_id.$error" @blur="$v.form.consultor_id.$touch()"/>
             </div>
 
             <div v-if="reasign === false">
@@ -158,19 +158,19 @@
             </div>
 
             <div>
-              <div class="text-caption text-grey-8">{{reasign === false ? $t('form_descripcionTrabajo') : $t('Motivo de solicitud')}}</div>
+              <div class="text-caption text-grey-8">{{reasign === false ? $t('form_descripcionTrabajo') : $t('text_motivo')}}</div>
               <q-input dense v-model="form.description" filled type="textarea" :placeholder="$t('form_numCaracteres')" :error-message="$t('formError_campo')" :error="$v.form.description.$error" @blur="$v.form.description.$touch()"/>
             </div>
           </div>
         </div>
 
         <div class="full-width row items-center q-px-lg q-mb-lg" v-if="(solicitud.status === 7 && solicitud.reasign && solicitud.reasign.consultor_id !== user._id)">
-          <q-btn class="col text-white q-py-xs q-mr-lg" color="primary" :label="$t('Rechazar')" @click="statusRequest(8)" style="border-radius: 5px;" no-caps/>
-          <q-btn class="col text-white q-py-xs" color="primary" :label="$t('Aceptar')" @click="statusRequest(solicitud.reasign.status)" style="border-radius: 5px;" no-caps/>
+          <q-btn class="col text-white q-py-xs q-mr-lg" color="primary" :label="$t('accion_rechazar')" @click="statusRequest(8)" style="border-radius: 5px;" no-caps/>
+          <q-btn class="col text-white q-py-xs" color="primary" :label="$t('accion_aceptar')" @click="statusRequest(solicitud.reasign.status)" style="border-radius: 5px;" no-caps/>
         </div>
 
         <div v-else class="full-width column items-center q-mb-lg">
-          <q-btn class="text-white q-py-xs" color="primary" :label="reasign ? $t('Solicitar') : solicitud.status === 8 ? $t('Reanudar atención') : solicitud.status === 0 && solicitud.sltBegin === 0 ? $t('accion_iniciarAtencion') : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? $t('text_cambiarEstado') : $t('accion_cerrarVentana')" style="width: 70%; border-radius: 5px;" @click="reasign ? saveHito() : solicitud.status === 8 ? statusRequest(solicitud.reasign.status) :  solicitud.status === 0 && solicitud.sltBegin === 0 ? statusRequest(1) : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? saveHito() : slt = !slt" no-caps/>
+          <q-btn class="text-white q-py-xs" color="primary" :label="reasign ? $t('accion_solicitar') : solicitud.status === 8 ? $t('accion_reanudar') : solicitud.status === 0 && solicitud.sltBegin === 0 ? $t('accion_iniciarAtencion') : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? $t('text_cambiarEstado') : $t('accion_cerrarVentana')" style="width: 70%; border-radius: 5px;" @click="reasign ? saveHito() : solicitud.status === 8 ? statusRequest(solicitud.reasign.status) :  solicitud.status === 0 && solicitud.sltBegin === 0 ? statusRequest(1) : (solicitud.status > 0 && solicitud.status < 4) || solicitud.status === 6 ? saveHito() : slt = !slt" no-caps/>
         </div>
       </q-card>
     </q-dialog>
@@ -271,7 +271,7 @@ export default {
     getConsultores () {
       this.$api.get(`user_consultor/${this.user.empresa}`).then(res => {
         if (res) {
-          this.consultores = res.filter(v => v.departamento === this.user.departamento && v.area === this.user.area && v.cargo === this.user.cargo && v._id !== this.user._id)
+          this.consultores = res
         }
       })
     },
@@ -313,10 +313,12 @@ export default {
         status.status = idx
         status.category = this.form.category
         status.consultor_id = this.form.consultor_id
-        status.reasign = {
-          status: this.solicitud.status,
-          category: this.solicitud.category,
-          consultor_id: this.solicitud.consultor_id
+        if (this.solicitud.status !== 8) {
+          status.reasign = {
+            status: this.solicitud.status,
+            category: this.solicitud.category,
+            consultor_id: this.solicitud.consultor_id
+          }
         }
       } else {
         status.status = idx

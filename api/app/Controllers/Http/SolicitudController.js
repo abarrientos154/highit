@@ -142,24 +142,19 @@ class SolicitudController {
                     }
                 }
             } else if (i === 7) {
-                solicitudes[i] = ((await Solicitud.query().where({ status: i, consultor_id: user._id }).with('empresa.contrato').with('consultor').with('equipo').with('prioridad').with('categoria.Departamento').fetch()).toJSON())
-                i = i + 1
-                solicitudes[i] = ((await Solicitud.query().where({ status: i }).where('reasign.consultor_id', user._id).with('empresa.contrato').with('consultor').with('equipo').with('prioridad').with('categoria.Departamento').fetch()).toJSON())
+                solicitudes[i] = (await Solicitud.query().where({ status: 7, consultor_id: user._id }).with('empresa.contrato').with('consultor').with('equipo').with('prioridad').with('categoria.Departamento').fetch()).toJSON()
+                i = i++
+                solicitudes[i] = (await Solicitud.query().where({ status: 7 }).where('reasign.consultor_id', user._id).with('empresa.contrato').with('consultor').with('equipo').with('prioridad').with('categoria.Departamento').fetch()).toJSON()
             } else {
-                solicitudes[i] = (await Solicitud.query().where({ status: i, consultor_id: user._id }).with('empresa.contrato').with('consultor').with('equipo').with('prioridad').with('categoria.Departamento').fetch()).toJSON()
-            }
-            for (const j of solicitudes[i]) {
-                if (i === 7) {
-                    for (const v of j) {
-                        v.prioridad.color2 = v.prioridad.color === 'Azul' ? 'blue' : v.prioridad.color === 'Rojo' ? 'red' : v.prioridad.color === 'Verde' ? 'green' : v.prioridad.color === 'Amarillo' ? 'yellow' : v.prioridad.color === 'Rosado' ? 'pink' : v.prioridad.color === 'Gris' ? 'grey' : v.prioridad.color === 'Negro' ? 'black' : v.prioridad.color === 'Celeste' ? 'blue-3' : v.prioridad.color === 'Anaranjado' ? 'orange' : v.prioridad.color === 'Morado' ? 'purple' : 'brown'
-                        v.hitos = (await Hito.query().where({ solicitud_id: v._id }).fetch()).toJSON()
-                    }
-                } else {
-                    j.prioridad.color2 = j.prioridad.color === 'Azul' ? 'blue' : j.prioridad.color === 'Rojo' ? 'red' : j.prioridad.color === 'Verde' ? 'green' : j.prioridad.color === 'Amarillo' ? 'yellow' : j.prioridad.color === 'Rosado' ? 'pink' : j.prioridad.color === 'Gris' ? 'grey' : j.prioridad.color === 'Negro' ? 'black' : j.prioridad.color === 'Celeste' ? 'blue-3' : j.prioridad.color === 'Anaranjado' ? 'orange' : j.prioridad.color === 'Morado' ? 'purple' : 'brown'
-                    j.hitos = (await Hito.query().where({ solicitud_id: j._id }).fetch()).toJSON()
-                }
+                solicitudes[i] = (await Solicitud.query().where({ status: i > 7 ? i - 1 : i, consultor_id: user._id }).with('empresa.contrato').with('consultor').with('equipo').with('prioridad').with('categoria.Departamento').fetch()).toJSON()
             }
         }
+				for (const i of solicitudes) {
+            for (const j of i) {
+								j.prioridad.color2 = j.prioridad.color === 'Azul' ? 'blue' : j.prioridad.color === 'Rojo' ? 'red' : j.prioridad.color === 'Verde' ? 'green' : j.prioridad.color === 'Amarillo' ? 'yellow' : j.prioridad.color === 'Rosado' ? 'pink' : j.prioridad.color === 'Gris' ? 'grey' : j.prioridad.color === 'Negro' ? 'black' : j.prioridad.color === 'Celeste' ? 'blue-3' : j.prioridad.color === 'Anaranjado' ? 'orange' : j.prioridad.color === 'Morado' ? 'purple' : 'brown'
+								j.hitos = (await Hito.query().where({ solicitud_id: j._id }).fetch()).toJSON()
+            }
+				}
         response.send(solicitudes)
     }
 
