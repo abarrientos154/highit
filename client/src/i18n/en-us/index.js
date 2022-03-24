@@ -358,5 +358,6 @@ export default {
   accion_rechazar: 'Reject',
   accion_aceptar: 'To accept',
   accion_solicitar: 'Request',
-  accion_reanudar: 'Resume attention'
+  accion_reanudar: 'Resume attention',
+  accion_reasignar: 'Re asign'
 }

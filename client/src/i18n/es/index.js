@@ -347,10 +347,10 @@ export default {
 
   subtitulo_sltReasignar: 'Solicitudes en proceso de reasignación',
   subtitulo_sltConfirReasignar: 'Solicitudes por confirmar reasignación',
-  subtitulo_sltRechazReasignar: 'Reasignaciones de solicitudes rechasadas',
+  subtitulo_sltRechazReasignar: 'Reasignaciones de solicitudes rechazadas',
   subtitulo_sltListReasignar: 'Listado de actividades en espera de reasignación',
   subtitulo_sltListConfirReasignar: 'Listado de actividades sin confirmacion de reasignación',
-  subtitulo_sltListRechazReasignar: 'Listado de actividades con reasignación rechasada',
+  subtitulo_sltListRechazReasignar: 'Listado de actividades con reasignación rechazada',
 
   text_motivo: 'Motivo de solicitud',
   text_reasignacion: 'Solicitar reasignación',
@@ -358,5 +358,6 @@ export default {
   accion_rechazar: 'Rechazar',
   accion_aceptar: 'Aceptar',
   accion_solicitar: 'Solicitar',
-  accion_reanudar: 'Reanudar atención'
+  accion_reanudar: 'Reanudar atención',
+  accion_reasignar: 'Reasignar'
 }

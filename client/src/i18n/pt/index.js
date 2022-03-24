@@ -358,5 +358,6 @@ export default {
   accion_rechazar: 'Rejeitar',
   accion_aceptar: 'Aceitar',
   accion_solicitar: 'Solicitar',
-  accion_reanudar: 'Retomar o atendimento'
+  accion_reanudar: 'Retomar o atendimento',
+  accion_reasignar: 'Reatribuir'
 }
