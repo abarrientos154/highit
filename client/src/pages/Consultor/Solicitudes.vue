@@ -18,7 +18,7 @@
             <div v-if="solicitud.expiration" class="bg-primary q-mr-sm" style="width: 25px; height: 30px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
             <div v-if="solicitud.equipment" class="bg-info q-mr-sm" style="width: 30px; height: 35px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></div>
             <div :class="`text-caption q-px-lg text-center text-white bg-${solicitud.prioridad ? solicitud.prioridad.color2 : 'red'} row items-center`" style="height: 40px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
-              {{solicitud.prioridad ? solicitud.prioridad.nombre : $t('form_prioridad')}}<br>{{$t('form_estado')}}: {{solicitud.status === 0 ? $t('statusSlt_0') : solicitud.status === 1 ? $t('statusSlt_1') : solicitud.status === 2 ? $t('statusSlt_2') : solicitud.status === 3 ? $t('statusSlt_3') : solicitud.status === 4 ? $t('statusSlt_4') : solicitud.status === 5 ? $t('statusSlt_5') : solicitud.status === 5 ? $t('statusSlt_6') : ''}}
+              {{solicitud.prioridad ? solicitud.prioridad.nombre : $t('form_prioridad')}}<br>{{$t('form_estado')}}: {{solicitud.status === 0 ? $t('statusSlt_0') : solicitud.status === 1 ? $t('statusSlt_1') : solicitud.status === 2 || solicitud.reasign.status === 2 ? $t('statusSlt_2') : solicitud.status === 3 || solicitud.reasign.status === 3 ? $t('statusSlt_3') : solicitud.status === 4 ? $t('statusSlt_4') : solicitud.status === 5 ? $t('statusSlt_5') : solicitud.status === 5 || solicitud.reasign.status === 5 ? $t('statusSlt_6') : ''}}
             </div>
           </div>
         </div>
@@ -233,36 +233,12 @@ export default {
       this.$api.get('user_logueado').then(res => {
         if (res) {
           this.user = res
-          // this.getDepartamentos()
-          // this.getContratos()
-          // this.getHitos()
           this.getCategorias()
           this.getConsultores()
         }
         this.$q.loading.hide()
       })
     },
-    /* getDepartamentos () {
-      this.$api.get(`departments/${this.user.company}`).then(res => {
-        if (res) {
-          this.departamentos = res
-        }
-      })
-    },
-    getContratos () {
-      this.$api.get(`contratos_by_company/${this.user.company}`).then(res => {
-        if (res) {
-          this.contratos = res
-        }
-      })
-    },
-    getHitos () {
-      this.$api.get(`hitos_by_company/${this.user.company}`).then(res => {
-        if (res) {
-          this.hitos = res
-        }
-      })
-    }, */
     getCategorias () {
       this.$api.get(`categorias/${this.user.company}`).then(res => {
         if (res) {

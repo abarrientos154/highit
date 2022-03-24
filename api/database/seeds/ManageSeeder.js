@@ -17,115 +17,109 @@ const manageData = [{
         id: 1,
         status: 0,
         icon: 'update',
-        name: 'Solicitudes sin Consultor asignado'
+        name: 'indicador_slts0'
     },
     {
         id: 2,
         status: 1,
         icon: 'cached',
-        name: 'Solicitudes en ejecución'
+        name: 'indicador_slts1'
     },
     {
         id: 3,
         status: 2,
         icon: 'schedule',
-        name: 'Solicitudes en espera'
+        name: 'indicador_slts2'
     },
     {
         id: 4,
         status: 3,
         icon: 'published_with_changes',
-        name: 'Solicitudes en checkout'
+        name: 'indicador_slts3'
     },
     {
         id: 5,
         status: 4,
         icon: 'done',
-        name: 'Solicitudes por confirmar'
+        name: 'indicador_slts4'
     },
     {
         id: 6,
         status: 5,
         icon: 'done_all',
-        name: 'Solicitudes finalizadas'
+        name: 'indicador_slts5'
     },
     {
         id: 7,
         status: 6,
         icon: 'open_in_browser',
-        name: 'Solicitudes reabiertas'
+        name: 'indicador_slts6'
     },
     {
-        id: 7,
-        status: 6,
-        icon: 'open_in_browser',
-        name: 'Solicitudes reabiertas'
-    },
-    {
-        id: 7,
+        id: 17,
         status: 7,
         icon: 'open_in_browser',
-        name: 'Solicitudes en reasignación'
+        name: 'indicador_sltsReasignar'
     },
     {
-        id: 7,
+        id: 18,
         status: 8,
         icon: 'open_in_browser',
-        name: 'Solicitudes con reasignación rechasada'
+        name: 'indicador_sltsRechazReasignar'
     },
     {
         id: 8,
         status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 6, name: 'Reabiertas' }, { id: 7, name: 'En reasignación' }],
         icon: 'assignment',
-        name: 'Solicitudes abiertas'
+        name: 'indicador_sltsAbiertas'
     },
     {
         id: 9,
         status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 6, name: 'Reabiertas' }, { id: 5, name: 'Finalizadas' }, { id: 7, name: 'En reasignación' }, { id: 8, name: 'Reasignación rechasada' }],
         icon: 'data_usage',
-        name: 'Solicitudes abiertas/cerradas'
+        name: 'indicador_sltsAbiertasCerradas'
     },
     {
         id: 10,
         status: [{ id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }, { id: 6, name: 'Reabiertas' }, { id: 7, name: 'En reasignación' }, { id: 8, name: 'Reasignación rechasada' }],
         icon: 'assignment_ind',
-        name: 'Solicitudes por Consultor'
+        name: 'indicador_sltsConsultor'
     },
     {
         id: 11,
         status: 5,
         icon: 'pending_actions',
-        name: 'Tiempo de atención por consultor'
+        name: 'indicador_sltsTiempoConsultor'
     },
     {
         id: 12,
         status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 6, name: 'Reabiertas' }, { id: 5, name: 'Finalizadas' }, { id: 7, name: 'En reasignación' }, { id: 8, name: 'Reasignación rechasada' }],
         icon: 'category',
-        name: 'Solicitides por categoria'
+        name: 'indicador_sltsCategoria'
     },
     {
         id: 13,
         status: 5,
         icon: 'timelapse',
-        name: 'Tiempo de atención por categoria'
+        name: 'indicador_sltsTiempoCategoria'
     },
     {
         id: 14,
         status: [{ id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }, { id: 6, name: 'Reabiertas' }, { id: 7, name: 'En reasignación' }, { id: 8, name: 'Reasignación rechasada' }],
         icon: 'alarm_on',
-        name: 'Solicitudes con su prioridad cumplida'
+        name: 'indicador_sltsPrioridad'
     },
     {
         id: 15,
         status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }, { id: 6, name: 'Reabiertas' }, { id: 7, name: 'En reasignación' }, { id: 8, name: 'Reasignación rechasada' }],
         icon: 'running_with_errors',
-        name: 'Porcentaje de cumplimiento de las prioridades'
+        name: 'indicador_sltsPorcentajePrioridad'
     },
     {
         id: 16,
         status: 5,
         icon: 'star_half',
-        name: 'Procentaje de satisfacción'
+        name: 'indicador_sltsSatisfaccion'
     }
 ]
 class ManageSeeder {

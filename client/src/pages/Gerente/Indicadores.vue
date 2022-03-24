@@ -4,16 +4,18 @@
       <div class="text-h4 text-bold">{{$t('titulo_moduloIndicadores')}}</div>
       <div class="text-grey text-h6">{{$t('subtitulo_gestionActividades')}}</div>
       <q-select class="full-width" filled v-model="gestionar" :options="gestion" :label="$t('form_selecIndicadores')" multiple map-options emit-value option-label="name" @input="getActividades()">
-        <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
-          <q-item v-bind="itemProps" v-on="opt.id !== 17 ? itemEvents : ''">
-            <q-item-section avatar v-if="opt.id !== 17">
+        <template v-slot:option="{ itemProps, opt, selected, toggleOption }">
+          <q-item v-bind="itemProps" @click="opt.id === 19 ? selectAll(itemProps) : ''">
+            <q-item-section avatar v-if="opt.id !== 19">
               <q-icon :name="opt.icon" size="40px"/>
             </q-item-section>
-            <q-item-section @click="opt.id === 17 ? selectAll() : ''">
-              <q-item-label :class="opt.id === 17 ? 'text-center text-bold text-primary' : ''" v-html="opt.name" ></q-item-label>
+
+            <q-item-section :class="opt.id !== 19 ? 'text-center text-bold text-subtitle' : ''">
+              <q-item-label v-html="$t(opt.name)"/>
             </q-item-section>
-            <q-item-section side v-if="opt.id !== 17">
-              <q-checkbox :value="selected" @input="toggleOption(opt)" />
+
+            <q-item-section side v-if="opt.id !== 19">
+              <q-checkbox :model-value="selected" @update:model-value="toggleOption(opt)"/>
             </q-item-section>
           </q-item>
         </template>
@@ -242,7 +244,7 @@ export default {
         if (res) {
           this.gestion = res
           this.gestion.push({
-            id: 17,
+            id: 19,
             icon: '',
             name: this.$t('option_selecAll'),
             actividades: []
@@ -278,9 +280,10 @@ export default {
         }
       })
     },
-    selectAll () {
-      this.gestionar = this.gestion.filter(v => v.id !== 17)
-      this.getActividades()
+    selectAll (indicadores) {
+      console.log(indicadores)
+      // this.gestionar = this.gestion.filter(v => v.id !== 17)
+      // this.getActividades()
     },
     getActividades () {
       this.info = false
@@ -329,7 +332,7 @@ export default {
               for (const j of i.actividades) {
                 stars = stars + j.rating.number
               }
-              i.cantidad = (stars * i.actividades.length) / 100
+              i.cantidad = ((stars / i.actividades.length) / 5) * 100
             } else {
               i.cantidad = i.actividades.length
             }
@@ -365,19 +368,19 @@ export default {
     },
     pdfFilter () {
       const item = { ...this.datos }
-      if (this.depart !== null) {
+      if (this.depart) {
         item.actividades = item.actividades.filter(v => v.categoria.departamento === this.depart)
       }
-      if (this.status !== null) {
+      if (this.status) {
         item.actividades = item.actividades.filter(v => v.status === this.status)
       }
-      if (this.consultor !== null) {
+      if (this.consultor) {
         item.actividades = item.actividades.filter(v => v.consultor_id === this.consultor)
       }
-      if (this.categoria !== null) {
+      if (this.categoria) {
         item.actividades = item.actividades.filter(v => v.category === this.categoria)
       }
-      if (this.cliente !== null) {
+      if (this.cliente) {
         item.actividades = item.actividades.filter(v => v.empresa_id === this.cliente)
       }
       if (this.fecha) {
@@ -400,119 +403,72 @@ export default {
         message: this.$t('accion_generandoPdf')
       })
       itm.table = []
-      if (itm.id !== 9) {
-        for (const i of itm.actividades) {
-          do {
-            itm.table.push([
-              {
-                alignment: 'center',
-                style: itm.table.length ? 'textblack' : 'textbold',
-                text: `${itm.table.length ? i.dateSlt : this.$t('form_fecha').toUpperCase()}`
-              },
-              {
-                alignment: 'center',
-                style: itm.table.length ? 'textDescription' : 'textbold',
-                text: `${itm.table.length ? i.description : this.$t('form_descripcion').toUpperCase()}`
-              },
-              {
-                alignment: 'center',
-                style: itm.table.length ? 'textblack' : 'textbold',
-                text: `${itm.table.length ? i.status === 0 ? this.$t('statusSlt_0') : i.status === 1 ? this.$t('statusSlt_1') : i.status === 2 ? this.$t('statusSlt_2') : i.status === 3 ? this.$t('statusSlt_3') : i.status === 4 ? this.$t('statusSlt_4') : i.status === 5 ? this.$t('statusSlt_5') : this.$t('statusSlt_6') : this.$t('form_estado').toUpperCase()}`
-              },
-              {
-                alignment: 'center',
-                style: itm.table.length ? 'textblack' : 'textbold',
-                text: `${itm.table.length ? i.empresa.name : this.$t('form_empresa').toUpperCase()}`
-              },
-              {
-                alignment: 'center',
-                style: itm.table.length ? 'textblack' : 'textbold',
-                text: `${itm.table.length ? i.cliente.name + ' ' + i.cliente.last_name : this.$t('form_cliente').toUpperCase()}`
-              }
-            ])
-          } while (itm.table.length < 2)
+      for (const i of itm.actividades) {
+        do {
+          itm.table.push([
+            {
+              alignment: 'center',
+              style: itm.table.length ? 'textblack' : 'textbold',
+              text: `${itm.table.length ? i.dateSlt : this.$t('form_fecha').toUpperCase()}`
+            },
+            {
+              alignment: 'center',
+              style: itm.table.length ? 'textDescription' : 'textbold',
+              text: `${itm.table.length ? i.description : this.$t('form_descripcion').toUpperCase()}`
+            },
+            {
+              alignment: 'center',
+              style: itm.table.length ? 'textblack' : 'textbold',
+              text: `${itm.table.length ? i.status === 0 ? this.$t('statusSlt_0') : i.status === 1 ? this.$t('statusSlt_1') : i.status === 2 ? this.$t('statusSlt_2') : i.status === 3 ? this.$t('statusSlt_3') : i.status === 4 ? this.$t('statusSlt_4') : i.status === 5 ? this.$t('statusSlt_5') : this.$t('statusSlt_6') : this.$t('form_estado').toUpperCase()}`
+            },
+            {
+              alignment: 'center',
+              style: itm.table.length ? 'textblack' : 'textbold',
+              text: `${itm.table.length ? i.empresa.name : this.$t('form_empresa').toUpperCase()}`
+            },
+            {
+              alignment: 'center',
+              style: itm.table.length ? 'textblack' : 'textbold',
+              text: `${itm.table.length ? i.cliente.name + ' ' + i.cliente.last_name : this.$t('form_cliente').toUpperCase()}`
+            }
+          ])
+        } while (itm.table.length < 2)
+      }
+      if (itm.actividades.filter(v => v.consultor).length) {
+        for (const i in itm.table) {
+          itm.table[i].push(
+            {
+              alignment: 'center',
+              style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
+              text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].consultor ? itm.actividades[i - 1].consultor.name + ' ' + itm.actividades[i - 1].consultor.last_name : '' : this.$t('text_consultor').toUpperCase()}`
+            }
+          )
         }
-        if (itm.actividades.filter(v => v.consultor).length) {
-          for (const i in itm.table) {
+      }
+      if (itm.id === 9 || itm.id === 11 || itm.id === 12 || itm.id === 13 || itm.id === 14 || itm.id === 15 || itm.id === 16) {
+        for (const i in itm.table) {
+          if (itm.id === 16) {
             itm.table[i].push(
               {
                 alignment: 'center',
                 style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
-                margin: [0, 5, 0, 5],
-                text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].consultor ? itm.actividades[i - 1].consultor.name + ' ' + itm.actividades[i - 1].consultor.last_name : '' : this.$t('text_consultor').toUpperCase()}`
-              }
-            )
-          }
-        }
-        if (itm.id === 16) {
-          for (const i in itm.table) {
-            itm.table[i].push(
-              {
-                alignment: 'center',
-                style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
-                margin: [0, 5, 0, 5],
                 text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].rating ? itm.actividades[i - 1].rating.number : '' : this.$t('text_estrellas').toUpperCase()}`
               },
               {
                 alignment: 'center',
                 style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
-                margin: [0, 5, 0, 5],
-                text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].rating ? ((itm.actividades[i - 1].rating.number * itm.actividades.filter(v => v.consultor_id === itm.actividades[i - 1].consultor_id).length) / 100) + ' %' : '' : this.$t('text_satisfaccion').toUpperCase()}`
+                text: `${itm.actividades[i - 1] ? itm.actividades[i - 1].rating ? ((itm.actividades[i - 1].rating.number / 5) * 100).toFixed(2) + ' %' : '' : this.$t('text_satisfaccion').toUpperCase()}`
               }
             )
-          }
-        }
-        if (itm.id === 11 || itm.id === 12 || itm.id === 13 || itm.id === 14 || itm.id === 15) {
-          for (const i in itm.table) {
+          } else {
             itm.table[i].push(
               {
                 alignment: 'center',
                 style: `${itm.actividades[i - 1] ? 'textblack' : 'textbold'}`,
-                margin: [0, 5, 0, 5],
-                text: `${itm.actividades[i - 1] ? itm.id === 11 || itm.id === 13 ? itm.actividades[i - 1].duration : itm.id === 12 ? itm.actividades[i - 1].categoria.nombre : itm.actividades[i - 1].categoria.Departamento.name : itm.id === 11 || itm.id === 13 ? this.$t('form_tiempo').toUpperCase() : itm.id === 12 ? this.$t('form_categoria').toUpperCase() : this.$t('form_departamento').toUpperCase()}`
+                text: `${itm.actividades[i - 1] ? itm.id === 9 ? itm.actividades[i - 1].status !== 5 ? this.$t('text_abiertas') : this.$t('text_cerradas') : itm.id === 11 || itm.id === 13 ? itm.actividades[i - 1].duration : itm.id === 12 ? itm.actividades[i - 1].categoria.nombre : itm.actividades[i - 1].categoria.Departamento.name : itm.id === 9 ? this.$t('form_estado').toUpperCase() : itm.id === 11 || itm.id === 13 ? this.$t('form_tiempo').toUpperCase() : itm.id === 12 ? this.$t('form_categoria').toUpperCase() : this.$t('form_departamento').toUpperCase()}`
               }
             )
           }
-        }
-      } else {
-        for (let i = 0; i < 3; i++) {
-          itm.table.push([
-            {
-              alignment: 'center',
-              style: i === 0 ? 'textbold' : 'textblack',
-              text: i === 0 ? this.$t('text_año').toUpperCase() : this.fecha && this.type === 4 ? this.fecha : ''
-            },
-            {
-              alignment: 'center',
-              style: i === 0 ? 'textbold' : 'textblack',
-              text: i === 0 ? this.$t('text_mes').toUpperCase() : this.fecha && this.type === 3 ? this.fecha : ''
-            },
-            {
-              alignment: 'center',
-              style: i === 0 ? 'textbold' : 'textblack',
-              text: i === 0 ? this.$t('text_semana').toUpperCase() : this.fecha && this.type === 2 ? this.semana : ''
-            },
-            {
-              alignment: 'center',
-              style: i === 0 ? 'textbold' : 'textblack',
-              text: i === 0 ? this.$t('form_fecha').toUpperCase() : this.fecha && this.type === 1 ? this.fecha : ''
-            },
-            {
-              alignment: 'center',
-              style: i === 0 ? 'textbold' : 'textblack',
-              text: i === 0 ? this.$t('form_departamento').toUpperCase() : this.depart ? this.departamentos.find(v => v._id === this.depart).name : ''
-            },
-            {
-              alignment: 'center',
-              style: i === 0 ? 'textbold' : 'textblack',
-              text: i === 0 ? this.$t('form_estado').toUpperCase() : i === 1 ? this.$t('text_abiertas') : this.$t('text_cerradas')
-            },
-            {
-              alignment: 'center',
-              style: i === 0 ? 'textbold' : 'textblack',
-              text: i === 0 ? this.$t('text_cantidad').toUpperCase() : i === 1 ? itm.actividades.filter(v => v.status !== 5).length : itm.actividades.filter(v => v.status === 5).length
-            }
-          ])
         }
       }
       this.$api.post('generate_pdf', itm).then(res => {
@@ -630,7 +586,7 @@ export default {
         for (const j of this.datos.aux) {
           stars = stars + j.rating.number
         }
-        this.datos.cantidad = (stars * this.datos.aux.length) / 100
+        this.datos.cantidad = ((stars / this.datos.aux.length) / 5) * 100
       } else {
         this.datos.cantidad = this.datos.aux.length
       }
