@@ -369,7 +369,7 @@ export default {
   indicador_slts5: 'Solicitudes finalizadas',
   indicador_slts6: 'Solicitudes reabiertas',
   indicador_sltsReasignar: 'Solicitudes en reasignación',
-  indicador_sltsRechazReasignar: 'Solicitudes con reasignación rechasada',
+  indicador_sltsRechazReasignar: 'Solicitudes con reasignación rechazada',
   indicador_sltsAbiertas: 'Solicitudes abiertas',
   indicador_sltsAbiertasCerradas: 'Solicitudes abiertas/cerradas',
   indicador_sltsConsultor: 'Solicitudes por Consultor',
