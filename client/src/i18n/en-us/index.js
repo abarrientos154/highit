@@ -359,5 +359,24 @@ export default {
   accion_aceptar: 'To accept',
   accion_solicitar: 'Request',
   accion_reanudar: 'Resume attention',
-  accion_reasignar: 'Re asign'
+  accion_reasignar: 'Re asign',
+
+  indicador_slts0: 'Requests without assigned Consultant',
+  indicador_slts1: 'Requests in execution',
+  indicador_slts2: 'Requests waiting',
+  indicador_slts3: 'Requests in checkout',
+  indicador_slts4: 'Requests to be confirmed',
+  indicador_slts5: 'Requests completed',
+  indicador_slts6: 'Reopened requests',
+  indicador_sltsReasignar: 'Requests in reassignment',
+  indicador_sltsRechazReasignar: 'Requests with reassignment rejected',
+  indicador_sltsAbiertas: 'Open requests',
+  indicador_sltsAbiertasCerradas: 'Open/closed requests',
+  indicador_sltsConsultor: 'Requests by Consultant',
+  indicador_sltsTiempoConsultor: 'Attention time per consultant',
+  indicador_sltsCategoria: 'Requests by category',
+  indicador_sltsTiempoCategoria: 'Attention time by category',
+  indicador_sltsPrioridad: 'Requests with fulfilled priority',
+  indicador_sltsPorcentajePrioridad: 'Requests attended within the configured priority',
+  indicador_sltsSatisfaccion: 'Percentage of satisfaction'
 }

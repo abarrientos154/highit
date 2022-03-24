@@ -359,5 +359,24 @@ export default {
   accion_aceptar: 'Aceitar',
   accion_solicitar: 'Solicitar',
   accion_reanudar: 'Retomar o atendimento',
-  accion_reasignar: 'Reatribuir'
+  accion_reasignar: 'Reatribuir',
+
+  indicador_slts0: 'Solicitações sem Consultor designado',
+  indicador_slts1: 'Solicitações em execução',
+  indicador_slts2: 'Solicitações em espera',
+  indicador_slts3: 'Solicitações no checkout',
+  indicador_slts4: 'Solicitações a serem confirmadas',
+  indicador_slts5: 'Solicitações concluídas',
+  indicador_slts6: 'Solicitações reabertas',
+  indicador_sltsReasignar: 'Solicitações em reatribuição',
+  indicador_sltsRechazReasignar: 'Solicitações com reatribuição rejeitadas',
+  indicador_sltsAbiertas: 'Solicitações abertas',
+  indicador_sltsAbiertasCerradas: 'Solicitações abertas/fechadas',
+  indicador_sltsConsultor: 'Solicitações por Consultor',
+  indicador_sltsTiempoConsultor: 'Tempo de atenção por consultor',
+  indicador_sltsCategoria: 'Solicitações por categoria',
+  indicador_sltsTiempoCategoria: 'Tempo de atenção por categoria',
+  indicador_sltsPrioridad: 'Solicitações com prioridade cumprida',
+  indicador_sltsPorcentajePrioridad: 'Solicitações atendidas dentro da prioridade configurada',
+  indicador_sltsSatisfaccion: 'Porcentagem de satisfação'
 }

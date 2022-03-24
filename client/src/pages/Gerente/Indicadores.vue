@@ -35,7 +35,7 @@
                 <q-icon :name="item.icon" size="75px"/>
               </q-item-section>
               <q-item-section class="column justify-between">
-                <q-item-label class="text-bold text-subtitle1">{{item.name}}</q-item-label>
+                <q-item-label class="text-bold text-subtitle1">{{$t(item.name)}}</q-item-label>
                 <div>
                   <q-item-label class="text-subtitle2 text-grey-7">{{$t('text_activiRealizadas')}}:</q-item-label>
                   <money v-if="item.id === 15 || item.id === 16" readonly class="q-field__input text-h5 text-grey-7 q-mt-sm" v-model="item.cantidad" suffix=" %"/>
@@ -70,7 +70,7 @@
               <q-icon :name="datos.icon" size="100px"/>
             </q-item-section>
             <q-item-section>
-              <q-item-label class="text-bold text-h6">{{datos.name}}</q-item-label>
+              <q-item-label class="text-bold text-h6">{{$t(datos.name)}}</q-item-label>
               <q-item-label class="text-subtitle1">{{$t('text_activiRealizadas')}}:</q-item-label>
               <money v-if="datos.id === 15 || datos.id === 16" readonly class="q-field__input text-h3 text-grey-7 q-mt-sm" v-model="datos.cantidad" suffix=" %" style="height: auto"/>
               <q-item-label v-else class="text-h3 text-grey-7">{{datos.cantidad}}</q-item-label>
@@ -282,14 +282,14 @@ export default {
     },
     selectAll (indicadores) {
       console.log(indicadores)
-      // this.gestionar = this.gestion.filter(v => v.id !== 17)
-      // this.getActividades()
+      this.gestionar = this.gestion
+      this.getActividades()
     },
     getActividades () {
       this.info = false
       this.$api.get('solicitudes_company/' + this.user.empresa).then(res => {
         if (res) {
-          for (const i of this.gestionar) {
+          for (const i of this.gestionar.filter(v => v.id !== 19)) {
             i.actividades = []
             if (i.id === 8 || i.id === 9 || i.id === 10 || i.id === 12 || i.id === 14 || i.id === 15) {
               for (const j of i.status) {

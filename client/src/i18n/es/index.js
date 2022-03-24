@@ -377,6 +377,6 @@ export default {
   indicador_sltsCategoria: 'Solicitides por categoria',
   indicador_sltsTiempoCategoria: 'Tiempo de atención por categoria',
   indicador_sltsPrioridad: 'Solicitudes con su prioridad cumplida',
-  indicador_sltsPorcentajePrioridad: 'Porcentaje de cumplimiento de las prioridades',
+  indicador_sltsPorcentajePrioridad: 'Solicitudes atendidas dentro de la prioridad configurada',
   indicador_sltsSatisfaccion: 'Procentaje de satisfacción'
 }
