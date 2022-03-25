@@ -108,7 +108,7 @@ class SolicitudController {
         for (let i of slts.filter(v => v.status === 5)) {
             i.rating = (await Rating.query().where({ solicitud_id: i._id }).first()).toJSON()
         }
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 9; i++) {
             solicitudes.push(slts.filter(v => v.status === i))
         }
         response.send(solicitudes)
@@ -116,18 +116,7 @@ class SolicitudController {
 
     async solicitudesByConsultor({ request, response, view, auth }) {
         const user = (await auth.getUser()).toJSON()
-        let solicitudes = [
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            []
-        ]
+        let solicitudes = [[],[],[],[],[],[],[],[],[],[]]
         for (let i = 0; i < solicitudes.length; i++) {
             if (i === 0) {
                 let categorias = (await Category.query().where({ departamento: user.departamento, area: user.area, cargo: user.cargo }).fetch()).toJSON()

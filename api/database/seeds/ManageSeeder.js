@@ -56,18 +56,6 @@ const manageData = [{
         name: 'indicador_slts6'
     },
     {
-        id: 17,
-        status: 7,
-        icon: 'open_in_browser',
-        name: 'indicador_sltsReasignar'
-    },
-    {
-        id: 18,
-        status: 8,
-        icon: 'open_in_browser',
-        name: 'indicador_sltsRechazReasignar'
-    },
-    {
         id: 8,
         status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 6, name: 'Reabiertas' }, { id: 7, name: 'En reasignación' }],
         icon: 'assignment',
@@ -120,6 +108,18 @@ const manageData = [{
         status: 5,
         icon: 'star_half',
         name: 'indicador_sltsSatisfaccion'
+    },
+    {
+        id: 17,
+        status: 7,
+        icon: 'open_in_browser',
+        name: 'indicador_sltsReasignar'
+    },
+    {
+        id: 18,
+        status: 8,
+        icon: 'open_in_browser',
+        name: 'indicador_sltsRechazReasignar'
     }
 ]
 class ManageSeeder {

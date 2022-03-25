@@ -4,18 +4,18 @@
       <div class="text-h4 text-bold">{{$t('titulo_moduloIndicadores')}}</div>
       <div class="text-grey text-h6">{{$t('subtitulo_gestionActividades')}}</div>
       <q-select class="full-width" filled v-model="gestionar" :options="gestion" :label="$t('form_selecIndicadores')" multiple map-options emit-value option-label="name" @input="getActividades()">
-        <template v-slot:option="{ itemProps, opt, selected, toggleOption }">
-          <q-item v-bind="itemProps" @click="opt.id === 19 ? selectAll(itemProps) : ''">
+        <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
+          <q-item v-bind="itemProps" v-on="itemEvents">
             <q-item-section avatar v-if="opt.id !== 19">
               <q-icon :name="opt.icon" size="40px"/>
             </q-item-section>
 
-            <q-item-section :class="opt.id !== 19 ? 'text-center text-bold text-subtitle' : ''">
+            <q-item-section :class="opt.id === 19 ? 'text-center text-bold text-subtitle' : ''" @click="opt.id === 19 ? selectAll() : ''">
               <q-item-label v-html="$t(opt.name)"/>
             </q-item-section>
 
             <q-item-section side v-if="opt.id !== 19">
-              <q-checkbox :model-value="selected" @update:model-value="toggleOption(opt)"/>
+              <q-checkbox :value="selected" @input="toggleOption(opt)"/>
             </q-item-section>
           </q-item>
         </template>
@@ -246,7 +246,7 @@ export default {
           this.gestion.push({
             id: 19,
             icon: '',
-            name: this.$t('option_selecAll'),
+            name: 'option_selecAll',
             actividades: []
           })
         }
@@ -280,10 +280,8 @@ export default {
         }
       })
     },
-    selectAll (indicadores) {
-      console.log(indicadores)
+    selectAll () {
       this.gestionar = this.gestion
-      this.getActividades()
     },
     getActividades () {
       this.info = false
