@@ -171,6 +171,8 @@ export default {
   statusSlt_5: 'Finalized',
   statusSlt_6: 'Reaopened',
   statusSlt_iniciada: 'Started',
+  statusSlt_7: 'Reallocating',
+  statusSlt_8: 'Reassignment rejected',
 
   option_diaria: 'Daily',
   option_semanal: 'Weekly',

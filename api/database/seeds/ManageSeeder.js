@@ -57,19 +57,19 @@ const manageData = [{
     },
     {
         id: 8,
-        status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 6, name: 'Reabiertas' }, { id: 7, name: 'En reasignación' }],
+        status: [{ id: 0, name: 'statusSlt_0' }, { id: 1, name: 'statusSlt_1' }, { id: 2, name: 'statusSlt_2' }, { id: 3, name: 'statusSlt_3' }, { id: 4, name: 'statusSlt_4' }, { id: 6, name: 'statusSlt_6' }, { id: 7, name: 'statusSlt_7' }, { id: 8, name: 'statusSlt_8' }],
         icon: 'assignment',
         name: 'indicador_sltsAbiertas'
     },
     {
         id: 9,
-        status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 6, name: 'Reabiertas' }, { id: 5, name: 'Finalizadas' }, { id: 7, name: 'En reasignación' }, { id: 8, name: 'Reasignación rechasada' }],
+        status: [{ id: 0, name: 'statusSlt_0' }, { id: 1, name: 'statusSlt_1' }, { id: 2, name: 'statusSlt_2' }, { id: 3, name: 'statusSlt_3' }, { id: 4, name: 'statusSlt_4' }, { id: 5, name: 'statusSlt_5' }, { id: 6, name: 'statusSlt_6' }, { id: 7, name: 'statusSlt_7' }, { id: 8, name: 'statusSlt_8' }],
         icon: 'data_usage',
         name: 'indicador_sltsAbiertasCerradas'
     },
     {
         id: 10,
-        status: [{ id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }, { id: 6, name: 'Reabiertas' }, { id: 7, name: 'En reasignación' }, { id: 8, name: 'Reasignación rechasada' }],
+        status: [{ id: 1, name: 'statusSlt_1' }, { id: 2, name: 'statusSlt_2' }, { id: 3, name: 'statusSlt_3' }, { id: 4, name: 'statusSlt_4' }, { id: 5, name: 'statusSlt_5' }, { id: 6, name: 'statusSlt_6' }, { id: 7, name: 'statusSlt_7' }, { id: 8, name: 'statusSlt_8' }],
         icon: 'assignment_ind',
         name: 'indicador_sltsConsultor'
     },
@@ -81,7 +81,7 @@ const manageData = [{
     },
     {
         id: 12,
-        status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 6, name: 'Reabiertas' }, { id: 5, name: 'Finalizadas' }, { id: 7, name: 'En reasignación' }, { id: 8, name: 'Reasignación rechasada' }],
+        status: [{ id: 0, name: 'statusSlt_0' }, { id: 1, name: 'statusSlt_1' }, { id: 2, name: 'statusSlt_2' }, { id: 3, name: 'statusSlt_3' }, { id: 4, name: 'statusSlt_4' }, { id: 5, name: 'statusSlt_5' }, { id: 6, name: 'statusSlt_6' }, { id: 7, name: 'statusSlt_7' }, { id: 8, name: 'statusSlt_8' }],
         icon: 'category',
         name: 'indicador_sltsCategoria'
     },
@@ -93,13 +93,13 @@ const manageData = [{
     },
     {
         id: 14,
-        status: [{ id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }, { id: 6, name: 'Reabiertas' }, { id: 7, name: 'En reasignación' }, { id: 8, name: 'Reasignación rechasada' }],
+        status: [{ id: 1, name: 'statusSlt_1' }, { id: 2, name: 'statusSlt_2' }, { id: 3, name: 'statusSlt_3' }, { id: 4, name: 'statusSlt_4' }, { id: 5, name: 'statusSlt_5' }, { id: 6, name: 'statusSlt_6' }, { id: 7, name: 'statusSlt_7' }, { id: 8, name: 'statusSlt_8' }],
         icon: 'alarm_on',
         name: 'indicador_sltsPrioridad'
     },
     {
         id: 15,
-        status: [{ id: 0, name: 'Sin inicciar' }, { id: 1, name: 'En ejecucion' }, { id: 2, name: 'En espera' }, { id: 3, name: 'En checkout' }, { id: 4, name: 'Por confirmar' }, { id: 5, name: 'Finalizadas' }, { id: 6, name: 'Reabiertas' }, { id: 7, name: 'En reasignación' }, { id: 8, name: 'Reasignación rechasada' }],
+        status: [{ id: 0, name: 'statusSlt_0' }, { id: 1, name: 'statusSlt_1' }, { id: 2, name: 'statusSlt_2' }, { id: 3, name: 'statusSlt_3' }, { id: 4, name: 'statusSlt_4' }, { id: 5, name: 'statusSlt_5' }, { id: 6, name: 'statusSlt_6' }, { id: 7, name: 'statusSlt_7' }, { id: 8, name: 'statusSlt_8' }],
         icon: 'running_with_errors',
         name: 'indicador_sltsPorcentajePrioridad'
     },

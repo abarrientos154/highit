@@ -105,7 +105,15 @@
 
           <div v-if="datos.id === 10 || datos.id === 12" class="q-mb-md">
             <div class="text-bold text-subtitle1 q-mb-sm">{{$t('form_selecEstadoSlt')}}</div>
-            <q-select dense filled v-model="status" :options="datos.status" map-options option-label="name" emit-value option-value="id" @input="filtrar(2, true), datos.aux = [...datos.actividades]"/>
+            <q-select dense filled v-model="status" :options="datos.status" map-options option-label="name" emit-value option-value="id" @input="filtrar(2, true), datos.aux = [...datos.actividades]" :display-value="$t(datos.status.find(v => v.id === status)? datos.status.find(v => v.id === status).name : '')" display-value-html>
+              <template v-slot:option="{ itemProps, itemEvents, opt }">
+                <q-item v-bind="itemProps" v-on="itemEvents">
+                  <q-item-section>
+                    <q-item-label v-html="$t(opt.name)"/>
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
           </div>
 
           <div v-if="datos.id === 1 || datos.id === 2 || datos.id === 3 || datos.id === 4 || datos.id === 5 || datos.id === 6 || datos.id === 7 || datos.id === 14 || datos.id === 15" class="q-mb-md">
@@ -396,10 +404,12 @@ export default {
         })
       }
     },
-    pdfGenerate (itm) {
+    pdfGenerate (item) {
       this.$q.loading.show({
         message: this.$t('accion_generandoPdf')
       })
+      const itm = { ...item }
+      itm.name = this.$t(itm.name)
       itm.table = []
       for (const i of itm.actividades) {
         do {

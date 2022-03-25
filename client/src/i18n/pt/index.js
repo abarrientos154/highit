@@ -171,6 +171,8 @@ export default {
   statusSlt_5: 'Finalizado',
   statusSlt_6: 'Reabierta',
   statusSlt_iniciada: 'Iniciada',
+  statusSlt_7: 'Realocando',
+  statusSlt_8: 'Reatribuição rejeitada',
 
   option_diaria: 'Diaria',
   option_semanal: 'Semanal',
