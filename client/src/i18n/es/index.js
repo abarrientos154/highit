@@ -376,7 +376,7 @@ export default {
   indicador_sltsAbiertasCerradas: 'Solicitudes abiertas/cerradas',
   indicador_sltsConsultor: 'Solicitudes por Consultor',
   indicador_sltsTiempoConsultor: 'Tiempo de atención por consultor',
-  indicador_sltsCategoria: 'Solicitides por categoria',
+  indicador_sltsCategoria: 'Solicitudes por categoria',
   indicador_sltsTiempoCategoria: 'Tiempo de atención por categoria',
   indicador_sltsPrioridad: 'Solicitudes con su prioridad cumplida',
   indicador_sltsPorcentajePrioridad: 'Solicitudes atendidas dentro de la prioridad configurada',
